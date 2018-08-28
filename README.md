@@ -1,31 +1,7 @@
-# Spring Boot Hello World
+# 用户后台管理系统
 
-A spring boot enabled hello world application
+## 备注
 
-[![Build Status](https://travis-ci.org/gazgeek/springboot-helloworld.svg?branch=master)](https://travis-ci.org/gazgeek/springboot-helloworld)
-
-[![Coverage Status](https://coveralls.io/repos/gazgeek/springboot-helloworld/badge.svg)](https://coveralls.io/r/gazgeek/springboot-helloworld)
-
-- Travis CI build and test
-- Continuous deployment to Heroku on success
-
-## Usage
-
-- Directly using maven
-```
-mvn spring-boot:run
-```
-
-- From within your IDE right click run 
-```
-Application.java
-```
-
-- From executable jar file
-```
-mvn clean install
-java -jar target/helloworld-0.0.1-SNAPSHOT.jar
-```
-
+需要手动`npm install`安装所需组件。
 
 
