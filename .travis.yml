@@ -11,3 +11,6 @@ deploy:
     repo: gazgeek/springboot-helloworld
 after_success:
   - mvn clean test jacoco:report coveralls:report
+spring:
+  profiles: test
+  autoconfigure.exclude: org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
