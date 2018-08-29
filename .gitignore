@@ -1,3 +1,6 @@
+.idea
+.target
+
 ## GITIGNORE for front-end projects
 # Logs
 logs
