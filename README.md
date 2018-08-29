@@ -8,3 +8,4 @@
 ## 文档
 
 * [客户需求](doc/requirement.md)
+* [开发文档](doc/guide.md)
