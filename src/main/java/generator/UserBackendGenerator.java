@@ -46,9 +46,9 @@ public class UserBackendGenerator {
             }
         });
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("root");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/user-backend?characterEncoding=utf8");
+        dsc.setUsername("ubdev");
+        dsc.setPassword("Ubdev.1234");
+        dsc.setUrl("jdbc:mysql://ruoxue.org/user_backend?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 
         // 策略配置

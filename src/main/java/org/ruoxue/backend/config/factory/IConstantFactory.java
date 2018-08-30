@@ -1,6 +1,5 @@
 package org.ruoxue.backend.config.factory;
 
-import org.ruoxue.backend.bean.TUser;
 
 /**
  * 常量生产工厂的接口
@@ -10,10 +9,10 @@ import org.ruoxue.backend.bean.TUser;
  */
 public interface IConstantFactory {
 
-    /**
-     * 根据用户id获取用户bean
-     */
-    TUser getTUserById(Integer userId);
+//    /**
+//     * 根据用户id获取用户bean
+//     */
+//    TUser getTUserById(Integer userId);
 
 
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ruoxue.backend.mapper.TOrderMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TOrder">
+		<id column="id" property="id" />
+		<result column="cid" property="cid" />
+		<result column="type" property="type" />
+		<result column="amount" property="amount" />
+		<result column="status" property="status" />
+		<result column="tm_create" property="tmCreate" />
+		<result column="tm_paid" property="tmPaid" />
+	</resultMap>
+
+</mapper>
