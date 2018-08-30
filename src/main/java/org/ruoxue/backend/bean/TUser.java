@@ -15,8 +15,6 @@ public class TUser {
     private Integer sex;
     private String phone;
     private String address;
-    private Date gmtCreate;
-    private Date gmtModified;
     private Integer status;
 
 
@@ -100,21 +98,6 @@ public class TUser {
         this.address = address;
     }
 
-    public Date getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Date gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
 
     public Integer getStatus() {
         return status;
