@@ -1,11 +1,12 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require("./node_modules/vue-loader/lib/plugin")
 
 module.exports = {
         entry: {
-            libraries: [
-                'vue',
-            ],
+            //libraries: [
+            //    'vue', 'jquery'
+            //],
             app: "./js/index.js"
         },
         output: {
@@ -44,8 +45,20 @@ module.exports = {
                         loader: "css-loader"
                     }]
                 },
-                
-            ]
+                {
+                    test: /\.vue$/,
+                    loader: 'vue-loader'
+                },
+                { 
+                    test: /\.(eot|woff|woff2|svg|ttf)([\?]?.*)$/, 
+                    loader: "file-loader?outputPath=dist/"
+                 }
+            ],
+        },
+        resolveLoader: {
+            alias: {
+              'vue-loader': require.resolve('./node_modules/vue-loader/lib/')
+            }
         },
         plugins: [
             new webpack.ProvidePlugin({
@@ -54,5 +67,6 @@ module.exports = {
                 'window.jQuery': 'jquery',
                 Vue: '../node_modules/vue/dist/vue.js',
             }),
+            new VueLoaderPlugin()
         ]
 };
