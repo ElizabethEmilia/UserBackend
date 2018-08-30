@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ruoxue.backend.mapper.TReceiptMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TReceipt">
+		<id column="id" property="id" />
+		<result column="uid" property="uid" />
+		<result column="cid" property="cid" />
+		<result column="rec_type" property="recType" />
+		<result column="cus_name" property="cusName" />
+		<result column="rec_amount" property="recAmount" />
+		<result column="pretax_ratio" property="pretaxRatio" />
+		<result column="pretax" property="pretax" />
+		<result column="status" property="status" />
+		<result column="reason" property="reason" />
+		<result column="tm_submit" property="tmSubmit" />
+		<result column="tm_vallidate" property="tmVallidate" />
+	</resultMap>
+
+</mapper>
