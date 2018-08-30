@@ -171,7 +171,6 @@
     <orderEntry type="library" name="Maven: cn.afterturn:easypoi-base:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: cn.afterturn:easypoi-web:3.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.2" level="project" />
     <orderEntry type="library" name="Maven: cn.afterturn:easypoi-annotation:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
@@ -180,6 +179,7 @@
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.5.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.2" level="project" />
     <orderEntry type="library" name="Maven: com.janeluo:ikanalyzer:2012_u6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:4.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queryparser:4.7.2" level="project" />
