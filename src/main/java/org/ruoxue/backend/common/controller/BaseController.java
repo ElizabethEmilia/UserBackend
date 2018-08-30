@@ -2,8 +2,6 @@ package org.ruoxue.backend.common.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import org.ruoxue.backend.common.page.PageInfoBT;
-import org.ruoxue.backend.common.tips.ErrorTip;
-import org.ruoxue.backend.common.tips.SuccessTip;
 import org.ruoxue.backend.common.wrapper.BaseControllerWarpper;
 import org.ruoxue.backend.util.HttpKit;
 import org.slf4j.Logger;
