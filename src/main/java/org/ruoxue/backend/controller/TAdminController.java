@@ -20,7 +20,7 @@ import java.util.Map;
  * @since 2018-08-30
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class TAdminController extends BaseController {
 
     private String PREFIX = "/html/";
