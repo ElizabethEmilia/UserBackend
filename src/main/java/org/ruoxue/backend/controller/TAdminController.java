@@ -1,24 +1,16 @@
 package org.ruoxue.backend.controller;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TAdmin;
-import org.ruoxue.backend.bean.base.TOperationLog;
 import org.ruoxue.backend.common.controller.BaseController;
-import org.ruoxue.backend.config.factory.PageFactory;
 import org.ruoxue.backend.service.ITAdminService;
 import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.wrapper.TAdminWarpper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +27,7 @@ public class TAdminController extends BaseController {
 
     private static final String MSG_NULL = "该数据为空";
 
-    @Resource
+    @Resource(name = "TAdminServiceImpl")
     private ITAdminService adminService;
 
     @RequestMapping(value = "/showAdd", method = RequestMethod.GET)
@@ -74,15 +66,10 @@ public class TAdminController extends BaseController {
         return adminService.handleAdminRemove(id);
     }
 
-    @ApiOperation("利用mybatis-plus分页插件对list进行分页")
+    @ApiOperation("list进行分页")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Object handleAdminSelect(){
-        Page<TOperationLog> page = new PageFactory<TOperationLog>().defaultPage();
-//        获取管理员列表
-        List<Map<String, Object>> list = adminService.getAdminList(page);
-        page.setRecords((List<TOperationLog>) new TAdminWarpper(list).warp());
-        return super.packForBT(page);
-
+    public @ResponseBody Object handleAdminSelect(@RequestParam Integer page, @RequestParam(required = false) Integer size){
+        return adminService.getAdminList(page, size);
     }
 
 

@@ -1,12 +1,7 @@
 package org.ruoxue.backend.service;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import org.ruoxue.backend.bean.TAdmin;
-import org.ruoxue.backend.bean.base.TOperationLog;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -24,6 +19,6 @@ public interface ITAdminService extends IService<TAdmin> {
 
     Object handleAdminRemove(Integer id);
 
-    List<Map<String, Object>> getAdminList(Page<TOperationLog> page);
+    Object getAdminList(Integer page, Integer size);
 	
 }
