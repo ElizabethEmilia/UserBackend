@@ -1,5 +1,5 @@
 <template>
-    <Card dis-hover :bordered="false" style="text-align: center; background-color: #eee; background-color:rgba(255, 255, 255, 0.4); width: 450px; height: 450px;">
+    <Card dis-hover :bordered="false" style="text-align: center; background-color: #eee; background-color:rgba(255, 255, 255, 0.4); width: 450px; height: 500px;">
                 <h2 style="text-align: center">注册</h2>
                 
                 <div>
@@ -8,22 +8,12 @@
                 <div>
                     <Input type="password" class="tp" v-model="customer.password" maxlength="32" placeholder="密码" style="width: 300px; margin-top: 20px;" />
                 </div>
-                <div style="width: 300px; margin: 0 auto; margin-top: 20px;">
-                    <Row>
-                        <Col span="15">
-                            <Input class="tp"  maxlength="32" v-model="customer.phone" placeholder="手机号码" style="" />
-                        </Col>
-                        <Col span="6">
-                            <Button style="width: 105px; margin-left: 5px;" 
-                                :disabled="sendMessageButtonTimeCountdown != 0" 
-                                @click="sendMessageCode"
-                                v-html=" sendMessageButtonTimeCountdown == 0 ? sendMessageText : '' +  sendMessageButtonTimeCountdown + '秒后重发'">
-                                Send Message
-                            </Button>
-                        </Col>
-                    </Row>
-                   
-                </div>
+
+                <!--验证码 -->
+                <VerifyCode @on-code="inputImageCode" />
+
+                <!--短信验证码 -->
+                <SendTextMessage @on-invalid-number="handleInvalidNumber" @on-send-msg="sendMessage" @on-sent="sendMessageSuccess" @on-send-failed="sendMessageFailed" @on-input-msg-code="inputMessageCode" />
 
                 <div style="width: 300px; margin: 0 auto; margin-top: 20px;">
                     <Select placeholder="所属行业" v-model="customer.industry">
@@ -53,8 +43,13 @@
 //   on-username (Username)        - 用户名
 
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
+import VerifyCode from '../../components/verifycode.vue';
+import SendTextMessage from '../../components/sendtextmsg.vue';
 
 export default {
+    components: {
+        VerifyCode, SendTextMessage
+    },
     data: () => ({
         customer: {
             name: '',
@@ -63,19 +58,27 @@ export default {
             msgcode: '',
             industry: -1,
             type: -1,
+            msgcode: ''
         },
+
+        imageCode: '',
         password: '',
-        sendMessageText: '发送验证码',
-        sendMessageButtonTimeCountdown: 0,
         industry,
         memberType,
-
+        phone: '', // 发送短信前的手机号
+        msgsent: false, // 短信是否已经发送
         pendingRegister: false
     }),
     methods: {
-        getCode() {
-            // 获取验证码
-            alert('TODO:/// Login!!');
+        // 从组件获取图片验证码
+        inputImageCode(val) {
+            this.imageCode = val;
+            console.log(this.customer.msgcode);
+        },
+        // 从组件获取短信验证码
+        inputMessageCode(val) {
+            this.imageCode = val;
+            console.log(this.msgCode);
         },
         // 注册
         register() {
@@ -85,21 +88,18 @@ export default {
         show(name) {
             this.$emit('on-request-change-com', name);
         },
-        // 发送短信
-        sendMessageCode() {
-            alert('已发送短信。请等待查收');
-            this.startCountDown();
+        sendMessageFailed(err) {
+            alert('发送短信失败。');
         },
-        // 开始倒计时
-        startCountDown() {
-            this.sendMessageButtonTimeCountdown = 60;
-            let interval = setInterval(() => {
-                if (this.sendMessageButtonTimeCountdown <= 0) {
-                    clearInterval(interval);
-                    return;
-                }
-                this.sendMessageButtonTimeCountdown--;
-            }, 1000);
+        sendMessageSuccess(result) {
+            alert('发送短信成功');
+        },
+        sendMessage(phone) {
+            this.customer.phone = phone;
+            console.log('phone number: ' + phone);
+        },
+        handleInvalidNumber(phone) {
+            alert(`${phone} 不是一个正确的手机号码。`);
         }
     },
     watch: {

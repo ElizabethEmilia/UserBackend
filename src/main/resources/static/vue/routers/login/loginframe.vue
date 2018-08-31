@@ -3,13 +3,17 @@
                 <h2 style="text-align: center">登录系统</h2>
             <div v-if="!pending">
                 <div>
-                    <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus maxlength="16" placeholder="用户名" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 100px;" />
+                    <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus maxlength="16" placeholder="用户名" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 60px;" />
                 </div>
+
+                <!--验证码 -->
+                <VerifyCode @on-code="inputImageCode" prefix="md-code" />
+
                 <div>
                     <Input type="password" :readonly="pending" v-model="password" @on-click="getCode()" class="tp" prefix="md-lock"  maxlength="32" placeholder="密码" :icon="pending ? 'ios-loading' : 'md-arrow-forward'" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 20px;" />
                 </div>
             
-                <div style="margin-top: 35px;">
+                <div style="margin-top: 15px;">
                     <a class="reg" href="javascript:void(0)" @click="show('RegisterFrame')">注册新用户</a>
                 </div>
             </div>
@@ -26,9 +30,12 @@
 //   on-password (MD5 of password) - 输入密码时触发
 //   on-username (Username)        - 用户名
 
-
+import VerifyCode from '../../components/verifycode.vue';
 
 export default {
+    components: {
+        VerifyCode
+    },
     data: () => ({
         username: '',
         password: '',
@@ -46,7 +53,12 @@ export default {
         },
         show(name) {
             this.$emit('on-request-change-com', name);
-        }
+        },
+        // 从组件获取图片验证码
+        inputImageCode(val) {
+            this.imageCode = val;
+            console.log(this.imageCode);
+        },
     },
     watch: {
         username(val) {
