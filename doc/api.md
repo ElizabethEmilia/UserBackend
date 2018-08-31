@@ -97,8 +97,8 @@
  * 更改申请
  
  1. 取消申请【M】：`POST /api/public/cancel`
- 2. 通过申请【M】【S】：`POST /api/public/accept`
- 3. 驳回申请【M】【S】：`POST /api/public/refuse`
+ 2. 通过申请【M】【A】：`POST /api/public/accept`
+ 3. 驳回申请【M】【A】：`POST /api/public/refuse`
  
  ### 3.5 【C】钱包明细
  
@@ -136,7 +136,7 @@
  * 获取公司设立进度，并按照时间排序 `GET /api/company/setup?cid=<公司ID>` 
  * 获取公司证件照 `GET /api/company/cert?cid=<公司ID>` 
  
- ### 4.2 公司信息的修改【S】
+ ### 4.2 公司信息的修改【A】
  
  * 添加公司 `POST /api/company/add`
     
