@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
  * @since 2018-08-30
  */
 @Controller
-@RequestMapping("/tExchange")
+@RequestMapping("/exchange")
 public class TExchangeController {
 	
 }
