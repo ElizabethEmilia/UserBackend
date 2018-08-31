@@ -58,7 +58,27 @@
  
  ## 1 登录和用户管理
  
-暂无
+## 1.1 【P】用户登录
+
+* 登录 `POST /api/login`
+    
+    参数
+    
+    `name` 用户名
+    
+    `password` 密码
+    
+    `code` 验证码
+    
+* 退出登录 `GET /api/logout`
+
+## 1.2 【P】注册
+
+* 注册 `POST /api/register`
+
+    参数
+    
+    传入bean的数据以及`msgcode`验证码。
  
  ## 2 用户账户模块
  
