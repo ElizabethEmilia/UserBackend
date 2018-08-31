@@ -7,7 +7,8 @@ module.exports = {
             //libraries: [
             //    'vue', 'jquery'
             //],
-            app: "./js/index.js"
+            app: "./js/index.js",
+            login: "./js/login.js"
         },
         output: {
             path: __dirname + "/dist",
