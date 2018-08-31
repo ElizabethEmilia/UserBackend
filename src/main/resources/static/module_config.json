@@ -1,0 +1,13 @@
+{
+    "displayNames": {
+        "account": "账号信息",
+        "company": "我的公司",
+        "receipt": "开票服务",
+        "tax": "税金管理",
+        "customer": "客户管理",
+        "user": "用户管理",
+        "log": "系统日志"
+    },
+
+    "defaultModule": "账号信息"
+}
