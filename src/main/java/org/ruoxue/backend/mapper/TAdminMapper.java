@@ -1,11 +1,9 @@
 package org.ruoxue.backend.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TAdmin;
-import org.ruoxue.backend.bean.base.TOperationLog;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,6 @@ import java.util.Map;
 @Mapper
 public interface TAdminMapper extends BaseMapper<TAdmin> {
 
-    List<Map<String, Object>> getAdminList(@Param("page") Page<TOperationLog> page, @Param("orderByField")String orderByField, @Param("isAsc") boolean asc);
+    List<Map<String, Object>> getAdminList(@Param("page") Integer page, @Param("size") Integer size);
 
 }
