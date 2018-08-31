@@ -64,7 +64,7 @@
     
     参数
     
-    `name` 用户名
+    `name` 手机号（对应管理员和客户表中的手机号）
     
     `password` 密码
     
@@ -72,13 +72,62 @@
     
 * 退出登录 `GET /api/logout`
 
-## 1.2 【P】注册
+## 1.2 【P】客户注册
 
-* 注册 `POST /api/register`
+注册分为两个步骤：1.记录短信验证码 2.比较验证码并写入数据库
 
-    参数
-    
-    传入bean的数据以及`msgcode`验证码。
+* 获取图片验证码 `GET /api/verifycode`
+
+参数：无
+
+返回值：包含验证码图片Base64编码的字符串
+
+* 发送短信验证码 `POST /api/sendmsg`
+
+参数：`code` ：图片验证码
+
+返回值：发送成功、失败、验证码不正确
+
+* 注册 `GET /api/register`
+
+参数：`name`: 客户姓名  
+
+`password`： 密码 
+
+`phone`: 手机号码  
+
+`industry`: 行业 
+ 
+`type`: 客户类型    
+
+ `msgcode`: 短信验证码
+
+返回值：注册结果/短信验证码错误
+
+* 找回密码  `GET /api/forget`
+
+参数：`phone` 手机号
+   
+  `msgcode` 短信验证码 
+  
+ 返回值：成功：发送一个找回密码的链接给客户（链接格式见下方）  失败：原因
+ 
+ * 找回密码用户响应页（非API接口，属于UI，但写在这里）
+ 
+ （需要在网页中注入window对象一个 window.findResult = true引导前端界面进入找回密码组件）
+ 
+ 格式：/forget?uid=<用户ID>&token=<Token>
+ 
+ * 通过找回密码重设密码 `POST /api/resetpwd`
+ 
+ 参数： `uid` 用户ID
+ 
+ `token` 登录表的Token
+ 
+ `password` 用户设置的密码
+ 
+ 返回结果： uid或token不正确/密码设置（成功/失败）
+ 
  
  ## 2 用户账户模块
  
