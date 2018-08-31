@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from './jquery';
 
 const ajax = function(url, data = undefined, contentType = undefined, progress = undefined) {
     return new Promise((resolve, reject) => {

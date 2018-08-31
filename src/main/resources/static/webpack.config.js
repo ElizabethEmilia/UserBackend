@@ -61,12 +61,9 @@ module.exports = {
             }
         },
         plugins: [
-            new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery',
-                'window.jQuery': 'jquery',
-                Vue: '../node_modules/vue/dist/vue.js',
-            }),
+            //new webpack.ProvidePlugin({
+                //Vue: '../node_modules/vue/dist/vue.js',
+            //}),
             new VueLoaderPlugin()
         ]
 };

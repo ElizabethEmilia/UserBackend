@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import Vue from 'vue';
 import MainPage from '../vue/mainpage.vue';
 import iView from 'iview';
