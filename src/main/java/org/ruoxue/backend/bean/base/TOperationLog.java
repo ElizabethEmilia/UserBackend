@@ -24,7 +24,6 @@ public class TOperationLog extends Model<TOperationLog> {
     /**
      * 主键
      */
-	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
     /**
      * 日志类型
