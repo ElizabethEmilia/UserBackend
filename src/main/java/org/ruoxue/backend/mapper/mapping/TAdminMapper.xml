@@ -19,26 +19,11 @@
 		id,name,lid,privilege,wid,phone,createdate,modifieddate,status
 	</sql>
 
-	<select id="getAdminList" resultType="java.util.Map" parameterType="com.baomidou.mybatisplus.plugins.Page">
+	<select id="getAdminList" resultType="java.util.Map">
 		select
 			<include refid="Base_Column_Admin"/>
-		from t_admin
-		where status = 1
-		<choose>
-			<when test="orderByField != null and orderByField !=''">
-				<choose>
-					<when test="isAsc == true">
-						order by ${orderByField} ASC
-					</when>
-					<otherwise>
-						order by ${orderByField} DESC
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				order by id DESC
-			</otherwise>
-		</choose>
+		from t_admin where status = 1
+		order by id DESC limit #{page}, #{size}
 	</select>
 
 </mapper>

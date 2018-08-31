@@ -1,9 +1,7 @@
 package org.ruoxue.backend.service.impl;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TAdmin;
-import org.ruoxue.backend.bean.base.TOperationLog;
 import org.ruoxue.backend.mapper.TAdminMapper;
 import org.ruoxue.backend.service.ITAdminService;
 import org.ruoxue.backend.util.ResultUtil;
@@ -22,7 +20,7 @@ import java.util.Map;
  * @author fengjb
  * @since 2018-08-30
  */
-@Service
+@Service("TAdminServiceImpl")
 public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> implements ITAdminService {
 
     @Resource
@@ -79,8 +77,16 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     }
 
     @Override
-    public List<Map<String, Object>> getAdminList(Page<TOperationLog> page) {
-        return adminMapper.getAdminList(page, page.getOrderByField(), page.isAsc());
+    public Object getAdminList(Integer page, Integer size) {
+        if(ToolUtil.isEmpty(page)){
+            return ResultUtil.error(-1, "请检查您的参数");
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+        List<Map<String, Object>> list = adminMapper.getAdminList(page, size);
+        return ResultUtil.success(list);
     }
 
 
