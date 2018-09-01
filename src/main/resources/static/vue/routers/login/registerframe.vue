@@ -3,17 +3,23 @@
                 <h2 style="text-align: center">注册</h2>
                 
                 <div>
-                    <Input class="tp" v-model="customer.name" autofocus maxlength="16" placeholder="客户姓名" style="width: 300px; margin-top: 30px;" />
+                    <Input class="tp" v-model="customer.name" autofocus :maxlength="16" placeholder="客户姓名" style="width: 300px; margin-top: 30px;" />
                 </div>
                 <div>
-                    <Input type="password" class="tp" v-model="customer.password" maxlength="32" placeholder="密码" style="width: 300px; margin-top: 20px;" />
+                    <Input type="password" class="tp" v-model="customer.password" :maxlength="32" placeholder="密码" style="width: 300px; margin-top: 20px;" />
                 </div>
 
                 <!--验证码 -->
                 <VerifyCode @on-code="inputImageCode" />
 
                 <!--短信验证码 -->
-                <SendTextMessage @on-invalid-number="handleInvalidNumber" @on-send-msg="sendMessage" @on-sent="sendMessageSuccess" @on-send-failed="sendMessageFailed" @on-input-msg-code="inputMessageCode" />
+                <SendTextMessage 
+                @on-invalid-number="handleInvalidNumber" 
+                    @on-send-msg="sendMessage" 
+                    @on-sent="sendMessageSuccess" 
+                    @on-send-failed="sendMessageFailed" 
+                    @on-input-msg-code="inputMessageCode"
+                    :verify-code="imageCode" />
 
                 <div style="width: 300px; margin: 0 auto; margin-top: 20px;">
                     <Select placeholder="所属行业" v-model="customer.industry">
@@ -43,6 +49,7 @@
 //   on-username (Username)        - 用户名
 
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
+import util from '../../../js/util.js';
 import VerifyCode from '../../components/verifycode.vue';
 import SendTextMessage from '../../components/sendtextmsg.vue';
 
@@ -58,7 +65,6 @@ export default {
             msgcode: '',
             industry: -1,
             type: -1,
-            msgcode: ''
         },
 
         imageCode: '',
@@ -83,6 +89,25 @@ export default {
         // 注册
         register() {
             this.pendingRegister = true;
+            
+            let matchesRestriction = 
+                !util.isStringNullOrEmpty(this.customer.password) ||
+                !util.isStringNullOrEmpty(this.customer.name) ||
+                !util.isStringNullOrEmpty(this.customer.phone) ||
+                !util.isStringNullOrEmpty(this.customer.msgcode) ||
+                (this.customer.industry > -1 && this.customer.industry < industry.length) ||
+                (this.customer.type > -1 && this.customer.type < memberType.length);
+            if (!matchesRestriction) {
+                alert('请检查你的输入是否正确');
+                return;
+            }
+
+            matchesRestriction = util.passwordMatchesRestriction(this.customer.password);
+            if (!matchesRestriction) {
+                alert('密码不符合复杂度要求');
+                return;
+            }
+
             alert('注册');
         },
         show(name) {

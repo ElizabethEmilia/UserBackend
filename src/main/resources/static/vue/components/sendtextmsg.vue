@@ -19,7 +19,7 @@
                 </div>
 
                 <div>
-                    <Input class="tp" v-model="msgcode" autofocus maxlength="16" placeholder="短信验证码" style="width: 300px; margin-top: 20px;" />
+                    <Input class="tp" v-model="msgcode" autofocus :maxlength="6" placeholder="短信验证码" style="width: 300px; margin-top: 20px;" />
                 </div>
     </div>
 </template>
@@ -38,7 +38,7 @@
  *    on-invalid-number: 手机号不正确触发
  * 
  * 参数
- *    verify-code: 图片验证码
+ *   *verify-code: 图片验证码(必须)
  */
 
 import $ from '../../js/ajax.js';

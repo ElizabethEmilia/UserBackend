@@ -8,10 +8,12 @@
             <div v-else-if="current == 'RegisterFrame'">
                 <RegisterFrame @on-request-change-com="changeComp" />
             </div>
-            <div v-else-if="current == 'FindPasswordFrame'">
-
+            <div v-else-if="current == 'ForgetPassword'">
+                <ForgetPassword @on-request-change-com="changeComp"  />
             </div>
-            
+            <div v-else-if="current == 'ResetPassword'">
+                <ResetPassword @on-request-change-com="changeComp" />
+            </div>
         </Row>
     </div>
 </template>
@@ -19,10 +21,12 @@
 <script>
 import LoginFrame from './routers/login/loginframe.vue';
 import RegisterFrame from './routers/login/registerframe.vue';
+import ForgetPassword from './routers/login/forgetpassword.vue';
+import ResetPassword from './routers/login/resetpassword.vue';
 
 export default {
     components: {
-        LoginFrame, RegisterFrame
+        LoginFrame, RegisterFrame, ForgetPassword, ResetPassword
     },
     data: () => ({
         current: 'LoginFrame',
@@ -39,6 +43,9 @@ export default {
         inputPassword(password) {
             this.password = password;
         }
+    },
+    created() {
+        this.current = window.findResult ? 'ResetPassword' : this.current;
     }
 }
 </script>
