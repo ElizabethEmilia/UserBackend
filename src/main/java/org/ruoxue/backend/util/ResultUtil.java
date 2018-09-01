@@ -23,6 +23,19 @@ public class ResultUtil {
     }
 
     /**
+     * 返回自己想要的提示
+     * @param code
+     * @param msg
+     * @return
+     */
+    public static Result success(Integer code,String msg){
+        Result rs = new Result();
+        rs.setCode(code);
+        rs.setMsg(msg);
+        return rs;
+    }
+
+    /**
      * 返回错误
      * @param code
      * @param msg
