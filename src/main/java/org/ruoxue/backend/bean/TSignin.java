@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-01
  */
 @TableName("t_signin")
 public class TSignin extends Model<TSignin> {
@@ -22,6 +22,10 @@ public class TSignin extends Model<TSignin> {
 	private String token;
 	private String salt;
 	private String msgcode;
+    /**
+     * 1-超级管理员, 2-管理员, 3-客户
+     */
+	private Integer role;
 
 
 	public Integer getId() {
@@ -64,6 +68,14 @@ public class TSignin extends Model<TSignin> {
 		this.msgcode = msgcode;
 	}
 
+	public Integer getRole() {
+		return role;
+	}
+
+	public void setRole(Integer role) {
+		this.role = role;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -77,6 +89,7 @@ public class TSignin extends Model<TSignin> {
 			", token=" + token +
 			", salt=" + salt +
 			", msgcode=" + msgcode +
+			", role=" + role +
 			"}";
 	}
 }
