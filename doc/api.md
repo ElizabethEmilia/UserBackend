@@ -203,6 +203,8 @@
 
 * 删除客户公司设立进度： `POST /api/customer/{uid}/company/{cid}/setup/delete`
 
+* 新增设立公司进度
+
 * 【LT】查看客户公司的开票申请： `GET /api/customer/{uid}/company/{cid}/receipt`
 
 > 1. 全部：`GET ~/all`
@@ -359,6 +361,22 @@
 * 系统设置列表 `GET /system/settings`
 
 * 获取系统设置 `GET /system/settings/{key}`
+
+关于系统设置的说明：
+
+系统设置中设置类型包含以下类型
+
+|类型ID|类型名|        说明      |数据形式                | 控件形式 |
+|-----|-----|-------------------|----------------------|--------|
+|0    |int  | 32位有符号整数     | 32位有符号整数         |数字输入框([-2^31, 2^32-1])|
+|1    |number|Number            |Number                |数字输入框|
+|2    |string|字符串            | 字符串                |文本框    |
+|3    |text  |长文本            | 字符串                | textarea |
+|4    |date  |日期              | 表示日期的字符串       | datepicker |
+|5    |bool  |布尔值            | true / false         | 单选框     |
+|6    |enum  |枚举值            | `value`,,`enum`,[`enum`...] | 下拉菜单 |
+|7    |senum| 可多选的枚举值      | `value`,[`value`,...],,`enum`,[`enum`...]| 多选的下拉框 |
+|8    |uint  |32位无符号整数     | 32位无符号整数         |数字输入框 |
 
 > 参数： 无
 >
