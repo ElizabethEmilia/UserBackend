@@ -36,6 +36,8 @@
  
  `[key=<说明>]` 表示可选参数
  
+ `~` 表示前述说明的URL
+ 
  ## 2. 接口实现说明
  
  说明：为了确保安全，所有的需要绑定用户进行更改的操作均需要在后端设置uid而不是通过接口传入，对于同时传入公司ID（cid）的，需要验证这个用户是否拥有该公司。
@@ -201,12 +203,12 @@
 
 * 删除客户公司设立进度： `POST /api/customer/{uid}/company/{cid}/setup/delete`
 
-* 【LT】查看客户公司的开票申请： `POST /api/customer/{uid}/company/{cid}/receipt`
+* 【LT】查看客户公司的开票申请： `GET /api/customer/{uid}/company/{cid}/receipt`
 
-> 1. 全部：`GET /api/public/all`
-> 2. 待确认：`GET /api/public/pending`
-> 3. 已确认：`GET /api/public/confirmed`
-> 4. 已取消：`GET /api/public/cancelled`
+> 1. 全部：`GET ~/all`
+> 2. 待确认：`GET ~/pending`
+> 3. 已确认：`GET ~/confirmed`
+> 4. 已取消：`GET ~/cancelled`
 
 * 审批客户的开票申请： `POST /api/customer/{uid}/receipt/{rid}/accept`
 
