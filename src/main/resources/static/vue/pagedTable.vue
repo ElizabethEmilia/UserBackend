@@ -30,18 +30,18 @@ props:
 import $ from '../js/ajax.js';
 
 export default (function(){
-    var Data = [];
-    
     return ({
         props: [ 'columns', 'dataSource' ],
-        data: () => ({
-           tableData: Data,
-           count: 0,
-           size: 10,
-           page: 1,
-        }),
+        data() {
+            return ({
+                tableData: [],
+                count: 0,
+                size: 10,
+                page: 1,
+            }); 
+        },
         created() {
-            Data = this.tableData;
+            //Data = this.tableData;
         },
         methods: {
             handlePageChange(p) {
@@ -58,7 +58,11 @@ export default (function(){
                 console.log(`[PagedTable] get content of page=${page}, size=${size}`);
                 let url = this.requestUrl + `?page=${page}&size=${size}`;
                 try {
-                    this.tableData = Data = await $.ajax(url);
+                    let result = await $.ajax(url);
+                    if (result.code != 0) {
+                        throw new Error(result);
+                    }
+                    this.tableData = result.data;
                     console.log(`[PagedTable] success: page=${page}, size=${size}`);
                 }
                 catch(err) {

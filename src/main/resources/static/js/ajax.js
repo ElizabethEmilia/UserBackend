@@ -1,6 +1,12 @@
 import $ from './jquery';
+import util from './util.js';
 
 const ajax = function(url, data = undefined, contentType = undefined, progress = undefined) {
+    if (typeof data === "object") {
+        data = util.forPostParams(data);
+        if (Object.keys(data).length >= 3)
+            contentType='application/json';
+    }
     return new Promise((resolve, reject) => {
         $.ajax({
             url: encodeURI(url),

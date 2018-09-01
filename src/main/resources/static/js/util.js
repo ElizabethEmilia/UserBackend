@@ -1,7 +1,15 @@
-function forPostParams(obj) {
+function forPostParamsQueryString(obj) {
 	if (typeof obj !== "object")
 		throw new Error("obj is not an object");
 	return encodeURIComponent(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
+}
+
+function forPostParams(obj) {
+	if (typeof obj !== "object")
+		throw new Error("obj is not an object");
+	return Object.keys(obj).length < 3 ? 
+		encodeURIComponent(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&')) :
+		JSON.stringify(obj);
 }
 
 function forGetParams(obj) {
@@ -87,7 +95,8 @@ function passwordMatchesRestriction(pwd) {
 
 export default {
     forGetParams, // 通过对象生成Get方法参数
-    forPostParams,  // 通过对象生成Post方法参数
+	forPostParams,  // 通过对象生成Post方法参数
+	forPostParamsQueryString, // 通过对象生成Post方法参数(不采用JSON)
 	forGetURL,    // 通过对象生成Get方法地址
 	getQueryParameter, // 获取页面参数
 	isStringNullOrEmpty, // 测试字符串是否为空
