@@ -77,7 +77,7 @@ export default {
             //alert('发送短信成功');
         },
         sendMessage(phone) {
-            this.customer.phone = phone;
+            this.param.phone = phone;
             console.log('phone number: ' + phone);
         },
         handleInvalidNumber(phone) {

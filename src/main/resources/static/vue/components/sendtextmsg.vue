@@ -65,12 +65,11 @@ export default {
             }
 
             console.log('[MessageSend]', `verifycode=${this.verifyCode}  phone=${this.phone}`);
-
-            this.$emit('on-send-msg', this.phone);
             
             if (!this.msgsent)
                 this.phone = this.inputPhone; // 防止用户（熊孩子）改动，保存发送短信的正确手机号码
             this.msgsent = true;
+            this.$emit('on-send-msg', this.phone);
             this.startCountDown();
 
             try {

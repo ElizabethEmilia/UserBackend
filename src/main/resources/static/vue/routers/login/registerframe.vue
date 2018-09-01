@@ -79,24 +79,27 @@ export default {
         // 从组件获取图片验证码
         inputImageCode(val) {
             this.imageCode = val;
-            console.log(this.customer.msgcode);
+            console.log(this.imageCode);
         },
         // 从组件获取短信验证码
         inputMessageCode(val) {
-            this.imageCode = val;
-            console.log(this.msgCode);
+            this.customer.msgcode = val;
+            console.log(this.customer.msgcode);
         },
         // 注册
-        register() {
-            this.pendingRegister = true;
-            
+        async register() {
+            if (this.pendingRegister) {
+                return;
+            }
+
             let matchesRestriction = 
-                !util.isStringNullOrEmpty(this.customer.password) ||
-                !util.isStringNullOrEmpty(this.customer.name) ||
-                !util.isStringNullOrEmpty(this.customer.phone) ||
-                !util.isStringNullOrEmpty(this.customer.msgcode) ||
-                (this.customer.industry > -1 && this.customer.industry < industry.length) ||
+                !util.isStringNullOrEmpty(this.customer.password) &&
+                !util.isStringNullOrEmpty(this.customer.name) &&
+                !util.isStringNullOrEmpty(this.customer.phone) &&
+                !util.isStringNullOrEmpty(this.customer.msgcode) &&
+                (this.customer.industry > -1 && this.customer.industry < industry.length) &&
                 (this.customer.type > -1 && this.customer.type < memberType.length);
+            
             if (!matchesRestriction) {
                 alert('请检查你的输入是否正确');
                 return;
@@ -108,7 +111,28 @@ export default {
                 return;
             }
 
-            alert('注册');
+            if (!this.msgsent) {
+                alert('请发送短信验证码');
+                return;
+            }
+
+            this.pendingRegister = true;
+
+            try {
+                let result = await $.ajax('/api/register', util.forPostParams(this.customer));
+                this.pendingRegister = false;
+                if (result.code === 0) {
+                    alert('注册成功');
+                    show('LoginFrame');
+                }
+                else {
+                    alert('' + result.msg);
+                }
+            }
+            catch(err) {
+                alert('注册失败');
+                this.pendingRegister = false;
+            }
         },
         show(name) {
             this.$emit('on-request-change-com', name);
