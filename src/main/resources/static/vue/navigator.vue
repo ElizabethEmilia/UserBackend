@@ -31,6 +31,10 @@
                 <Icon type="md-leaf" />
                 查看日志
             </MenuItem>
+            <MenuItem name="system">
+                <Icon type="md-leaf" />
+                系统配置
+            </MenuItem>
         </MenuGroup>
     </Menu>
 </template>

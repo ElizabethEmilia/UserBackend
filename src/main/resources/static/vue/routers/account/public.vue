@@ -32,6 +32,12 @@
                 <TabPane label="已取消" name="cancelled"></TabPane>
             </Tabs>
 
+            <ButtonGroup style="margin-bottom: 10px;">
+                <Button>新增订单</Button>
+                <Button>取消订单</Button>
+                <Button>查看详情</Button>
+            </ButtonGroup>
+
             <PagedTable :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
     </Card>
 </template>

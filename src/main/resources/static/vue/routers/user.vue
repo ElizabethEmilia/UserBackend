@@ -25,6 +25,7 @@ export default {
                 title: '操作', 
                 key: 'action', 
                 render: (h, params) => {
+                    console.log(h, params);
                     return h('div', [
                         h('a', {
                             props: {

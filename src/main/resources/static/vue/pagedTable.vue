@@ -1,7 +1,18 @@
 <template>
     <div>
-        <Table border :current="page" :columns="columns" :data="tableData"></Table>        
-        <Page :total="count" show-sizer show-elevator @on-change="handlePageChange" @on-page-size-change="handleSizeChange" />
+        <Table border 
+            :current="page" 
+            :columns="columns" 
+            :data="tableData">
+        </Table>        
+        <Page 
+            :total="count" 
+            show-sizer 
+            show-elevator 
+            @on-change="handlePageChange"
+            @on-page-size-change="handleSizeChange"
+            style="margin-top: 10px; "
+             />
     </div>
 </template>
 
@@ -23,15 +34,17 @@ props:
     事件:  pagechanged  页面改变时产生
            sizechanged  大小改变时产生
            onajaxerror  获取ajax内容发生错误时候调用     
+           onrecvdata   获取到数据产生
 
     例如： <PagedTable data-source="admin" :columns="dataColumns" />
 */
 
 import $ from '../js/ajax.js';
+import util from '../js/util.js';
 
 export default (function(){
     return ({
-        props: [ 'columns', 'dataSource' ],
+        props: [ 'columns', 'dataSource', 'additionalParams' ],
         data() {
             return ({
                 tableData: [],
@@ -56,7 +69,8 @@ export default (function(){
             },
             async getContentOfPage(page, size=10) {
                 console.log(`[PagedTable] get content of page=${page}, size=${size}`);
-                let url = this.requestUrl + `?page=${page}&size=${size}`;
+                let add_param = util.isStringNullOrEmpty(this.additionalParams)?'':'&'+this.additionalParams;
+                let url = this.requestUrl + `?page=${page}&size=${size}${add_param}`;
                 try {
                     let result = await $.ajax(url);
                     if (result.code != 0) {
@@ -91,6 +105,11 @@ export default (function(){
         watch: {
             dataSource(val) {
                 console.log('[PagedTable] Source changed', val);
+                this.page = 1;
+                this.getContentOfPage(1, this.size);
+            },
+            additionalParams(val) {
+                console.log('[PagedTable] AddiParams', val);
                 this.page = 1;
                 this.getContentOfPage(1, this.size);
             }

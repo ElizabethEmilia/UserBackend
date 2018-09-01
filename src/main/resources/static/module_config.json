@@ -6,7 +6,8 @@
         "tax": "税金管理",
         "customer": "客户管理",
         "user": "用户管理",
-        "log": "系统日志"
+        "log": "系统日志",
+        "system": "系统配置"
     },
 
     "defaultModule": "账号信息"
