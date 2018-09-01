@@ -228,6 +228,17 @@
 
 * 【L】查看客户的产品订单： `GET /api/customer/{uid}/orders`
 
+### 2.2 【S】修改管理员资料
+
+* 获取管理员列表： `GET /api/admin/list`
+
+* 新增管理员：`GET /api/admin/add`
+
+* 删除管理员：`POST /api/admin/{aid}/delete`
+
+* 查看管理员信息：`GET /api/admin/{aid}/`
+
+* 修改管理员信息：`POST /api/admin/{aid}/`
 
 ## 3 账户信息模块【C】
  
