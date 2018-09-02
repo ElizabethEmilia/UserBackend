@@ -7,6 +7,8 @@
 <script>
 import PagedTable from '../pagedTable.vue';
 import { adminTypes } from '../../constant.js';
+import $ from '../../js/ajax.js';
+import util from '../../js/util.js';
 
 let privileges = ['操作员', '管理员']
 
@@ -17,30 +19,45 @@ export default {
     data: () => ({
         columns: function() {  
             //console.log('func', this);
+            let $this = this;
             return [
-                { type: 'selection', width: 60, align: 'center' },
-                { title: '序号', type: 'index' },
-                { title: '管理员名称', key: 'name' },
+                //{ type: 'selection', width: 60, align: 'center' },
+                { title: '序号', type: 'index', width: 100 },
+                { title: '管理员名称', key: 'name',  },
                 { 
                     title: '权限', 
-                    render: (h,p) => h('span', {}, adminTypes[this.tableData[p.index].privilege])
+                    render: (h,p) => h('span', {}, adminTypes[this.tableData[p.index].privilege]),
+                    
                 },
-                { title: 'wid', key: 'wid' },
                 { title: '电话号码', key: 'phone' },
                 { 
                     title: '操作', 
                     key: 'action', 
-                    render: function(h, params) {
-                        console.log(h, params, this);
+                    width: 150,
+                    render: (h, params) => {
                         return h('div', [
                             h('a', {
                                 props: {
                                     href: 'javascript:void(0)',
                                 },
                                 on: {
-                                    click() {
-                                        console.log('click', this);
-                                        console.log('Cancel index: ' + params.index);
+                                    click: async () => {
+                                        if (!confirm(`确认删除${adminTypes[this.tableData[params.index].privilege]}${this.tableData[params.index].name}吗?`))
+                                            return;
+                                        let aid = $this.tableData[params.index].wid;
+                                        try {
+                                            let result = await $.ajax(`/api/admin/${aid}/delete`, 't');
+                                            if (result.code == 0) {
+                                                alert('删除成功');
+                                                $this.tableData.splice(params.index);
+                                            }
+                                            else {
+                                                alert('删除失败');
+                                            }
+                                        }
+                                        catch(err) {
+                                            alert('删除失败。');
+                                        }
                                     }
                                 }
                             }, '删除'),
@@ -50,8 +67,10 @@ export default {
                                     href: 'javascript:void(0)',
                                 },
                                 on: {
-                                    click() {
-                                        console.log('View index: ' + params.index);
+                                    click: async () => {
+                                        let aid = await $this.tableData[params.index].wid;
+                                        /// show dialog
+                                        alert('显示aid为' + aid + '的管理员信息');
                                     }
                                 }
                             }, '查看详情')

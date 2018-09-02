@@ -108,11 +108,15 @@ export default (function(){
                     this.$emit('onajaxerror', err);
                 }
             },
+            refresh() {
+                this.getContentOfPage(this.page, this.size);
+            }
         },
         computed: {
             requestUrl() {
                 return '/api/' + this.dataSource;
-            }
+            },
+            d() { return this.tableData; }
         },
         watch: {
             dataSource(val) {

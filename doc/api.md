@@ -290,10 +290,6 @@ API Key保存在数据库的t_config表中
 * 新增申请： `POST /api/charge/public/new`
 
 * 取消申请【M】：`POST /api/charge/public/{id}/cancel`
-
-* 通过申请【M】：`POST /api/charge/public/{id}/accept`
-
-* 驳回申请【M】：`POST /api/charge/public/{id}/refuse`
  
 * 【LT(`t_public_charge:status`)】获取转账记录
 

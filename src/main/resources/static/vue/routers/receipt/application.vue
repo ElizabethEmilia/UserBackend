@@ -47,6 +47,7 @@ import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
 import { receiptType, receiptStatus } from '../../../constant.js';
 import PagedTable from '../../pagedTable.vue';
+import companyVue from '../company.vue';
     
 export default {
     components: {
@@ -56,55 +57,81 @@ export default {
     data: () => ({
         companies: [
             { cid: 1, lpname: "大乔科技工作室" },
-            { cid: 2, lpname: "大乔科技工作室" }
+            { cid: 2, lpname: "小乔科技工作室" }
         ],
-        columns: [
-            {title:"选择",type:"select"}
-            ,{title:"序号",type:"index"},
-            {title:"申请编号",key:"id"},
-            {title:"发票类型",key:"recType"},
-            {title:"公司ID",key:"cid"},
-            {title:"申请公司",key:"cid"},
-            {title:"客户名称",key:"cusName"},
-            {title:"开票金额（含税）",key:"recAmount"},
-            {title:"税金预交率",key:"pretaxRatio"},
-            {title:"预交税金",key:"pretax"},
-            {title:"状态",key:"status"},
-            {title:"驳回原因",key:"reason"},
-            {title:"提交时间",key:"tmSubmit"},
-            {title:"确认时间",key:"tmVallidate"},
-            { 
-                title: '操作', 
-                key: 'action', 
-                render: (h, params) => {
-                    console.log(h, params);
-                    return h('div', [
-                        h('a', {
-                            props: {
-                                href: 'javascript:void(0)',
-                            },
-                            on: {
-                                click() {
-                                    console.log('click', this);
-                                    console.log('Cancel index: ' + params.index);
+        columns() {
+            let self = this;
+            return [
+                {title:"选择",type:"select"}
+                ,{title:"序号",type:"index"},
+                {title:"申请编号",key:"id"},
+                {title:"发票类型",render:(h,p)=>h('span',{},receiptType[self.d[p.index].recType])},
+                {title:"公司ID",key:"cid"},
+                {title:"申请公司",key:"cid"},
+                {title:"客户名称",key:"cusName"},
+                {title:"开票金额（含税）",key:"recAmount"},
+                {title:"税金预交率",key:"pretaxRatio"},
+                {title:"预交税金",key:"pretax"},
+                {title:"状态",render:(h,p)=>h('span',{},receiptStatus[self.d[p.index].status])}, //status
+                {title:"驳回原因",key:"reason"},
+                {title:"提交时间",key:"tmSubmit"},
+                {title:"确认时间",key:"tmVallidate"},
+                { 
+                    title: '操作', 
+                    key: 'action', 
+                    render: (h, params) => {
+                        console.log(h, params);
+                        return h('div', [
+                            h('a', {
+                                props: {
+                                    href: 'javascript:void(0)',
+                                },
+                                on: {
+                                    async click() {
+                                        if (!confirm('确认删除该开票申请吗？'))
+                                            return;
+                                        let id = self.d[params.index].id;
+                                        try {
+                                            let r = await $.ajax(`/api/receipt/${id}/delete`, {id});
+                                            if (r.code)
+                                                return alert('操作失败' + r.msg);
+                                            alert('删除成功');
+                                            self.refresh();
+                                        }
+                                        catch (err) {
+                                            alert('操作失败');
+                                        }
+                                    }
                                 }
-                            }
-                        }, '删除'),
-                        h('span', {}, ' | '),
-                        h('a', {
-                            props: {
-                                href: 'javascript:void(0)',
-                            },
-                            on: {
-                                click() {
-                                    console.log('View index: ' + params.index);
+                            }, '删除'),
+                            h('span', {}, ' | '),
+                            h('a', {
+                                props: {
+                                    href: 'javascript:void(0)',
+                                },
+                                on: {
+                                    async click() {
+                                        if (!confirm('确认提交该开票申请吗？'))
+                                            return;
+                                        let id = self.d[params.index].id;
+                                        try {
+                                            let r = await $.ajax(`/api/receipt/${id}/submit`, {id});
+                                            if (r.code)
+                                                return alert('操作失败' + r.msg);
+                                            alert('操作成功');
+                                            self.refresh();
+                                        }
+                                        catch (err) {
+                                            alert('操作失败');
+                                        }
+                                    }
                                 }
-                            }
-                        }, '提交')
-                    ]);
+                            }, '提交')
+                        ]);
+                    }
                 }
-            }
-        ],
+            ];
+        },
         selected: {
             cid: '',
             type: '',

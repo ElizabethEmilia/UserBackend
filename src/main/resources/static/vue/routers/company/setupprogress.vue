@@ -20,14 +20,16 @@ export default {
         PagedTable
     },
     data: () => ({
-        columns: [
-            { title: '序号', type: 'index' },
-            { title: '公司ID', key: 'name' },
-            { title: '公司名称', key: 'cid' },
-            { title: '时间', key: 'tm' },
-            { title: '状态', key: 'status' },
-            { title: '备注', key: 'note' }
-        ]
+        columns() { 
+            return [
+                { title: '序号', type: 'index' },
+                { title: '公司ID', key: 'name' },
+                { title: '公司名称', key: 'cid' }, 
+                { title: '时间', key: 'tm' }, //string
+                { title: '状态', key: 'status' }, /// string
+                { title: '备注', key: 'note' } // string
+            ];
+        }
     }),
     methods: {
     },

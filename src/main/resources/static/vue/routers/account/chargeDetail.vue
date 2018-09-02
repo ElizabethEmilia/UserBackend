@@ -24,16 +24,18 @@
     export default {
         data: () => ({
             res_url: 'all',
-            columns: [
-                { title: '序号', type: 'index' },
-                { title: '公司ID', key: 'cid'  },
-                { title: '公司名称', key: 'cname'  },
-                { title: '收支金额', key: 'amount'  },
-                { title: '支付方式', key: 'paymethod'  },
-                { title: '说明', key: 'note'  },
-                { title: '交易时间', key: 'tm'  }, 
-                        
-            ]
+            columns() {
+                return [
+                    { title: '序号', type: 'index', width: 80 },
+                    { title: '公司ID', key: 'cid'  },
+                    { title: '公司名称', key: 'cname'  },
+                    { title: '收支金额', key: 'amount'  },
+                    { title: '支付方式', render: (h,p) => h('span', {}, this.tableData[p.index].paymentMethod)  }, // key: paymethod
+                    { title: '说明', key: 'note'  },
+                    { title: '交易时间', key: 'tm'  }, 
+                            
+                ];
+            },
         }),
         components: {
             PagedTable

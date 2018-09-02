@@ -3,7 +3,7 @@
          <Divider orientation="left"><h3>公司信息</h3></Divider>
         
         <div style="margin-top: 20px;">
-            <Table :columns="col" :data="data"/>
+            <Table :show-header="false" :columns="col" :data="data"/>
         </div>
 
     </Card>
