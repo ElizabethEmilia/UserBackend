@@ -3,7 +3,8 @@
         <Table border 
             :current="page" 
             :columns="columns_t" 
-            :data="tableData">
+            :data="tableData"
+            :height="height">
         </Table>        
         <Page 
             :total="count" 
@@ -28,6 +29,7 @@ props:
       - url?page=1&size=10     获取第1页的内容
       - url?page=1             获取第1页的内容
     - external: 外部控制的值和回调
+    - height: 高度
     
     * pageChange回调和onPageSizeChange回调由组件实现
      
@@ -44,7 +46,7 @@ import util from '../js/util.js';
 
 export default (function(){
     return ({
-        props: [ 'columns', 'dataSource', 'additionalParams' ],
+        props: [ 'columns', 'dataSource', 'additionalParams', 'height' ],
         data() {
             /// 计算
             let columns_t = null;
