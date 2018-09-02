@@ -18,6 +18,9 @@ const receiptType = ["增值税普通发票", "增值税专用发票"];
 // 发票状态
 const receiptStatus = ["已保存，待提交", "已提交，待审核", "已审核，待分配", "已分配（分配），待开票", "已分配（自取），待开票", "已开票，待打包", "已打包，待核对", "已核对，已寄送", "已签收，已完成", "已驳回，待提交", "已开票，已作废", "已驳回，待打包" ];
 
+// 类型
+const settingTypes = [ "int", "number", "string", "text", "date", "bool", "enum", "senum", "uint" ]
+
 export {
     industry,
     memberType,
@@ -25,4 +28,5 @@ export {
     publicOrderStatus,
     receiptType,
     receiptStatus,
+    settingTypes,
 };

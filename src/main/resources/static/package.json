@@ -29,6 +29,7 @@
     "js-md5": "^0.7.3",
     "less": "^3.7.1",
     "less-loader": "^4.1.0",
+    "loadash": "^1.0.0",
     "popper.js": "^1.14.3",
     "postcss-loader": "^2.1.6",
     "raw-loader": "^0.5.1",

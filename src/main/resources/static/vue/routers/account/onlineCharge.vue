@@ -9,7 +9,10 @@
                 <span style="font-size: 14px; width: 100px; display:inline-block">
                     充值金额
                 </span> 
-                <Input size="middle" placeholder="" v-model="onlinePayAmount" style="width: 200px; font-size: 14px" />
+                <Poptip trigger="focus">
+                    <InputNumber :step="100" size="middle" placeholder="" v-model="onlinePayAmount" style="width: 200px; font-size: 14px" />                    
+                    <div slot="content"><span style="font-size: 20px; color: green;">￥{{ formatNumber }}</span></div>
+                </Poptip>
                 <p>
                     <span style="font-size: 16px; width: 100px; display:inline-block"></span>
                     * 请输入100到1,000,000之间的整数。
@@ -63,6 +66,16 @@ export default {
             }
             alert('/// TODO: Onlien charge')
         },
+    },
+    computed: {
+        formatNumber () {
+            if (this.onlinePayAmount === '') return '0';
+            function parseNumber(str) {
+                return str.split(/(?=(\d{3})+$)/g).filter((e,i)=>i%2==0).join(',');
+            }
+            let [str, prec] = (''+this.onlinePayAmount).split('.');
+            return parseNumber(str) + (prec ? '.'+prec : '');
+        }
     }
 }
 </script>
