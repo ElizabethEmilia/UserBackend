@@ -2,7 +2,7 @@
     <div class="margin-top: 10px;">
         <div class="inline item">
             <div class="inline title" >
-                <Poptip trigger="hover" :title="subtitle"  placement="top-start">
+                <Poptip trigger="hover" :title="subtitle" :content="inputValue"  placement="top-start">
                     <span :style="{ color: !disabled ? '#000':'#aaa' }">{{ title }}</span>
                 </Poptip>
             </div>

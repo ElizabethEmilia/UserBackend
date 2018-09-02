@@ -1,4 +1,5 @@
 <template>
+<Affix :offset-top="-55">
     <Card  class="card-margin">
          <Divider orientation="left"><h3>选择公司</h3></Divider>
         
@@ -7,6 +8,7 @@
         </Select>
         <div style="margin-top: 20px;"> </div>
     </Card>
+</Affix>
 </template>
 
 <script>

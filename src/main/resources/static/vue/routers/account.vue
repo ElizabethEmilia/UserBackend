@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Overview />
-        <ModifyPassword />
+        <Overview @on-edit-mode-change="onOverviewEditModeChange" />
+        <ModifyPassword v-if="overviewEditMode" />
         <OnlineCharge />
         <PublicCharge />
         <ChargeDetail />
@@ -23,8 +23,12 @@ export default {
         PagedTable, ModifyPassword, ChargeDetail, OrderList, PublicCharge,
         OnlineCharge, Overview
     },
-    data: () => ({ }),
-    methods: {  }
+    data: () => ({
+        overviewEditMode: false,
+     }),
+    methods: {
+        onOverviewEditModeChange(val) { this.overviewEditMode = val; }
+    }
 }
 </script>
 

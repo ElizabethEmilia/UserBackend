@@ -4,7 +4,16 @@ body { background-color: @BackgroundColor; }
 .card-margin { margin-bottom: 10px; }
 .inline-margin { margin-top: 5px; margin-left: 30px; }
 .required:before { content: '* '; color: red; }
-div.avatar { background: #ddd; height: 100px; width: 100px; border-radius: 50%; }
+div.avatar { 
+    background: #ddd; 
+    height: 100px; 
+    width: 100px; 
+    border-radius: 50%;
+    background-size: cover; 
+    -webkit-background-size: cover; 
+    -moz-background-size: cover; 
+    -o-background-size: cover;
+ }
 .line-margin { margin-bottom: 10px; }
 .line-margin  i { font-size: 20px; }
 span.title-before-input { display: inline-block; text-align: right; width: 80px; margin-right: 4px; }
