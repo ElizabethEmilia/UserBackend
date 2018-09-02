@@ -2,7 +2,7 @@
     <div>
         <Table border 
             :current="page" 
-            :columns="columns" 
+            :columns="columns_t" 
             :data="tableData">
         </Table>        
         <Page 
@@ -22,7 +22,7 @@
 //TODO:  所有的请求均以特定的形式得到请求内容
 /*
 props:
-    - columns: 和iview column name同（为了在render中可访问数据,需要传入data）、
+    - columns: 和iview column name同（为了在render中可访问数据,需要传入函数，在data里面调用）、
     - data-source: 数据来源的ajax请求
       - url?count              获取数量
       - url?page=1&size=10     获取第1页的内容
@@ -46,11 +46,22 @@ export default (function(){
     return ({
         props: [ 'columns', 'dataSource', 'additionalParams' ],
         data() {
+            /// 计算
+            let columns_t = null;
+            if (typeof this.columns !== "function") {
+                columns_t = this.columns;
+                console.warn("[PagedTable WARN] 传入数组而非函数可能无法泽确使用render函数");
+            }
+            else {
+                columns_t = this.columns.bind(this)();
+            }
+
             return ({
                 tableData: [],
                 count: 0,
                 size: 10,
                 page: 1,
+                columns_t,
             }); 
         },
         created() {

@@ -21,6 +21,10 @@ const receiptStatus = ["已保存，待提交", "已提交，待审核", "已审
 // 类型
 const settingTypes = [ "int", "number", "string", "text", "date", "bool", "enum", "senum", "uint" ]
 
+// 管理员类型
+const adminTypes = [ "无权限",  "操作员", "超级管理员", ];
+
+
 export {
     industry,
     memberType,
@@ -29,4 +33,5 @@ export {
     receiptType,
     receiptStatus,
     settingTypes,
+    adminTypes,
 };

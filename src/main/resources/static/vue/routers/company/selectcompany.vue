@@ -1,12 +1,11 @@
 <template>
-<Affix :offset-top="-55">
-    <Card  class="card-margin">
-         <Divider orientation="left"><h3>选择公司</h3></Divider>
-        
+<Affix :offset-top="-55*0">
+    <Card shadow class="card-margin" style="z-index:99999;opacity: 0.9">
+        <span style="margin-right: 10px;">公司</span>
         <Select v-model="selected" placeholder="选择你要查看的公司" style="width: 300px;">
             <Option v-for="(e, i) in companies" :value="e.cid" :key="e.cid">{{e.lpname}}</Option>
         </Select>
-        <div style="margin-top: 20px;"> </div>
+        <div style="margin-top: 5px;"> </div>
     </Card>
 </Affix>
 </template>

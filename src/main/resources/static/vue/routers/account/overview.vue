@@ -65,8 +65,7 @@
 
                             <div style="margin-bottom: 5px;">
                                 <span class="title-before-input"> <i class="required" />手机号 </span>
-                                <!--Input v-model="infoSave.phone" placeholder="" clearable style="width: 200px" /-->
-                                {{ infoSave.phone }}
+                                <Input v-model="infoSave.phone" disabled placeholder="" style="width: 200px" />
                             </div>
 
                             <div style="margin-bottom: 5px;">
@@ -226,6 +225,16 @@ export default {
         async saveChanges_basicInformation() {
             if (this.pendingSave)
                 return;
+            let d = this.infoSave;
+            let e = [];
+            if (d.name == '') e.push('客户名称');
+            if (d.type == -1) e.push('会员类型');
+            if (d.industry == -1) e.push('所属行业');
+            if (e.length != 0) {
+                alert(e.join('、')+'不能为空');
+                return;
+            }
+
             this.pendingSave = true;
             try {
                 let result = await $.ajax('/api/account/basic', this.infoSave);

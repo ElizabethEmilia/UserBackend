@@ -1,7 +1,5 @@
 <template>
-     <Card  class="card-margin">
-         <Divider orientation="left"><h3>温馨提示</h3></Divider>
-        
+     <Card title="温馨提示"  class="card-margin">
         {{ tipsContent }}
     </Card>
 </template>
