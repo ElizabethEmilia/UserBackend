@@ -78,6 +78,10 @@
 
 注册分为两个步骤：1.记录短信验证码 2.比较验证码并写入数据库
 
+* [腾讯云短信API文档](https://github.com/qcloudsms/qcloudsms_java)
+
+API Key保存在数据库的t_config表中
+
 * 获取图片验证码 `GET /api/verifycode`
 
 > 参数：无
