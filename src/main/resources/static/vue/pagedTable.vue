@@ -53,6 +53,7 @@ export default (function(){
                 console.warn("[PagedTable WARN] 传入数组而非函数可能无法泽确使用render函数");
             }
             else {
+                // 在此处bind该组件的this指针，以便于可以拿到组件内data的值。
                 columns_t = this.columns.bind(this)();
             }
 
