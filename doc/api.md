@@ -258,7 +258,12 @@
 
 * 修改：`POST /api/account/password`
     
->    参数： 密码
+```
+参数： old 旧密码
+     new  新密码
+
+返回值  修改结果
+```
     
 * 修改头像：`POST /api/account/avatar`
  
@@ -266,9 +271,15 @@
 
 ### 3.3 在线充值
 
-* 在线充值：`POST /api/charge/[wechat|alipay]`
+* 支付宝充值`POST /api/charge/alipay`
 
-> 参数：`amount` 金额
+* 微信充值`POST /api/charge/wechat`
+
+其他的API采用第三方： [第三方微信API](https://github.com/ihaolin/wepay) 和
+ [第三方支付宝API](https://github.com/ihaolin/alipay)
+```
+涉及到现实资金的需要再三谨慎
+```
  
 ### 3.4 对公转账
  
@@ -293,6 +304,19 @@
 ### 3.5 钱包明细
 
 对于同时有多个筛选条件的情形，每个筛选参数可能都会传入后端，但可能这个值为空
+
+* 获取最近交易信息（含收入和支出） `GET /api/exchange/recent`
+
+```
+返回值
+{
+            income: 总输入,
+            lastIncome: 上次收入,
+            outcome: 总支出,
+            lastOutcome: 上次支出,
+            balance: 余额
+},
+```
 
 * 【LT(`t_exchange:type`)】获取钱包记录
  
@@ -338,6 +362,10 @@
 * 获取某一个公司证件照 `GET /api/company/{cid}/cert`
 
 * 获取某一个公司的证件照信息 `GET /api/company/{cid}/cert/{id}`
+
+* 获取该用户拥有的公司数量 `GET /api/company/count`
+
+> 返回值： 一个纯数字
 
 ## 5 开票管理模块
 
