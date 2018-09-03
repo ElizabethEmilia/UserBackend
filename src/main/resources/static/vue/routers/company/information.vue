@@ -1,6 +1,6 @@
 <template>
     <Card  class="card-margin">
-         <Divider orientation="left"><h3>公司信息</h3></Divider>
+         <Divider orientation="left"><h3>{{ pending ? '公司信息':info.lpname }}</h3></Divider>
         
         <div style="margin-top: 20px;">
             <Table :show-header="false" :columns="col" :data="data"/>
@@ -10,16 +10,24 @@
 </template>
 
 <script>
+
+/**
+ * 参数：
+ *    admin   是否是管理员端
+ * 
+ */
+
 import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
     
 export default {
-    props: [ 'cid' ],
+    props: [ 'cid', 'admin' ],
     data: () => ({
         col: [
             { key: 'k' },
             { key: 'v' }
         ],
+        pending: true,
         info: {
             id: 1,
             lpname: '加载中...',
@@ -49,6 +57,14 @@ export default {
             let result = await $.ajax(`/api/company/${this.cid}/info`);
             if (result.code === 0) {
                 this.info = result.data;
+                this.pending = false;
+            }
+        },
+        async getInfoAdmin() {
+            let result = await $.ajax(`/api/customer/_/company/${this.cid}`);
+            if (result.code === 0) {
+                this.info = result.data;
+                this.pending = false;
             }
         }
     },
@@ -58,7 +74,8 @@ export default {
         }
     },
     mounted() {
-        this.getInfo();
+        if (typeof this.admin != "undefined" && this.admin == true)  this.getInfoAdmin();
+        else this.getInfo();
     }
 }
 </script>

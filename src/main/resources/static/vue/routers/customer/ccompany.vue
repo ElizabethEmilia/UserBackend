@@ -2,21 +2,13 @@
     <!-- 客户列表 -->
     <Card class="card-margin">
         <p slot="title">
-            <a v-if="selected != -1" @click="selected = -1; $emit('on-back-to-list');" href="javascript:void(0)" style="margin-right: 10px;">返回</a>
-             {{ cardTitle }}
+            公司列表
         </p>
         <PagedTable 
             :columns="columns"
-             vif="typeof showList === 'undefined' || showList" 
-             v-if="selected == -1"
-             data-source="customer"
+             data-source="company"
              @on-select="handleOnSelect"
          />
-         <div v-else>
-             <CustomerOverview :cus-data="cdata"
-                @on-select-company="val=>$emit('on-select-company',val)"
-              />
-         </div>
 
     </Card>
 </template>
@@ -24,14 +16,12 @@
 <script>
 
 /*
-  选择客户组件：
+  客户公司组件
     事件：
-        on-select(客户所有信息)  在选择客户管理时触发 
-        on-select-company(客户公司的所有信息) 在选择客户公司触发
-        on-list()   在展开list时触发
-        on-back-to-list()   在返回列表的时候触发
+        on-select(客户公司信息)  在选择客户公司管理时触发 
+    
     参数：
-        show-list   控制是否应该展开list (bool)
+        uid:  客户ID
 */
 
 import $ from '../../../js/ajax.js';
@@ -45,7 +35,7 @@ export default {
         PagedTable, CustomerOverview
     },
     props: [
-        'showList'
+        'uid'
     ],
     data: () => ({
         selected: -1, // 选择的客户ID
@@ -87,9 +77,7 @@ export default {
         }
     }),
     computed: {
-        cardTitle() {
-            return this.selected == -1 ? '客户列表':(`客户信息：${this.cdata.name}(${this.selected})`)
-        }
+        
     },
     methods: {
         handleOnSelect(cd) {
@@ -97,7 +85,24 @@ export default {
             this.selected = cd.uid;
             this.$emit('on-select', cd);
             //alert('show info of ' + cd.name);
-        }
+        },
+        // 获取公司
+        async getCompany() {
+            try {
+                let result = await $.ajax(`/api/customer/${ this.cusData.uid }/company/list`);
+                if (result.code) {
+                    return alert('获取公司失败：' + result.msg);
+                }
+                this.companyCount = result.data.length;
+                this.companyList = result.data;
+            }
+            catch(err) {
+                 util.Debug.ralert('获取公司失败');
+            }
+        },
+    },
+    mounted() {
+        this.getCompany();
     }
 }
 </script>

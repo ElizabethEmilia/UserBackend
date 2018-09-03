@@ -1,0 +1,352 @@
+<template>
+    <!-- 账号总览 -->
+    <div>
+            <Row>
+                <Col span="12">
+                    <Row>
+                        <div :style="avatar ? { backgroundImage: 'url(' + avatar + ')' }:{}" class="avatar float-left">
+                            <div style="position: relative;" v-if="false">
+                                <div :style="pendingUpload?{ opacity: 1 }:{}" class="avatar-mask" @click="chooseFile">
+                                    {{ pendingUpload ? '上传中' : '更换头像' }}
+                                    <input ref="openFile" @change="uploadFile" type="file" style="display:none" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="float-left" style="margin-left: 20px;">
+                            <span style="font-size: 16px">{{ memberType[ info.type ] }} / </span>
+                            <span style="font-size: 20px; color: #000">{{ info.name }}</span>
+                            <p> {{ industry[info.industry] }} </p>
+                        </div>
+                    </Row>
+                    <Row v-if="!editMode">
+                        <Divider dashed orientation="right" ><a href="javascript:void(0)" @click="edit_basicInformation()">编辑</a></Divider>
+                        <!-- 用户信息显示开始 -->
+                        
+                        <Row class="line-margin">
+                            <Col span="12"><Icon type="ios-call" /> {{ info.phone }}</Col>
+                            <Col span="12"><Icon type="ios-mail" /> {{ info.email }}  </Col>
+                        </Row>
+                        <Row class="line-margin">
+                            <Col span="12"><Icon type="ios-chatboxes" /> {{ info.wechat }} </Col>
+                            <Col span="12">QQ: {{ info.qq }}</Col>
+                        </Row>
+                        <Row class="line-margin">
+                            <Col span="12"><Icon type="ios-print" /> {{ info.fax }}</Col>
+                            <Col span="12"><Icon type="ios-navigate" /> {{ info.province }}/{{ info.city }}/{{ info.district }}</Col>
+                        </Row>
+                        <!-- 用户信息显示结束 -->
+                    </Row>
+                    <Row v-else>
+                        <Divider dashed orientation="right" >
+                            <a v-if="hashBeforeModify != hashAfterModify" @click="discardChanges()" href="javascript:void(0)" style="margin-right: 10px;">放弃更改</a>
+                            <a href="javascript:void(0)" v-if="hashAfterModify == hashBeforeModify" @click="editMode=false">返回</a>
+                            <a v-else :disabled="pendingSave" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
+                        </Divider>
+                        <Card :bordered="false" dis-hover>
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input"> <i class="required" />客户名称 </span>
+                                <Input v-model="infoSave.name" placeholder="" clearable style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input"> <i class="required" />会员类别 </span>
+                                <Select v-model="infoSave.type" style="width:200px">
+                                    <Option v-for="(e,i) in memberType" :value="i" :key="i">{{ e }}</Option>
+                                </Select>
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input"> <i class="required" />所属行业 </span>
+                                <Select v-model="infoSave.industry" style="width:200px">
+                                    <Option v-for="(e,i) in industry" :value="i" :key="i">{{ e }}</Option>
+                                </Select>
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input"> <i class="required" />手机号 </span>
+                                <Input v-model="infoSave.phone" disabled placeholder="" style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                            <span class="title-before-input">邮箱 </span>
+                                <Input v-model="infoSave.email" placeholder="" clearable style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input">微信号 </span>
+                                <Input v-model="infoSave.wechat" placeholder="" clearable style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input">QQ </span>
+                                <Input v-model="infoSave.qq" placeholder="" clearable style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input">传真 </span>
+                                <Input v-model="infoSave.fax" placeholder="" clearable style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
+                                <span class="title-before-input">地址 </span>
+                                <Select v-model="infoSave.province" style="width: 100px;">
+                                    <Option v-for="(e,i) in provinces" :value="e" :key="e">{{ e }}</Option>
+                                </Select>
+                                <Select v-model="infoSave.city" style="width: 100px;">
+                                    <Option v-for="(e,i) in cities" :value="e" :key="e">{{ e }}</Option>
+                                </Select>
+                                <Select v-model="infoSave.district" style="width: 100px;">
+                                    <Option v-for="(e,i) in district" :value="e" :key="e">{{ e }}</Option>
+                                </Select>
+                                <p style="margin-top: 5px;">
+                                    <span class="title-before-input"> </span>
+                                    <Input v-model="value14" placeholder="" clearable style="width: 300px" />
+                                </p>
+                                
+                            </div>
+
+                        </Card>
+                    </Row>
+                </Col>
+                <Col span="12">
+                    <Card :bordered="false" dis-hover>
+                        <p slot="title">客户的公司 ({{ companyCount }})</p>
+                        <CellGroup v-if="companyCount > 0" @on-click="selectCompany">
+                            <Cell v-for="(e,i) in companyList" :title="e.lpname" :key="i" 
+                                :name='i'
+                            />
+                        </CellGroup>
+                        <p style="text-align: center; margin: 10px; 0 10px; 0" v-else>
+                            列表为空
+                        </p>
+                    </Card>
+                    
+                    <Row>
+                        <Card  :bordered="false" dis-hover>
+                            <p slot="title">客户管理</p>
+                            
+                            <CellGroup>
+                                <Cell title="编辑资料" />
+                                <Cell title="公司管理" />
+                                <Cell title="删除客户" style="color: red"/>
+                            </CellGroup>
+
+                        </Card>
+                    </Row>
+                </Col>
+            </Row>
+        </div>
+</template>
+
+<script>
+
+import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
+import '../../../css/style.less';
+import util from '../../../js/util.js';
+import $ from '../../../js/ajax.js';
+import md5 from 'js-md5';
+
+/**
+ * 事件
+ * 
+ * on-edit-mode-change: 
+ * on-select-company:   选择公司的时候触发
+ */
+
+export default {
+    props: [ 'cusData' ],
+    data: () => ({
+        info: {},
+        infoSave: {},
+        companyCount: 0,
+        companyList: [],
+        editMode: false,
+        selectedCompany: -1,
+        stats: {
+            income: 1000,
+            lastIncome: 1000,
+            outcome: 200,
+            lastOutcome: 20,
+            balance: 1000000,
+        },
+        avatar: null,
+        industry,
+        memberType,
+        provinces: ['四川省'],
+        cities: ['攀枝花市'],
+        district: ['东区', '西区'],
+        pendingSave: false, //记录是否在保存
+        pendingUpload: false, //是否正在上传头像
+    }),
+    methods: {
+         // 基础信息的编辑
+        edit_basicInformation() {
+            this.editMode = true
+            this.infoSave = Object.assign({}, this.info);
+        },
+        // 基础信息的保存
+        async saveChanges_basicInformation() {
+            if (this.pendingSave)
+                return;
+            let d = this.infoSave;
+            let e = [];
+            if (d.name == '') e.push('客户名称');
+            if (d.type == -1) e.push('会员类型');
+            if (d.industry == -1) e.push('所属行业');
+            if (e.length != 0) {
+                alert(e.join('、')+'不能为空');
+                return;
+            }
+
+            this.pendingSave = true;
+            try {
+                let result = await $.ajax('/api/account/basic', this.infoSave);
+                if (result.code === 0) {
+                    // 保存成功
+                    this.pendingSave = false;
+                    this.editMode = false;
+                    this.getBasicInfo();
+                    return;
+                }
+                // 保存失败
+                alert('保存失败：' + result.msg);
+            }
+            catch(err) {
+                alert('保存失败');
+            }
+            this.pendingSave = false;
+        },
+        // 通过file选择文件
+        chooseFile() {
+            if (this.pendingUpload) {
+                return;
+            }
+            this.$refs.openFile.click();
+        },
+        // 上传文件修改头像
+        async uploadFile(e) {
+            if (this.pendingUpload)
+                return;
+            this.pendingUpload = true;
+            try {
+                let fileContent = await util.File.getFileContentAsync(this.$refs.openFile);
+                this.avatar = fileContent;
+                let result = await $.ajax('/api/account/avatar', { img: this.avatar });
+                if (result.code != 0) {
+                    alert(result.msg);
+                    throw new Error(result.msg);
+                }
+                alert('上传头像成功');
+            }
+            catch(err) {
+                console.error(err);
+                alert('上传头像失败');
+            }
+            this.pendingUpload = false;
+        },
+        // 获取用户基本信息
+        async getBasicInfo() {
+            try {
+                let result = await $.ajax('/api/account/basic');
+                if (result.code) {
+                    return alert('获取基本信息失败：' + result.msg);
+                }
+                this.info = result.data;
+                this.avatar = result.data.avatar;
+            }
+            catch(err) {
+                 util.Debug.ralert('获取基本信息失败');
+            }
+        },
+        // 获取公司数量
+        async getCompanyCount() {
+            try {
+                let result = await $.ajax('/api/company/count');
+                if (result.code) {
+                    return alert('获取公司数量失败：' + result.msg);
+                }
+                this.companyCount = result.data;
+            }
+            catch(err) {
+                 util.Debug.ralert('获取公司数量失败');
+            }
+        },
+        // 获取公司
+        async getCompany() {
+            try {
+                let result = await $.ajax(`/api/customer/${ this.cusData.uid }/company/list`);
+                if (result.code) {
+                    return alert('获取公司失败：' + result.msg);
+                }
+                this.companyCount = result.data.length;
+                this.companyList = result.data;
+            }
+            catch(err) {
+                 util.Debug.ralert('获取公司失败');
+            }
+        },
+        discardChanges() {
+            confirm("确认放弃更改?") && (this.editMode=false);
+        },
+        selectCompany(i) {
+            console.log('[select]', i);
+            this.selectedCompany = i;
+        }
+    },
+    watch: {
+        editMode(val) {
+            this.$emit('on-edit-mode-change', val);
+        }
+    },
+    watch: {
+        selectedCompany(val) {
+            this.$emit('on-select-company', this.companyList[val]);
+        }
+    },
+    computed: {
+            // 更改前的HASH值
+            hashBeforeModify() {
+                return md5(util.forGetParams(this.info));
+            },
+            // 更改后的HASH值
+            hashAfterModify() {
+                return md5(util.forGetParams(this.infoSave));
+            },
+        },
+    created() {
+        this.info = this.cusData;
+        //this.getBasicInfo();
+        this.getCompany();
+    }
+}
+</script>
+
+<style>
+.float-left {
+    float: left;
+}
+
+.avatar-mask {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    transition: opacity 0.3s;
+    opacity: 0;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(0,0,0,0.3);
+    line-height: 100px;
+    color: #fff;
+}
+
+.avatar-mask:hover {
+    opacity: 1;
+}
+
+.avatar-mask:active {
+    background: rgba(0,0,0,0.5);
+}
+</style>

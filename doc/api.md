@@ -165,7 +165,7 @@ API Key保存在数据库的t_config表中
 
 备注： 在本小姐，`uid`是冗余数据，`uid`用来判断`cid`是否属于这个用户，同时使url的结构清晰。
 
-备注： `uid`若为0则不进行上述判断（方便前端偷懒）
+备注： `uid`若为_则不进行上述判断（方便前端偷懒）
 
 * 客户的公司列表 `GET /api/customer/{uid}/company/list`
 
