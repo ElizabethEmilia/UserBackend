@@ -1,7 +1,15 @@
-function forPostParams(obj) {
+function forPostParamsQueryString(obj) {
 	if (typeof obj !== "object")
 		throw new Error("obj is not an object");
 	return encodeURIComponent(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
+}
+
+function forPostParams(obj) {
+	if (typeof obj !== "object")
+		throw new Error("obj is not an object");
+	return Object.keys(obj).length < 3 ? 
+		encodeURIComponent(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&')) :
+		JSON.stringify(obj);
 }
 
 function forGetParams(obj) {
@@ -85,9 +93,53 @@ function passwordMatchesRestriction(pwd) {
 	return ty.reduce((a,b)=>a+b) >= 2;
 }
 
+/** 从input file获取文件内容 */
+const ReaderFileResultType = {
+	ARRAY_BUFFER: 'readAsArrayBuffer',
+	BINARY_STRING: 'readAsBinaryString',
+	DATA_UTL: 'readAsDataURL',
+	TEXT: 'readAsText',
+	BASE64: 'base64',
+}
+
+function getFileContentAsync(fileInput, resultIn = ReaderFileResultType.DATA_UTL) {
+	const dataUrlToBase64 = dataURL => dataURL.replace(/^.*;base64,/, "");
+	let reader = null;
+	if (window.FileReader)
+		reader = new FileReader();
+	else throw new Error('FileReader unsupport');
+
+	let file = fileInput.files[0];
+	return new Promise((resolve, reject) => {
+		reader.onload = e => {
+			if (e.target.result.length<=2097152) {
+				let ret = e.target.result;
+				if (resultIn === ReaderFileResultType.BASE64) 
+					ret = dataUrlToBase64(ret);
+				resolve(ret);
+			}
+			else {
+				reject(new Error('文件大小超过限制'));
+			}
+		};
+		let fn = resultIn === ReaderFileResultType.BASE64 ? 
+						ReaderFileResultType.DATA_UTL : resultIn;
+		reader[fn](file);
+	});
+}
+
+/** Debug **/
+function ralert(param) {
+	const DEBUG_MODE = 1;
+	if (DEBUG_MODE == 1)
+		return;
+	alert(param);
+}
+
 export default {
     forGetParams, // 通过对象生成Get方法参数
-    forPostParams,  // 通过对象生成Post方法参数
+	forPostParams,  // 通过对象生成Post方法参数
+	forPostParamsQueryString, // 通过对象生成Post方法参数(不采用JSON)
 	forGetURL,    // 通过对象生成Get方法地址
 	getQueryParameter, // 获取页面参数
 	isStringNullOrEmpty, // 测试字符串是否为空
@@ -99,5 +151,22 @@ export default {
 		isLowerCase,
 		isNumber,
 		toASCIICode,
+	},
+
+	// 文件
+	File: {
+		ReaderFileResultType, // 读文件方式
+		getFileContentAsync,  // 读文件
+	},
+
+	// 调试用
+	Debug: {
+		ralert, // 仅在release时alert
+	},
+
+	// 字符串处理
+	String: {
+		isNullOrEmpty: isStringNullOrEmpty,
+		isVividPassword: passwordMatchesRestriction,
 	}
 }

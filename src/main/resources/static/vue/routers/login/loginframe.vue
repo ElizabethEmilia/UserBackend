@@ -10,7 +10,7 @@
                 <VerifyCode @on-code="inputImageCode" prefix="md-code" />
 
                 <div>
-                    <Input type="password" :readonly="pending" v-model="password" @on-click="getCode()" class="tp" prefix="md-lock"  :maxlength="32" placeholder="密码" :icon="pending ? 'ios-loading' : 'md-arrow-forward'" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 20px;" />
+                    <Input type="password" :readonly="pending" v-model="password" @on-click="login()" class="tp" prefix="md-lock"  :maxlength="32" placeholder="密码" :icon="pending ? 'ios-loading' : 'md-arrow-forward'" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 20px;" />
                 </div>
             
                 <div style="margin-top: 15px;">
@@ -32,6 +32,9 @@
 //   on-username (Username)        - 用户名
 
 import VerifyCode from '../../components/verifycode.vue';
+import util from '../../../js/util.js';
+import $ from '../../../js/ajax.js';
+import md5 from 'js-md5';
 
 export default {
     components: {
@@ -45,20 +48,45 @@ export default {
         pending: false
     }),
     methods: {
-        getCode() {
+        async login() {
+            if (util.isStringNullOrEmpty(this.username) || util.isStringNullOrEmpty(this.password)) {
+                alert('请输入用户名和密码');
+                return;
+            }
+
+            let password = md5(this.password);
+
             if (this.pending)
                 return;
             this.pending = true;
-            // 获取验证码
-            alert('TODO:/// Login!!');
+            
+            try {
+                let result = await $.ajax('/api/login', {
+                    name: this.username,
+                    password,
+                    code: this.code,
+                });
+                if (result.code === 0) {
+                    alert('登陆成功');
+                    location.href = "./";
+                }
+                else {
+                    alert('' + result.msg);
+                    this.pending = false;
+                }
+            }
+            catch(err) {
+                alert('无法连接服务器');
+                this.pending = false;
+            }
         },
         show(name) {
             this.$emit('on-request-change-com', name);
         },
         // 从组件获取图片验证码
         inputImageCode(val) {
-            this.imageCode = val;
-            console.log(this.imageCode);
+            this.code = val;
+            console.log(this.code);
         },
     },
     watch: {

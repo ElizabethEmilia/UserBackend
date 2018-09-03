@@ -1,15 +1,15 @@
 <template>
     <div>
-        <CustomerList />
+        <MainPage />
     </div>
 </template>
 
 <script>
-import CustomerList from './customer/customerlist.vue';
+import MainPage from './system/main.vue';
 
 export default {
     components: {
-        CustomerList
+        MainPage,
     },
     data: () => ({
 

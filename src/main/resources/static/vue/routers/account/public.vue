@@ -32,6 +32,12 @@
                 <TabPane label="已取消" name="cancelled"></TabPane>
             </Tabs>
 
+            <ButtonGroup style="margin-bottom: 10px;">
+                <Button>新增订单</Button>
+                <Button>取消订单</Button>
+                <Button>查看详情</Button>
+            </ButtonGroup>
+
             <PagedTable :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
     </Card>
 </template>
@@ -61,46 +67,64 @@ export default {
                 accountNo: '20030010000'
             },
         ],
-        publicTransferColumnName: [
-            { type: 'selection', width: 60, align: 'center' },
-            { title: '序号', type: 'index' },
-            { title: '订单编号', key: 'id' },
-            { title: '订单类型', render: (h, params) => { console.log('h', this); return h('span', {}, paymentMethod[publicChargeData[params.index].type]) } },
-            { title: '订单金额', key: 'amount' },
-            { title: '订单状态', render: (h, params) => h('span', {}, publicOrderStatus[publicChargeData[params.index].status]) },
-            { title: '下单时间', key: 'tmCreate' },
-            { title: '确认时间', key: 'tmConfirm' },
-            { 
-                title: '操作', 
-                key: 'action', 
-                render: (h, params) => {
-                    return h('div', [
-                        h('a', {
-                            props: {
-                                href: 'javascript:void(0)',
-                            },
-                            on: {
-                                click() {
-                                    console.log('click', this);
-                                    console.log('Cancel index: ' + params.index);
+        publicTransferColumnName() {
+            let self = this;
+            return [
+                { type: 'selection', width: 60, align: 'center' },
+                { title: '序号', type: 'index', width: 80, },
+                { title: '订单编号', key: 'id' },
+                { title: '订单类型', render: (h, params) =>  h('span', {}, paymentMethod[this.tableData[params.index].type]) },
+                { title: '订单金额', key: 'amount' },
+                { title: '订单状态', render: (h, params) => h('span', {}, publicOrderStatus[this.tableData[params.index].status]) },
+                { title: '下单时间', key: 'tmCreate' },
+                { title: '确认时间', key: 'tmConfirm' },
+                { 
+                    title: '操作', 
+                    key: 'action', 
+                    render: (h, params) => {
+                        return h('div', [
+                            h('a', {
+                                props: {
+                                    href: 'javascript:void(0)',
+                                },
+                                on: {
+                                    async click() {
+                                        if (!confirm("确认要取消订单吗？"))  {
+                                            return;
+                                        }
+                                        let id = self.tableData[params.index].id;
+                                        try {
+                                            let result = await $.ajax(`/api/charge/public/${id}/cancel`, { r: Math.random() });
+                                            if (result.code) {
+                                                alert('操作失败');
+                                            }
+                                            else {
+                                                alert('操作成功');
+                                            }
+                                        }
+                                        catch(err) {
+                                            alert('操作失败');
+                                        }
+                                    }
                                 }
-                            }
-                        }, '取消订单'),
-                        h('span', {}, ' | '),
-                        h('a', {
-                            props: {
-                                href: 'javascript:void(0)',
-                            },
-                            on: {
-                                click() {
-                                    console.log('View index: ' + params.index);
+                            }, '取消订单'),
+                            h('span', {}, ' | '),
+                            h('a', {
+                                props: {
+                                    href: 'javascript:void(0)',
+                                },
+                                on: {
+                                    async click() {
+                                        let info = self.tableData[params.index];
+                                        /// 弹出对话框
+                                    }
                                 }
-                            }
-                        }, '查看详情')
-                    ]);
+                            }, '查看详情')
+                        ]);
+                    }
                 }
-            }
-        ],
+            ]
+        },
 
         dataSource: "publiccharge/",
         req_url: "all"

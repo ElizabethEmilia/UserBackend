@@ -27,7 +27,9 @@
     export default {
         data: () => ({
             res_url: 'all',
-            columns: [
+            columns: function() { 
+                let self = this;
+                return [
                 { title: '序号', type: 'index' },
                 { title: '订单号', key: 'cid'  },
                 { title: '公司ID', key: 'cid'  },
@@ -48,7 +50,6 @@
                             },
                             on: {
                                 click() {
-                                    console.log('click', this);
                                     console.log('打印合同 index: ' + params.index);
                                 }
                             }
@@ -56,7 +57,7 @@
                     ]);
                 }
             }
-            ]
+            ];}
         }),
         components: {
             PagedTable

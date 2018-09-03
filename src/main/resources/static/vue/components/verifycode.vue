@@ -1,11 +1,12 @@
 <template>
-    <Poptip >
-        <Input :prefix="prefix" placeholder="图片验证码" style="width: 300px; margin-top: 20px;" v-model="code" />
-        <div slot="content">
-            <div class="codeimg" :style="{ 'background': img === null ?  '#aaa' :img }" title="点击刷新" @click="refresh"/>
-        </div>
-     </Poptip>
-
+    <div style=" margin-top: 20px;">
+        <Poptip style="">
+            <Input :prefix="prefix" placeholder="图片验证码" style="width: 300px;" v-model="code" />
+            <div slot="content">
+                <div class="codeimg" :style="{ 'background': img === null ?  '#aaa' : img }" title="点击刷新" @click="refresh"/>
+            </div>
+        </Poptip>
+    </div>
 </template>
 
 <script>
@@ -28,7 +29,7 @@ export default {
     }),
     props: [ 'prefix' ],
     methods: {
-        async getImage() {
+        async getImageAsync() {
             try {
                 let result = await $.ajax('/api/verifycode');
                 if (result.code === 0) {
@@ -47,7 +48,10 @@ export default {
         refresh() {
             this.$emit('on-refresh', {});
             this.getImage();
-        }
+        },
+        getImage() {
+            this.img = 'url(/api/verifycode?r='+Math.random()+')';
+        },
     },
     watch: {
         code(val) {

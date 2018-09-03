@@ -5,6 +5,7 @@ import Log from './routers/log.vue';
 import Receipt from "./routers/receipt.vue";
 import Tax from './routers/tax.vue';
 import User from './routers/user.vue';
+import System from './routers/system.vue';
 
 export default [
     { path: '/', component: Account },
@@ -15,4 +16,5 @@ export default [
     { path: '/receipt', component: Receipt },
     { path: '/tax', component: Tax },
     { path: '/user', component: User },
+    { path: '/system', component: System },
 ]
