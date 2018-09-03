@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.service.ITSigninService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  *  服务实现类
@@ -16,5 +18,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> implements ITSigninService {
-	
+
+    @Resource
+    private TSigninMapper signinMapper;
+
+    @Override
+    public TSignin getSigninByUid(Integer id) {
+        return signinMapper.getSigninByUid(id);
+    }
 }

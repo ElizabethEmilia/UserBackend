@@ -6,6 +6,18 @@
 	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TConfig">
 		<id column="name" property="name" />
 		<result column="value" property="value" />
+		<result column="friendlyname" property="friendlyname" />
+		<result column="visible" property="visible" />
+		<result column="type" property="type" />
+		<result column="description" property="description" />
 	</resultMap>
+
+	<select id="getConfig" resultType="java.util.Map">
+		select name, value from t_config
+	</select>
+
+	<select id="getConfigs" resultType="org.ruoxue.backend.bean.TConfig">
+		select * from t_config
+	</select>
 
 </mapper>

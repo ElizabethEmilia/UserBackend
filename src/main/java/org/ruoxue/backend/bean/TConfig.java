@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-03
  */
 @TableName("t_config")
 public class TConfig extends Model<TConfig> {
@@ -19,6 +19,10 @@ public class TConfig extends Model<TConfig> {
 
 	private String name;
 	private String value;
+	private String friendlyname;
+	private Integer visible;
+	private Integer type;
+	private String description;
 
 
 	public String getName() {
@@ -37,6 +41,38 @@ public class TConfig extends Model<TConfig> {
 		this.value = value;
 	}
 
+	public String getFriendlyname() {
+		return friendlyname;
+	}
+
+	public void setFriendlyname(String friendlyname) {
+		this.friendlyname = friendlyname;
+	}
+
+	public Integer getVisible() {
+		return visible;
+	}
+
+	public void setVisible(Integer visible) {
+		this.visible = visible;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.name;
@@ -47,6 +83,10 @@ public class TConfig extends Model<TConfig> {
 		return "TConfig{" +
 			"name=" + name +
 			", value=" + value +
+			", friendlyname=" + friendlyname +
+			", visible=" + visible +
+			", type=" + type +
+			", description=" + description +
 			"}";
 	}
 }

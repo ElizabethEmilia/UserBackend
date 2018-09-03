@@ -1,8 +1,11 @@
 package org.ruoxue.backend.mapper;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.ruoxue.backend.bean.TConfig;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -14,5 +17,12 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface TConfigMapper extends BaseMapper<TConfig> {
+
+//    获取keyAndValue
+    List<Map<String, Object>> getConfig();
+
+//    获取配置中所有的信息
+    List<TConfig> getConfigs();
+
 
 }

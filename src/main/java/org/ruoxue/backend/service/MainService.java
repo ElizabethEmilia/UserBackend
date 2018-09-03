@@ -21,4 +21,8 @@ public interface MainService {
 
     void gerenateVerifycode(HttpServletRequest request, HttpServletResponse response);
 
+    Object forgetPwd(JSONObject jsonObject);
+
+    Object resetpwd(JSONObject jsonObject);
+
 }

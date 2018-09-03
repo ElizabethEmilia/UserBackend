@@ -11,6 +11,7 @@ import org.ruoxue.backend.service.MainService;
 import org.ruoxue.backend.util.Md5SaltTool;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -85,7 +86,7 @@ public class MainServiceImpl extends BaseController implements MainService {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
 
-        return ResultUtil.success(1, "登录成功");
+        return ResultUtil.success(0, "登录成功");
 
     }
 
@@ -94,14 +95,40 @@ public class MainServiceImpl extends BaseController implements MainService {
 //        md5+盐方式加密
         String pwdInDb = (String)users.get(name);
         boolean falg = Md5SaltTool.validPassword(password, pwdInDb);
-        System.out.println("----------------------passwdMD5: " + pwdInDb);
-        System.out.println("----------------------password: " + password);
+
+//        生成加密后的token
+        String token = XunBinKit.generateToken();
+        signin.setToken(token);
+
+
         if (!falg) {
             return ResultUtil.error(-3, "密码不正确，请重新输入");
         }
         session.setAttribute("role", signin.getRole());
+        session.setAttribute("uid", session.getId());
+
         return ResultUtil.success();
 
+    }
+
+    /**
+     * 注册用户
+     *  @param userName
+     * @param password
+     */
+    public static String registerUser(String userName, String password){
+        String encryptedPwd = null;
+        try {
+//            获取
+            encryptedPwd = Md5SaltTool.getEncryptedPwd(password);
+            users.put(userName, encryptedPwd);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encryptedPwd;
     }
 
     /**
@@ -148,6 +175,80 @@ public class MainServiceImpl extends BaseController implements MainService {
         }
 
 
+    }
+
+    /**
+     *  找回密码
+     * @param jsonObject
+     * @return
+     */
+    @Override
+    public Object forgetPwd(JSONObject jsonObject) {
+//        获取参数
+        String phone = jsonObject.getString("phone");
+        String msgcode = jsonObject.getString("msgcode");
+
+        if(ToolUtil.isEmpty(phone) || ToolUtil.isEmpty(msgcode)){
+            return ResultUtil.error(-1, "请检查您的参数");
+        }
+
+        TCustomer customer = mainMapper.getTCustomerByName(phone);
+        if(ToolUtil.isEmpty(customer)){
+            return ResultUtil.error(-2, "该用户不存在");
+        }
+
+        TSignin signin = signinMapper.selectById(customer.getLid());
+
+        if(!msgcode.equals(signin.getMsgcode())){
+            return ResultUtil.error(-3, "短信验证码错误");
+        }
+
+        JSONObject json = new JSONObject();
+        json.put("uid", signin.getId());
+        json.put("token", signin.getToken());
+
+        return ResultUtil.success(json);
+    }
+
+    /**
+     *  重置密码
+     * @param jsonObject
+     * @return
+     */
+    @Override
+    public Object resetpwd(JSONObject jsonObject) {
+//        获取参数
+        Integer uid = jsonObject.getInteger("uid");
+        String token = jsonObject.getString("token");
+        String password = jsonObject.getString("password");
+
+        if(ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(token) || ToolUtil.isEmpty(password)){
+            return ResultUtil.error(-1, "请检查您的参数");
+        }
+
+        TSignin signin = signinMapper.selectById(uid);
+        if(!token.equals(signin.getToken())){
+            HttpServletResponse response = XunBinKit.getResponse();
+            response.setStatus(403);
+        }
+
+        try {
+//           md5加密新密码
+            String md5SaltPwd = Md5SaltTool.getEncryptedPwd(password);
+//            获取一个新的token
+            String md5Token = XunBinKit.generateToken();
+            signin.setPassword(md5SaltPwd);
+            signin.setToken(md5Token);
+            signin.updateById();
+            return ResultUtil.success();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        return ResultUtil.error(-2, "修改密码失败");
     }
 
     /**
