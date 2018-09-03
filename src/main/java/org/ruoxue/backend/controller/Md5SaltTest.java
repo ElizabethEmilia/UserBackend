@@ -39,7 +39,7 @@ public class Md5SaltTest {
      * @param userName
      * @param password
      */
-    public static void registerUser(String userName,String password){
+    public static String registerUser(String userName,String password){
         String encryptedPwd = null;
         try {
             encryptedPwd = Md5SaltTool.getEncryptedPwd(password);
@@ -54,6 +54,8 @@ public class Md5SaltTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        return encryptedPwd;
     }
 
     /**

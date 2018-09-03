@@ -3,6 +3,7 @@ package org.ruoxue.backend.controller;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.common.controller.BaseController;
+import org.ruoxue.backend.service.ITCustomerService;
 import org.ruoxue.backend.service.MainService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,15 @@ public class MainController extends BaseController {
     @RequestMapping(value = "/verifycode", method = RequestMethod.GET)
     public void gerenateVerifycode(HttpServletRequest request, HttpServletResponse response){
         mainService.gerenateVerifycode(request, response);
+    }
+
+    @Resource
+    private ITCustomerService customerService;
+
+    @ApiOperation("用户注册接口,同步插入sign表")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public @ResponseBody Object CustomerRegister(@RequestBody JSONObject jsonObject){
+        return customerService.CustomerRegister(jsonObject);
     }
 
 }

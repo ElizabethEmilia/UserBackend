@@ -85,7 +85,7 @@ public class MainServiceImpl extends BaseController implements MainService {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
 
-        return ResultUtil.success(1, "登录成功");
+        return ResultUtil.success(0, "登录成功");
 
     }
 
@@ -102,6 +102,26 @@ public class MainServiceImpl extends BaseController implements MainService {
         session.setAttribute("role", signin.getRole());
         return ResultUtil.success();
 
+    }
+
+    /**
+     * 注册用户
+     *  @param userName
+     * @param password
+     */
+    public static String registerUser(String userName, String password){
+        String encryptedPwd = null;
+        try {
+//            获取
+            encryptedPwd = Md5SaltTool.getEncryptedPwd(password);
+            users.put(userName, encryptedPwd);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encryptedPwd;
     }
 
     /**
