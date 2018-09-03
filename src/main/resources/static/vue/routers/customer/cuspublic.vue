@@ -2,29 +2,7 @@
     <!-- 对公充值 -->
     <Card class="card-margin">
             <Divider orientation="left"><h3>对公充值</h3></Divider>
-            <Alert type="success">
-                <span style="font-weight: blod; color: green">温馨提示：</span> 
-                <br/><br/>
-                1. 对公转账需我司财务确认后到账，请在此新增线下充值订单并上传支付凭证；<br />
-                2. 我司银行账号信息如下：
-                <p v-for="e in publicBankAccount">
-                    <span style="display:inline-block; min-width:90px; margin-right: 10px">
-                        {{ e.recommend ? '<推荐>':'' }}
-                    </span>
-                    开户名称：<span style="display:inline-block; min-width:100px; margin-right: 10px">
-                        {{ e.accountName }}
-                    </span>
-                    开户银行：<span style="display:inline-block; min-width:100px; margin-right: 10px">
-                        {{ e.bankName }}
-                    </span>
-                    银行账号：<span style="display:inline-block; min-width:100px; margin-right: 10px">
-                        {{ e.accountNo }}
-                    </span>
-                
-                    
-                </p>
-            </Alert>
-
+            
             <Tabs :value="req_url" @on-click="tabclick">
                 <TabPane label="全部" name="all"></TabPane>
                 <TabPane label="已确认" name="confirmed"></TabPane>
@@ -32,42 +10,33 @@
                 <TabPane label="已取消" name="cancelled"></TabPane>
             </Tabs>
 
-            <ButtonGroup style="margin-bottom: 10px;">
-                <Button>新增订单</Button>
-                <Button>取消订单</Button>
-                <Button>查看详情</Button>
-            </ButtonGroup>
-
             <PagedTable :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
     </Card>
 </template>
 
 <script>
 
+/**
+ * 参数： 
+ *    uid  用户ID 必须
+ * */
+
 import PagedTable from '../../pagedTable.vue';
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
 import '../../../css/style.less';
 import $ from '../../../js/ajax.js';
 
+let _uid = -1;
+
 export default {
+    props: [ 'uid' ],
     components: {
         PagedTable
     },
+    mounted() {
+        _uid = this.uid;
+    },
     data: () => ({
-        publicBankAccount: [ // 从配置文件获取
-            {
-                recommend: true,
-                accountName: 'xxxx公司',
-                bankName: 'xxxx银行',
-                accountNo: '10030010000'
-            },
-            {
-                recommend: false,
-                accountName: 'xxxx公司',
-                bankName: 'xxxxxx银行',
-                accountNo: '20030010000'
-            },
-        ],
         publicTransferColumnName() {
             let self = this;
             return [
@@ -90,12 +59,12 @@ export default {
                                 },
                                 on: {
                                     async click() {
-                                        if (!confirm("确认要取消订单吗？"))  {
+                                        if (!confirm("确认同意该申请？"))  {
                                             return;
                                         }
                                         let id = self.tableData[params.index].id;
                                         try {
-                                            let result = await $.ajax(`/api/charge/public/${id}/cancel`, { r: Math.random() });
+                                            let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
                                                 alert('操作失败');
                                             }
@@ -104,12 +73,42 @@ export default {
                                             }
                                         }
                                         catch(err) {
+                                            console.log(err);
                                             alert('操作失败');
                                         }
                                     }
                                 }
-                            }, '取消订单'),
-                            h('span', {}, ' | '),
+                            }, self.d[params.index].status === 0 ? '确认' : ''),// 如果是待确认状态，显示此项
+                            h('span', {}, self.d[params.index].status === 0 ? ' | ' : ''),
+
+                            h('a', {
+                                props: {
+                                    href: 'javascript:void(0)',
+                                },
+                                on: {
+                                    async click() {
+                                        if (!confirm("确认要取消该申请吗？"))  {
+                                            return;
+                                        }
+                                        let id = self.tableData[params.index].id;
+                                        try {
+                                            let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
+                                            if (result.code) {
+                                                alert('操作失败');
+                                            }
+                                            else {
+                                                alert('操作成功');
+                                            }
+                                        }
+                                        catch(err) {
+                                            console.log(err);
+                                            alert('操作失败');
+                                        }
+                                    }
+                                }
+                            }, self.d[params.index].status === 0 ? '取消' : ''),// 如果是待确认状态，显示此项
+                            h('span', {}, self.d[params.index].status === 0 ? ' | ' : ''),
+
                             h('a', {
                                 props: {
                                     href: 'javascript:void(0)',
@@ -127,7 +126,6 @@ export default {
             ]
         },
 
-        dataSource: "publiccharge/",
         req_url: "all"
     }),
 
@@ -135,6 +133,10 @@ export default {
         tabclick(name) {
             this.res_url = name;
         }
+    },
+
+    computed: {
+        dataSource() { return "customer/"+this.uid+"/publiccharge/" }
     }
 }
 </script>

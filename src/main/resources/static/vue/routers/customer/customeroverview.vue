@@ -126,9 +126,9 @@
                             <p slot="title">客户管理</p>
                             
                             <CellGroup>
-                                <Cell title="编辑资料" />
-                                <Cell title="公司管理" />
-                                <Cell title="删除客户" style="color: red"/>
+                                <Cell name="edit" title="编辑资料" />
+                                <Cell name="mamage" title="公司管理" />
+                                <Cell name="delete" title="删除客户" style="color: red"/>
                             </CellGroup>
 
                         </Card>
