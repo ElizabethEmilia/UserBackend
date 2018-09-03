@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * <p>
@@ -15,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface MainService {
 
-    Object login(JSONObject jsonObject);
+    Object login(JSONObject jsonObject) throws UnsupportedEncodingException, NoSuchAlgorithmException;
 
     void gerenateVerifycode(HttpServletRequest request, HttpServletResponse response);
 

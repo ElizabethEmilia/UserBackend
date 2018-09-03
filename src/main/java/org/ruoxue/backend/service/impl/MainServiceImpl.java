@@ -8,9 +8,9 @@ import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.mapper.MainMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.MainService;
+import org.ruoxue.backend.util.Md5SaltTool;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,6 +21,10 @@ import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -40,7 +44,9 @@ public class MainServiceImpl extends BaseController implements MainService {
     @Resource
     private TSigninMapper signinMapper;
 
-    public Object login(JSONObject jsonObject){
+    private static Map users = new HashMap();
+
+    public Object login(JSONObject jsonObject) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //        获取参数
         String name = jsonObject.getString("name");
         String password = jsonObject.getString("password");
@@ -58,16 +64,23 @@ public class MainServiceImpl extends BaseController implements MainService {
 
 //      获取session对象
         HttpSession session = getSession();
+
+//        获取生成的验证码
+        String genCode = (String) session.getAttribute("code");
+        if(!code.toUpperCase().equals(genCode.toUpperCase())){
+            return ResultUtil.error(-4, "验证码不正确");
+        }
+
 //        获取signin对象
         TSignin signin = null;
         if(ToolUtil.isNotEmpty(admin)){
 //            管理员
             signin = signinMapper.selectById(admin.getId());
-            md5Salt(signin, password, session, code);
+            md5Salt(signin,name, password, session);
         } else if(ToolUtil.isNotEmpty(customer)){
 //            客户
             signin = signinMapper.selectById(customer.getUid());
-            md5Salt(signin, password, session, code);
+            md5Salt(signin,name, password, session);
         } else {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
@@ -76,19 +89,15 @@ public class MainServiceImpl extends BaseController implements MainService {
 
     }
 
-    private Object md5Salt(TSignin signin, String password, HttpSession session, String code){
+    private Object md5Salt(TSignin signin, String name, String password, HttpSession session) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
 //        md5+盐方式加密
-        String passwdMD5 = XunBinKit.md5(password, signin.getSalt());
-        if (!signin.getPassword().equals(passwdMD5)) {
+        String pwdInDb = (String)users.get(name);
+        boolean falg = Md5SaltTool.validPassword(password, pwdInDb);
+        System.out.println("----------------------passwdMD5: " + pwdInDb);
+        System.out.println("----------------------password: " + password);
+        if (!falg) {
             return ResultUtil.error(-3, "密码不正确，请重新输入");
-        } else{
-//        获取生成的验证码
-            String genCode = (String) session.getAttribute("code");
-            if(!code.toUpperCase().equals(genCode.toUpperCase())){
-                return ResultUtil.error(-4, "验证码不正确");
-            }
-
         }
         session.setAttribute("role", signin.getRole());
         return ResultUtil.success();
