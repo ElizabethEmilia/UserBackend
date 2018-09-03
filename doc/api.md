@@ -114,7 +114,7 @@ API Key保存在数据库的t_config表中
 
 > 参数：`phone` 手机号
 >    
->   `msgcode` 短信验证码 
+>   `msgcode` 短信验证码
 >   
 >  返回值：成功：发送一个找回密码的链接给客户（链接格式见下方）  失败：原因
  
@@ -130,7 +130,7 @@ API Key保存在数据库的t_config表中
 > 
 > `token` 登录表的Token
 > 
-> `password` 用户设置的密码
+    > `password` 用户设置的密码
 > 
 > 返回结果： uid或token不正确/密码设置（成功/失败）
  

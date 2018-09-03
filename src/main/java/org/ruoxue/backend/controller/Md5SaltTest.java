@@ -1,6 +1,7 @@
 package org.ruoxue.backend.controller;
 
 import org.ruoxue.backend.util.Md5SaltTool;
+import org.ruoxue.backend.util.XunBinKit;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +12,13 @@ public class Md5SaltTest {
 
     private static Map users = new HashMap();
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        String sixNum = XunBinKit.generateSixNum();
+        System.out.println("------------------six: " + sixNum);
+        sixNum = Md5SaltTool.getEncryptedPwd(sixNum);
+        System.out.println("------------------six: " + sixNum);
+
         String userName = "fengjb";
         String password = "123456";
         registerUser(userName,password);

@@ -1,10 +1,13 @@
 package org.ruoxue.backend.service.impl;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TConfig;
 import org.ruoxue.backend.mapper.TConfigMapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.service.ITConfigService;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +19,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> implements ITConfigService {
-	
+
+    @Resource
+    private TConfigMapper configMapper;
+
+    @Override
+    public List<TConfig> getTConfig() {
+        return configMapper.getConfigs();
+    }
 }

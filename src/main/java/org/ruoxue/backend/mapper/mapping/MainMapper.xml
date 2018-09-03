@@ -10,5 +10,4 @@
         select * from t_customer where name = #{name}
     </select>
 
-
 </mapper>

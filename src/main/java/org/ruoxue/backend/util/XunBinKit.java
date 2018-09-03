@@ -1,34 +1,53 @@
 package org.ruoxue.backend.util;
 
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
+
+import org.springframework.web.context.request.RequestContextHolder;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
- *  md5密码 + 盐
+ *  志勋 + 佳斌 工具类
  */
 public class XunBinKit {
 
     /**
-     * 加盐参数
+     *  获取response对象
      */
-    public final static String hashAlgorithmName = "MD5";
+    public static HttpServletResponse getResponse(){
+        HttpServletResponse response = (HttpServletResponse) RequestContextHolder.getRequestAttributes();
+        return response;
+    }
 
     /**
-     * 循环次数
+     *  生成一个md加密后的64为token
      */
-    public final static int hashIterations = 1024;
+    public static String generateToken(){
+        String sixNum = generateSixNum();
+        String md5Token = null;
+        try {
+            md5Token = Md5SaltTool.getEncryptedPwd(sixNum);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return md5Token;
+    }
 
     /**
-     * 密码加密工具类
-     *
-     * @param credentials 密码
-     * @param saltSource  密码盐
-     * @return
+     *  随机生成六位数字
      */
-    public static String md5(String credentials, String saltSource) {
-        ByteSource salt = new Md5Hash(saltSource);
-        return new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations).toString();
+    public static String generateSixNum(){
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random();
+        for(int i = 0; i < 6; i++){
+            int num = rand.nextInt(10);
+            sb.append(num + "");
+        }
+        return sb.toString();
     }
 
 }

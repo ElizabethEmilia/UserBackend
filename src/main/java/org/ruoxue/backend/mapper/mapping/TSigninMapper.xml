@@ -11,4 +11,8 @@
 		<result column="msgcode" property="msgcode" />
 	</resultMap>
 
+	<select id="getSigninByUid" resultType="org.ruoxue.backend.bean.TAdmin">
+        select id, password, token, salt, msgcode, role from t_signin where id = #{id}
+    </select>
+
 </mapper>
