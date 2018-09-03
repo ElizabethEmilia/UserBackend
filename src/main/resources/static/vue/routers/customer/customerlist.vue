@@ -1,7 +1,7 @@
 <template>
     <!-- 客户列表 -->
     <Card title="客户管理"  class="card-margin">
-        <PagedTable v-if="typeof showList === 'undefined' || showList" data-source="customer" />
+        <PagedTable :columns="columns" v-if="typeof showList === 'undefined' || showList" data-source="customer" />
 
     </Card>
 </template>

@@ -22,7 +22,7 @@ export default {
         ],
         info: {
             id: 1,
-            lpname: '大乔科技工作室',
+            lpname: '加载中...',
             taxType: 1,
             vatType: 1,
             yasType: 1,
@@ -46,7 +46,7 @@ export default {
     }),
     methods: {
         async getInfo() {
-            let result = await $.ajax(`/api/company/${cid}/info`);
+            let result = await $.ajax(`/api/company/${this.cid}/info`);
             if (result.code === 0) {
                 this.info = result.data;
             }

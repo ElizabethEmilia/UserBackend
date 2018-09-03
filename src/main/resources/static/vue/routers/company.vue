@@ -4,7 +4,7 @@
         <div v-if="cid != -1">
             <SetupProgress :cid="cid" />
             <Certificates :cid="cid" />
-            <Information :cid="cid" />
+            <Information :cid="cid" :data="comdata" />
         </div>
     </div>
 </template>
@@ -21,11 +21,13 @@ export default {
     },
     data: () => ({
         cid: -1,
+        comdata: null,
     }),
     methods: {
-        hSelectCompany(_cid) {
-            this.cid = _cid;
-            console.log('[Select Company]', _cid);
+        hSelectCompany(d) {
+            this.comdata = d;
+            this.cid = d.id;
+            console.log('[Select Company]', d);
         }
     }
 }

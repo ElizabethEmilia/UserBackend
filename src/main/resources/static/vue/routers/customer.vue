@@ -1,9 +1,16 @@
 <template>
-    <h1>客户管理</h1>
+    <div>
+        <CustomerList />
+    </div>
 </template>
 
 <script>
+import CustomerList from './customer/customerlist.vue';
+
 export default {
+    components: {
+        CustomerList
+    },
     data: () => ({
 
     })

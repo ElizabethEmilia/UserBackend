@@ -3,7 +3,7 @@
     <Card shadow class="card-margin" style="z-index:99999;opacity: 0.9">
         <span style="margin-right: 10px;">公司</span>
         <Select v-model="selected" placeholder="选择你要查看的公司" style="width: 300px;">
-            <Option v-for="(e, i) in companies" :value="e.cid" :key="e.cid">{{e.lpname}}</Option>
+            <Option v-for="(e, i) in companies" :value="i" :key="i">{{e.lpname}}</Option>
         </Select>
         <div style="margin-top: 5px;"> </div>
     </Card>
@@ -44,14 +44,14 @@ export default {
     }),
     methods: {
         async getCompanies() {
-            let result = $.ajax('/api/company/list');
+            let result = await $.ajax('/api/company/list');
             if (result.code === 0)
                 this.companies = result.data;
         },
     },
     watch: {
         selected(val) {
-            this.$emit('on-select-company', val);
+            this.$emit('on-select-company', this.companies[val]);
         }
     },
     mounted() {

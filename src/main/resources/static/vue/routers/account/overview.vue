@@ -288,7 +288,8 @@ export default {
                 if (result.code) {
                     return alert('获取基本信息失败：' + result.msg);
                 }
-                this.info = result;
+                this.info = result.data;
+                this.avatar = result.data.avatar;
             }
             catch(err) {
                  util.Debug.ralert('获取基本信息失败');
@@ -297,7 +298,7 @@ export default {
         // 获取公司数量
         async getCompanyCount() {
             try {
-                let result = await $.ajax('/api/account/basic');
+                let result = await $.ajax('/api/company/count');
                 if (result.code) {
                     return alert('获取公司数量失败：' + result.msg);
                 }
@@ -310,7 +311,7 @@ export default {
         // 获取收入信息
         async getRecentExchange() {
             try {
-                let result = await $.ajax('/api/account/basic');
+                let result = await $.ajax('/api/exchange/recent');
                 if (result.code) {
                     return alert('获取收入信息失败：' + result.msg);
                 }

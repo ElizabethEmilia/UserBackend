@@ -89,6 +89,9 @@ export default {
                                 },
                                 on: {
                                     async click() {
+                                        if (!confirm("确认要取消订单吗？"))  {
+                                            return;
+                                        }
                                         let id = self.tableData[params.index].id;
                                         try {
                                             let result = await $.ajax(`/api/charge/public/${id}/cancel`, { r: Math.random() });
