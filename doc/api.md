@@ -211,11 +211,62 @@ API Key保存在数据库的t_config表中
 
 * 【LT】查看客户公司的开票申请： `GET /api/customer/{uid}/company/{cid}/receipt`
 
-* 审批客户的开票申请： `POST /api/customer/{uid}/receipt/{rid}/accept`
+* 开票申请的相关操作：
 
-* 拒绝客户的开票申请： `POST /api/customer/{uid}/receipt/{rid}/refuse`
+由于开票申请的操作众多，前端作为状态机处理
+
+状态转换图（后端开发可能不需要实现或者模拟一个状态机，但是有这个图更容易理解）：
+
+![](./images/state.png)
+
+所需的接口包括：
+
+* 管理员对开票申请的 提交: `GET /api/cusstomer/{uid}}/receipt/{rid}/submit`
+
+* 管理员对开票申请的 驳回: `GET /api/cusstomer/{uid}}/receipt/{rid}/refuse-submit`
+
+* 管理员对开票申请的 通过: `GET /api/cusstomer/{uid}}/receipt/{rid}/accept`
+
+* 管理员对开票申请的 分配（代开）: `GET /api/cusstomer/{uid}}/receipt/{rid}/distrib-dist`
+
+* 管理员对开票申请的 分配（自取）: `GET /api/cusstomer/{uid}}/receipt/{rid}/distrib-self`
+
+* 管理员对开票申请的 开票: `GET /api/cusstomer/{uid}}/receipt/{rid}/receipt`
+
+* 管理员对开票申请的 作废: `GET /api/cusstomer/{uid}}/receipt/{rid}/discard`
+
+* 管理员对开票申请的 打包: `GET /api/cusstomer/{uid}}/receipt/{rid}/pack`
+
+* 管理员对开票申请的 核对并寄送: `GET /api/cusstomer/{uid}}/receipt/{rid}/send`
+
+* 管理员对开票申请的 自取: `GET /api/cusstomer/{uid}}/receipt/{rid}/selfrecv`
+
+* 管理员对开票申请的 驳回: `GET /api/cusstomer/{uid}}/receipt/{rid}/refuse-packing`
+
+* 管理员对开票申请的 已签收: `GET /api/cusstomer/{uid}}/receipt/{rid}/recv`
 
 * 查看客户各个公司的开票统计： `GET /api/customer/{uid}/receipt/stat`
+
+```javascript
+// 状态值
+const states = {
+    Saved: 0, // 已提交
+    Submitted: 1, // 已提交，待审核
+    Checked: 2, // 已审核，待分配
+    DistributedDistrib: 3, // 已分配（分配），待开票
+    DistributedSelf: 4, // 已分配（自取），待开票
+    Receipted: 5, // 已开票。待打包
+    Packed: 6, // 已打包,待核对
+    VerifiedAndSent: 7, // 已核对，已寄送
+    ReceivedCompleted: 8, // 已签收
+    RefusedWaitingSubmit: 9, // 已驳回，待提交
+    Abondoned: 10, // 已开票 已作废
+    RefusedWaitingPacking: 11, // 已驳回，待打包
+}
+
+
+
+```
 
 > 业务逻辑说明：
 > 
