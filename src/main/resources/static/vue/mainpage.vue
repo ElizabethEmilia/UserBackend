@@ -34,7 +34,6 @@
                 this.$router.push('/'+name);
                 let moduleName = ModuleConfig.displayNames[name];
                 this.moduleName = moduleName ? moduleName : '';
-                //alert('Selected: ' + name);
             }
         }
     }

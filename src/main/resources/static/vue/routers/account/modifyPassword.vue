@@ -45,11 +45,11 @@
                 if (this.pending)
                     return;
                 if (util.String.isNullOrEmpty(this.old))
-                    return alert('请输入原密码');
+                    return util.MessageBox.Show(this, '请输入原密码');
                 if (!util.String.isVividPassword(this._new))
-                    return alert('新密码格式不符合要求');
+                    return util.MessageBox.Show(this, '新密码格式不符合要求');
                 if (this._new != this.re)
-                    return alert('两次输入的密码不相同');
+                    return util.MessageBox.Show(this, '两次输入的密码不相同');
                 this.pending = true;
                 try {
                     let result = await $.ajax('/api/account/password', {
@@ -58,13 +58,13 @@
                     });
                     this.pending = false;
                     if (result.code) {
-                        return alert(result.msg);
+                        return util.MessageBox.Error(this, result.msg);
                     }
-                    alert('修改密码成功');
+                    util.MessageBox.Error(this, '修改密码成功');
                 }
                 catch(err) {
                     this.pending = false;
-                    alert('修改密码失败');
+                    util.MessageBox.Error(this, '修改密码失败');
                 }
             },
         }

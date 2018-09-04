@@ -66,10 +66,10 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
-                                                alert('操作失败');
+                                                util.MessageBox.Success(this, '操作失败');
                                             }
                                             else {
-                                                alert('操作成功');
+                                                util.MessageBox.Success(this, '操作成功');
                                             }
                                         }
                                         catch(err) {
@@ -94,15 +94,15 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
-                                                alert('操作失败');
+                                                util.MessageBox.Success(this, '操作失败');
                                             }
                                             else {
-                                                alert('操作成功');
+                                                util.MessageBox.Success(this, '操作成功');
                                             }
                                         }
                                         catch(err) {
                                             console.log(err);
-                                            alert('操作失败');
+                                            util.MessageBox.Success(this, '操作失败');
                                         }
                                     }
                                 }

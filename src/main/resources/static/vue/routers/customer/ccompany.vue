@@ -84,20 +84,19 @@ export default {
             this.cdata = cd;
             this.selected = cd.uid;
             this.$emit('on-select', cd);
-            //alert('show info of ' + cd.name);
         },
         // 获取公司
         async getCompany() {
             try {
                 let result = await $.ajax(`/api/customer/${ this.cusData.uid }/company/list`);
                 if (result.code) {
-                    return alert('获取公司失败：' + result.msg);
+                    return util.MessageBox.Show(this, '获取公司失败：' + result.msg);
                 }
                 this.companyCount = result.data.length;
                 this.companyList = result.data;
             }
             catch(err) {
-                 util.Debug.ralert('获取公司失败');
+                 util.MessageBox.Show(this, '获取公司失败');
             }
         },
     },

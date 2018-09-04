@@ -114,6 +114,7 @@ function renderVDOM(f, t, h, p, self, baseURL) {
 // 根据当前状态进行render
 function render(state, h, p, self, baseURL) {
     let to = receiptStateMap[state];
+    if (!to) return [];
     let kt = Object.keys(to);
     let rA = []
     for (let t of kt)

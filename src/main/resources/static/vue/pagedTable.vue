@@ -82,7 +82,6 @@ export default (function(){
                 this.$emit('sizechanged', s);
             },
             async getContentOfPage(page, size=10) {
-                console.log(`[PagedTable] get content of page=${page}, size=${size}`);
                 let add_param = util.isStringNullOrEmpty(this.additionalParams)?'':'&'+this.additionalParams;
                 let url = this.requestUrl + `?page=${page}&size=${size}${add_param}`;
                 try {
@@ -91,10 +90,10 @@ export default (function(){
                         throw new Error(result);
                     }
                     this.tableData = result.data;
-                    console.log(`[PagedTable] success: page=${page}, size=${size}`);
+                    console.log(`[PagedTable] 获取数据成功: `, url);
                 }
                 catch(err) {
-                    console.error(`[PagedTable] failed: page=${page}, size=${size}`, err);
+                    console.error(`[PagedTable] 获取数据失败: `, url);
                     this.$emit('onajaxerror', err);
                 }
             },
@@ -103,15 +102,19 @@ export default (function(){
                 let url = this.requestUrl + `?count`;
                 try {
                     this.count = await $.ajax(url);
-                    console.log(`[PagedTable] count: ${this.count}`);
+                    console.log(`[PagedTable] 获取记录数量: ${this.count}条记录`);
                 }
                 catch(err) {
-                    console.error(`[PagedTable] get count failed`, err);
+                    console.error(`[PagedTable] 获取记录数量失败：`, url);
                     this.$emit('onajaxerror', err);
                 }
             },
             refresh() {
                 this.getContentOfPage(this.page, this.size);
+            },
+            // 根据param获取第param.index个元素
+            p(param) {
+                return this.d[param];
             }
         },
         computed: {
@@ -122,7 +125,7 @@ export default (function(){
         },
         watch: {
             dataSource(val) {
-                console.log('[PagedTable] Source changed', val);
+                console.log('[PagedTable] 数据源发生变化', val);
                 this.page = 1;
                 this.getContentOfPage(1, this.size);
             },

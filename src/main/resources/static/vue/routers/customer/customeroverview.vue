@@ -285,8 +285,9 @@ export default {
                  util.Debug.ralert('获取公司失败');
             }
         },
-        discardChanges() {
-            confirm("确认放弃更改?") && (this.editMode=false);
+        async discardChanges() {
+            await util.MessageBox.ComfirmAsync(this, "确认放弃更改?");
+            this.editMode=false;
         },
         selectCompany(i) {
             console.log('[select]', i);

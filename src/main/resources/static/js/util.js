@@ -159,6 +159,70 @@ function requestNextStateHandler(thisState, nextState, stateMap, baseURL, postBo
     }
 }
 
+// 根据状态机进行render
+// from , to, render, params
+function __SM_renderVDOM(f, t, h, p, self, url, map, an) {
+    let action = map[f][t];
+    // 如果转台转换不存在
+    if (typeof action == "undefined")
+        return [];
+    let DividerVDOM = h('span', {}, ' | ');
+    let LinkVDOM = h('a', {
+        props: { href: 'javascript:void(0)', },
+        on: {
+            async click() {
+                if (!confirm('确认执行“' + an[action] + '”操作吗？'))
+                    return;
+                let id = self.d[p.index].id;
+                try {
+                    let r = await $.ajax(`${url}/${id}/${action}`, {id});
+                    if (r.code)
+                        return alert('操作失败' + r.msg);
+                    alert('操作成功');
+                    self.refresh();
+                }
+                catch (err) {
+                    console.log(err);
+                    alert('操作失败');
+                }
+            }
+        }
+    }, an[action])
+    return [ LinkVDOM, DividerVDOM ];
+}
+
+// 根据当前状态进行render
+function __SM_render(state, h, p, self, url, map, an) {
+	let to = map[state];
+	if (!to) return [];
+	let kt = Object.keys(to);
+    let rA = []
+    for (let t of kt)
+        rA = [ ...rA, ...__SM_renderVDOM(state, t, h, p, self, url, map, an) ];
+    return rA;
+}
+
+function __Miyuki_MessageBoxBuilder(ty) {
+	return function(vmctx, msg, title='提示') {
+		vmctx.$Modal[ty]({
+			title,
+			content: msg,
+		});
+	}
+}
+
+function __Miyuki_MessageBoxAsyncBuilder(ty) {
+	return function(vmctx, msg, title='提示') {
+		return new Promise((resolve, reject) => {
+			vmctx.$Modal[ty]({
+				title,
+				content: msg,
+				onOk: resolve,
+				onCancel: reject,
+			});
+		});
+	}
+}
 
 export default {
     forGetParams, // 通过对象生成Get方法参数
@@ -197,5 +261,19 @@ export default {
 	// 状态机
 	State: {
 		requestNextStateHandler,
+		render: __SM_render, // 根据状态机渲染DOM，务必bind this指针
+	},
+
+	// 提示框
+	MessageBox: {
+		Show: __Miyuki_MessageBoxBuilder('info'),
+		Error: __Miyuki_MessageBoxBuilder('error'),
+		Warning: __Miyuki_MessageBoxBuilder('warning'),
+		Success: __Miyuki_MessageBoxBuilder('success'),
+		ShowAsync: __Miyuki_MessageBoxAsyncBuilder('info'),
+		ErrorAsync: __Miyuki_MessageBoxAsyncBuilder('error'),
+		WarningAsync: __Miyuki_MessageBoxAsyncBuilder('warning'),
+		SuccessAsync: __Miyuki_MessageBoxAsyncBuilder('success'),
+		ComfirmAsync:  __Miyuki_MessageBoxAsyncBuilder('confirm'),
 	}
 }

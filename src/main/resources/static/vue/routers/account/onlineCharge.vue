@@ -33,7 +33,7 @@
             </div>
 
             <div style="margin-top: 5px; margin-left: 30px;">
-                <Checkbox v-model="onlinePayReadTerms">我已阅读<a href="javascript:void(0)">《服务条款》</a></Checkbox>。
+                <Checkbox v-model="onlinePayReadTerms">我已阅读<a href="javascript:void(0)" @click="readTerms()">《服务条款》</a></Checkbox>。
                 
             </div>
 
@@ -48,6 +48,8 @@
 
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
 import '../../../css/style.less';
+import util from '../../../js/util.js';
+import ServiceTermsDialog from './dialogs/serviceterms.vue';
 
 export default {
     data: () => ({
@@ -63,12 +65,12 @@ export default {
             //console.log(Vue, $);
             let amount = Number(this.onlinePayAmount);
             if (this.onlinePayAmount === "" || Number.isNaN(amount)) {
-                alert('请输入数字');
+                util.MessageBox.Show(this, '请输入数字');
                 return;
             }
             // 检查是不是整数
             if (Number.parseInt(amount) != amount) {
-                alert('请输入整数');
+                util.MessageBox.Show(this, '请输入整数');
                 return;
             }
             // 充值种类
@@ -77,14 +79,26 @@ export default {
             try {
                 let result = await $.ajax('/api/charge/' + type, { amount });
                 if (result.code) {
-                    return alert('充值失败。' + result.msg);
+                    return util.MessageBox.Show(this, '充值失败。' + result.msg);
                 }
-                alert('暂时不知道充值陈宫需要其他的什么步骤  但肯定不是这样就能成功的   肯定还需要其他的步骤');
+                util.MessageBox.Show(this, '暂时不知道充值陈宫需要其他的什么步骤  但肯定不是这样就能成功的   肯定还需要其他的步骤');
             }
             catch(err) {
-                alert('无法连接服务器');
+                util.MessageBox.Show(this, '无法连接服务器');
             }
         },
+        // 阅读服务协议
+        readTerms() {
+            this.$Modal.info({
+                title: '服务条款',
+                width: 800,
+                render: h => h(ServiceTermsDialog, { 
+                    props: {
+                        content: 'terms'
+                    }
+                 })
+            })
+        }
     },
     computed: {
         formatNumber () {

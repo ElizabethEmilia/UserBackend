@@ -48,15 +48,15 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/admin/${aid}/delete`, 't');
                                             if (result.code == 0) {
-                                                alert('删除成功');
+                                                util.MessageBox.Success(this, '删除成功');
                                                 $this.tableData.splice(params.index);
                                             }
                                             else {
-                                                alert('删除失败');
+                                                util.MessageBox.Error(this, '删除失败');
                                             }
                                         }
                                         catch(err) {
-                                            alert('删除失败。');
+                                            util.MessageBox.Error(this, '删除失败。');
                                         }
                                     }
                                 }

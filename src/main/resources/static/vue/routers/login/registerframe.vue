@@ -101,18 +101,18 @@ export default {
                 (this.customer.type > -1 && this.customer.type < memberType.length);
             
             if (!matchesRestriction) {
-                alert('请检查你的输入是否正确');
+                util.MessageBox.Show(this, '请检查你的输入是否正确');
                 return;
             }
 
             matchesRestriction = util.passwordMatchesRestriction(this.customer.password);
             if (!matchesRestriction) {
-                alert('密码不符合复杂度要求');
+                util.MessageBox.Show(this, '密码不符合复杂度要求');
                 return;
             }
 
             if (!this.msgsent) {
-                alert('请发送短信验证码');
+                util.MessageBox.Show(this, '请发送短信验证码');
                 return;
             }
 
@@ -122,15 +122,15 @@ export default {
                 let result = await $.ajax('/api/register', util.forPostParams(this.customer));
                 this.pendingRegister = false;
                 if (result.code === 0) {
-                    alert('注册成功');
+                    util.MessageBox.Show(this, '注册成功');
                     show('LoginFrame');
                 }
                 else {
-                    alert('' + result.msg);
+                    util.MessageBox.Show(this, '' + result.msg);
                 }
             }
             catch(err) {
-                alert('注册失败');
+                util.MessageBox.Show(this, '注册失败');
                 this.pendingRegister = false;
             }
         },
@@ -138,17 +138,17 @@ export default {
             this.$emit('on-request-change-com', name);
         },
         sendMessageFailed(err) {
-            alert('发送短信失败。');
+            util.MessageBox.Show(this, '发送短信失败。');
         },
         sendMessageSuccess(result) {
-            alert('发送短信成功');
+            util.MessageBox.Show(this, '发送短信成功');
         },
         sendMessage(phone) {
             this.customer.phone = phone;
             console.log('phone number: ' + phone);
         },
         handleInvalidNumber(phone) {
-            alert(`${phone} 不是一个正确的手机号码。`);
+            util.MessageBox.Show(this, `${phone} 不是一个正确的手机号码。`);
         }
     },
     watch: {

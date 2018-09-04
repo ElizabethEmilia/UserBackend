@@ -50,7 +50,7 @@ export default {
     methods: {
         async login() {
             if (util.isStringNullOrEmpty(this.username) || util.isStringNullOrEmpty(this.password)) {
-                alert('请输入用户名和密码');
+                util.MessageBox.Show(this, '请输入用户名和密码');
                 return;
             }
 
@@ -67,16 +67,16 @@ export default {
                     code: this.code,
                 });
                 if (result.code === 0) {
-                    alert('登陆成功');
+                    await util.MessageBox.ShowAsync(this, '登陆成功');
                     location.href = "./";
                 }
                 else {
-                    alert('' + result.msg);
+                    await util.MessageBox.ShowAsync(this, '' + result.msg);
                     this.pending = false;
                 }
             }
             catch(err) {
-                alert('无法连接服务器');
+                await util.MessageBox.ShowAsync(this, '无法连接服务器');
                 this.pending = false;
             }
         },
@@ -86,7 +86,6 @@ export default {
         // 从组件获取图片验证码
         inputImageCode(val) {
             this.code = val;
-            console.log(this.code);
         },
     },
     watch: {

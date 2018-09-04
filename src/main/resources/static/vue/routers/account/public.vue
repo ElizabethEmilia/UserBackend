@@ -48,6 +48,7 @@ import PagedTable from '../../pagedTable.vue';
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
 import '../../../css/style.less';
 import $ from '../../../js/ajax.js';
+import util from '../../../js/util.js';
 
 export default {
     components: {
@@ -97,14 +98,14 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/charge/public/${id}/cancel`, { r: Math.random() });
                                             if (result.code) {
-                                                alert('操作失败');
+                                                util.MessageBox.Show(this, '操作失败');
                                             }
                                             else {
-                                                alert('操作成功');
+                                                util.MessageBox.Success(this, '操作成功');
                                             }
                                         }
                                         catch(err) {
-                                            alert('操作失败');
+                                            util.MessageBox.Success(this, '操作失败');
                                         }
                                     }
                                 }

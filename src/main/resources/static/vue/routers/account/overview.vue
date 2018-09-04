@@ -336,8 +336,9 @@ export default {
             }
         },
 
-        discardChanges() {
-            confirm("确认放弃更改?") && (this.editMode=false);
+        async discardChanges() {
+            await util.MessageBox.ComfirmAsync(this, "确认放弃更改?");
+            this.editMode=false;
         }
     },
     watch: {

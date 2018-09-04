@@ -59,18 +59,11 @@ export default {
         imageCode: '',
     }),
     methods: {
-        getCode() {
-            if (this.pending)
-                return;
-            this.pending = true;
-            // 获取验证码
-            alert('TODO:/// msgcode!!');
-        },
         show(name) {
             this.$emit('on-request-change-com', name);
         },
         sendMessageFailed(err) {
-            alert('发送短信失败。');
+            util.MessageBox.Show(this, '发送短信失败。');
         },
         sendMessageSuccess(result) {
             this.sent = true;
@@ -81,7 +74,9 @@ export default {
             console.log('phone number: ' + phone);
         },
         handleInvalidNumber(phone) {
-            alert(`${phone} 不是一个正确的手机号码。`);
+            if (phone.length === 0)
+                return util.MessageBox.Show(this, '请输入手机号码');
+            util.MessageBox.Show(this, `${phone} 不是一个正确的手机号码。`);
         },
         // 从组件获取短信验证码
         inputMessageCode(val) {
@@ -100,7 +95,7 @@ export default {
                 return;
 
             if (this.sent === false || this.param.phone === '' || this.param.msgcode === '') {
-                alert('请输入短信验证码。');
+                util.MessageBox.Show(this,  '请输入短信验证码。');
                 return;
             }
 
@@ -111,7 +106,7 @@ export default {
                 if (result.code === 0 && typeof result.redirect !== "undefined" && result.redirect != '')
                     location.href=result.redirect;
                 else {
-                    alert(result.msg?result.msg:'无法连接到服务器');
+                    util.MessageBox.Show(this, result.msg?result.msg:'无法连接到服务器');
                     throw Error(result);
                 }
             }

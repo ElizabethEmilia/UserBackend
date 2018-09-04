@@ -54,6 +54,12 @@ export default {
                     }
                     
                     this.settings = result.data;
+                    
+                    // 更新到localstorage缓存
+                    if (window.localStorage) {
+                        window.localStorage.setItem("_Miyuki_settings", JSON.stringify(result.data));
+                    }
+
                     this.fetchState = this.fetchStates.success;
                 }
                 else {
@@ -66,6 +72,18 @@ export default {
         }
     },
     created() {
+        // 从localstorage缓存读取设置项，以保证可以立即显示
+        if (window.localStorage) {
+            try {
+                let s = window.localStorage.getItem("_Miyuki_settings");
+                if (s != null && !s)
+                    this.settings = JSON.parse(s);
+            }
+            catch(err) {
+                copnsole.log(err);
+            }
+        }
+
         this.getList();
     }
 }

@@ -48,6 +48,7 @@ import util from '../../../js/util.js';
 import { receiptType, receiptStatus } from '../../../constant.js';
 import PagedTable from '../../pagedTable.vue';
 import companyVue from '../company.vue';
+import receiptstate from './receipt_s.js';
     
 export default {
     components: {
@@ -78,57 +79,7 @@ export default {
                 {title:"确认时间",key:"tmVallidate"},
                 { 
                     title: '操作', 
-                    key: 'action', 
-                    render: (h, params) => {
-                        console.log(h, params);
-                        return h('div', [
-                            h('a', {
-                                props: {
-                                    href: 'javascript:void(0)',
-                                },
-                                on: {
-                                    async click() {
-                                        if (!confirm('确认删除该开票申请吗？'))
-                                            return;
-                                        let id = self.d[params.index].id;
-                                        try {
-                                            let r = await $.ajax(`/api/receipt/${id}/delete`, {id});
-                                            if (r.code)
-                                                return alert('操作失败' + r.msg);
-                                            alert('删除成功');
-                                            self.refresh();
-                                        }
-                                        catch (err) {
-                                            alert('操作失败');
-                                        }
-                                    }
-                                }
-                            }, '删除'),
-                            h('span', {}, ' | '),
-                            h('a', {
-                                props: {
-                                    href: 'javascript:void(0)',
-                                },
-                                on: {
-                                    async click() {
-                                        if (!confirm('确认提交该开票申请吗？'))
-                                            return;
-                                        let id = self.d[params.index].id;
-                                        try {
-                                            let r = await $.ajax(`/api/receipt/${id}/submit`, {id});
-                                            if (r.code)
-                                                return alert('操作失败' + r.msg);
-                                            alert('操作成功');
-                                            self.refresh();
-                                        }
-                                        catch (err) {
-                                            alert('操作失败');
-                                        }
-                                    }
-                                }
-                            }, '提交')
-                        ]);
-                    }
+                    render: (h, p) => h('div', util.State.render(self.d[p.index].status, h, p, self, "/api/receipt",receiptstate.receiptStateMap, receiptstate.receiptActionName)),
                 }
             ];
         },
