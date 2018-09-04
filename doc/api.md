@@ -211,11 +211,6 @@ API Key保存在数据库的t_config表中
 
 * 【LT】查看客户公司的开票申请： `GET /api/customer/{uid}/company/{cid}/receipt`
 
-> 1. 全部：`GET ~/all`
-> 2. 待确认：`GET ~/pending`
-> 3. 已确认：`GET ~/confirmed`
-> 4. 已取消：`GET ~/cancelled`
-
 * 审批客户的开票申请： `POST /api/customer/{uid}/receipt/{rid}/accept`
 
 * 拒绝客户的开票申请： `POST /api/customer/{uid}/receipt/{rid}/refuse`
@@ -234,7 +229,21 @@ API Key保存在数据库的t_config表中
 
 * 【L】查看客户的对公充值记录： `GET /api/customer/{uid}/publiccharge`
 
+> 1. 全部：`GET ~/all`
+> 2. 待确认：`GET ~/pending`
+> 3. 已确认：`GET ~/confirmed`
+> 4. 已取消：`GET ~/cancelled`
+
 * 【L】查看客户的产品订单： `GET /api/customer/{uid}/orders`
+
+> 1. 全部：`GET ~/all`
+> 2. 待支付：`GET ~/pending`
+> 3. 已支付：`GET ~/paid`
+> 4. 已取消：`GET ~/cancelled`
+
+* 确认客户的对公充值： `POST /api/customer/{uid}/publiccharge/{pid}/confirm`
+
+* 取消客户的对公充值： `POST /api/customer/{uid}/publiccharge/{pid}/cancel`
 
 ### 2.2 【S】修改管理员资料
 

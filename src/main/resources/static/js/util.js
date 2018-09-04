@@ -1,3 +1,5 @@
+import $ from './ajax.js';
+
 function forPostParamsQueryString(obj) {
 	if (typeof obj !== "object")
 		throw new Error("obj is not an object");
@@ -136,6 +138,28 @@ function ralert(param) {
 	alert(param);
 }
 
+/** 状态转换请求函数 */
+function requestNextStateHandler(thisState, nextState, stateMap, baseURL, postBody=undefined, success=undefined, fail=undefined) {
+    let requestAction = stateMap[thisState][nextState];
+    if (typeof requestAction === "undefined")
+        throw new Error('[状态转换] 不存在状态' + thisState + '到' + nextState + '的转换');
+    fail = fail || function(err) { alert("操作失败"); console.log(err); }
+	success = success || function(data) { alert('操作成功'); console.log(data); }
+	postBody = postBody || {r: Math.random()};
+    return async function() {
+		let requestURL = baseURL + requestAction;
+        try {
+			let result = $.ajax(requestAction, postBody);
+			if (result.code == 0) success.bind(this)(result.data);
+			fail.bind(this)(result);
+        }
+        catch(err) {
+			fail.bind(this)(err);
+        }
+    }
+}
+
+
 export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
@@ -168,5 +192,10 @@ export default {
 	String: {
 		isNullOrEmpty: isStringNullOrEmpty,
 		isVividPassword: passwordMatchesRestriction,
+	},
+
+	// 状态机
+	StateMachine: {
+		requestNextStateHandler,
 	}
 }

@@ -11,10 +11,12 @@
             v-if="selectedUser.uid > 0 &&  selectedCompany.id > 0"
             :cid="selectedCompany.uid"
         /-->
-        <CustomerPublic 
-            v-if="selectedUser.uid > 0"
-            :uid="selectedUser.uid"
-        />
+        <div v-if="selectedUser.uid > 0">
+            <CustomerPublic :uid="selectedUser.uid" />
+            <CustomerOrder :uid="selectedUser.uid" />
+            <CustomerReceipt :uid="selectedUser.uid" />
+        </div>
+        
     </div>
 </template>
 
@@ -22,10 +24,13 @@
 import CustomerList from './customer/customerlist.vue';
 import CustomerCompantInformation from './company/information.vue';
 import CustomerPublic from './customer/cuspublic.vue';
+import CustomerOrder from './customer/cusorder.vue';
+import CustomerReceipt from './customer/cusreceipt.vue';
 
 export default {
     components: {
-        CustomerList, CustomerCompantInformation, CustomerPublic,
+        CustomerList, CustomerCompantInformation, CustomerPublic, CustomerOrder,
+        CustomerReceipt,
     },
     data: () => ({
         selectedCompany: { id: -1 },
