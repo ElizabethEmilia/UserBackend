@@ -224,6 +224,32 @@ function __Miyuki_MessageBoxAsyncBuilder(ty) {
 	}
 }
 
+function __Miyuki_MessageBoxFromComponentBuilder(ty) {
+	return function(vmctx, com, title, props) {
+		vmctx.$Modal[ty]({
+			title,
+			render: h=>h(com, {
+				props
+			})
+		});
+	}
+}
+
+function __Miyuki_MessageBoxFromComponentAsyncBuilder(ty) {
+	return function(vmctx, com, title, props=({}), attrs=({})) {
+		return new Promise((resolve, reject) => {
+			vmctx.$Modal[ty](Object.assign({
+				title,
+				onOk: resolve,
+				onCancel: reject,
+				render: h=>h(com, {
+					props
+				})
+			}, attrs));
+		})
+	}
+}
+
 export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
@@ -275,5 +301,7 @@ export default {
 		WarningAsync: __Miyuki_MessageBoxAsyncBuilder('warning'),
 		SuccessAsync: __Miyuki_MessageBoxAsyncBuilder('success'),
 		ComfirmAsync:  __Miyuki_MessageBoxAsyncBuilder('confirm'),
+		ShowComponent: __Miyuki_MessageBoxFromComponentBuilder('info'),
+		ShowComponentAsync: __Miyuki_MessageBoxFromComponentAsyncBuilder('confirm'),
 	}
 }

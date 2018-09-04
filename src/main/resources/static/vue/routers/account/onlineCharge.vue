@@ -10,7 +10,7 @@
                     充值金额
                 </span> 
                 <Poptip trigger="focus">
-                    <InputNumber :step="100" size="middle" placeholder="" v-model="onlinePayAmount" style="width: 200px; font-size: 14px" />                    
+                    <InputNumber :step="100" placeholder="" v-model="onlinePayAmount" style="width: 200px; font-size: 14px" />                    
                     <div slot="content"><span style="font-size: 20px; color: green;">￥{{ formatNumber }}</span></div>
                 </Poptip>
                 <p>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="inline-margin">
-                <Button :loading="pending" type="primary" size="middle" style="width: 200px;" shape="circle" icon="ios-card" :disabled="!onlinePayReadTerms" @click="onlinePaymentCharge">充值</Button>
+                <Button :loading="pending" type="primary"  style="width: 200px;" shape="circle" icon="ios-card" :disabled="!onlinePayReadTerms" @click="onlinePaymentCharge">充值</Button>
             </div>
         </Card>
 
@@ -54,7 +54,7 @@ import ServiceTermsDialog from './dialogs/serviceterms.vue';
 export default {
     data: () => ({
         onlinePayMethod: "微信支付",
-        onlinePayAmount: "", // :String
+        onlinePayAmount: 0,
         onlinePayReadTerms: false,
 
         pending: false,

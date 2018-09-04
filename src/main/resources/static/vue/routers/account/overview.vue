@@ -106,7 +106,7 @@
                                 </Select>
                                 <p style="margin-top: 5px;">
                                     <span class="title-before-input"> </span>
-                                    <Input v-model="value14" placeholder="" clearable style="width: 300px" />
+                                    <Input v-model="infoSave.address" placeholder="" clearable style="width: 300px" />
                                 </p>
                                 
                             </div>

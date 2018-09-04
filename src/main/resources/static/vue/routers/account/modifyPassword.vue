@@ -8,7 +8,7 @@
             </div>
             <div class="line-margin">
                 <span class="title-before-input">新密码</span>
-                <Input type="password" style="width: 200px;" v-model="_new" /> 
+                <Input type="password" style="width: 200px;" v-model="New" /> 
             </div>
             <div class="line-margin">
                 <span class="title-before-input">再次输入</span>
@@ -33,7 +33,7 @@
     export default {
         data: () => ({
             old: '',
-            _new: '',
+            New: '',
             re: '',
 
             doesNotMatch: true,
@@ -46,15 +46,15 @@
                     return;
                 if (util.String.isNullOrEmpty(this.old))
                     return util.MessageBox.Show(this, '请输入原密码');
-                if (!util.String.isVividPassword(this._new))
+                if (!util.String.isVividPassword(this.New))
                     return util.MessageBox.Show(this, '新密码格式不符合要求');
-                if (this._new != this.re)
+                if (this.New != this.re)
                     return util.MessageBox.Show(this, '两次输入的密码不相同');
                 this.pending = true;
                 try {
                     let result = await $.ajax('/api/account/password', {
                         old: md5(this.old),
-                        new: md5(this._new),
+                        new: md5(this.New),
                     });
                     this.pending = false;
                     if (result.code) {

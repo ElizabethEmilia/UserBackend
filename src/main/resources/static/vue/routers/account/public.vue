@@ -32,8 +32,8 @@
                 <TabPane label="已取消" name="cancelled"></TabPane>
             </Tabs>
 
-            <ButtonGroup style="margin-bottom: 10px;">
-                <Button>新增订单</Button>
+            <ButtonGroup style="margin: 15px;">
+                <Button @click="newOrder">新增订单</Button>
                 <Button>取消订单</Button>
                 <Button>查看详情</Button>
             </ButtonGroup>
@@ -49,6 +49,7 @@ import { industry, memberType, paymentMethod, publicOrderStatus } from '../../..
 import '../../../css/style.less';
 import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
+import PublicChargeDialog from './dialogs/newpublic.vue';
 
 export default {
     components: {
@@ -129,12 +130,27 @@ export default {
         },
 
         dataSource: "publiccharge/",
-        req_url: "all"
+        req_url: "all",
+
+        newConfig: {
+
+        },
     }),
 
     methods: {
         tabclick(name) {
             this.res_url = name;
+        },
+        async newOrder() {
+            try {
+                await util.MessageBox.ShowComponentAsync(this, PublicChargeDialog, "新增订单", {
+                    
+                }, { width: 800, });
+                alert('用户提交了操作');
+            }
+            catch(err) {
+                alert('用户取消了操作');
+            }
         }
     }
 }
