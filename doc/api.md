@@ -263,7 +263,39 @@ const states = {
     Abondoned: 10, // 已开票 已作废
     RefusedWaitingPacking: 11, // 已驳回，待打包
 }
+```
 
+
+状态转换表：
+
+```
+Saved(0)
+  ->Submitted(1)
+
+Checked(2)
+  ->DistributedDistrib(3)
+  ->DistributedSelf(4)
+
+DistributedDistrib(3)
+  ->Receipted(5)
+
+DistributedSelf(4)
+  ->Receipted(5)
+
+Receipted(5)
+  ->Packed(6)
+  ->Abondoned(10)
+
+Packed(6)
+  ->VerifiedAndSent(7)
+  ->ReceivedCompleted(8)
+  ->RefusedWaitingPacking(11)
+
+VerifiedAndSent(7)
+  ->ReceivedCompleted(8)
+
+RefusedWaitingPacking(11)
+  ->Packed(6)
 
 
 ```
