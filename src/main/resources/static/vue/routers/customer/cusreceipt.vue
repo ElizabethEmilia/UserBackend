@@ -74,11 +74,7 @@ export default {
                 { 
                     title: '操作', 
                     width: 200,
-                    render: (h, p) => {
-                        let state = self.d[p.index].status;
-                        console.log('[]', state);
-                        return h('div', receiptSM.render(self.d[p.index].status, h, p, self));
-                    }
+                    render: (h, p) => h('div', receiptSM.render(self.d[p.index].status, h, p, self)),
                 }
             ];
         },

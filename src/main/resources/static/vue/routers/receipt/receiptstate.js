@@ -1,3 +1,5 @@
+import $ from '../../../js/ajax';
+
 const states = {
     Saved: 0, // 已提交
     Submitted: 1, // 已提交，待审核
@@ -93,19 +95,19 @@ function renderVDOM(f, t, h, p, self) {
                     return;
                 let id = self.d[p.index].id;
                 try {
-                    let r = await $.ajax(`/api/receipt/${id}/${action}`, {id});
+                    let r = await $.ajax(`/api/customer/_/receipt/${id}/${action}`, {id});
                     if (r.code)
                         return alert('操作失败' + r.msg);
                     alert('操作成功');
                     self.refresh();
                 }
                 catch (err) {
+                    console.log(err);
                     alert('操作失败');
                 }
             }
         }
     }, receiptActionName[action])
-    debugger
     return [ LinkVDOM, DividerVDOM ];
 }
 
