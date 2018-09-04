@@ -16,5 +16,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequestMapping("/api/logs")
 public class TLogsController {
+
+
 	
 }

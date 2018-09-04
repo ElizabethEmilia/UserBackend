@@ -26,4 +26,12 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="getRemoveAdminLids" resultType="java.lang.Integer">
+		select lid from t_admin where status = 3
+	</select>
+
+	<delete id="removeAdmin">
+		delete from t_admin where status = 3
+	</delete>
+
 </mapper>

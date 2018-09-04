@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-04
  */
 @TableName("t_tax_account")
 public class TTaxAccount extends Model<TTaxAccount> {

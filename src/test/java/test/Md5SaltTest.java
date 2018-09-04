@@ -1,4 +1,4 @@
-package org.ruoxue.backend.controller;
+package test;
 
 import org.ruoxue.backend.util.Md5SaltTool;
 import org.ruoxue.backend.util.XunBinKit;

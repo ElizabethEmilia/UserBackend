@@ -24,6 +24,17 @@
 		<result column="balance" property="balance" />
 		<result column="rec_type" property="recType" />
 		<result column="reg_date" property="regDate" />
+		<result column="status" property="status" />
 	</resultMap>
+
+	<select id="getRemoveCustomerLids" resultType="java.lang.Integer">
+		select lid from t_customer where status = 3
+	</select>
+
+	<delete id="removeCustomer">
+		delete from t_customer where status = 3
+	</delete>
+
+
 
 </mapper>

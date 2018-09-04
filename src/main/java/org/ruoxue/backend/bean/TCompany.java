@@ -1,10 +1,11 @@
 package org.ruoxue.backend.bean;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-04
  */
 @TableName("t_company")
 public class TCompany extends Model<TCompany> {
@@ -59,7 +60,7 @@ public class TCompany extends Model<TCompany> {
 	private Date oriTaxPackEnd;
 	@TableField("tm_first_ec")
 	private Date tmFirstEc;
-	private Integer status;
+	private String status;
 
 
 	public Integer getId() {
@@ -238,11 +239,11 @@ public class TCompany extends Model<TCompany> {
 		this.tmFirstEc = tmFirstEc;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

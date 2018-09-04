@@ -1,11 +1,12 @@
 package org.ruoxue.backend.bean;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableName;
-import java.io.Serializable;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-04
  */
 @TableName("t_customer")
 public class TCustomer extends Model<TCustomer> {
@@ -43,6 +44,10 @@ public class TCustomer extends Model<TCustomer> {
 	private Integer recType;
 	@TableField("reg_date")
 	private Date regDate;
+    /**
+     * 用户的状态： 1-正常, 2-冻结, 3-删除
+     */
+	private Integer status;
 
 
 	public Integer getUid() {
@@ -205,6 +210,14 @@ public class TCustomer extends Model<TCustomer> {
 		this.regDate = regDate;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.uid;
@@ -233,6 +246,7 @@ public class TCustomer extends Model<TCustomer> {
 			", balance=" + balance +
 			", recType=" + recType +
 			", regDate=" + regDate +
+			", status=" + status +
 			"}";
 	}
 }
