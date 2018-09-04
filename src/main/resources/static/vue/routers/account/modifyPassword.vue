@@ -1,8 +1,7 @@
 <template>
     <!-- 修改密码 -->
-    <Card class="card-margin">
-        <Divider orientation="left"><h3>修改密码</h3></Divider>
-        <div style="margin-top: 20px; margin-left: 30px;">
+    <Card title="修改密码"  :bordered="false" dis-hover>
+        <div style="margin-top: 5px; margin-left: 0px;">
             <div class="line-margin">
                 <span class="title-before-input">原密码</span>
                 <Input type="password" style="width: 200px;" v-model="old" /> 

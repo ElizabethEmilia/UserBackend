@@ -1,7 +1,7 @@
 <template>
     <div>
         <Overview @on-edit-mode-change="onOverviewEditModeChange" />
-        <ModifyPassword v-if="overviewEditMode" />
+        <!--ModifyPassword v-if="overviewEditMode" /-->
         <OnlineCharge />
         <PublicCharge />
         <ChargeDetail />

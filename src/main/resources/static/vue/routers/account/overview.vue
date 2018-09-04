@@ -89,6 +89,11 @@
                             </div>
 
                             <div style="margin-bottom: 5px;">
+                                <span class="title-before-input">其他手机号 </span>
+                                <Input v-model="infoSave.others" placeholder="" clearable style="width: 200px" />
+                            </div>
+
+                            <div style="margin-bottom: 5px;">
                                 <span class="title-before-input">地址 </span>
                                 <Select v-model="infoSave.province" style="width: 100px;">
                                     <Option v-for="(e,i) in provinces" :value="e" :key="e">{{ e }}</Option>
@@ -105,6 +110,7 @@
                                 </p>
                                 
                             </div>
+
 
                         </Card>
                     </Row>
@@ -153,6 +159,10 @@
 
                         </Card>
                     </Row>
+
+                    <Row>
+                        <ModifyPassword v-if="editMode" />
+                    </Row>
                 </Col>
             </Row>
         </Card>
@@ -165,6 +175,7 @@ import '../../../css/style.less';
 import util from '../../../js/util.js';
 import $ from '../../../js/ajax.js';
 import md5 from 'js-md5';
+import ModifyPassword from './modifyPassword.vue';
 
 /**
  * 事件
@@ -173,6 +184,9 @@ import md5 from 'js-md5';
  */
 
 export default {
+    components: {
+        ModifyPassword
+    },
     data: () => ({
         info: {
             uid: 0,

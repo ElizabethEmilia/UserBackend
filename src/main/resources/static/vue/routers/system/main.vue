@@ -11,7 +11,7 @@
             </div>
 
             <div style="margin-top: 15px;"  v-for="(e,i) in settings" :key="i" >
-                <ConfigItem :name="e.name" :value="''+e.value" :friendly-name="e.friendlyName" :type="e.typeString" :disabled="e.disabled" />
+                <ConfigItem :name="e.name" :value="''+e.value" :friendly-name="e.friendlyName" :type="e.typeString" :disabled="e.disabled" :desc="e.description" />
             </div>
     </Card>
 </template>
@@ -45,6 +45,14 @@ export default {
             try {
                 let result = await $.ajax('/api/system/settings');
                 if (result.code == 0) {
+                    // 处理数据以兼容后端
+                    for (let i=0; i<result.data.length; i++) {
+                        if (!result.data[i].friendlyName)
+                            result.data[i].friendlyName = result.data[i].friendlyname;
+                        if (!result.data[i].typeString)
+                            result.data[i].typeString = settingTypes[result.data[i].type];
+                    }
+                    
                     this.settings = result.data;
                     this.fetchState = this.fetchStates.success;
                 }

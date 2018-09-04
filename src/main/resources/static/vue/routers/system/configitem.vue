@@ -2,7 +2,7 @@
     <div class="margin-top: 10px;">
         <div class="inline item">
             <div class="inline title" >
-                <Poptip trigger="hover" :title="subtitle" :content="inputValue"  placement="top-start">
+                <Poptip trigger="hover" :title="subtitle" :content="desc ? desc : '无关于该设置项的描述'"  placement="top-start">
                     <span :style="{ color: !disabled ? '#000':'#aaa' }">{{ title }}</span>
                 </Poptip>
             </div>
@@ -58,7 +58,7 @@ import md5 from 'js-md5';
 
 export default {
     props: [
-        'friendlyName', 'name', 'value', 'type', 'disabled'
+        'friendlyName', 'name', 'value', 'type', 'disabled', 'desc'
     ],
     data: ()=>({
         inputValue: null,
@@ -159,7 +159,7 @@ export default {
     methods: {
         factory(val, ty) {
             let handlers = this.handlers;
-            //debugger;
+
             let h = handlers[ty];
             if (typeof h == "undefined")
                 return null;

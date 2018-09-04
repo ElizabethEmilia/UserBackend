@@ -10,7 +10,7 @@ function forPostParams(obj) {
 	if (typeof obj !== "object")
 		throw new Error("obj is not an object");
 	return Object.keys(obj).length < 3 ? 
-		encodeURIComponent(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&')) :
+		encodeURI(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&')) :
 		JSON.stringify(obj);
 }
 
@@ -195,7 +195,7 @@ export default {
 	},
 
 	// 状态机
-	StateMachine: {
+	State: {
 		requestNextStateHandler,
 	}
 }

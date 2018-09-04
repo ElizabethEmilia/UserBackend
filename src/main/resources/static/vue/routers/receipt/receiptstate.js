@@ -47,7 +47,7 @@ const receiptActionName = {
 
 let receiptStateMap = {
     [states.Saved]: {
-        [states.Saved]: receiptAction.Submit,
+        [states.Submitted]: receiptAction.Submit,
     },
     [states.Submited]: {
         [states.RefusedWaitingSubmit]: receiptAction.RefuseSubmit,
@@ -81,7 +81,7 @@ let receiptStateMap = {
 }
 
 // from , to, render, params
-function renderVDOM(f, t, h, p, self) {
+function renderVDOM(f, t, h, p, self, baseURL) {
     let action = receiptStateMap[f][t];
     // 如果转台转换不存在
     if (typeof action == "undefined")
@@ -95,7 +95,7 @@ function renderVDOM(f, t, h, p, self) {
                     return;
                 let id = self.d[p.index].id;
                 try {
-                    let r = await $.ajax(`/api/customer/_/receipt/${id}/${action}`, {id});
+                    let r = await $.ajax(`${baseURL}/${id}/${action}`, {id});
                     if (r.code)
                         return alert('操作失败' + r.msg);
                     alert('操作成功');
@@ -112,12 +112,12 @@ function renderVDOM(f, t, h, p, self) {
 }
 
 // 根据当前状态进行render
-function render(state, h, p, self) {
+function render(state, h, p, self, baseURL) {
     let to = receiptStateMap[state];
     let kt = Object.keys(to);
     let rA = []
     for (let t of kt)
-        rA = [ ...rA, ...renderVDOM(state, t, h, p, self) ];
+        rA = [ ...rA, ...renderVDOM(state, t, h, p, self, baseURL) ];
     return rA;
 }
 

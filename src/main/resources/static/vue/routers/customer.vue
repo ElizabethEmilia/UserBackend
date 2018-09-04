@@ -15,6 +15,7 @@
             <CustomerPublic :uid="selectedUser.uid" />
             <CustomerOrder :uid="selectedUser.uid" />
             <CustomerReceipt :uid="selectedUser.uid" />
+            <CustomerReceiptStat :uid="selectedUser.uid" />
         </div>
         
     </div>
@@ -26,11 +27,12 @@ import CustomerCompantInformation from './company/information.vue';
 import CustomerPublic from './customer/cuspublic.vue';
 import CustomerOrder from './customer/cusorder.vue';
 import CustomerReceipt from './customer/cusreceipt.vue';
+import CustomerReceiptStat from './customer/cusreceiptstat.vue';
 
 export default {
     components: {
         CustomerList, CustomerCompantInformation, CustomerPublic, CustomerOrder,
-        CustomerReceipt,
+        CustomerReceipt, CustomerReceiptStat,
     },
     data: () => ({
         selectedCompany: { id: -1 },

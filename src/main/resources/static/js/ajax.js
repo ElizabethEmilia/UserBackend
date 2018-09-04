@@ -3,9 +3,11 @@ import util from './util.js';
 
 const ajax = function(url, data = undefined, contentType = undefined, progress = undefined) {
     if (typeof data === "object") {
-        data = util.forPostParams(data);
         if (Object.keys(data).length >= 3)
             contentType='application/json';
+        else
+            contentType='application/x-www-form-urlencoded';
+        data = util.forPostParams(data);
     }
     return new Promise((resolve, reject) => {
         $.ajax({
