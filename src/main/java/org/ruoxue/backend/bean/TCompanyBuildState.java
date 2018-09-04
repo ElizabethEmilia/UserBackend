@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-04
  */
 @TableName("t_company_build_state")
 public class TCompanyBuildState extends Model<TCompanyBuildState> {

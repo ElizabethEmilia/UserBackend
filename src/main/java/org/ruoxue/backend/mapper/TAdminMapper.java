@@ -21,4 +21,11 @@ public interface TAdminMapper extends BaseMapper<TAdmin> {
 
     List<Map<String, Object>> getAdminList(@Param("page") Integer page, @Param("size") Integer size);
 
+//    获取所有status为3的管理员的lid的数组
+    List<Integer> getRemoveAdminLids();
+
+//    删除status为3的管理员
+    Integer removeAdmin();
+
+
 }

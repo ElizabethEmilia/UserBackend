@@ -15,4 +15,8 @@
         select id, password, token, salt, msgcode, role from t_signin where id = #{id}
     </select>
 
+	<delete id="removeSign">
+		delete from t_signin where id = #{id}
+	</delete>
+
 </mapper>

@@ -15,6 +15,15 @@ import java.util.List;
  */
 public interface ITConfigService extends IService<TConfig> {
 
+//    获取系统设置列表
     List<TConfig> getTConfig();
-	
+
+    Object setting();
+
+    Object settingKey(String key);
+
+    Object updateSettingKey(String key, String value);
+
+    Object clearCache();
+
 }

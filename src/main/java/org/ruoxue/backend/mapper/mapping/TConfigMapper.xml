@@ -20,4 +20,12 @@
 		select * from t_config
 	</select>
 
+	<select id="getConfigByName" resultType="java.lang.String">
+		select value from t_config where name = #{name}
+	</select>
+
+	<select id="getTConfigByName" resultType="org.ruoxue.backend.bean.TConfig">
+		select * from t_config where name = #{name}
+	</select>
+
 </mapper>

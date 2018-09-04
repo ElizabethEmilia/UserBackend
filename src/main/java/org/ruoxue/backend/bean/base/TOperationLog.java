@@ -1,12 +1,11 @@
 package org.ruoxue.backend.bean.base;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,7 +13,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-08-30
+ * @since 2018-09-04
  */
 @TableName("t_operation_log")
 public class TOperationLog extends Model<TOperationLog> {
@@ -24,6 +23,7 @@ public class TOperationLog extends Model<TOperationLog> {
     /**
      * 主键
      */
+	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
     /**
      * 日志类型
