@@ -6,6 +6,7 @@ import Receipt from "./routers/receipt.vue";
 import Tax from './routers/tax.vue';
 import User from './routers/user.vue';
 import System from './routers/system.vue';
+import Admin from './routers/admin.vue';
 
 export default [
     { path: '/', component: Account },
@@ -17,4 +18,5 @@ export default [
     { path: '/tax', component: Tax },
     { path: '/user', component: User },
     { path: '/system', component: System },
+    { path: '/admin', component: Admin },
 ]

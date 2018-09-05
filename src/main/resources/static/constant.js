@@ -24,6 +24,22 @@ const settingTypes = [ "int", "number", "string", "text", "date", "bool", "enum"
 // 管理员类型
 const adminTypes = [ "无权限",  "操作员", "超级管理员", ];
 
+const Integers = {
+    CustomerType: { PERSONAL:0, ENTERPRISE:1},
+    CustomerIssuableReceiptType: {NEITHER:0, SPECICAL:1, NORMAL:2, BOTH:3},
+    ModulePrivilege: {CUSTOMER:1, ADMINISTRATOR:2},
+    PaymentMethod:{ONLINE_ALIPAY:0,ONLINE_WECHAT:1,ONLINE_BALANCE:2,ONLINE_TRANSACTION:3,PUBLIC_BANK:4,
+        PUBLIC_MONEY:5,PUBLIC_ALIPAY:6,OTHERS:7},
+    ExchangeStatus:{UNPAIED:0,SUCCESS:1,FAILED:2},
+    ExchangeType:{OUTCOME:0,INCONME:1},
+    PublicChargeState:{WAITING:0,CONFIRMED:1,CANCELED:2},
+    PaymentStatus:{UNPAIED:0,PAIED:1,CANCELED:2},
+    ReceiptType:{NORMAL:0,SPECIAL:1},
+    RECEIPT_STATUS:{TO_BE_SUBMITTED:0,PENDING:1,PASSED:2,REFUSED:3,ISSUED:4},
+    PreTaxStallsStatus:{UNSELECTED:0,SELECTED:1,RANGE_CHANGEED:2,PAID_DIFFERENCE:3,WITHDREW:4,INACTIVATED:5},
+    SallyRange:{}
+};
+
 
 export {
     industry,
@@ -34,4 +50,6 @@ export {
     receiptStatus,
     settingTypes,
     adminTypes,
+
+    Integers,
 };

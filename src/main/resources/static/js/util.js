@@ -118,7 +118,11 @@ function getFileContentAsync(fileInput, resultIn = ReaderFileResultType.DATA_UTL
 				let ret = e.target.result;
 				if (resultIn === ReaderFileResultType.BASE64) 
 					ret = dataUrlToBase64(ret);
-				resolve(ret);
+				resolve({
+					name: file,
+					data: ret,
+					size: e.target.result.length,
+				});
 			}
 			else {
 				reject(new Error('文件大小超过限制'));
@@ -242,12 +246,29 @@ function __Miyuki_MessageBoxFromComponentAsyncBuilder(ty) {
 				title,
 				onOk: resolve,
 				onCancel: reject,
-				render: h=>h(com, {
-					props
-				})
+				render: h=>h(com, props)
 			}, attrs));
 		})
 	}
+}
+
+/** 
+ * 深层好看的文件大小字符串
+ */
+function __Miyuki_friendlySize(x) {
+	var classifier = "KMGTPE";
+	var i = -1;
+	do {
+		if (i == -1)
+			x = Math.ceil(x / 1024);
+		else
+			x = (x / 1024).toFixed(1);
+		i++;
+	}
+	while (x>1024);
+	if (i >= classifier.length)
+		throw new Error("File size is too large to be made friendly");
+	return String(x) + classifier[i] + "B";
 }
 
 export default {
@@ -271,6 +292,7 @@ export default {
 	File: {
 		ReaderFileResultType, // 读文件方式
 		getFileContentAsync,  // 读文件
+		friendlySize: __Miyuki_friendlySize, // 用好看的方式显示文件大小
 	},
 
 	// 调试用

@@ -18,7 +18,11 @@
                 税金管理
             </MenuItem>
         </MenuGroup>
-        <MenuGroup title="系统管理">
+        <MenuGroup>
+            <MenuItem name="admin">
+                <Icon type="md-heart" />
+                账号信息
+            </MenuItem>
             <MenuItem name="customer">
                 <Icon type="md-heart" />
                 客户管理

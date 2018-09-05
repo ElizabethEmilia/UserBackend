@@ -230,7 +230,7 @@ export default {
             this.pendingUpload = true;
             try {
                 let fileContent = await util.File.getFileContentAsync(this.$refs.openFile);
-                this.avatar = fileContent;
+                this.avatar = fileContent.data;
                 let result = await $.ajax('/api/account/avatar', { img: this.avatar });
                 if (result.code != 0) {
                     alert(result.msg);

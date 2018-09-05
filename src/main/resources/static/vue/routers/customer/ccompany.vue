@@ -96,7 +96,7 @@ export default {
                 this.companyList = result.data;
             }
             catch(err) {
-                 util.MessageBox.Show(this, '获取公司失败');
+                 //util.MessageBox.Show(this, '获取公司失败');
             }
         },
     },

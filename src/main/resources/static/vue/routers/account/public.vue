@@ -33,12 +33,19 @@
             </Tabs>
 
             <ButtonGroup style="margin: 15px;">
-                <Button @click="newOrder">新增订单</Button>
+                <Button @click="shouldNewChargeDialogOpen = true;">新增订单</Button>
                 <Button>取消订单</Button>
                 <Button>查看详情</Button>
             </ButtonGroup>
 
             <PagedTable :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
+    
+            <Modal :width="800" title="新增订单" v-model="shouldNewChargeDialogOpen" @on-cancel="shouldNewChargeDialogOpen = false" >
+                <PublicChargeDialog @on-input="inputNewInfo" @on-selectcredit="selectCredit" />
+                <div slot="footer">
+                    <Button @click="newOrderAdd" type="success" size="middle" long :loading="onProcesssing" >新增订单</Button>
+                </div>
+            </Modal>
     </Card>
 </template>
 
@@ -50,12 +57,14 @@ import '../../../css/style.less';
 import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
 import PublicChargeDialog from './dialogs/newpublic.vue';
+import { Integers } from '../../../constant';
 
 export default {
     components: {
-        PagedTable
+        PagedTable, PublicChargeDialog
     },
     data: () => ({
+        shouldNewChargeDialogOpen: false,
         publicBankAccount: [ // 从配置文件获取
             {
                 recommend: true,
@@ -132,25 +141,82 @@ export default {
         dataSource: "publiccharge/",
         req_url: "all",
 
-        newConfig: {
+        newConfig: { },
 
-        },
+        orderInfo: {}, // 新订单的信息
+        credit: {},
+
+        onProcesssing: false,
     }),
 
     methods: {
         tabclick(name) {
             this.res_url = name;
         },
-        async newOrder() {
+        inputNewInfo(val) {
+            console.log(val);
+            this.orderInfo = val;
+        },
+        selectCredit(val) {
+            console.log(val);
+            this.credit = val;
+        },
+        async newOrderAdd() {
+            if (this.onProcesssing)
+                return;
+            // 检查输入
+            let N =this.orderInfo;
+            if (N.type === undefined) {
+                util.MessageBox.Show(this, "请选择充值方式");
+                return false;
+            }
+            
+            if (util.String.isNullOrEmpty(N.name) ||
+                N.tmCreate === '' || N.tmCreate === null
+            ) {
+                util.MessageBox.Show(this, "请填写所有必填的内容");
+                return false;
+            }
+
+            if (util.String.isNullOrEmpty(this.credit.data)) {
+                return util.MessageBox.Show(this, "必须上传凭据")
+            }
+
+            switch (N.type) {
+                case Integers.PaymentMethod.PUBLIC_ALIPAY:
+                    if (util.String.isNullOrEmpty(N.account)) {
+                        return util.MessageBox.Show(this, "必须填写支付宝账户名");
+                    }
+                    break;
+                case Integers.PaymentMethod.PUBLIC_BANK:
+                    if (util.String.isNullOrEmpty(N.account) || util.String.isNullOrEmpty(N.bank)) {
+                        return util.MessageBox.Show(this, "必须填写银行账户名。");
+                    }
+                    break;
+                case Integers.PaymentMethod.PUBLIC_MONEY:
+                    break;
+            }
+
+            this.onProcesssing = true;
+
             try {
-                await util.MessageBox.ShowComponentAsync(this, PublicChargeDialog, "新增订单", {
-                    
-                }, { width: 800, });
-                alert('用户提交了操作');
+                let r = await $.ajax("/api/charge/public/new", N);
+                this.onProcesssing = false;
+                if (r.code === 0) {
+                    return util.MessageBox.Show(this, "新增订单成功。");
+                }
+                else {
+                    this.shouldNewChargeDialogOpen = false;
+                    util.MessageBox.Show(this, "新增订单失败。");
+                }
             }
             catch(err) {
-                alert('用户取消了操作');
+                this.onProcesssing = false;
+                console.error(err);
+                util.MessageBox.Show(this, "新增订单失败。");
             }
+
+            return true;
         }
     }
 }
