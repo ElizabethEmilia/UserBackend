@@ -18,20 +18,21 @@ public class MukiyBinConfig extends WebMvcConfigurerAdapter {
     public static final String SESSION_KEY = "uid";
 
     @Bean
-    public UserBackendInterceptor getSecurityInterceptor() {
+    public UserBackendInterceptor getUserBackendInterceptor() {
         return new UserBackendInterceptor();
     }
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
+        InterceptorRegistration addInterceptor = registry.addInterceptor(getUserBackendInterceptor());
 
         // 排除配置
-//        addInterceptor.excludePathPatterns("/error");
+        addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/api/login");
 
         // 拦截配置
-        addInterceptor.addPathPatterns("/**");
+        addInterceptor.addPathPatterns("/api/**");
     }
+
 }

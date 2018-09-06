@@ -1,8 +1,8 @@
 package org.ruoxue.backend.service;
 
 import com.alibaba.fastjson.JSONObject;
-import org.ruoxue.backend.bean.TCustomer;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TCustomer;
 
 /**
  * <p>
@@ -15,5 +15,13 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ITCustomerService extends IService<TCustomer> {
 
     Object CustomerRegister(JSONObject jsonObject);
+
+    Object basicGet(Integer uid);
+
+    Object basicPost(TCustomer customer);
+
+    Object password(String old_pwd, String new_pwd);
+
+    Object avatar(String img);
 	
 }

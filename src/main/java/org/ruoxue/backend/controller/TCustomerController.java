@@ -1,8 +1,18 @@
 package org.ruoxue.backend.controller;
 
 
+import io.swagger.annotations.ApiOperation;
+import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.common.controller.BaseController;
+import org.ruoxue.backend.service.ITCustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  *  用户管理控制器
@@ -11,8 +21,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2018-08-30
  */
 @Controller
-@RequestMapping("/api")
-public class TCustomerController {
+@RequestMapping("/api/account")
+public class TCustomerController extends BaseController {
+
+    @Resource
+    private ITCustomerService customerService;
+
+    @ApiOperation("获取账号信息")
+    @RequestMapping(value = "/basic", method = RequestMethod.GET)
+    public @ResponseBody Object basicGet(){
+//        获取用户id
+        Integer uid = (Integer) getSession().getAttribute("uid");
+        return customerService.basicGet(uid);
+    }
+
+    @ApiOperation("修改账号信息")
+    @RequestMapping(value = "/basic", method = RequestMethod.POST)
+    public @ResponseBody Object basicPost(@Valid TCustomer customer){
+        return customerService.basicPost(customer);
+    }
+
+    @ApiOperation("修改密码")
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    public @ResponseBody Object password(@RequestParam String old_pwd, @RequestParam String new_pwd){
+        return customerService.password(old_pwd, new_pwd);
+    }
+
+    @ApiOperation("修改头像")
+    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
+    public @ResponseBody Object avatar(@RequestParam String img){
+        return customerService.avatar(img);
+    }
 
 
 
