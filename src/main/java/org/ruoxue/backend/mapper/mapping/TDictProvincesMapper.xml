@@ -9,4 +9,12 @@
 		<result column="province_name" property="provinceName" />
 	</resultMap>
 
+	<select id="getProvince" resultType="java.lang.String">
+		select province_name from t_dict_provinces
+	</select>
+
+	<select id="getProcinceCodeByName" resultType="java.lang.Integer">
+		select province_code from t_dict_provinces where province_name = #{name}
+	</select>
+
 </mapper>

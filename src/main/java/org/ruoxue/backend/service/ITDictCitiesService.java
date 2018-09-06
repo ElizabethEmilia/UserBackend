@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-09-04
  */
 public interface ITDictCitiesService extends IService<TDictCities> {
+
+    Object getCityByProvince(String province);
 	
 }

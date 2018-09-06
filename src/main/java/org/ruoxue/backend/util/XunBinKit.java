@@ -1,9 +1,8 @@
 package org.ruoxue.backend.util;
 
 
-import org.springframework.web.context.request.RequestContextHolder;
-
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -14,10 +13,19 @@ import java.util.Random;
 public class XunBinKit {
 
     /**
+     *  获取用户id
+     */
+    public static Integer getUid(){
+        HttpSession session = HttpKit.getRequest().getSession();
+        Integer uid = (Integer) session.getAttribute("uid");
+        return uid;
+    }
+
+    /**
      *  获取response对象
      */
     public static HttpServletResponse getResponse(){
-        HttpServletResponse response = (HttpServletResponse) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = HttpKit.getResponse();
         return response;
     }
 

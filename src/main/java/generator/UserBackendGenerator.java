@@ -60,12 +60,12 @@ public class UserBackendGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent(null);
-        pc.setEntity("org.ruoxue.backend.bean");
-        pc.setMapper("org.ruoxue.backend.mapper");
-        pc.setXml("org.ruoxue.backend.mapper.mapping");
-        pc.setService("binbin");
-        pc.setServiceImpl("binbin");
-        pc.setController("binbin");
+        pc.setEntity("binbin.bean");
+        pc.setMapper("binbin.mapper");
+        pc.setXml("binbin.mapping");
+        pc.setService("binbin.service");
+        pc.setServiceImpl("binbin.service.impl");
+        pc.setController("binbin.controller");
         mpg.setPackageInfo(pc);
 
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值
