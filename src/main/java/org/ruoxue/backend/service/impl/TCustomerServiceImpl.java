@@ -6,14 +6,18 @@ import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.mapper.MainMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
+import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITCustomerService;
-import org.ruoxue.backend.service.MainService;
+import org.ruoxue.backend.util.Md5SaltTool;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 /**
@@ -34,7 +38,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     private MainMapper mainMapper;
 
     @Resource
-    private MainService mainService;
+    private TSigninMapper signinMapper;
 
     @Override
     public Object CustomerRegister(JSONObject jsonObject) {
@@ -114,6 +118,97 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         return customer.insert();
     }
 
+    @Override
+    public Object basicGet(Integer uid) {
+//        获取customer实体
+        TCustomer customer = customerMapper.getTCustomerByUid(uid);
+
+        if(ToolUtil.isEmpty(customer)){
+            return ResultUtil.error(-1, "未查到该用户信息");
+        }
+
+        return ResultUtil.success(customer);
+    }
+
+    @Override
+    public Object basicPost(TCustomer customer) {
+//        获取用户id
+        Integer uid = XunBinKit.getUid();
+        if(ToolUtil.isEmpty(uid)){
+            return ResultUtil.error(-1, "用户id为空");
+        }
+
+        TCustomer cus = customerMapper.getTCustomerByUid(uid);
+        if(ToolUtil.isEmpty(cus)){
+            ResultUtil.error(-2, "该用户信息为空");
+        }
+
+//        将传回来的bean充满
+        customer.setUid(uid);
+        customer.setLid(cus.getLid());
+        customer.setPhone(cus.getPhone());
+        customer.setPaid(cus.getPaid());
+        customer.setBalance(cus.getBalance());
+        customer.setRecType(cus.getRecType());
+        customer.setRegDate(cus.getRegDate());
+        customer.setStatus(cus.getStatus());
+        boolean b = customer.updateById();
+        if(b){
+            return ResultUtil.success();
+        } else {
+            return ResultUtil.error(-3, "修改账户信息失败");
+        }
+
+    }
+
+    @Override
+    public Object password(String old_pwd, String new_pwd) {
+//        获取用户id
+        Integer uid = XunBinKit.getUid();
+//        获取用户bean
+        TCustomer customer = customerMapper.getTCustomerByUid(uid);
+//        获取signbean
+        TSignin signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
+//        获取加密后的md5原密码
+        try {
+            String oldMd5Pwd = Md5SaltTool.getEncryptedPwd(old_pwd);
+            if(oldMd5Pwd.equals(signin.getPassword())){
+                return ResultUtil.error(-1, "原密码错误");
+            }
+
+//            将新密码加密
+            String newMd5Pwd = Md5SaltTool.getEncryptedPwd(new_pwd);
+            signin.setPassword(newMd5Pwd);
+            boolean b = signin.updateById();
+            if(b){
+                return ResultUtil.success(0, "密码修改成功");
+            } else {
+                return ResultUtil.error(-2, "密码修改失败");
+            }
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object avatar(String img) {
+//        获取用户id
+        Integer uid = XunBinKit.getUid();
+//        获取用户bean
+        TCustomer customer = customerMapper.getTCustomerByUid(uid);
+        customer.setAvatar(img);
+        boolean b = customer.updateById();
+        if(b){
+            return ResultUtil.success(0, "头像修改成功");
+        } else {
+            return ResultUtil.error(-1, "头像修改失败");
+        }
+    }
 
 
 

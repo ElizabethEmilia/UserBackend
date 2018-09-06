@@ -1,8 +1,10 @@
 package org.ruoxue.backend.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TCustomer;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.ruoxue.backend.bean.TSignin;
 
 import java.util.List;
 
@@ -22,5 +24,9 @@ public interface TCustomerMapper extends BaseMapper<TCustomer> {
 
 //    删除status为3的客户
     Integer removeCustomer();
+
+    TCustomer getTCustomerByUid(@Param("uid") Integer uid);
+
+
 
 }

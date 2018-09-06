@@ -35,6 +35,10 @@
 		delete from t_customer where status = 3
 	</delete>
 
+	<select id="getTCustomerByUid" resultType="org.ruoxue.backend.bean.TCustomer">
+		select * from t_customer where uid = #{uid}
+	</select>
+
 
 
 </mapper>

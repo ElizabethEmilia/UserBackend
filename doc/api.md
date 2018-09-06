@@ -347,7 +347,7 @@ RefusedWaitingPacking(11)
 * 获取：`GET  /api/account/basic`
  
 * 修改：`POST /api/account/basic`
-    
+        
 >    参数： Bean中的个字段（并非所有字段）
 > 
 >    注意：**不提供手机账号的修改（特别判断，防熊孩纸）**，虽然前端已经检查过了取值的正确性  但后端仍然应该检查各取值是否是Constant类中的可选范围。
