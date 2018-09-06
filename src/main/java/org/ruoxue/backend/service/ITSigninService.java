@@ -1,7 +1,8 @@
 package org.ruoxue.backend.service;
 
-import org.ruoxue.backend.bean.TSignin;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.bean.TSignin;
 
 /**
  * <p>
@@ -14,5 +15,15 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ITSigninService extends IService<TSignin> {
 
     TSignin getSigninByUid(Integer id);
+
+    Object getCustomerByUid(Integer uid);
+
+    Object updateCustomer(TCustomer customer, Integer uid);
+
+    Object deleteCustomer(Integer uid);
+
+    Object listCustomer(Integer page, Integer size);
+
+    Object updatePwssword(String password, Integer uid);
 	
 }
