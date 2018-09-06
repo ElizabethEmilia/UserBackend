@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-04
+ * @since 2018-09-06
  */
 @TableName("t_receipt")
 public class TReceipt extends Model<TReceipt> {
@@ -37,6 +37,10 @@ public class TReceipt extends Model<TReceipt> {
 	private Date tmSubmit;
 	@TableField("tm_vallidate")
 	private Date tmVallidate;
+    /**
+     * 寄发票的地址
+     */
+	private String address;
 
 
 	public Integer getId() {
@@ -135,6 +139,14 @@ public class TReceipt extends Model<TReceipt> {
 		this.tmVallidate = tmVallidate;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -155,6 +167,7 @@ public class TReceipt extends Model<TReceipt> {
 			", reason=" + reason +
 			", tmSubmit=" + tmSubmit +
 			", tmVallidate=" + tmVallidate +
+			", address=" + address +
 			"}";
 	}
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-04
+ * @since 2018-09-06
  */
 @TableName("t_config")
 public class TConfig extends Model<TConfig> {
@@ -23,6 +23,7 @@ public class TConfig extends Model<TConfig> {
 	private Integer visible;
 	private Integer type;
 	private String description;
+	private Integer permission;
 
 
 	public String getName() {
@@ -73,6 +74,14 @@ public class TConfig extends Model<TConfig> {
 		this.description = description;
 	}
 
+	public Integer getPermission() {
+		return permission;
+	}
+
+	public void setPermission(Integer permission) {
+		this.permission = permission;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.name;
@@ -87,6 +96,7 @@ public class TConfig extends Model<TConfig> {
 			", visible=" + visible +
 			", type=" + type +
 			", description=" + description +
+			", permission=" + permission +
 			"}";
 	}
 }

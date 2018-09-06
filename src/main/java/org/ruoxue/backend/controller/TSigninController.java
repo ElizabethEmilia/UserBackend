@@ -28,7 +28,7 @@ public class TSigninController {
 
     @ApiOperation("获取用户基本信息")
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    public @ResponseBody Object getCustomerByUid(@RequestParam Integer uid) {
+    public @ResponseBody Object getCustomerByUid(@PathVariable Integer uid) {
         return signinService.getCustomerByUid(uid);
     }
 

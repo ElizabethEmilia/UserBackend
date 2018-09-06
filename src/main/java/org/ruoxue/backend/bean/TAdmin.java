@@ -12,7 +12,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-04
+ * @since 2018-09-06
  */
 @TableName("t_admin")
 public class TAdmin extends Model<TAdmin> {

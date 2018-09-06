@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-04
+ * @since 2018-09-06
  */
 @TableName("t_com_cert")
 public class TComCert extends Model<TComCert> {
