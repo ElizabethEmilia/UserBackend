@@ -4,11 +4,43 @@
 
         <PagedTable v-if="selected != -1" :columns="columns" :data-source="`customer/_/company/${cid}/setup`" />
         <div style="margin-top: 20px;">
-            <Button>新增设立进度</Button>
+            <Button @click="dialogVisible = true">新增设立进度</Button>
         </div>
         <div style="margin-top: 20px;">
 
         </div>
+
+        <Modal
+            :width="600"
+            title="新增设立进度"
+            v-model="dialogVisible"
+        >
+            <div style="margin: 15px 0 15px 0">
+
+                <div class="dm">
+                    <span class="title-before-input"> <i class="required" />状态 </span>
+                    <AutoComplete
+                            v-model="newProgress.state"
+                            placeholder=""
+                            style="width:200px">
+                        <div class="demo-auto-complete-item" >
+                            <Option class="hov" v-for="(e, i) in states" :value="e" :key="i">
+                                <span class="demo-auto-complete-title">{{ e }}</span>
+                                <span class="demo-auto-complete-count" @click="states.splice(i,1)">
+                                    删除
+                                </span>
+                            </Option>
+                        </div>
+                        <a href="JavaScript:void(0)" class="demo-auto-complete-more" :disabled="isNewState" @click="states.push(newProgress.state)">保存为新状态</a>
+                    </AutoComplete>
+
+                    <div class="dm">
+                        <span class="title-before-input"> <i class="required" />说明</span>
+                        <Input v-model="newProgress.note" style="width: 200px"  />
+                    </div>
+                </div>
+            </div>
+        </Modal>
     </Card>
 </template>
 
@@ -16,13 +48,24 @@
     import $ from '../../../js/ajax.js';
     import util from '../../../js/util.js';
     import PagedTable from '../../pagedTable.vue';
+    import md5 from 'js-md5';
+    import API from '../../../js/api.js';
+
+    const progressInit = {
+        cid: -1,
+        state: "",
+        note: "",
+    }
 
     export default {
         props: [ 'cid' ],
         components: {
-            PagedTable
+            PagedTable,
         },
         data: () => ({
+            states:  window.config.settings.setup_states.split(','),
+            newProgress: progressInit,
+            dialogVisible: false,
             columns() {
                 return [
                     { title: '序号', type: 'index' },
@@ -37,9 +80,64 @@
         }),
         methods: {
         },
+        watch: {
+            states: {
+                deep: true,
+                async handler(val) {
+                    try {
+                        let t = await API.Company.SetupStates.update(val);
+                        console.log(t)
+                        window.config.settings.setup_states = this.states.join(',');
+                        console.log("[UpdateStatus]", "更新状态表成功");
+                    }
+                    catch(err) {
+                        console.log(err);
+                        this.states = window.config.settings.setup_states.split(',');
+                        util.MessageBox.Show(this, "更新状态表失败");
+                    }
+                }
+            }
+        },
+        computed: {
+            isNewState() {
+                return this.newProgress.state.length !== 0 && this.states.filter(e=>e===this.newProgress.state).length !== 0;
+            }
+        },
+        mounted() {
+
+        },
     }
 </script>
 
 <style>
-
+    .demo-auto-complete-item{
+        padding: 4px 0;
+        border-bottom: 1px solid #F6F6F6;
+    }
+    .demo-auto-complete-group{
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+    .demo-auto-complete-group span{
+        color: #666;
+        font-weight: bold;
+    }
+    .demo-auto-complete-group a{
+        float: right;
+    }
+    .demo-auto-complete-count{
+        float: right;
+        color: #999;
+        opacity: 0;
+    }
+    .demo-auto-complete-more{
+        display: block;
+        margin: 0 auto;
+        padding: 4px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .hov:hover>.demo-auto-complete-count {
+        opacity: 1;
+    }
 </style>
