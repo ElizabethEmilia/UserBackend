@@ -297,10 +297,9 @@ export default {
     watch: {
         editMode(val) {
             this.$emit('on-edit-mode-change', val);
-        }
-    },
-    watch: {
+        },
         selectedCompany(val) {
+            console.log('[on select-company]', 'ID='+this.companyList[val].id)
             this.$emit('on-select-company', this.companyList[val]);
         }
     },
