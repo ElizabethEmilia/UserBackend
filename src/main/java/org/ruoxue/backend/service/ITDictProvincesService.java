@@ -1,7 +1,7 @@
 package org.ruoxue.backend.service;
 
-import org.ruoxue.backend.bean.TDictProvinces;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TDictProvinces;
 
 /**
  * <p>
@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-09-04
  */
 public interface ITDictProvincesService extends IService<TDictProvinces> {
+
+    Object getProvince();
+
+    Object jsonToCVS(String json, String filename);
 	
 }

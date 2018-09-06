@@ -1,8 +1,6 @@
 package org.ruoxue.backend.util;
 
 
-import org.springframework.web.context.request.RequestContextHolder;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
@@ -27,7 +25,7 @@ public class XunBinKit {
      *  获取response对象
      */
     public static HttpServletResponse getResponse(){
-        HttpServletResponse response = (HttpServletResponse) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = HttpKit.getResponse();
         return response;
     }
 

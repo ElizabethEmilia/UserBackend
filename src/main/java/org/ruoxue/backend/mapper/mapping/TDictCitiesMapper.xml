@@ -10,4 +10,12 @@
 		<result column="city_name" property="cityName" />
 	</resultMap>
 
+	<select id="getCityByProvinceId" resultType="java.lang.String">
+		select city_name from t_dict_cities where province_code = #{province_id}
+	</select>
+
+	<select id="getCityCodeByName" resultType="java.lang.Integer">
+		select city_code from t_dict_cities where city_name = #{name}
+	</select>
+
 </mapper>
