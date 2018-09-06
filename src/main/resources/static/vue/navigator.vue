@@ -1,5 +1,5 @@
 <template>
-    <Menu :active-name="'account'" @on-select="select" theme="dark">
+    <Menu :active-name="'account'" @on-select="select" theme="light">
         <MenuGroup title="">
             <MenuItem name="account">
                 <Icon type="md-document" />
