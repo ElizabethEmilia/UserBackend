@@ -45,7 +45,7 @@ export default {
         PagedTable, CustomerOverview
     },
     props: [
-        'showList'
+        'showList', 'uid'
     ],
     data: () => ({
         selected: -1, // 选择的客户ID
@@ -98,6 +98,9 @@ export default {
             this.$emit('on-select', cd);
             //alert('show info of ' + cd.name);
         }
+    },
+    mounted() {
+        //this.
     }
 }
 </script>

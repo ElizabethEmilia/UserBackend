@@ -2,9 +2,9 @@
     <div>
         <SelectCompany @on-select-company="hSelectCompany" />
         <div v-if="cid != -1">
+            <CompanyOverview :cid="cid" :comData="comdata" />
             <SetupProgress :cid="cid" />
             <Certificates :cid="cid" />
-            <Information :cid="cid" :data="comdata" />
         </div>
     </div>
 </template>
@@ -14,10 +14,11 @@ import SetupProgress from './company/setupprogress.vue';
 import SelectCompany from './company/selectcompany.vue';
 import Certificates from './company/certificates.vue';
 import Information from './company/information.vue';
+import CompanyOverview from './company/overview.vue';
 
 export default {
     components: {
-        SetupProgress, SelectCompany, Certificates, Information,
+        SetupProgress, SelectCompany, Certificates, CompanyOverview,
     },
     data: () => ({
         cid: -1,

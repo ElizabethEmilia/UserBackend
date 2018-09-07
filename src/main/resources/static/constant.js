@@ -24,6 +24,9 @@ const settingTypes = [ "int", "number", "string", "text", "date", "bool", "enum"
 // 管理员类型
 const adminTypes = [ "无权限",  "操作员", "超级管理员", ];
 
+// 企业组织类型
+const enterpriseOrgizationTypes = [ "有限责任公司", "股份有限公司", "个人独资公司", "一人有限公司", "合伙企业", "合作企业", "合营企业", "外商投资公司" ];
+
 const Integers = {
     CustomerType: { PERSONAL:0, ENTERPRISE:1},
     CustomerIssuableReceiptType: {NEITHER:0, SPECICAL:1, NORMAL:2, BOTH:3},
@@ -50,6 +53,7 @@ export {
     receiptStatus,
     settingTypes,
     adminTypes,
+    enterpriseOrgizationTypes,
 
     Integers,
 };

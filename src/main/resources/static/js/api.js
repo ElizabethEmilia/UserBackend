@@ -39,13 +39,29 @@ function POST(url, data) {
     }
 }
 
+function Settings_Update(name, value) {
+    return (POST(`/api/settings/${ name }`, { value }))();
+}
+
+function Settings_Get(name) {
+    return (GET(`/api/settings/${ name }`))();
+}
+
 export default {
-    // 公司相关的请求
     Account: {
         getBasicInfo: GET("/api/account/basic"),
     },
     Company: {
         getCount: GET("/api/company/count"),
         getList: GET("/api/company/count"),
+
+        SetupStates: {
+            update: (stateArray) => Settings_Update('setup_states', stateArray.join(',')),
+        }
+    },
+    Setting: {
+        get: Settings_Get,
+        set: Settings_Update,
+        list: GET("/api/setting/list"),
     }
 }
