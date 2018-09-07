@@ -15,6 +15,7 @@
          <div v-else>
              <CustomerOverview :cus-data="cdata"
                 @on-select-company="val=>$emit('on-select-company',val)"
+                @on-back-to-user-list="selected = -1; $emit('on-back-to-list');"
               />
          </div>
 

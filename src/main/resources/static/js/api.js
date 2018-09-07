@@ -1,6 +1,8 @@
 import $ from './ajax';
 import util from './util.js'
 
+const __rd_post_body = { r: Math.random() };
+
 async function __Miyuki_RequestGET(url) {
     try {
         let r = await $.ajax(url);
@@ -48,6 +50,15 @@ function Settings_Get(name) {
 }
 
 export default {
+    Customer: {
+        deleteUser: (uid) => POST('/api/customer/${uid}/delete', __rd_post_body)(),
+
+        Company: {
+            newCompany: (uid, data) => POST(`/api/customer/${uid}/company/new`, data)(),
+            deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body),
+
+        }
+    },
     Account: {
         getBasicInfo: GET("/api/account/basic"),
     },
@@ -63,5 +74,13 @@ export default {
         get: Settings_Get,
         set: Settings_Update,
         list: GET("/api/setting/list"),
+    },
+
+    // h获取地区
+    Area: {
+        getProvince: GET("/api/_/area/province"),
+        getCity: (province) => GET("/api/_/area/city?"+util.forGetParamsN({ province }))(),
+        getDistruct: (province, city) => GET("/api/_/area/district?"+util.forGetParamsN({ province, city }))(),
+
     }
 }
