@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface TAreaMapper extends BaseMapper<TArea> {
 
-    @Select("select province from t_area group by province")
+    @Select("select province from (select code2, province from t_area group by province, code2) as a order by code2")
     List<String> getProvince();
 
     @Select("select city from t_area where province=#{province} group by city ")

@@ -1,6 +1,7 @@
 package org.ruoxue.backend.sms;
 
 
+import com.sun.media.jfxmedia.logging.Logger;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -11,15 +12,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.ruoxue.backend.common.constant.ConfigNames;
 import org.ruoxue.backend.mapper.TConfigMapper;
+import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,8 +54,34 @@ public class JavaSmsApi {
     @Resource
     private TConfigMapper configMapper;
 
+    @ApiOperation("单发短信")
+    @GetMapping("/sendmsg")
+    public @ResponseBody Object sendTextMessage(@RequestParam String phone, HttpSession session) {
+        // 初始化参数
+        try {
+            if (!TencentSMS.initialized) {
+                TencentSMS.appkey = configMapper.getConfigByName(ConfigNames.appkey);
+                TencentSMS.appid = Integer.parseInt(configMapper.getConfigByName(ConfigNames.appid));
+                TencentSMS.smsSign = configMapper.getConfigByName(ConfigNames.smsSign);
+                TencentSMS.templateId = Integer.parseInt(configMapper.getConfigByName(ConfigNames.smsSign));
+                TencentSMS.initialized = true;
+                Logger.logMsg(Logger.DEBUG, "" + TencentSMS.appkey + "/" + TencentSMS.appid + "/"
+                        + TencentSMS.smsSign + "/" + TencentSMS.templateId);
+            }
+
+            String code = XunBinKit.generateSixNum();
+            session.setAttribute("msgcode", code);
+            TencentSMS.sendTextMessage(phone, code);
+            return ResultUtil.success();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error(1, e.getMessage());
+        }
+    }
+
     @ApiOperation("点对点发送短信")
-    @RequestMapping(value = "/sendmsg", method = RequestMethod.GET)
+    @RequestMapping(value = "/sendmsg2", method = RequestMethod.GET)
     public @ResponseBody String sendmsg(@RequestParam String phone) {
 
 //        获取数据库中存储的apikey
@@ -68,7 +95,7 @@ public class JavaSmsApi {
         System.out.println("-----msg: " + msg);
 
         //修改为您的apikey.apikey可在官网（http://www.yunpian.com)登录后获取
-        API_KEY = (String) msg.get("sms.appkey");
+        API_KEY = (String) msg.get("sms_appkey");
 
         //修改为您要发送的手机号
         String mobile = phone;
