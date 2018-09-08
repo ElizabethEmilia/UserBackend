@@ -187,7 +187,7 @@ API Key保存在数据库的t_config表中
 
 * 删除客户公司的某个证件： `POST /api/customer/{uid}/cert/{certid}/delete`
 
-* 上传客户公司的证件  `POST /api/customer/{uid}/cert/new`
+* 上传客户公司的证件  `POST /api/customer/{uid}/company/{cid}/newcert`
     
 >    `certName`: 证件照名称
 >    
@@ -209,7 +209,15 @@ API Key保存在数据库的t_config表中
 
 * 新增设立公司进度
 
-* 【LT】查看客户公司的开票申请： `GET /api/customer/{uid}/company/{cid}/receipt`
+* 【LT】查看客户公司的开票申请： `GET /api/customer/{uid}/receipt`
+>    `status`: 状态(String)
+>    `type`: 类型(Integer)
+>    `start`: 开始时间(Date)
+>    `end`: 结束时间(Date)
+>    `page`: 页面(Integer)
+>    `size`: 条数(Integer)
+>    `cid`: 公司id(Integer)
+
 
 * 开票申请的相关操作：
 
@@ -221,29 +229,31 @@ API Key保存在数据库的t_config表中
 
 所需的接口包括：
 
-* 管理员对开票申请的 提交: `GET /api/cusstomer/{uid}}/receipt/{rid}/submit`
+前端调用： `'POST /api/cusstomer/{uid}}/receipt/{rid}/{action}'`
 
-* 管理员对开票申请的 驳回: `GET /api/cusstomer/{uid}}/receipt/{rid}/refuse-submit`
+* 管理员对开票申请的 提交: `POST /api/cusstomer/{uid}}/receipt/{rid}/submit`
 
-* 管理员对开票申请的 通过: `GET /api/cusstomer/{uid}}/receipt/{rid}/accept`
+* 管理员对开票申请的 驳回: `POST /api/cusstomer/{uid}}/receipt/{rid}/refuse-submit`
 
-* 管理员对开票申请的 分配（代开）: `GET /api/cusstomer/{uid}}/receipt/{rid}/distrib-dist`
+* 管理员对开票申请的 通过: `POST /api/cusstomer/{uid}}/receipt/{rid}/accept`
 
-* 管理员对开票申请的 分配（自取）: `GET /api/cusstomer/{uid}}/receipt/{rid}/distrib-self`
+* 管理员对开票申请的 分配（代开）: `POST /api/cusstomer/{uid}}/receipt/{rid}/distrib-dist`
 
-* 管理员对开票申请的 开票: `GET /api/cusstomer/{uid}}/receipt/{rid}/receipt`
+* 管理员对开票申请的 分配（自取）: `POST /api/cusstomer/{uid}}/receipt/{rid}/distrib-self`
 
-* 管理员对开票申请的 作废: `GET /api/cusstomer/{uid}}/receipt/{rid}/discard`
+* 管理员对开票申请的 开票: `POST /api/cusstomer/{uid}}/receipt/{rid}/receipt`
 
-* 管理员对开票申请的 打包: `GET /api/cusstomer/{uid}}/receipt/{rid}/pack`
+* 管理员对开票申请的 作废: `POST /api/cusstomer/{uid}}/receipt/{rid}/discard`
 
-* 管理员对开票申请的 核对并寄送: `GET /api/cusstomer/{uid}}/receipt/{rid}/send`
+* 管理员对开票申请的 打包: `POST /api/cusstomer/{uid}}/receipt/{rid}/pack`
 
-* 管理员对开票申请的 自取: `GET /api/cusstomer/{uid}}/receipt/{rid}/selfrecv`
+* 管理员对开票申请的 核对并寄送: `POST /api/cusstomer/{uid}}/receipt/{rid}/send`
 
-* 管理员对开票申请的 驳回: `GET /api/cusstomer/{uid}}/receipt/{rid}/refuse-packing`
+* 管理员对开票申请的 自取: `POST /api/cusstomer/{uid}}/receipt/{rid}/selfrecv`
 
-* 管理员对开票申请的 已签收: `GET /api/cusstomer/{uid}}/receipt/{rid}/recv`
+* 管理员对开票申请的 驳回: `POST /api/cusstomer/{uid}}/receipt/{rid}/refuse-packing`
+
+* 管理员对开票申请的 已签收: `POST /api/cusstomer/{uid}}/receipt/{rid}/recv`
 
 * 查看客户各个公司的开票统计： `GET /api/customer/{uid}/receipt/stat`
 

@@ -1,7 +1,7 @@
 package org.ruoxue.backend.service;
 
-import org.ruoxue.backend.bean.TCompany;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TCompany;
 
 /**
  * <p>
@@ -12,5 +12,17 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-08-30
  */
 public interface ITCompanyService extends IService<TCompany> {
-	
+
+    Object listCompany(String uid, Integer page, Integer size);
+
+    Object getCompany(String uid, Integer cid);
+
+    Object updateCompany(TCompany company, String uid, Integer cid);
+
+    Object deleteCompany(String uid, Integer cid);
+
+    Object deleteCompanys(String uid);
+
+    Object addCompony(TCompany company, String uid);
+
 }

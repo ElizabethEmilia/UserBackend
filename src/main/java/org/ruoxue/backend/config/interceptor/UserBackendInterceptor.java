@@ -31,6 +31,7 @@ public class UserBackendInterceptor implements HandlerInterceptor {
         if(ToolUtil.isEmpty(cookie)){
             response.setHeader("Set-Cookie", "JSESSIONID=" + request.getSession().getId());
         }
+
         return true;
     }
 
