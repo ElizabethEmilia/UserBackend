@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="binbin.mapper.TAreaMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TArea">
+		<id column="id" property="id" />
+		<result column="code2" property="code2" />
+		<result column="code4" property="code4" />
+		<result column="code6" property="code6" />
+		<result column="province_full_name" property="provinceFullName" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="fullname" property="fullname" />
+		<result column="revoked" property="revoked" />
+	</resultMap>
+
+
+</mapper>

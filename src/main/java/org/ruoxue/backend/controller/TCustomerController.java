@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.service.ITCustomerService;
+import org.ruoxue.backend.util.Base64Util;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,6 +51,11 @@ public class TCustomerController extends BaseController {
     @ApiOperation("修改头像")
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public @ResponseBody Object avatar(@RequestParam String img){
+        // Initialize image file saving path
+        if (Base64Util.baseImageSavePath == null) {
+            String savePath=System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+            Base64Util.baseImageSavePath = savePath;
+        }
         return customerService.avatar(img);
     }
 

@@ -26,6 +26,7 @@
                     item.loading = false;
                     callback();
                 }
+                callback();
             },
             async loadProvince() {
                 let result = await API.Area.getProvince();
@@ -61,7 +62,7 @@
                         type: 'district',
                         name: e,
                     },
-                    value, e,
+                    value: e,
                     label: e,
                 }));
             }
@@ -76,6 +77,7 @@
             },
             async value(val) {
                 this.selected = this.value;
+                return;
                 let [p,c] = val;
                 if (!util.String.isNullOrEmpty(p) && this.data.length > 0) {
                     // Find item index of province
@@ -89,6 +91,7 @@
                         // Get district of city
                         if (indexC != -1) {
                             this.data[index].children[indexC] = await this.loadDistrict(p, c);
+                            this.data[index].loading = false;
                         }
                     }
                 }

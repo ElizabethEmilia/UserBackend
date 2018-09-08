@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  * @since 2018-09-04
  */
 @Controller
-@RequestMapping("/api/_")
+@RequestMapping("/api/deprecated")
 public class TDictAreasController {
 
     @Resource

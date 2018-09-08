@@ -8,10 +8,7 @@ import org.ruoxue.backend.mapper.MainMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITCustomerService;
-import org.ruoxue.backend.util.Md5SaltTool;
-import org.ruoxue.backend.util.ResultUtil;
-import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.util.XunBinKit;
+import org.ruoxue.backend.util.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -201,6 +198,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         Integer uid = XunBinKit.getUid();
 //        获取用户bean
         TCustomer customer = customerMapper.getTCustomerByUid(uid);
+        img = Base64Util.GenerateImageFromDataURI(img);
         customer.setAvatar(img);
         boolean b = customer.updateById();
         if(b){
@@ -209,7 +207,5 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
             return ResultUtil.error(-1, "头像修改失败");
         }
     }
-
-
 
 }
