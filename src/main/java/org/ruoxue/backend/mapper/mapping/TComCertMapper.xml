@@ -14,4 +14,32 @@
 		<result column="status" property="status" />
 	</resultMap>
 
+	<select id="listCert" resultType="java.util.Map">
+		select * from t_com_cert
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		and cid = #{cid}
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="getCert" resultType="org.ruoxue.backend.bean.TComCert">
+		select * from t_com_cert
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		and id = #{id}
+	</select>
+
+	<delete id="deleteCert">
+		delete from t_com_cert
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		and id = #{id}
+	</delete>
+
 </mapper>

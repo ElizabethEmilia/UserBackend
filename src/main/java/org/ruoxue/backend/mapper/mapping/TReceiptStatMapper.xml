@@ -20,4 +20,12 @@
 		<result column="hash_original" property="hashOriginal" />
 	</resultMap>
 
+	<select id="listReceiptStat" resultType="org.ruoxue.backend.bean.TReceiptStat">
+		select * from t_receipt_stat
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+	</select>
+
 </mapper>

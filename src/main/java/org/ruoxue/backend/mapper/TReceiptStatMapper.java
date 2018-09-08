@@ -1,8 +1,11 @@
 package org.ruoxue.backend.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.ruoxue.backend.bean.TReceiptStat;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.ruoxue.backend.bean.TReceiptStat;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface TReceiptStatMapper extends BaseMapper<TReceiptStat> {
+
+//    获取客户各个公司的开票统计
+    List<TReceiptStat> listReceiptStat(@Param("uid") Integer uid);
 
 }

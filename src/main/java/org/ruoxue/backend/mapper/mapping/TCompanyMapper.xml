@@ -29,4 +29,48 @@
 		<result column="status" property="status" />
 	</resultMap>
 
+	<select id="listCompany" resultType="java.util.Map">
+		select * from t_company
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="listCompanyAll" resultType="java.util.Map">
+		select * from t_company
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		order by id DESC
+	</select>
+
+	<select id="getCompany" resultType="org.ruoxue.backend.bean.TCompany">
+		select * from t_company
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		and id = #{cid}
+	</select>
+
+	<delete id="deleteCompany">
+		delete from t_company
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		and id = #{cid}
+	</delete>
+
+	<delete id="deleteCompanys">
+		delete from t_company
+		where 1 = 1
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+	</delete>
+
 </mapper>
