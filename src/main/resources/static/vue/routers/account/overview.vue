@@ -19,7 +19,7 @@
                             <p> {{ industry[info.industry] }} </p>
                         </div>
                     </Row>
-                    <Row v-if="!editMode">
+                    <Row v-show="!editMode">
                         <Divider dashed orientation="right" ><a href="javascript:void(0)" @click="edit_basicInformation()">编辑</a></Divider>
                         <!-- 用户信息显示开始 -->
                         
@@ -37,7 +37,7 @@
                         </Row>
                         <!-- 用户信息显示结束 -->
                     </Row>
-                    <Row v-else>
+                    <Row v-show="editMode">
                         <Divider dashed orientation="right" >
                             <a v-if="hashBeforeModify != hashAfterModify" @click="discardChanges()" href="javascript:void(0)" style="margin-right: 10px;">放弃更改</a>
                             <a href="javascript:void(0)" v-if="hashAfterModify == hashBeforeModify" @click="editMode=false">返回</a>
@@ -92,6 +92,8 @@
                                 <span class="title-before-input">其他手机号 </span>
                                 <Input v-model="infoSave.others" placeholder="" clearable style="width: 200px" />
                             </div>
+
+                            <SelectArea v-model="area"></SelectArea>
 
                             <div style="margin-bottom: 5px;">
                                 <span class="title-before-input">地址 </span>
@@ -176,6 +178,7 @@ import util from '../../../js/util.js';
 import $ from '../../../js/ajax.js';
 import md5 from 'js-md5';
 import ModifyPassword from './modifyPassword.vue';
+import SelectArea from '../../components/areaselect.vue';
 
 /**
  * 事件
@@ -185,7 +188,7 @@ import ModifyPassword from './modifyPassword.vue';
 
 export default {
     components: {
-        ModifyPassword
+        ModifyPassword, SelectArea,
     },
     data: () => ({
         info: {
@@ -354,8 +357,17 @@ export default {
             // 更改后的HASH值
             hashAfterModify() {
                 return md5(util.forGetParams(this.infoSave));
+            },
+            // 城市地址
+            area: {
+                get() {
+                    return [ this.infoSave.province, this.infoSave.city, this.infoSave.district ];
+                },
+                set(val) {
+                    [ this.infoSave.province, this.infoSave.city, this.infoSave.district ] = val;
+                }
             }
-        },
+    },
     created() {
         this.getBasicInfo();
         this.getRecentExchange();

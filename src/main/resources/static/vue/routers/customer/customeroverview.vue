@@ -125,9 +125,9 @@
                         <Card  :bordered="false" dis-hover>
                             <p slot="title">客户管理</p>
                             
-                            <CellGroup>
+                            <CellGroup @on-click="cellGroupClick">
                                 <Cell name="edit" title="编辑资料" />
-                                <Cell name="mamage" title="公司管理" />
+                                <Cell name="newcompany" title="新增公司" />
                                 <Cell name="delete" title="删除客户" style="color: red"/>
                             </CellGroup>
 
@@ -135,6 +135,10 @@
                     </Row>
                 </Col>
             </Row>
+
+            <CustomerOverviewDialog v-model="sholdNewCompanyDialogOpen">
+
+            </CustomerOverviewDialog>
         </div>
 </template>
 
@@ -145,6 +149,8 @@ import '../../../css/style.less';
 import util from '../../../js/util.js';
 import $ from '../../../js/ajax.js';
 import md5 from 'js-md5';
+import API from '../../../js/api.js';
+import CustomerOverviewDialog from './dialog/newcompany.vue';
 
 /**
  * 事件
@@ -154,6 +160,9 @@ import md5 from 'js-md5';
  */
 
 export default {
+    components: {
+        CustomerOverviewDialog,
+    },
     props: [ 'cusData' ],
     data: () => ({
         info: {},
@@ -177,6 +186,8 @@ export default {
         district: ['东区', '西区'],
         pendingSave: false, //记录是否在保存
         pendingUpload: false, //是否正在上传头像
+
+        sholdNewCompanyDialogOpen: false,
     }),
     methods: {
          // 基础信息的编辑
@@ -292,6 +303,31 @@ export default {
         selectCompany(i) {
             console.log('[select]', i);
             this.selectedCompany = i;
+        },
+
+        // click cell group
+        cellGroupClick(name) {
+            const handlers = {
+                edit: () => { this.editMode = true; },
+                newcompany: () => {
+                    this.sholdNewCompanyDialogOpen = true;
+                },
+                "delete": async () => {
+                    await util.MessageBox.ComfirmAsync(this, "确定要删除该客户吗？");
+                    console.log('13234');
+                    try {
+                        await API.Customer.deleteUser(this.info.id);
+                        util.MessageBox.Show(this, "删除成功");
+                        this.$emit('on-request-update-list', "删除成功");
+                        this.$emit('on-back-to-user-list', "ok");
+                    }
+                    catch (err) {
+                        console.log(err);
+                        util.MessageBox.Show(this, "删除失败");
+                    }
+                }
+            };
+            handlers[name]();
         }
     },
     watch: {

@@ -15,9 +15,15 @@ function forPostParams(obj) {
 }
 
 function forGetParams(obj) {
-	if (typeof obj !== "object")
-		throw new Error("obj is not an object");
-	return encodeURI(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
+    if (typeof obj !== "object")
+        throw new Error("obj is not an object");
+    return encodeURI(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
+}
+
+function forGetParamsN(obj) {
+    if (typeof obj !== "object")
+        throw new Error("obj is not an object");
+    return (Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
 }
 
 function forGetURL(url, obj) {
@@ -274,6 +280,7 @@ function __Miyuki_friendlySize(x) {
 export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
+    forGetParamsN,
 	forPostParamsQueryString, // 通过对象生成Post方法参数(不采用JSON)
 	forGetURL,    // 通过对象生成Get方法地址
 	getQueryParameter, // 获取页面参数

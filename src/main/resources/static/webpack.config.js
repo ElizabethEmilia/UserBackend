@@ -53,8 +53,16 @@ module.exports = {
                 { 
                     test: /\.(eot|woff|woff2|svg|ttf)([\?]?.*)$/, 
                     loader: "file-loader?outputPath=dist/"
-                 }
+                 },
+                {
+                    test: /\.tsx?$/,
+                    loader: 'ts-loader',
+                    exclude: /node_modules/
+                }
             ],
+        },
+        resolve: {
+            extensions: [ '.tsx', '.ts', '.js' ]
         },
         resolveLoader: {
             alias: {

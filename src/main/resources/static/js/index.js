@@ -1,7 +1,8 @@
+import '../node_modules/iview/dist/styles/iview.css';
+import '../css/style.less';
 import Vue from 'vue';
 import MainPage from '../vue/mainpage.vue';
 import iView from 'iview';
-import '../node_modules/iview/dist/styles/iview.css';
 import VueRouter from 'vue-router';
 import Routers from '../vue/routes';
 
