@@ -8,7 +8,7 @@ import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.mapper.MainMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.MainService;
-import org.ruoxue.backend.util.Md5SaltTool;
+import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
@@ -22,8 +22,6 @@ import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 /**
@@ -43,7 +41,7 @@ public class MainServiceImpl extends BaseController implements MainService {
     @Resource
     private TSigninMapper signinMapper;
 
-    public Object login(JSONObject jsonObject) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public Object login(JSONObject jsonObject) {
         //        获取参数
         String name = jsonObject.getString("name");
         String password = jsonObject.getString("password");
@@ -73,23 +71,21 @@ public class MainServiceImpl extends BaseController implements MainService {
         if(ToolUtil.isNotEmpty(admin)){
 //            管理员
             signin = signinMapper.selectById(admin.getId());
-            md5Salt(signin, password, session);
+            return md5Salt(signin, password, session);
         } else if(ToolUtil.isNotEmpty(customer)){
 //            客户
             signin = signinMapper.selectById(customer.getUid());
-            md5Salt(signin, password, session);
+            return md5Salt(signin, password, session);
         } else {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
 
-        return ResultUtil.success(0, "登录成功");
-
     }
 
-    private Object md5Salt(TSignin signin, String password, HttpSession session) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    private Object md5Salt(TSignin signin, String password, HttpSession session){
 
 //        md5+盐方式加密
-        String pwdInDb = Md5SaltTool.getEncryptedPwd(password);
+        String pwdInDb = Md5Util.getMD5(password);
 
 //        生成加密后的token
         String token = XunBinKit.generateToken();
@@ -109,21 +105,10 @@ public class MainServiceImpl extends BaseController implements MainService {
 
     /**
      * 注册用户
-     *  @param userName
      * @param password
      */
-    public static String registerUser(String userName, String password){
-        String encryptedPwd = null;
-        try {
-//            获取
-            encryptedPwd = Md5SaltTool.getEncryptedPwd(password);
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return encryptedPwd;
+    public static String registerUser(String password){
+        return Md5Util.getMD5(password);
     }
 
     /**
@@ -161,6 +146,7 @@ public class MainServiceImpl extends BaseController implements MainService {
         //8.绑定数据，便于登录验证
         HttpSession session = request.getSession();
         session.setAttribute("code", builder.toString());
+        System.out.println("----------code : " + builder.toString());
         //9.压缩，发送给浏览器
         response.setContentType("image/jpeg");
         try {
@@ -227,23 +213,14 @@ public class MainServiceImpl extends BaseController implements MainService {
             response.setStatus(403);
         }
 
-        try {
 //           md5加密新密码
-            String md5SaltPwd = Md5SaltTool.getEncryptedPwd(password);
+        String md5SaltPwd = Md5Util.getMD5(password);
 //            获取一个新的token
-            String md5Token = XunBinKit.generateToken();
-            signin.setPassword(md5SaltPwd);
-            signin.setToken(md5Token);
-            signin.updateById();
-            return ResultUtil.success();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-
-        return ResultUtil.error(-2, "修改密码失败");
+        String md5Token = XunBinKit.generateToken();
+        signin.setPassword(md5SaltPwd);
+        signin.setToken(md5Token);
+        signin.updateById();
+        return ResultUtil.success();
     }
 
     /**

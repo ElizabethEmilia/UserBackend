@@ -6,14 +6,12 @@ import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITSigninService;
-import org.ruoxue.backend.util.Md5SaltTool;
+import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -135,22 +133,14 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         }
 
 //        获取加密后的md5密码
-        try {
-            String md5Pwd = Md5SaltTool.getEncryptedPwd(password);
-            signin.setPassword(md5Pwd);
-            boolean b = signin.updateById();
-            if(b){
-                return ResultUtil.success(0, "修改密码成功");
-            } else {
-                return ResultUtil.error(-5, "修改密码失败");
-            }
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        String md5Pwd = Md5Util.getMD5(password);
+        Integer len = signinMapper.updatePassword(md5Pwd, signin.getId());
+        if(len == 1){
+            return ResultUtil.success(0, "修改密码成功");
+        } else {
+            return ResultUtil.error(-5, "修改密码失败");
         }
-        return null;
+
     }
 }
 

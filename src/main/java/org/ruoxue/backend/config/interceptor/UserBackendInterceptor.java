@@ -1,5 +1,6 @@
 package org.ruoxue.backend.config.interceptor;
 
+import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.util.CookieUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.slf4j.Logger;
@@ -19,13 +20,16 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018-09-04
  */
 @Component
-public class UserBackendInterceptor implements HandlerInterceptor {
+public class UserBackendInterceptor extends BaseController implements HandlerInterceptor {
 
     private static Logger logger = LoggerFactory.getLogger(UserBackendInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
         logger.info("自定义拦截器......");
+
+        getSession().setAttribute("uid", 1);
+
 //        判断cookie中是否有jsession
         Cookie cookie = CookieUtil.getCookie(request, "JSESSIONID");
         System.out.println("-----------设置前cookie: " + cookie);
