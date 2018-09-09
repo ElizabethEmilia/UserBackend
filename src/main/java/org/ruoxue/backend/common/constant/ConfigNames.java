@@ -7,5 +7,6 @@ public class ConfigNames {
     public static final String templateID = "sms_template_id";
     public static final String templateContent = "sms_template";
     public static final String expireMinutesSMS = "sms_expire";
+    public static final String isSmsEnabled = "sms_enabled";
 
 }
