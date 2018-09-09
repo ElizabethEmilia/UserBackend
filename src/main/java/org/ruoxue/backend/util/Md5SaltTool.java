@@ -58,6 +58,9 @@ public class Md5SaltTool {
      */
     public static boolean validPassword(String password, String passwordInDb)
             throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        return password.equals(passwordInDb);
+        /*
         //将16进制字符串格式口令转换成字节数组
         byte[] pwdInDb = hexStringToByte(passwordInDb);
         //声明盐变量
@@ -84,7 +87,8 @@ public class Md5SaltTool {
         } else {
             //口令不正确返回口令不匹配消息
             return false;
-        }
+        }*/
+
     }
 
     /**
@@ -96,6 +100,10 @@ public class Md5SaltTool {
      */
     public static String getEncryptedPwd(String password)
             throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        return password;
+        /*
+
         //声明加密后的口令数组变量
         byte[] pwd = null;
         //随机数生成器
@@ -126,7 +134,8 @@ public class Md5SaltTool {
 //            System.out.print(pwd[i]);
         }
         //将字节数组格式加密后的口令转化为16进制字符串格式的口令
-        return byteToHexString(pwd);
+        return byteToHexString(pwd);*/
+
     }
 
 }

@@ -1,6 +1,6 @@
 <template>
     <Menu :active-name="'account'" @on-select="select" theme="dark">
-        <MenuGroup title="">
+        <MenuGroup title="" v-if="!isAdmin">
             <MenuItem name="account">
                 <Icon type="md-document" />
                 账号信息
@@ -18,7 +18,7 @@
                 税金管理
             </MenuItem>
         </MenuGroup>
-        <MenuGroup>
+        <MenuGroup v-else>
             <MenuItem name="admin">
                 <Icon type="md-heart" />
                 账号信息
@@ -48,6 +48,7 @@
             return {
                 active: 1,
                 isAdmin: window.config.isAdmin,
+                isSuperAdmin: window.config.isSuperAdmin,
             }
         },
         methods: {

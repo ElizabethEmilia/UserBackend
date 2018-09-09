@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import org.ruoxue.backend.bean.TCustomer;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * <p>
  *  服务类
@@ -14,7 +16,7 @@ import org.ruoxue.backend.bean.TCustomer;
  */
 public interface ITCustomerService extends IService<TCustomer> {
 
-    Object CustomerRegister(JSONObject jsonObject);
+    Object CustomerRegister(JSONObject jsonObject, HttpSession session);
 
     Object basicGet(Integer uid);
 

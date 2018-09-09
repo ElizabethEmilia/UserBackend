@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TSignin;
+import org.ruoxue.backend.common.constant.ConfigNames;
 import org.ruoxue.backend.mapper.MainMapper;
+import org.ruoxue.backend.mapper.TConfigMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITCustomerService;
@@ -12,6 +14,7 @@ import org.ruoxue.backend.util.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
@@ -37,8 +40,11 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     @Resource
     private TSigninMapper signinMapper;
 
+    @Resource
+    private TConfigMapper configMapper;
+
     @Override
-    public Object CustomerRegister(JSONObject jsonObject) {
+    public Object CustomerRegister(JSONObject jsonObject, HttpSession session) {
 //        获取参数
         String name = jsonObject.getString("name");
         String password = jsonObject.getString("password");
@@ -55,6 +61,24 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         TCustomer customer = mainMapper.getTCustomerByName(name);
         if(ToolUtil.isNotEmpty(customer)){
             return ResultUtil.error(-2, "该用户已注册");
+        }
+
+        // 检查短信验证码或图片验证码
+        boolean isMsgCodeEnabled = configMapper.getConfigByName(ConfigNames.isSmsEnabled) == "true";
+
+        // 启动了短信  那么检查短信
+        if (isMsgCodeEnabled) {
+            String msgcode1 = (String)session.getAttribute("msgcode");
+            if (msgcode1 == null || !msgcode1.equals(msgcode)) {
+                return ResultUtil.error(-4, "短信验证码错误");
+            }
+        }
+        else {
+            // 没有启用短信  检查图片
+            String imgcode = (String)session.getAttribute("code");
+            if (imgcode == null || !imgcode.equals(msgcode)) {
+                return ResultUtil.error(-4, "验证码错误");
+            }
         }
 
 //        将客户插入数据库中 --- 获取md5+盐加密后的密码

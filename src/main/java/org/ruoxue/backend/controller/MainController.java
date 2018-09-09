@@ -63,7 +63,7 @@ public class MainController extends BaseController {
     @ApiOperation("用户注册接口,同步插入sign表")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public @ResponseBody Object CustomerRegister(@RequestBody JSONObject jsonObject){
-        return customerService.CustomerRegister(jsonObject);
+        return customerService.CustomerRegister(jsonObject, getSession());
     }
 
     @ApiOperation("退出登录")
