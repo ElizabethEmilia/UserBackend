@@ -42,7 +42,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     private TConfigMapper configMapper;
 
     @Override
-    public Object CustomerRegister(JSONObject jsonObject, HttpSession session) { {
+    public Object CustomerRegister(JSONObject jsonObject, HttpSession session) {
 //        获取参数
         String name = jsonObject.getString("name");
         String password = jsonObject.getString("password");
