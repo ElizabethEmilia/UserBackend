@@ -90,20 +90,20 @@ public class MainServiceImpl extends BaseController implements MainService {
 
 //        md5+盐方式加密
         String pwdInDb = Md5SaltTool.getEncryptedPwd(password);
-        boolean falg = Md5SaltTool.validPassword(pwdInDb, signin.getPassword());
 
 //        生成加密后的token
         String token = XunBinKit.generateToken();
         signin.setToken(token);
 
+        if(signin.getPassword().equals(pwdInDb)){
 
-        if (!falg) {
+            session.setAttribute("role", signin.getRole());
+            session.setAttribute("uid", session.getId());
+
+            return ResultUtil.success();
+        } else {
             return ResultUtil.error(-3, "密码不正确，请重新输入");
         }
-        session.setAttribute("role", signin.getRole());
-        session.setAttribute("uid", session.getId());
-
-        return ResultUtil.success();
 
     }
 

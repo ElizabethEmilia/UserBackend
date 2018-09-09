@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -39,8 +40,8 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
     private TSigninMapper signinMapper;
 
     @Override
-    public List<TConfig> getTConfig() {
-        return configMapper.getConfigs();
+    public List<Map<String, Object>> getTConfig() {
+        return configMapper.getConfig();
     }
 
     @Override
@@ -116,5 +117,10 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
         String result = "您总共清除了" + admins.size() + "条数据";
 
         return ResultUtil.success(result);
+    }
+
+    @Override
+    public List<Map<String, Object>> getKeyAndValue() {
+        return configMapper.getKeyAndValue();
     }
 }

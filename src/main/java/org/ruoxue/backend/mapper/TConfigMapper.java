@@ -31,5 +31,7 @@ public interface TConfigMapper extends BaseMapper<TConfig> {
 //    根据key查询config实体
     TConfig getTConfigByName(@Param("name") String name);
 
+    List<Map<String, Object>> getKeyAndValue();
+
 
 }
