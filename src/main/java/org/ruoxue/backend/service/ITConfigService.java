@@ -4,6 +4,7 @@ import org.ruoxue.backend.bean.TConfig;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import java.util.List;
 public interface ITConfigService extends IService<TConfig> {
 
 //    获取系统设置列表
-    List<TConfig> getTConfig();
+    List<Map<String, Object>> getTConfig();
 
     Object setting();
 
@@ -25,5 +26,7 @@ public interface ITConfigService extends IService<TConfig> {
     Object updateSettingKey(String key, String value);
 
     Object clearCache();
+
+    List<Map<String, Object>> getKeyAndValue();
 
 }

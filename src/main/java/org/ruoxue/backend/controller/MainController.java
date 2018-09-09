@@ -2,7 +2,6 @@ package org.ruoxue.backend.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
-import org.ruoxue.backend.bean.TConfig;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.service.ITCustomerService;
@@ -25,6 +24,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * main控制器
@@ -101,13 +101,24 @@ public class MainController extends BaseController {
 //        获取输出流
         PrintWriter pw = response.getWriter();
 //        获取配置表中内容
-        List<TConfig> list = configService.getTConfig();
+        List<Map<String, Object>> map = configService.getKeyAndValue();
 
-        pw.write("window.config = {};\n" +
-                "window.config.system = " + list + ";\n" +
-                "window.config.role = " + role + ";");
+        JSONObject json = new JSONObject();
+        for(Map<String, Object> m : map){
+                json.put((String) m.get("name"), m.get("value"));
+        }
+        System.out.println("------------json: " + json);
+
+
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        String data = "window.config = " + json + ";\n" +
+                "window.config.role = " + role + ";";
+
+        pw.write(data);
         response.setStatus(200);
-        pw.flush();
+        pw.close();
     }
 
 }

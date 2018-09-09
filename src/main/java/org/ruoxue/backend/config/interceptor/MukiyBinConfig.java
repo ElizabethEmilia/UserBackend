@@ -12,11 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SpringBootApplication
 public class MukiyBinConfig extends WebMvcConfigurerAdapter {
 
-    /**
-     * 登录session key
-     */
-    public static final String SESSION_KEY = "uid";
-
     @Bean
     public UserBackendInterceptor getUserBackendInterceptor() {
         return new UserBackendInterceptor();

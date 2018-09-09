@@ -28,9 +28,11 @@ public class UserBackendInterceptor implements HandlerInterceptor {
         logger.info("自定义拦截器......");
 //        判断cookie中是否有jsession
         Cookie cookie = CookieUtil.getCookie(request, "JSESSIONID");
+        System.out.println("-----------设置前cookie: " + cookie);
         if(ToolUtil.isEmpty(cookie)){
             response.setHeader("Set-Cookie", "JSESSIONID=" + request.getSession().getId());
         }
+        System.out.println("-----------设置后: " + response.getHeader("Set-Cookie"));
 
         return true;
     }

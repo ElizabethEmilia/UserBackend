@@ -28,4 +28,9 @@
 		select * from t_config where name = #{name}
 	</select>
 
+	<select id="getKeyAndValue" resultType="java.util.Map">
+		select name, value from t_config where visible = 1
+	</select>
+
+
 </mapper>
