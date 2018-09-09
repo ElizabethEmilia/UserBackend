@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  点对点发短信
@@ -54,8 +51,11 @@ public class JavaSmsApi {
     @Resource
     private TConfigMapper configMapper;
 
+    private static int expireMinutes = -1;
+
     @ApiOperation("单发短信")
-    @GetMapping("/sendmsg")
+    @GetMapping("" +
+            "/sendmsg")
     public @ResponseBody Object sendTextMessage(@RequestParam String phone, HttpSession session) {
         // 初始化参数
         try {
@@ -64,14 +64,31 @@ public class JavaSmsApi {
                 TencentSMS.appid = Integer.parseInt(configMapper.getConfigByName(ConfigNames.appid));
                 TencentSMS.smsSign = configMapper.getConfigByName(ConfigNames.smsSign);
                 TencentSMS.templateId = Integer.parseInt(configMapper.getConfigByName(ConfigNames.smsSign));
-                TencentSMS.initialized = true;
+                TencentSMS.template = configMapper.getConfigByName(ConfigNames.templateContent);
                 Logger.logMsg(Logger.DEBUG, "" + TencentSMS.appkey + "/" + TencentSMS.appid + "/"
                         + TencentSMS.smsSign + "/" + TencentSMS.templateId);
+                if (TencentSMS.appkey == null || TencentSMS.smsSign == null || TencentSMS.template == null)
+                    throw new Exception("Not all required parameters are provided");
+                TencentSMS.initialized = true;
             }
 
+            // 隨機驗證碼，在模板中作為 $code 代替
             String code = XunBinKit.generateSixNum();
             session.setAttribute("msgcode", code);
-            TencentSMS.sendTextMessage(phone, code);
+
+            // 驗證碼失效時間，在模板中以 $minute 代替，該值從數據庫中的 sms_expire 字段獲取
+            if (expireMinutes == -1) {
+                try {  expireMinutes = Integer.parseInt(configMapper.getConfigByName(ConfigNames.expireMinutesSMS)); }
+                catch (Exception e) { expireMinutes = 15; }
+            }
+            session.setAttribute("msg_expire", new Date().getTime() + expireMinutes*60*1000);
+            session.setAttribute("resend_date", new Date().getTime() + 60*1000);
+
+            // 處理模板
+            String template = TencentSMS.template.replaceAll("\\$code", code)
+                                                 .replaceAll("\\$minute", ""+expireMinutes);
+
+            TencentSMS.sendTextMessage(phone, template);
             return ResultUtil.success();
         }
         catch (Exception e) {

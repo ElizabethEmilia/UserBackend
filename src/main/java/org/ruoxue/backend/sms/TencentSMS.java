@@ -21,11 +21,14 @@ public class TencentSMS {
     // 短信模板ID
     public static int templateId = 0;
 
-    public static void sendTextMessage(String phone, String code) throws Exception {
+    // 模板內容
+    public static String template = "";
+
+    public static void sendTextMessage(String phone, String templates) throws Exception {
         if (!initialized) {
             throw new Exception("Parameters is not initialized.");
         }
-        String[] params = { code };
+        String[] params = templates.split(",");
         SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
         SmsSingleSenderResult result = ssender.sendWithParam("86", phone,
                     templateId, params, smsSign, "", "");
