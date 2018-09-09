@@ -63,7 +63,7 @@ public class JavaSmsApi {
                 TencentSMS.appkey = configMapper.getConfigByName(ConfigNames.appkey);
                 TencentSMS.appid = Integer.parseInt(configMapper.getConfigByName(ConfigNames.appid));
                 TencentSMS.smsSign = configMapper.getConfigByName(ConfigNames.smsSign);
-                TencentSMS.templateId = Integer.parseInt(configMapper.getConfigByName(ConfigNames.smsSign));
+                TencentSMS.templateId = Integer.parseInt(configMapper.getConfigByName(ConfigNames.templateID));
                 TencentSMS.template = configMapper.getConfigByName(ConfigNames.templateContent);
                 Logger.logMsg(Logger.DEBUG, "" + TencentSMS.appkey + "/" + TencentSMS.appid + "/"
                         + TencentSMS.smsSign + "/" + TencentSMS.templateId);
