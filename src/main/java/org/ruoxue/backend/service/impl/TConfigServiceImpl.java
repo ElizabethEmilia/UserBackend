@@ -9,6 +9,7 @@ import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITConfigService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -82,15 +83,9 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
         }
 
 //        修改配置
-        config.setValue(value);
-        boolean b = config.updateById();
+        Integer len = configMapper.updateValueByKey(key, value);
 
-        if(b){
-            return ResultUtil.success(0, "修改配置成功");
-        } else {
-            return ResultUtil.error(-3, "修改配置失败");
-        }
-
+        return XunBinKit.returnResult(len > 0, -3, null, "修改配置成功", "修改配置失败");
 
     }
 

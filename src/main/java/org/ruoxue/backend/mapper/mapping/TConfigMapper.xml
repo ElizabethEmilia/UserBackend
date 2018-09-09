@@ -31,6 +31,10 @@
 	<select id="getKeyAndValue" resultType="java.util.Map">
 		select name, value from t_config where visible = 1
 	</select>
+	
+	<update id="updateValueByKey">
+		update t_config set value = #{value} where name = #{name}
+	</update>
 
 
 </mapper>
