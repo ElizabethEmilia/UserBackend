@@ -53,9 +53,24 @@ public class JavaSmsApi {
 
     private static int expireMinutes = -1;
 
+    @RequestMapping("/sendmsg-test")
+    public @ResponseBody Object sentTextMessageTest(@RequestParam String phone, @RequestParam String code, HttpSession session) {
+        String imgCode = (String)session.getAttribute("code");
+        if (imgCode != null) {
+            if (!imgCode.toUpperCase().equals(code.toUpperCase())) {
+                return ResultUtil.error(3, "图片验证码不正确。");
+            }
+        }
+        else {
+            return ResultUtil.error(2, "请先获取图片验证码。");
+        }
+        String msgcode = XunBinKit.generateSixNum();
+        session.setAttribute("msgcode", msgcode);
+        return ResultUtil.success(0, "验证码是" + msgcode);
+    }
+
     @ApiOperation("单发短信")
-    @GetMapping("" +
-            "/sendmsg")
+    @RequestMapping("/sendmsg")
     public @ResponseBody Object sendTextMessage(@RequestParam String phone, HttpSession session) {
         // 初始化参数
         try {
@@ -72,9 +87,19 @@ public class JavaSmsApi {
                 TencentSMS.initialized = true;
             }
 
+            String imgCode = (String)session.getAttribute("code");
+            if (imgCode != null) {
+                if (!imgCode.toUpperCase().equals(code.toUpperCase())) {
+                    return ResultUtil.error(3, "图片验证码不正确。");
+                }
+            }
+            else {
+                return ResultUtil.error(2, "请先获取图片验证码。");
+            }
+
             // 隨機驗證碼，在模板中作為 $code 代替
-            String code = XunBinKit.generateSixNum();
-            session.setAttribute("msgcode", code);
+            String msgcode = XunBinKit.generateSixNum();
+            session.setAttribute("msgcode", msgcode);
 
             // 驗證碼失效時間，在模板中以 $minute 代替，該值從數據庫中的 sms_expire 字段獲取
             if (expireMinutes == -1) {
@@ -85,7 +110,7 @@ public class JavaSmsApi {
             session.setAttribute("resend_date", new Date().getTime() + 60*1000);
 
             // 處理模板
-            String template = TencentSMS.template.replaceAll("\\$code", code)
+            String template = TencentSMS.template.replaceAll("\\$code", msgcode)
                                                  .replaceAll("\\$minute", ""+expireMinutes);
 
             TencentSMS.sendTextMessage(phone, template);

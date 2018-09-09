@@ -41,6 +41,14 @@ public class MainServiceImpl extends BaseController implements MainService {
     @Resource
     private TSigninMapper signinMapper;
 
+    /*
+        备注： 在session中的内容
+         username:  用户名
+        role:  角色 1- SU 2-Admin 3-Customer
+        obj:   用户角色的bean   可选的类型为：TAdmin  TCustomer
+        code:  验证码
+        msgcode:  短信验证码
+    * */
     public Object login(JSONObject jsonObject) {
         //        获取参数
         String name = jsonObject.getString("name");
@@ -70,19 +78,23 @@ public class MainServiceImpl extends BaseController implements MainService {
         TSignin signin = null;
         if(ToolUtil.isNotEmpty(admin)){
 //            管理员
+            session.setAttribute("username", admin.getName());
             signin = signinMapper.selectById(admin.getId());
-            return md5Salt(signin, password, session);
+            session.setAttribute("obj", admin);
+            return md5Salt(signin, password, session, admin.getId());
         } else if(ToolUtil.isNotEmpty(customer)){
 //            客户
             signin = signinMapper.selectById(customer.getUid());
-            return md5Salt(signin, password, session);
+            session.setAttribute("username", customer.getName());
+            session.setAttribute("obj", customer);
+            return md5Salt(signin, password, session, customer.getUid());
         } else {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
 
     }
 
-    private Object md5Salt(TSignin signin, String password, HttpSession session){
+    private Object md5Salt(TSignin signin, String password, HttpSession session, Integer uid){
 
 //        md5+盐方式加密
         String pwdInDb = Md5Util.getMD5(password);
@@ -94,7 +106,7 @@ public class MainServiceImpl extends BaseController implements MainService {
         if(signin.getPassword().equals(pwdInDb)){
 
             session.setAttribute("role", signin.getRole());
-            session.setAttribute("uid", session.getId());
+            session.setAttribute("uid", uid);
 
             return ResultUtil.success();
         } else {
