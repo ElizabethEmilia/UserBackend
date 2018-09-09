@@ -24,8 +24,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -44,8 +42,6 @@ public class MainServiceImpl extends BaseController implements MainService {
 
     @Resource
     private TSigninMapper signinMapper;
-
-    private static Map users = new HashMap();
 
     public Object login(JSONObject jsonObject) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //        获取参数
@@ -77,11 +73,11 @@ public class MainServiceImpl extends BaseController implements MainService {
         if(ToolUtil.isNotEmpty(admin)){
 //            管理员
             signin = signinMapper.selectById(admin.getId());
-            md5Salt(signin,name, password, session);
+            md5Salt(signin, password, session);
         } else if(ToolUtil.isNotEmpty(customer)){
 //            客户
             signin = signinMapper.selectById(customer.getUid());
-            md5Salt(signin,name, password, session);
+            md5Salt(signin, password, session);
         } else {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
@@ -90,11 +86,11 @@ public class MainServiceImpl extends BaseController implements MainService {
 
     }
 
-    private Object md5Salt(TSignin signin, String name, String password, HttpSession session) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    private Object md5Salt(TSignin signin, String password, HttpSession session) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
 //        md5+盐方式加密
-        String pwdInDb = (String)users.get(name);
-        boolean falg = Md5SaltTool.validPassword(password, pwdInDb);
+        String pwdInDb = Md5SaltTool.getEncryptedPwd(password);
+        boolean falg = Md5SaltTool.validPassword(pwdInDb, signin.getPassword());
 
 //        生成加密后的token
         String token = XunBinKit.generateToken();
@@ -121,7 +117,6 @@ public class MainServiceImpl extends BaseController implements MainService {
         try {
 //            获取
             encryptedPwd = Md5SaltTool.getEncryptedPwd(password);
-            users.put(userName, encryptedPwd);
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
