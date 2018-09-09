@@ -73,17 +73,14 @@ public class MainServiceImpl extends BaseController implements MainService {
         if(ToolUtil.isNotEmpty(admin)){
 //            管理员
             signin = signinMapper.selectById(admin.getId());
-            md5Salt(signin, password, session);
+            return md5Salt(signin, password, session);
         } else if(ToolUtil.isNotEmpty(customer)){
 //            客户
             signin = signinMapper.selectById(customer.getUid());
-            md5Salt(signin, password, session);
+            return md5Salt(signin, password, session);
         } else {
             return ResultUtil.error(-2, "账号不存在，请注册");
         }
-
-        return ResultUtil.success(0, "登录成功");
-
     }
 
     private Object md5Salt(TSignin signin, String password, HttpSession session) throws UnsupportedEncodingException, NoSuchAlgorithmException {

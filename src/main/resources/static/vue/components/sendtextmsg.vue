@@ -73,7 +73,7 @@ export default {
             this.startCountDown();
 
             try {
-                let result = await $.ajax('/api/sendmsg', util.forPostParams({
+                let result = await $.ajax('/api/sendmsg-test', util.forPostParams({
                     phone: this.phone,
                     code: this.verifyCode
                 }));

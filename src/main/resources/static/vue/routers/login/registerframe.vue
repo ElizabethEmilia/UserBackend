@@ -52,6 +52,7 @@ import { industry, memberType, paymentMethod, publicOrderStatus } from '../../..
 import util from '../../../js/util.js';
 import VerifyCode from '../../components/verifycode.vue';
 import SendTextMessage from '../../components/sendtextmsg.vue';
+import $ from '../../../js/ajax.js';
 
 export default {
     components: {
@@ -119,7 +120,7 @@ export default {
             this.pendingRegister = true;
 
             try {
-                let result = await $.ajax('/api/register', util.forPostParams(this.customer));
+                let result = await $.ajax('/api/register', this.customer);
                 this.pendingRegister = false;
                 if (result.code === 0) {
                     util.MessageBox.Show(this, '注册成功');
@@ -130,6 +131,7 @@ export default {
                 }
             }
             catch(err) {
+                console.error(err);
                 util.MessageBox.Show(this, '注册失败');
                 this.pendingRegister = false;
             }
@@ -138,9 +140,10 @@ export default {
             this.$emit('on-request-change-com', name);
         },
         sendMessageFailed(err) {
-            util.MessageBox.Show(this, '发送短信失败。');
+            util.MessageBox.Show(this,  err.msg ? err.msg : '发送短信失败。');
         },
         sendMessageSuccess(result) {
+            this.msgsent = true;
             util.MessageBox.Show(this, '发送短信成功');
         },
         sendMessage(phone) {
