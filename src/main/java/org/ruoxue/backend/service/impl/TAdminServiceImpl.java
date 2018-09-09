@@ -2,15 +2,17 @@ package org.ruoxue.backend.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TAdmin;
+import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.mapper.TAdminMapper;
+import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITAdminService;
+import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -26,67 +28,68 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     @Resource
     private TAdminMapper adminMapper;
 
+    @Resource
+    private TSigninMapper signinMapper;
+
     @Override
-    public Object handleAdminAdd(TAdmin admin) {
-        //        非空检验
+    public Object basicGet(Integer uid) {
+//        获取admin实体
+        TAdmin admin = adminMapper.getTAdminByUid(uid);
+
         if(ToolUtil.isEmpty(admin)){
-            return ResultUtil.error(-1, "该数据为空");
+            return ResultUtil.error(-1, "未查到该管理员信息");
         }
-//        将该管理员插入库中
-        boolean b = admin.insert();
-        if(b){
+
+        return ResultUtil.success(admin);
+    }
+
+    @Override
+    public Object basicPost(TAdmin admin) {
+//        获取用户id
+        Integer uid = XunBinKit.getUid();
+        if(ToolUtil.isEmpty(uid)){
+            return ResultUtil.error(-1, "用户id为空");
+        }
+
+        TAdmin adm = adminMapper.getTAdminByUid(uid);
+        if(ToolUtil.isEmpty(adm)){
+            ResultUtil.error(-2, "该用户信息为空");
+        }
+
+        Integer len = adminMapper.updateAdmin(admin.getName(), adm.getId());
+        if(len == 1){
             return ResultUtil.success();
         } else {
-            return ResultUtil.error(-2, "插入数据失败");
+            return ResultUtil.error(-3, "修改管理员信息失败");
         }
 
     }
 
     @Override
-    public Object handleAdminUpdate(TAdmin admin) {
-//        非空检验
-        if(ToolUtil.isEmpty(admin)){
-            return ResultUtil.error(-1, "该数据为空");
+    public Object password(String old_pwd, String new_pwd) {
+//        获取用户id
+        Integer uid = XunBinKit.getUid();
+//        获取管理员bean
+        TAdmin admin = adminMapper.getTAdminByUid(uid);
+//        获取signbean
+        TSignin signin = signinMapper.getSigninByUid(admin.getLid());
+//        获取加密后的md5原密码
+        String oldMd5Pwd = Md5Util.getMD5(old_pwd);
+        System.out.println("--111: " + oldMd5Pwd);
+        System.out.println("--111: " + signin.getPassword());
+        if(!oldMd5Pwd.equals(signin.getPassword())){
+            return ResultUtil.error(-1, "原密码错误");
         }
-//        将该管理员修改信息插入库中
-        boolean b = admin.updateById();
-        if(b){
-            return ResultUtil.success();
+
+//            将新密码加密
+        String newMd5Pwd = Md5Util.getMD5(new_pwd);
+        Integer len = signinMapper.updatePassword(newMd5Pwd, admin.getLid());
+        if(len == 1){
+            return ResultUtil.success(0, "密码修改成功");
         } else {
-            return ResultUtil.error(-2, "更新管理员信息失败");
-        }
-    }
-
-    @Override
-    public Object handleAdminRemove(Integer id) {
-        if(ToolUtil.isEmpty(id)){
-            return ResultUtil.error(-1, "请检查您的参数");
-        }
-        TAdmin admin = adminMapper.selectById(id);
-        if(ToolUtil.isEmpty(admin)){
-            return ResultUtil.error(-2, "该管理员不存在");
-        }
-//        删除一个管理员
-        boolean b = admin.deleteById();
-        if(b){
-            return ResultUtil.success();
-        } else {
-            return ResultUtil.error(-3, "删除失败,可能是数据已不存在");
+            return ResultUtil.error(-2, "密码修改失败");
         }
 
-    }
-
-    @Override
-    public Object getAdminList(Integer page, Integer size) {
-        if(ToolUtil.isEmpty(page)){
-            return ResultUtil.error(-1, "请检查您的参数");
-        }
-        if(ToolUtil.isEmpty(size)){
-            size = 10;
-        }
-        page = (page - 1) * size;
-        List<Map<String, Object>> list = adminMapper.getAdminList(page, size);
-        return ResultUtil.success(list);
     }
 
 

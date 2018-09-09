@@ -34,4 +34,18 @@
 		delete from t_admin where status = 3
 	</delete>
 
+	<select id="getTAdminByUid" resultType="org.ruoxue.backend.bean.TAdmin">
+		select * from t_admin where id = #{id}
+	</select>
+
+	<select id="listCustomer" resultType="org.ruoxue.backend.bean.TCustomer">
+		select *
+		from t_admin where status = 1
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<update id="updateAdmin">
+		update t_admin set name = #{name} where id = #{id}
+	</update>
+
 </mapper>

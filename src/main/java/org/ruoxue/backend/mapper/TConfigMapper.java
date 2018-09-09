@@ -33,5 +33,7 @@ public interface TConfigMapper extends BaseMapper<TConfig> {
 
     List<Map<String, Object>> getKeyAndValue();
 
+    Integer updateValueByKey(@Param("name") String name, @Param("value") String value);
+
 
 }

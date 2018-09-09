@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TAdmin;
+import org.ruoxue.backend.bean.TCustomer;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +28,10 @@ public interface TAdminMapper extends BaseMapper<TAdmin> {
 //    删除status为3的管理员
     Integer removeAdmin();
 
+    TAdmin getTAdminByUid(@Param("id") Integer id);
+
+    List<TCustomer> listCustomer(@Param("page") Integer page, @Param("size") Integer size);
+
+    Integer updateAdmin(@Param("name") String name, @Param("id") Integer id);
 
 }

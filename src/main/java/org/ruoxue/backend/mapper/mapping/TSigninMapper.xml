@@ -11,12 +11,16 @@
 		<result column="msgcode" property="msgcode" />
 	</resultMap>
 
-	<select id="getSigninByUid" resultType="org.ruoxue.backend.bean.TAdmin">
+	<select id="getSigninByUid" resultType="org.ruoxue.backend.bean.TSignin">
         select id, password, token, salt, msgcode, role from t_signin where id = #{id}
     </select>
 
 	<delete id="removeSign">
 		delete from t_signin where id = #{id}
 	</delete>
+
+	<update id="updatePassword">
+		update t_signin set password = #{password} where id = #{id}
+	</update>
 
 </mapper>

@@ -24,5 +24,7 @@ public interface TSigninMapper extends BaseMapper<TSignin> {
 //    删除多条记录
     Integer removeSign(@Param("id") Integer id);
 
+    Integer updatePassword(@Param("password") String password, @Param("id") Integer id);
+
 
 }
