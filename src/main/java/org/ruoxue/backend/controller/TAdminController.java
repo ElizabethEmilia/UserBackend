@@ -1,15 +1,13 @@
 package org.ruoxue.backend.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.service.ITAdminService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -37,8 +35,8 @@ public class TAdminController extends BaseController {
 
     @ApiOperation("修改账号信息")
     @RequestMapping(value = "/basic", method = RequestMethod.POST)
-    public @ResponseBody Object basicPost(@Valid TAdmin admin){
-        return adminService.basicPost(admin);
+    public @ResponseBody Object basicPost(@RequestBody JSONObject jsonObject){
+        return adminService.basicPost(jsonObject);
     }
 
     @ApiOperation("修改密码")

@@ -73,7 +73,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
     private Integer getCodeByAction(String action) {
 //        做一个HashMap,存储路径与值得映射
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("submit", 0);
         map.put("refuse-submit", 1);
         map.put("accept", 2);

@@ -124,7 +124,7 @@ export default {
                 this.pendingRegister = false;
                 if (result.code === 0) {
                     util.MessageBox.Show(this, '注册成功');
-                    show('LoginFrame');
+                    this.show('LoginFrame');
                 }
                 else {
                     util.MessageBox.Show(this, '' + result.msg);

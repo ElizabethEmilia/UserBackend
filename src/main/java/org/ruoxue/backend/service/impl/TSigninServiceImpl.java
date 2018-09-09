@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -108,7 +109,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
             size = 10;
         }
         page = (page - 1) * size;
-        List<TCustomer> list = customerMapper.listCustomer(page, size);
+        List<Map<String, Object>> list = customerMapper.listCustomerss(page, size);
         return ResultUtil.success(list);
     }
 

@@ -39,10 +39,8 @@
 		select * from t_customer where uid = #{uid}
 	</select>
 
-	<select id="listCustomer" resultType="org.ruoxue.backend.bean.TCustomer">
-		select *
-		from t_admin where status = 1
-		order by id DESC limit #{page}, #{size}
+	<select id="listCustomerss" resultType="java.util.Map">
+		select * from t_customer where status = 1 order by uid DESC limit #{page},#{size}
 	</select>
 
 

@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -107,7 +108,12 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
         customerMapper.removeCustomer();
 
 //        删除所有status为3的sign的记录
-        admins.forEach(id -> signinMapper.removeSign(id) );
+        admins.forEach(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) {
+                signinMapper.removeSign(integer);
+            }
+        });
 
         String result = "您总共清除了" + admins.size() + "条数据";
 

@@ -1,5 +1,6 @@
 package org.ruoxue.backend.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TSignin;
@@ -44,11 +45,16 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     }
 
     @Override
-    public Object basicPost(TAdmin admin) {
+    public Object basicPost(JSONObject jsonObject) {
+//      获取参数
+        String name = jsonObject.getString("name");
+
+        XunBinKit.isEmpty(name);
+
 //        获取用户id
         Integer uid = XunBinKit.getUid();
         if(ToolUtil.isEmpty(uid)){
-            return ResultUtil.error(-1, "用户id为空");
+            return ResultUtil.error(-4, "用户id为空");
         }
 
         TAdmin adm = adminMapper.getTAdminByUid(uid);
@@ -56,7 +62,7 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
             ResultUtil.error(-2, "该用户信息为空");
         }
 
-        Integer len = adminMapper.updateAdmin(admin.getName(), adm.getId());
+        Integer len = adminMapper.updateAdmin(name, adm.getId());
         if(len == 1){
             return ResultUtil.success();
         } else {

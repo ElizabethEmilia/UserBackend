@@ -62,7 +62,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         }
 
         // 检查短信验证码或图片验证码
-        boolean isMsgCodeEnabled = configMapper.getConfigByName(ConfigNames.isSmsEnabled) == "true";
+        boolean isMsgCodeEnabled = configMapper.getConfigByName(ConfigNames.isSmsEnabled).equals("true");
         // 启动了短信  那么检查短信
         if (isMsgCodeEnabled) {
             String msgcode1 = (String)session.getAttribute("msgcode");

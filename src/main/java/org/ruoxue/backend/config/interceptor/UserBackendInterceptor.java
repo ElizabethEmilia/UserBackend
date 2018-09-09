@@ -28,15 +28,13 @@ public class UserBackendInterceptor extends BaseController implements HandlerInt
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
         logger.info("自定义拦截器......");
 
-        getSession().setAttribute("uid", 1);
-
 //        判断cookie中是否有jsession
         Cookie cookie = CookieUtil.getCookie(request, "JSESSIONID");
-        System.out.println("-----------设置前cookie: " + cookie);
+//        System.out.println("-----------设置前cookie: " + cookie);
         if(ToolUtil.isEmpty(cookie)){
             response.setHeader("Set-Cookie", "JSESSIONID=" + request.getSession().getId());
         }
-        System.out.println("-----------设置后: " + response.getHeader("Set-Cookie"));
+//        System.out.println("-----------设置后: " + response.getHeader("Set-Cookie"));
 
         return true;
     }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TCustomer;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,7 +27,7 @@ public interface TCustomerMapper extends BaseMapper<TCustomer> {
 
     TCustomer getTCustomerByUid(@Param("uid") Integer uid);
 
-    List<TCustomer> listCustomer(@Param("page") Integer page, @Param("size") Integer size);
+    List<Map<String, Object>> listCustomerss(@Param("page") Integer page, @Param("size") Integer size);
 
 
 }

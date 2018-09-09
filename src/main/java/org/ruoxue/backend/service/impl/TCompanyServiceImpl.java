@@ -46,7 +46,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         if(ToolUtil.isEmpty(size)){
             size = 10;
         }
-        List<Map<String, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         page = (page - 1) * size;
         if(size == 0){
 //          全部列表

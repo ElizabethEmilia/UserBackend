@@ -71,7 +71,7 @@ public class JavaSmsApi {
 
     @ApiOperation("单发短信")
     @RequestMapping("/sendmsg")
-    public @ResponseBody Object sendTextMessage(@RequestParam String phone, HttpSession session) {
+    public @ResponseBody Object sendTextMessage(@RequestParam String phone, @RequestParam String code, HttpSession session) {
         // 初始化参数
         try {
             if (!TencentSMS.initialized) {
