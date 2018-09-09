@@ -55,7 +55,7 @@ public class MainController extends BaseController {
     }
 
     @ApiOperation("生成验证码接口(大小写字母+数字)")
-    @RequestMapping(value = "/verifycode", method = RequestMethod.GET)
+        @RequestMapping(value = "/verifycode", method = RequestMethod.GET)
     public void gerenateVerifycode(HttpServletRequest request, HttpServletResponse response){
         mainService.gerenateVerifycode(request, response);
     }

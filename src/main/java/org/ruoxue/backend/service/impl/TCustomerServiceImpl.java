@@ -12,9 +12,7 @@ import org.ruoxue.backend.util.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 /**
@@ -58,7 +56,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         }
 
 //        将客户插入数据库中 --- 获取md5+盐加密后的密码
-        String md5SaltPwd = MainServiceImpl.registerUser(name, password);
+        String md5SaltPwd = MainServiceImpl.registerUser(password);
 
         TSignin signin = new TSignin();
 //        插入sign表
@@ -166,30 +164,22 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         TCustomer customer = customerMapper.getTCustomerByUid(uid);
 //        获取signbean
         TSignin signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
+
 //        获取加密后的md5原密码
-        try {
-            String oldMd5Pwd = Md5SaltTool.getEncryptedPwd(old_pwd);
-            if(oldMd5Pwd.equals(signin.getPassword())){
-                return ResultUtil.error(-1, "原密码错误");
-            }
-
-//            将新密码加密
-            String newMd5Pwd = Md5SaltTool.getEncryptedPwd(new_pwd);
-            signin.setPassword(newMd5Pwd);
-            boolean b = signin.updateById();
-            if(b){
-                return ResultUtil.success(0, "密码修改成功");
-            } else {
-                return ResultUtil.error(-2, "密码修改失败");
-            }
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        String oldMd5Pwd = Md5Util.getMD5(old_pwd);
+        if(oldMd5Pwd.equals(signin.getPassword())){
+            return ResultUtil.error(-1, "原密码错误");
         }
 
-        return null;
+//            将新密码加密
+        String newMd5Pwd = Md5Util.getMD5(new_pwd);
+        Integer len = signinMapper.updatePassword(newMd5Pwd, signin.getId());
+        if(len == 1){
+            return ResultUtil.success(0, "密码修改成功");
+        } else {
+            return ResultUtil.error(-2, "密码修改失败");
+        }
+
     }
 
     @Override

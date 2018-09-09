@@ -13,12 +13,10 @@ import org.ruoxue.backend.bean.TAdmin;
  */
 public interface ITAdminService extends IService<TAdmin> {
 
-    Object handleAdminAdd(TAdmin admin);
+    Object basicGet(Integer uid);
 
-    Object handleAdminUpdate(TAdmin admin);
+    Object basicPost(TAdmin admin);
 
-    Object handleAdminRemove(Integer id);
-
-    Object getAdminList(Integer page, Integer size);
+    Object password(String old_pwd, String new_pwd);
 	
 }

@@ -4,8 +4,6 @@ package org.ruoxue.backend.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 /**
@@ -78,15 +76,7 @@ public class XunBinKit {
      */
     public static String generateToken(){
         String sixNum = generateSixNum();
-        String md5Token = null;
-        try {
-            md5Token = Md5SaltTool.getEncryptedPwd(sixNum);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return md5Token;
+        return Md5Util.getMD5(sixNum);
     }
 
     /**

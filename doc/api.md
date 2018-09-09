@@ -350,6 +350,14 @@ RefusedWaitingPacking(11)
 
 * 修改管理员信息：`POST /api/admin/{aid}/`
 
+### 2.3 【A+】修改和查看自己的资料 
+
+* 获取管理员资料 `GET /api/admin/basic` 
+
+* 修改管理员资料 `POST /api/admin/basic` 
+
+* 修改密码 `POST /api/admin/password` 
+
 ## 3 账户信息模块【C】
  
 ### 3.1 账户信息
