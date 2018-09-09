@@ -338,7 +338,7 @@ RefusedWaitingPacking(11)
 
 * 取消客户的对公充值： `POST /api/customer/{uid}/publiccharge/{pid}/cancel`
 
-### 2.2 【S】修改管理员资料
+### 2.2 【S】修改和查看管理员资料
 
 * 获取管理员列表： `GET /api/admin/list`
 
@@ -349,6 +349,14 @@ RefusedWaitingPacking(11)
 * 查看管理员信息：`GET /api/admin/{aid}/`
 
 * 修改管理员信息：`POST /api/admin/{aid}/`
+
+### 2.3 【A+】修改和查看自己的资料
+
+* 获取管理员资料 `GET /api/admin/basic`
+
+* 修改管理员资料 `POST /api/admin/basic`
+
+* 修改密码 `POST /api/admin/password`
 
 ## 3 账户信息模块【C】
  
