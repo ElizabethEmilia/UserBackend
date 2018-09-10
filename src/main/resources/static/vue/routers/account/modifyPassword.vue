@@ -53,8 +53,8 @@
                 this.pending = true;
                 try {
                     let result = await $.ajax('/api/account/password', {
-                        old: md5(this.old),
-                        new: md5(this.New),
+                        old_pwd: md5(this.old),
+                        new_pwd: md5(this.New),
                     });
                     this.pending = false;
                     if (result.code) {

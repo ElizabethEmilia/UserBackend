@@ -116,7 +116,7 @@
                     </Card>
                     
                     <Row>
-                        <Card  :bordered="false" dis-hover>
+                        <Card  :bordered="false" dis-hover  v-show="!editMode">
                             <p slot="title">我的钱包</p>
                             <Row>
                                 <Col span="12" style="text-align: center; padding-top: 13px;">

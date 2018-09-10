@@ -43,6 +43,7 @@
 
 import $ from '../../js/ajax.js';
 import util from '../../js/util.js';
+import GlobalConfig from '../../js/globalconf.js';
 
 export default {
     data: () => ({
@@ -73,7 +74,7 @@ export default {
             this.startCountDown();
 
             try {
-                let result = await $.ajax('/api/sendmsg-test', util.forPostParams({
+                let result = await $.ajax(GlobalConfig.SMSDebugMode ? '/api/sendmsg-test' : '/api/sendmsg', util.forPostParams({
                     phone: this.phone,
                     code: this.verifyCode
                 }));
