@@ -90,7 +90,7 @@ export default {
         },
 
         // 找回密码
-        findpassword() {
+        async findpassword() {
             if (this.pending)
                 return;
 
@@ -102,11 +102,11 @@ export default {
             this.pending = true;
 
             try {
-                let result = $.ajax(util.forGetURL('/api/forget', this.param));
-                if (result.code === 0 && typeof result.redirect !== "undefined" && result.redirect != '')
-                    location.href=result.redirect;
+                let result = await $.ajax('/api/forget', this.param);
+                if (result.code === 0 && typeof result.data !== "undefined")
+                    location.href = "/reset?" + util.forGetParams(result.data);
                 else {
-                    util.MessageBox.Show(this, result.msg?result.msg:'无法连接到服务器');
+                    util.MessageBox.Show(this, result.msg?result.msg:'无法找回密码');
                     throw Error(result);
                 }
             }

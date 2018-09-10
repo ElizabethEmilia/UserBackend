@@ -112,7 +112,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 //        客户的角色为3
         signin.setRole(3);
         signin.setSalt("");
-        signin.setToken("");
+        signin.setToken(XunBinKit.generateToken());
         signin.insert();
         return signin;
     }

@@ -31,6 +31,7 @@
 import VerifyCode from '../../components/verifycode.vue';
 import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
+import md5 from 'js-md5';
 
 export default {
     components: {
@@ -72,35 +73,38 @@ export default {
         },
 
         // 找回密码
-        findpassword() {
+        async findpassword() {
             if (this.pending)
                 return;
 
             if (util.isStringNullOrEmpty(this.param.password)) {
-                alert('请设置密码。');
+                util.MessageBox.Show(this, '请设置密码。');
                 return;
             }
 
             if (!util.passwordMatchesRestriction(this.param.password)) {
-                alert('密码不符合复杂度要求');
+                util.MessageBox.Show(this, '密码不符合复杂度要求');
                 return;
             }
 
+            this.param.password = md5(this.param.password);
             this.pending = true;
 
             try {
-                let result = $.ajax(util.forGetURL('/api/resetpwd', this.param));
+                let result = await $.ajax('/api/resetpwd', this.param);
                 if (result.code === 0) {
-                    alert('重设密码成功');
+                    await util.MessageBox.ShowAsync(this, '重设密码成功，现在可以使用新密码登录了。');
                     location.href = "./";
                 }
                 else {
-                    alert(result.msg?result.msg:'无法连接到服务器');
+                    util.MessageBox.Show(this, result.msg?result.msg:'无法连接到服务器');
                     throw Error(result);
                 }
             }
             catch (err) {
+                console.error(err);
                 this.pending = false;
+                util.MessageBox.Show(this, "请求已被服务器拒绝。");
             }
         }
     },
@@ -113,7 +117,7 @@ export default {
         let token = util.getQueryParameter('token');
         if (util.isStringNullOrEmpty(uid) || util.isStringNullOrEmpty(token)) {
             alert('非法请求。');
-            this.show('LoginFrame');
+            location.href="/login";
             return;
         }
         this.param.uid = uid;

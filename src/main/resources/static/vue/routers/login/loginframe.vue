@@ -67,7 +67,7 @@ export default {
                     code: this.code,
                 });
                 if (result.code === 0) {
-                    await util.MessageBox.ShowAsync(this, '登陆成功');
+                    //await util.MessageBox.ShowAsync(this, '登陆成功');
                     location.href = "./";
                 }
                 else {

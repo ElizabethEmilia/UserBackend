@@ -31,6 +31,14 @@ public class UIController extends BaseController {
         return "login";
     }
 
+    @GetMapping("/reset")
+    public String showRestPasswordPage() {
+        if (getSession().getAttribute("uid") != null) {
+            return "redirect:/";
+        }
+        return "login";
+    }
+
     @GetMapping("/user.js")
     public @ResponseBody String scriptedUserInfo(HttpResponse response, HttpSession session) {
         if (getSession().getAttribute("uid") == null) {

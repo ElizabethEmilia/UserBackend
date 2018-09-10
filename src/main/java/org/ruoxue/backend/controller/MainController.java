@@ -8,12 +8,11 @@ import org.ruoxue.backend.service.ITCustomerService;
 import org.ruoxue.backend.service.ITSigninService;
 import org.ruoxue.backend.service.MainService;
 import org.ruoxue.backend.service.impl.TConfigServiceImpl;
+import org.ruoxue.backend.util.ResultUtil;
+import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -82,8 +81,20 @@ public class MainController extends BaseController {
 
     @ApiOperation("找回密码 ")
     @RequestMapping(value = "/forget", method = RequestMethod.POST)
-    public @ResponseBody Object forgetPwd(@RequestBody JSONObject jsonObject){
-        return mainService.forgetPwd(jsonObject);
+    public @ResponseBody Object forgetPwd(@RequestParam String phone, @RequestParam String msgcode){
+        if(ToolUtil.isEmpty(phone) || ToolUtil.isEmpty(msgcode)){
+            return ResultUtil.error(-1, "请检查您的参数");
+        }
+
+        String storedMsgcode = (String)getSession().getAttribute("msgcode");
+        if (storedMsgcode == null || storedMsgcode.equals("")) {
+            return ResultUtil.error(-3, "(INTERNAL ERROR) No message sent.");
+        }
+        if(!msgcode.equals(storedMsgcode)){
+            return ResultUtil.error(-3, "短信验证码错误");
+        }
+
+        return mainService.forgetPwd(phone);
     }
 
     @ApiOperation("重置密码 ")

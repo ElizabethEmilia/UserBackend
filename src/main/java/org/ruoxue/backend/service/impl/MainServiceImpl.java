@@ -68,7 +68,7 @@ public class MainServiceImpl extends BaseController implements MainService {
 
 //        获取生成的验证码
         String genCode = (String) session.getAttribute("code");
-        if(!code.toUpperCase().equals(genCode.toUpperCase())){
+        if(genCode == null || !code.toUpperCase().equals(genCode.toUpperCase())){
             return ResultUtil.error(-4, "验证码不正确");
         }
 
@@ -180,28 +180,27 @@ public class MainServiceImpl extends BaseController implements MainService {
      * @return
      */
     @Override
-    public Object forgetPwd(JSONObject jsonObject) {
-//        获取参数
-        String phone = jsonObject.getString("phone");
-        String msgcode = jsonObject.getString("msgcode");
+    public Object forgetPwd(String phone) {
+        Integer lid = null;
 
-        if(ToolUtil.isEmpty(phone) || ToolUtil.isEmpty(msgcode)){
-            return ResultUtil.error(-1, "请检查您的参数");
+        TCustomer customer = mainMapper.getCustomerByNameOrPhone(phone);
+        if(!ToolUtil.isEmpty(customer)){
+            lid = Integer.parseInt(customer.getLid());
+        }
+        else {
+            TAdmin admin = mainMapper.getAdminByNameOrPhone(phone);
+            if (!ToolUtil.isEmpty(admin)) {
+                lid = admin.getLid();
+            }
         }
 
-        TCustomer customer = mainMapper.getTCustomerByName(phone);
-        if(ToolUtil.isEmpty(customer)){
+        if (lid == null)
             return ResultUtil.error(-2, "该用户不存在");
-        }
 
-        TSignin signin = signinMapper.selectById(customer.getLid());
-
-        if(!msgcode.equals(signin.getMsgcode())){
-            return ResultUtil.error(-3, "短信验证码错误");
-        }
+        TSignin signin = signinMapper.selectById(lid);
 
         JSONObject json = new JSONObject();
-        json.put("uid", signin.getId());
+        json.put("uid", lid);
         json.put("token", signin.getToken());
 
         return ResultUtil.success(json);
@@ -215,16 +214,16 @@ public class MainServiceImpl extends BaseController implements MainService {
     @Override
     public Object resetpwd(JSONObject jsonObject) {
 //        获取参数
-        Integer uid = jsonObject.getInteger("uid");
+        Integer lid = jsonObject.getInteger("uid"); // uid represented, but means lid
         String token = jsonObject.getString("token");
         String password = jsonObject.getString("password");
 
-        if(ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(token) || ToolUtil.isEmpty(password)){
+        if(ToolUtil.isEmpty(lid) || ToolUtil.isEmpty(token) || ToolUtil.isEmpty(password)){
             return ResultUtil.error(-1, "请检查您的参数");
         }
 
-        TSignin signin = signinMapper.selectById(uid);
-        if(!token.equals(signin.getToken())){
+        TSignin signin = signinMapper.selectById(lid);
+        if(signin == null || !token.equals(signin.getToken())){
             HttpServletResponse response = XunBinKit.getResponse();
             response.setStatus(403);
         }

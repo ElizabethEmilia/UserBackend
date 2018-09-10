@@ -45,7 +45,7 @@ export default {
         }
     },
     created() {
-        this.current = window.findResult ? 'ResetPassword' : this.current;
+        this.current = location.pathname === "/reset" ? 'ResetPassword' : this.current;
     }
 }
 </script>

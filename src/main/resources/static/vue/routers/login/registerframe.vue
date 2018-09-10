@@ -145,7 +145,7 @@ export default {
         },
         sendMessageSuccess(result) {
             this.msgsent = true;
-            util.MessageBox.Show(this, '发送短信成功');
+            //util.MessageBox.Show(this, '发送短信成功');
         },
         sendMessage(phone) {
             this.customer.phone = phone;
