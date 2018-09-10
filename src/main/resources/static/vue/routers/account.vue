@@ -5,7 +5,7 @@
         <OnlineCharge />
         <PublicCharge />
         <ChargeDetail />
-        <OrderList />
+        <!-- OrderList /-->
     </div>
 </template>
 

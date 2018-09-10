@@ -5,6 +5,10 @@
                 <Icon type="md-document" />
                 账号信息
             </MenuItem>
+            <MenuItem name="orders">
+                <Icon type="md-document" />
+                我的订单
+            </MenuItem>
             <MenuItem name="company">
                 <Icon type="md-chatbubbles" />
                 我的公司
@@ -34,6 +38,10 @@
             <MenuItem name="log">
                 <Icon type="md-leaf" />
                 查看日志
+            </MenuItem>
+            <MenuItem name="role">
+                <Icon type="md-leaf" />
+                权限管理
             </MenuItem>
             <MenuItem name="system">
                 <Icon type="md-leaf" />

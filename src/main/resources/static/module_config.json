@@ -8,7 +8,9 @@
         "user": "用户管理",
         "log": "系统日志",
         "system": "系统配置",
-        "admin": "账号信息"
+        "admin": "账号信息",
+        "orders": "我的订单",
+        "role": "权限管理"
     },
 
     "defaultModule": "欢迎使用后台管理系统"
