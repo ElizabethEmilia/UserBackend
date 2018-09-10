@@ -5,7 +5,7 @@
             <Row>
                 <Col span="12">
                     <Row>
-                        <div :style="avatar ? { backgroundImage: 'url(' + avatar + ')' }:{}" class="avatar float-left">
+                        <div :style="avatar ? { backgroundImage: 'url(' + avatarURI + ')' }:{}" class="avatar float-left">
                             <div style="position: relative;" v-if="editMode">
                                 <div :style="pendingUpload?{ opacity: 1 }:{}" class="avatar-mask" @click="chooseFile">
                                     {{ pendingUpload ? '上传中' : '更换头像' }}
@@ -184,41 +184,38 @@ export default {
         info: {
             uid: 0,
             lid: -1,
-            name: 'Miyuki',
+            name: '',
             type: 1,
             industry: 1,
             phone: '110',
-            email: 'listencpp@126.com',
+            email: '',
             wechat: '',
-            qq: '1212434',
+            qq: '',
             fax: '',
-            province: '四川省',
-            city: '攀枝花市',
-            district: '东区',
-            address: '五十四小学',
+            province: '',
+            city: '',
+            district: '',
+            address: '',
             avatar: '#eee',
             otherContact: '',
             paid: true,
-            balance: 100000.00,
+            balance: 0,
             rec_type: 0,
             reg_date: '1989-6-4'
         },
         infoSave: {},
-        companyCount: 2,
+        companyCount: 0,
         editMode: false,
         stats: {
-            income: 1000,
-            lastIncome: 1000,
-            outcome: 200,
-            lastOutcome: 20,
-            balance: 1000000,
+            income: 0,
+            lastIncome: 0,
+            outcome: 0,
+            lastOutcome: 0,
+            balance: 0,
         },
         avatar: null,
         industry,
         memberType,
-        provinces: ['四川省'],
-        cities: ['攀枝花市'],
-        district: ['东区', '西区'],
         pendingSave: false, //记录是否在保存
         pendingUpload: false, //是否正在上传头像
     }),
@@ -356,6 +353,14 @@ export default {
                 set(val) {
                     [ this.infoSave.province, this.infoSave.city, this.infoSave.district ] = val;
                 }
+            },
+
+            avatarURI() {
+                let avatar = this.avatar;
+                if (avatar.indexOf("data:") === 0)
+                    return avatar;
+                else
+                    return "/res/avatar/" + avatar;
             }
     },
     created() {

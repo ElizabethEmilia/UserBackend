@@ -48,7 +48,6 @@ public class TCustomer extends Model<TCustomer> {
      */
 	private Integer status;
 
-
 	public Integer getUid() {
 		return uid;
 	}

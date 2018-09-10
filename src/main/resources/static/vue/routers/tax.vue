@@ -1,9 +1,16 @@
 <template>
-    <h1>税金管理</h1>
+    <div>
+        <RangeSelect></RangeSelect>
+    </div>
 </template>
 
 <script>
+import RangeSelect from './tax/range.vue';
+
 export default {
+    components: {
+        RangeSelect,
+    },
     data: () => ({
 
     })

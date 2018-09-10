@@ -9,7 +9,7 @@ import System from './routers/system.vue';
 import Admin from './routers/admin.vue';
 
 export default [
-    { path: '/', component: Account },
+    { path: '/', component: window.config && window.config.isAdmin ? Admin : Account },
     { path: '/account', component: Account },
     { path: '/company', component: Company },
     { path: '/customer', component: Customer },

@@ -53,6 +53,7 @@ import util from '../../../js/util.js';
 import VerifyCode from '../../components/verifycode.vue';
 import SendTextMessage from '../../components/sendtextmsg.vue';
 import $ from '../../../js/ajax.js';
+import md5 from 'js-md5';
 
 export default {
     components: {
@@ -120,7 +121,7 @@ export default {
             this.pendingRegister = true;
 
             try {
-                let result = await $.ajax('/api/register', this.customer);
+                let result = await $.ajax('/api/register', Object.assign(this.customer, { password: md5(this.customer.password) }));
                 this.pendingRegister = false;
                 if (result.code === 0) {
                     util.MessageBox.Show(this, '注册成功');

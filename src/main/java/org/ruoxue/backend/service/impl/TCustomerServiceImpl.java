@@ -170,7 +170,8 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         customer.setRecType(cus.getRecType());
         customer.setRegDate(cus.getRegDate());
         customer.setStatus(cus.getStatus());
-        boolean b = customer.updateById();
+        //boolean b = customer.updateById();
+        boolean b = customerMapper.updateCustomer(customer);
         if(b){
             return ResultUtil.success();
         } else {
@@ -210,10 +211,8 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 //        获取用户id
         Integer uid = XunBinKit.getUid();
 //        获取用户bean
-        TCustomer customer = customerMapper.getTCustomerByUid(uid);
         img = Base64Util.GenerateImageFromDataURI(img);
-        customer.setAvatar(img);
-        boolean b = customer.updateById();
+        boolean b = customerMapper.updateAvatar(img, uid);
         if(b){
             return ResultUtil.success(0, "头像修改成功");
         } else {

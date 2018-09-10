@@ -64,7 +64,7 @@ export default {
     },
     Company: {
         getCount: GET("/api/company/count"),
-        getList: GET("/api/company/count"),
+        getList: GET("/api/company/list"),
 
         SetupStates: {
             update: (stateArray) => Settings_Update('setup_states', stateArray.join(',')),

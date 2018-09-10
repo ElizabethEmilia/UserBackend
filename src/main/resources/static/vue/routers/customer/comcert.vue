@@ -4,7 +4,7 @@
 
         <PagedTable v-if="selected != -1" :columns="columns" :data-source="`customer/_/company/${cid}/cert`" />
         <div style="margin-top: 20px;">
-            <Button @click="dialogVisible.newCert = true">上传证照</Button>
+            <Button type="success" @click="dialogVisible.newCert = true">上传证照</Button>
         </div>
         <div style="margin-top: 20px;">
 

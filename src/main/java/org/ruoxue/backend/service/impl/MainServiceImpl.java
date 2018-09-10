@@ -89,7 +89,7 @@ public class MainServiceImpl extends BaseController implements MainService {
             session.setAttribute("obj", customer);
             return md5Salt(signin, password, session, customer.getUid());
         } else {
-            return ResultUtil.error(-2, "账号不存在，请注册");
+            return ResultUtil.error(-2, "账号不存在");
         }
 
     }
