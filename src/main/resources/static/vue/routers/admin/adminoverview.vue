@@ -5,8 +5,8 @@
         <Row>
             <Col span="12">
                 <Row>
-                    <div :style="avatar ? { backgroundImage: 'url(' + avatar + ')' }:{}" class="avatar float-left">
-                        <div style="position: relative;" v-if="editMode">
+                    <div :style="{ backgroundImage: 'url(/res/avatar/admin.png)' }" class="avatar float-left">
+                        <div style="position: relative;" v-if="false">
                             <div :style="pendingUpload?{ opacity: 1 }:{}" class="avatar-mask" @click="chooseFile">
                                 {{ pendingUpload ? '上传中' : '更换头像' }}
                                 <input ref="openFile" @change="uploadFile" type="file" style="display:none" />

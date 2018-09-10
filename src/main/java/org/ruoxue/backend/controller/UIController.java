@@ -66,4 +66,13 @@ public class UIController extends BaseController {
         return scripts;
     }
 
+    @GetMapping("/logout")
+    public String processLogout(HttpSession session) {
+        session.removeAttribute("uid");
+        session.removeAttribute("username");
+        session.removeAttribute("obj");
+        session.removeAttribute("role");
+        return "redirect:/";
+    }
+
 }

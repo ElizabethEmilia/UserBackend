@@ -78,6 +78,11 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
             }
         }
 
+        // 禁止同一个手机号码注册多个账号
+        if (mainMapper.testIfPhoneNumberExists(phone) != 0) {
+            return ResultUtil.error(-5, "该手机号已被注册，请直接登录。若忘记密码，请使用忘记密码功能找回密码。");
+        }
+
 //        将客户插入数据库中 --- 获取md5+盐加密后的密码
         String md5SaltPwd = MainServiceImpl.registerUser(password);
 

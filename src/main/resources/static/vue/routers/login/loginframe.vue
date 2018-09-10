@@ -3,7 +3,7 @@
                 <h2 style="text-align: center">登录系统</h2>
             <div v-if="!pending">
                 <div>
-                    <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus :maxlength="16" placeholder="用户名" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 60px;" />
+                    <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus :maxlength="16" placeholder="用户名或手机号码" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 60px;" />
                 </div>
 
                 <!--验证码 -->

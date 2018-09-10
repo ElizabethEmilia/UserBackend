@@ -23,6 +23,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -59,13 +60,10 @@ public class MainServiceImpl extends BaseController implements MainService {
             return ResultUtil.error(-1, "请检查您的参数");
         }
 
-//        通过用户名获取管理员
-        TAdmin admin = mainMapper.getTAdminByName(name);
 
-//        通过用户名获取客户
-        TCustomer customer = mainMapper.getTCustomerByName(name);
+        // 登录可以通过手机号登录或者用户名登录
 
-//      获取session对象
+        TSignin signin = null;
         HttpSession session = getSession();
 
 //        获取生成的验证码
@@ -74,21 +72,27 @@ public class MainServiceImpl extends BaseController implements MainService {
             return ResultUtil.error(-4, "验证码不正确");
         }
 
-//        获取signin对象
-        TSignin signin = null;
-        if(ToolUtil.isNotEmpty(admin)){
-//            管理员
-            session.setAttribute("username", admin.getName());
-            signin = signinMapper.selectById(admin.getId());
-            session.setAttribute("obj", admin);
-            return md5Salt(signin, password, session, admin.getId());
-        } else if(ToolUtil.isNotEmpty(customer)){
-//            客户
+        // 通过用户名获取客户
+        TCustomer customer = mainMapper.getCustomerByNameOrPhone(name);
+
+        // 获取到了客户
+        if (ToolUtil.isNotEmpty(customer)) {
             signin = signinMapper.selectById(customer.getUid());
             session.setAttribute("username", customer.getName());
             session.setAttribute("obj", customer);
             return md5Salt(signin, password, session, customer.getUid());
-        } else {
+        }
+
+        // 否则通过用户名获取管理员
+        TAdmin admin = mainMapper.getAdminByNameOrPhone(name);
+        if(ToolUtil.isNotEmpty(admin)){
+            // 管理员
+            signin = signinMapper.selectById(admin.getId());
+            session.setAttribute("username", admin.getName());
+            session.setAttribute("obj", admin);
+            return md5Salt(signin, password, session, admin.getId());
+        }
+        else {
             return ResultUtil.error(-2, "账号不存在");
         }
 

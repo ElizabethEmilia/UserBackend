@@ -187,7 +187,7 @@ export default {
             name: '',
             type: 1,
             industry: 1,
-            phone: '110',
+            phone: '',
             email: '',
             wechat: '',
             qq: '',
@@ -201,7 +201,7 @@ export default {
             paid: true,
             balance: 0,
             rec_type: 0,
-            reg_date: '1989-6-4'
+            reg_date: ''
         },
         infoSave: {},
         companyCount: 0,
