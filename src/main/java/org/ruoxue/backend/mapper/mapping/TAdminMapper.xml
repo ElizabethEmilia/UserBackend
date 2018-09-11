@@ -2,28 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ruoxue.backend.mapper.TAdminMapper">
 
-	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TAdmin">
-		<id column="id" property="id" />
-		<result column="name" property="name" />
-		<result column="lid" property="lid" />
-		<result column="privilege" property="privilege" />
-		<result column="wid" property="wid" />
-		<result column="phone" property="phone" />
-		<result column="createdate" property="createdate" />
-		<result column="modifieddate" property="modifieddate" />
-		<result column="status" property="status" />
-	</resultMap>
-
-	<sql id="Base_Column_Admin">
-		id,name,lid,privilege,wid,phone,createdate,modifieddate,status,gid
-	</sql>
-
 	<select id="getAdminList" resultType="java.util.Map">
-		select
-			<include refid="Base_Column_Admin"/>
-		from t_admin where status = 1
-		order by id DESC limit #{page}, #{size}
+		select a.*, b.name as roleName, b.value as roleValue from t_admin a, t_role b where a.roleid = b.id and a.status = 1
+		order by a.id DESC limit #{page}, #{size}
 	</select>
 
 	<select id="getRemoveAdminLids" resultType="java.lang.Integer">
@@ -47,5 +28,9 @@
 	<update id="updateAdmin">
 		update t_admin set name = #{name} where id = #{id}
 	</update>
+
+	<select id="getAdminAndRole" resultType="java.util.Map">
+		select a.*,b.name as roleName, b.value as roleValue from t_admin a, t_role b where a.roleid = b.id and a.id = #{id}
+	</select>
 
 </mapper>
