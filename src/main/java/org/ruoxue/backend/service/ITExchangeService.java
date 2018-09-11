@@ -12,5 +12,10 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-08-30
  */
 public interface ITExchangeService extends IService<TExchange> {
-	
+
+    Object onlinecharge(Integer uid, Integer page, Integer size);
+
+    Object publicchargeStatus(Integer uid, Integer page, Integer size, String status);
+
+
 }

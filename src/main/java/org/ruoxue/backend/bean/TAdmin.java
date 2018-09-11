@@ -1,7 +1,9 @@
 package org.ruoxue.backend.bean;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,22 +14,24 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-06
+ * @since 2018-09-11
  */
 @TableName("t_admin")
 public class TAdmin extends Model<TAdmin> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
 	private String name;
 	private Integer lid;
-	private Integer privilege;
+	private Integer roleid;
 	private String wid;
 	private String phone;
 	private Date createdate;
 	private Date modifieddate;
 	private Integer status;
+	private Integer gid;
 
 
 	public Integer getId() {
@@ -54,12 +58,12 @@ public class TAdmin extends Model<TAdmin> {
 		this.lid = lid;
 	}
 
-	public Integer getPrivilege() {
-		return privilege;
+	public Integer getRoleid() {
+		return roleid;
 	}
 
-	public void setPrivilege(Integer privilege) {
-		this.privilege = privilege;
+	public void setRoleid(Integer roleid) {
+		this.roleid = roleid;
 	}
 
 	public String getWid() {
@@ -102,6 +106,14 @@ public class TAdmin extends Model<TAdmin> {
 		this.status = status;
 	}
 
+	public Integer getGid() {
+		return gid;
+	}
+
+	public void setGid(Integer gid) {
+		this.gid = gid;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -113,12 +125,13 @@ public class TAdmin extends Model<TAdmin> {
 			"id=" + id +
 			", name=" + name +
 			", lid=" + lid +
-			", privilege=" + privilege +
+			", roleid=" + roleid +
 			", wid=" + wid +
 			", phone=" + phone +
 			", createdate=" + createdate +
 			", modifieddate=" + modifieddate +
 			", status=" + status +
+			", gid=" + gid +
 			"}";
 	}
 }

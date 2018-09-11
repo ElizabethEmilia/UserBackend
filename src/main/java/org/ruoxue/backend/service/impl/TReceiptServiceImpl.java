@@ -32,7 +32,9 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     @Override
     public Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end) {
 //        非空验证
-        XunBinKit.isEmpty(uid);
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;
@@ -52,7 +54,9 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     public Object receiptRequest(String uid, Integer rid, String action) {
 
 //        非空验证
-        XunBinKit.isEmpty(uid, rid, action);
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(rid) || ToolUtil.isEmpty(action)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
 
         Integer userid = XunBinKit.getUidByString(uid);
 

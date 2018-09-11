@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-08-30
  */
 public interface ITPublicChargeService extends IService<TPublicCharge> {
+
+    Object updatePublicchargeStatus(Integer uid, Integer pid, String status);
 	
 }

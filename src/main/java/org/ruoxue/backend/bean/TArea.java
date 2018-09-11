@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import org.springframework.context.annotation.Bean;
-
 import java.io.Serializable;
 
 /**
@@ -15,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-08
+ * @since 2018-09-11
  */
 @TableName("t_area")
 public class TArea extends Model<TArea> {

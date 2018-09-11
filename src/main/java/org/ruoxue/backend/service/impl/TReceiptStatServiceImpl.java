@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TReceiptStat;
 import org.ruoxue.backend.mapper.TReceiptStatMapper;
 import org.ruoxue.backend.service.ITReceiptStatService;
+import org.ruoxue.backend.util.ResultUtil;
+import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,9 @@ public class TReceiptStatServiceImpl extends ServiceImpl<TReceiptStatMapper, TRe
     @Override
     public Object receiptStat(String uid) {
 //        TODO
-        XunBinKit.isEmpty(uid);
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
 
         Integer userid = XunBinKit.getUidByString(uid);
 
