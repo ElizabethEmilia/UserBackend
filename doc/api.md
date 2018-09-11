@@ -398,6 +398,21 @@ RefusedWaitingPacking(11)
 注意：权限管理使用一个整体权限的掩码来判断该用户是不是具有该模块的功能
 
 ## 3 账户信息模块【C】
+
+### 3.0 登录时的信息检查
+
+* 在登录的Controller中，在客户登录时检查登录信息：`GET /`
+
+```
+ 需要检查的内容包含
+
+1. 客户付费期限是否过期，如果已过期，将t_customer.paid改为0
+2. 客户上次预选税金是否和当前时间是同一年，如果不是，增加税金预交数据 
+```
+
+* 客户信息脚本：`GET /user.js`
+
+获取本客户信息
  
 ### 3.1 账户信息
  
@@ -533,7 +548,58 @@ RefusedWaitingPacking(11)
 
 ## 6 税金管理
 
-需求不明确，暂时不做
+> 说明：本模块中，所有的状态更改均根据最后一条数据来进行。
+
+1. 客户操作
+
+* 【L】列出当年的税金选择操作历史记录表： `GET /api/company/{cid}/current`
+
+* 【L】列出所有的税金操作记录表：`GET /api/company/{cid}/all`
+
+* 选择年销售额范围（选择大范围）：`POST /api/company/{cid}/tax/preselect`
+
+> 限制：当且仅当status=0(未选定)的时候可以选择
+
+> Side-Affects：同时更新公司列表中的税率为选择范围对应的税率
+
+* 变更年销售额范围（选择小范围）：`POST /api/company/{cid}/tax/reselect`
+
+> 限制：仅限已经选择过的时候可以选择
+
+> 说明：名为“变更”，实为“添加”
+
+> Side-Affects: 不更新公司列表的税率（因为档内选择税率不变）
+
+* 税金差额补交：（待和客户确认）`POST /api/company/{cid}/tax/charge`
+
+> 限制：仅限需要补交税金的情况，从余额扣除税金，并记录在案
+
+> 副作用：更新公司信息中的补交税金字段
+
+* 撤回变更：`POST /api/company/{cid}/tax/back`
+
+> 限制：仅限需要撤回的情况 
+
+> 说明：名为“撤回”，实为“添加”
+
+2. 管理员操作
+
+* 【L】列出当年的税金选择操作历史记录表： `GET /api/customer/{uid|_}/company/{cid}/current`
+
+* 【L】列出所有的税金操作记录表：`GET /api/customer/{uid|_}/company/{cid}/all`
+
+* 自动更改税金状态：见3.0节说明
+
+* 手动更改税金状态：`POST /api/customer/{uid|_}/company/{cid}/tax/{action}`
+
+```
+action: 
+   request-back  要求撤回（仅当已提或已更改）
+   preselect     代替客户预选
+   reselect      重新选择
+   
+ 注意：注意副作用
+```
 
 ## 7 【S】系统管理
 
