@@ -1,6 +1,5 @@
 package org.ruoxue.backend.util;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 

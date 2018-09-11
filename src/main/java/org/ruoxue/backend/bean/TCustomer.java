@@ -1,7 +1,9 @@
 package org.ruoxue.backend.bean;
 
+import com.baomidou.mybatisplus.enums.IdType;
 import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -13,13 +15,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-06
+ * @since 2018-09-11
  */
 @TableName("t_customer")
 public class TCustomer extends Model<TCustomer> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="uid", type= IdType.AUTO)
 	private Integer uid;
 	private String lid;
 	private String name;
@@ -47,6 +50,8 @@ public class TCustomer extends Model<TCustomer> {
      * 用户的状态： 1-正常, 2-冻结, 3-删除
      */
 	private Integer status;
+	private Integer aid;
+
 
 	public Integer getUid() {
 		return uid;
@@ -216,6 +221,14 @@ public class TCustomer extends Model<TCustomer> {
 		this.status = status;
 	}
 
+	public Integer getAid() {
+		return aid;
+	}
+
+	public void setAid(Integer aid) {
+		this.aid = aid;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.uid;
@@ -245,6 +258,7 @@ public class TCustomer extends Model<TCustomer> {
 			", recType=" + recType +
 			", regDate=" + regDate +
 			", status=" + status +
+			", aid=" + aid +
 			"}";
 	}
 }

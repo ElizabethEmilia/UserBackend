@@ -1,5 +1,7 @@
 package org.ruoxue.backend.bean;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -11,13 +13,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-06
+ * @since 2018-09-11
  */
 @TableName("t_tax_account")
 public class TTaxAccount extends Model<TTaxAccount> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
 	private Integer uid;
 	private Integer cid;

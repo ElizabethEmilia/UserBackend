@@ -1,10 +1,16 @@
 package org.ruoxue.backend.service.impl;
 
-import org.ruoxue.backend.bean.TPublicCharge;
-import org.ruoxue.backend.mapper.TPublicChargeMapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.ruoxue.backend.bean.TPublicCharge;
+import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.mapper.TPublicChargeMapper;
 import org.ruoxue.backend.service.ITPublicChargeService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,5 +22,30 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, TPublicCharge> implements ITPublicChargeService {
-	
+
+    @Resource
+    private TPublicChargeMapper publicChargeMapper;
+
+    @Override
+    public Object updatePublicchargeStatus(Integer uid, Integer pid, String status) {
+        System.out.println("---------2");
+        if (!XunBinKit.isEmptyStatus(uid, pid, status) ) {
+            return null;
+        }
+
+        System.out.println("---------3");
+        Map<String, Integer> map = new HashMap<>();
+        map.put("confirm", Constant.PublicChargeState.CONFIRMED);
+        map.put("cancel", Constant.PublicChargeState.CANCELED);
+
+        if(!map.containsKey(status)){
+            XunBinKit.returnCode(404, "Not Found");
+            return null;
+        }
+        System.out.println("---------4");
+
+        Integer len = publicChargeMapper.updatePublicChangeStatus(pid, map.get(status));
+
+        return XunBinKit.returnResult(len > 0, -2, null,"修改成功", "修改失败");
+    }
 }

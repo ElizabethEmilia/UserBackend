@@ -52,8 +52,8 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         String msgcode = jsonObject.getString("msgcode");
 
 //        非空检验
-        if(ToolUtil.isEmpty(name) || ToolUtil.isEmpty(password) || ToolUtil.isEmpty(phone) || ToolUtil.isEmpty(industry) || ToolUtil.isEmpty(type) || ToolUtil.isEmpty(msgcode)) {
-            return ResultUtil.error(-1, "请检查您的参数");
+        if (!XunBinKit.isEmptyStatus(name, password, phone, industry, type, msgcode) ) {
+            return null;
         }
 
         TCustomer customer = mainMapper.getTCustomerByName(name);

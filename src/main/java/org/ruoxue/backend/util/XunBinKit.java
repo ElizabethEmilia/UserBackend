@@ -4,12 +4,47 @@ package org.ruoxue.backend.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Random;
 
 /**
  *  志勋 + 佳斌 工具类
  */
 public class XunBinKit {
+
+    /**
+     *  处理异常，返回状态码
+     */
+    public static void returnCode(Integer code, String msg){
+        HttpServletResponse response = XunBinKit.getResponse();
+        response.setStatus(code);
+        try {
+            response.getWriter().write(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *  如果是参数错误，就直接返回400
+     *  Snow Halation:
+     * 打印forbidden
+     * @param param
+     * @return
+     */
+    public static boolean isEmptyStatus(Object ... param){
+        if(ToolUtil.isEmpty(param)){
+            HttpServletResponse response = getResponse();
+            response.setStatus(400);
+            try {
+                response.getWriter().write("Bad Request");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+        return true;
+    }
 
     /**
      *  封装返回结果

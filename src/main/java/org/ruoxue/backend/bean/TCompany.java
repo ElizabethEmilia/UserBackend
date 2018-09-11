@@ -1,10 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -12,13 +15,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-06
+ * @since 2018-09-11
  */
 @TableName("t_company")
 public class TCompany extends Model<TCompany> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
 	private Integer uid;
 	private Integer parent;
