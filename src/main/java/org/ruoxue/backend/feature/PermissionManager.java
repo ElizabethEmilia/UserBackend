@@ -1,7 +1,5 @@
 package org.ruoxue.backend.feature;
 
-import java.util.HashMap;
-
 /*
     权限管理器：在此模块配置各个模块的权限，并根据该模块的定义获取权限
  */
@@ -75,7 +73,7 @@ public class PermissionManager {
         // 高级系统
         public static final int SystemConfigAdvanced = 20;
     }
-    *
+    
     public static boolean canAccess(int moudleID, int userPermission) {
         return (userPermission & (1 << moudleID)) > 0;
     }
