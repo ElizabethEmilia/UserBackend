@@ -17,4 +17,24 @@
 		<result column="tm_confirm" property="tmConfirm" />
 	</resultMap>
 
+	<select id="listPublicCharge" resultType="org.ruoxue.backend.bean.TPublicCharge">
+		select * from t_public_charge
+		where uid = #{uid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and tm_create > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and tm_create < #{end}
+			]]>
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+
 </mapper>
