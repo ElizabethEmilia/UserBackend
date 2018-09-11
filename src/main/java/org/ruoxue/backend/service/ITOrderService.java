@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-08-30
  */
 public interface ITOrderService extends IService<TOrder> {
+
+    Object ordersStatus(Integer uid, Integer page, Integer size, String status);
 	
 }

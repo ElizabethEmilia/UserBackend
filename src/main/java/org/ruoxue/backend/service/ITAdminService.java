@@ -19,5 +19,15 @@ public interface ITAdminService extends IService<TAdmin> {
     Object basicPost(JSONObject jsonObject);
 
     Object password(String old_pwd, String new_pwd);
+
+    Object list(Integer page, Integer size);
+
+    Object adminAdd(JSONObject jsonObject);
+
+    Object removeAdmin(Integer aid);
+
+    Object getAdminByAid(Integer aid);
+
+    Object updateAdmin(Integer aid, String name, Integer roleid);
 	
 }

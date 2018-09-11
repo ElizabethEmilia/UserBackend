@@ -2,7 +2,6 @@ package org.ruoxue.backend.bean;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -15,17 +14,21 @@ import java.io.Serializable;
  * @author fengjb
  * @since 2018-09-11
  */
-@TableName("t_dict_provinces")
-public class TDictProvinces extends Model<TDictProvinces> {
+@TableName("t_group")
+public class TGroup extends Model<TGroup> {
 
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
-	@TableField("province_code")
-	private String provinceCode;
-	@TableField("province_name")
-	private String provinceName;
+    /**
+     * 组名称
+     */
+	private String name;
+    /**
+     * 备注
+     */
+	private String remark;
 
 
 	public Integer getId() {
@@ -36,20 +39,20 @@ public class TDictProvinces extends Model<TDictProvinces> {
 		this.id = id;
 	}
 
-	public String getProvinceCode() {
-		return provinceCode;
+	public String getName() {
+		return name;
 	}
 
-	public void setProvinceCode(String provinceCode) {
-		this.provinceCode = provinceCode;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getProvinceName() {
-		return provinceName;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setProvinceName(String provinceName) {
-		this.provinceName = provinceName;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	@Override
@@ -59,10 +62,10 @@ public class TDictProvinces extends Model<TDictProvinces> {
 
 	@Override
 	public String toString() {
-		return "TDictProvinces{" +
+		return "TGroup{" +
 			"id=" + id +
-			", provinceCode=" + provinceCode +
-			", provinceName=" + provinceName +
+			", name=" + name +
+			", remark=" + remark +
 			"}";
 	}
 }

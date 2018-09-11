@@ -1,5 +1,7 @@
 package org.ruoxue.backend.bean;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -10,13 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-06
+ * @since 2018-09-11
  */
 @TableName("t_signin")
 public class TSignin extends Model<TSignin> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
 	private String password;
 	private String token;

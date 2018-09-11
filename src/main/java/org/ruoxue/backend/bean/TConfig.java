@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-06
+ * @since 2018-09-11
  */
 @TableName("t_config")
 public class TConfig extends Model<TConfig> {

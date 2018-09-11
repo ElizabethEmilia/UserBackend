@@ -4,12 +4,26 @@ package org.ruoxue.backend.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Random;
 
 /**
  *  志勋 + 佳斌 工具类
  */
 public class XunBinKit {
+
+    /**
+     *  处理异常，返回状态码
+     */
+    public static void returnCode(Integer code, String msg){
+        HttpServletResponse response = XunBinKit.getResponse();
+        response.setStatus(code);
+        try {
+            response.getWriter().write(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      *  封装返回结果
@@ -19,17 +33,6 @@ public class XunBinKit {
             return ResultUtil.result(0, data, succMsg);
         } else {
             return ResultUtil.error(code, errMsg);
-        }
-    }
-
-    /**
-     *  封装非空验证
-     */
-    public static Object isEmpty(Object ... param){
-        if(ToolUtil.isEmpty(param)){
-            return ResultUtil.error(-1, "参数错误");
-        } else {
-            return null;
         }
     }
 

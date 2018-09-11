@@ -16,4 +16,13 @@
 		<result column="type" property="type" />
 	</resultMap>
 
+	<select id="getPublicCharge" resultType="org.ruoxue.backend.bean.TPublicCharge">
+		select * from t_public_charge
+		where uid = #{uid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
 </mapper>

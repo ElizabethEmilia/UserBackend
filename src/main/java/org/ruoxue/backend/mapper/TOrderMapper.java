@@ -1,8 +1,11 @@
 package org.ruoxue.backend.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.ruoxue.backend.bean.TOrder;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.ruoxue.backend.bean.TOrder;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface TOrderMapper extends BaseMapper<TOrder> {
+
+    List<TOrder> listOrderByStatus(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status);
 
 }

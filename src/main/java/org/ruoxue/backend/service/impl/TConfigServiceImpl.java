@@ -59,9 +59,10 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
     @Override
     public Object settingKey(String key) {
 
-        if(ToolUtil.isEmpty(key)){
+        if (ToolUtil.isEmpty(key)) {
             return ResultUtil.error(-1, "参数错误");
         }
+
 
         String value = configMapper.getConfigByName(key);
         if(ToolUtil.isEmpty(value)){
@@ -73,7 +74,7 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
     @Override
     public Object updateSettingKey(String key, String value) {
 
-        if(ToolUtil.isEmpty(key)){
+        if (ToolUtil.isEmpty(key)) {
             return ResultUtil.error(-1, "参数错误");
         }
 

@@ -1,11 +1,10 @@
 package org.ruoxue.backend.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TSignin;
-
-import java.util.List;
 
 /**
  * <p>
@@ -25,6 +24,9 @@ public interface TSigninMapper extends BaseMapper<TSignin> {
     Integer removeSign(@Param("id") Integer id);
 
     Integer updatePassword(@Param("password") String password, @Param("id") Integer id);
+
+    @Delete("delete from t_signin where id = #{id}")
+    Integer deleteSign(@Param("id") Integer id);
 
 
 }
