@@ -74,8 +74,11 @@ public class PermissionManager {
 
         // 高级系统
         public static final int SystemConfigAdvanced = 20;
+
+        // 为客户设置打折价
+        public static final int SetDiscount = 21;
     }
-    *
+
     public static boolean canAccess(int moudleID, int userPermission) {
         return (userPermission & (1 << moudleID)) > 0;
     }
