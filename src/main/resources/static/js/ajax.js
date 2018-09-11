@@ -26,8 +26,26 @@ const ajax = function(url, data = undefined, contentType = undefined, progress =
             progress: progress
         });
     });
+};
+
+const DELETE = function(url) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: encodeURI(url),
+            dataType: 'json',
+            type: 'DELETE',
+            success: (data)=> {
+                resolve(data);
+            },
+            error: (err)=> {
+                console.error(`DELETE/ ${url} failed`);
+                reject(new Error(err));
+            },
+        });
+    });
 }
 
 export default {
-    ajax
+    ajax,
+    DELETE,
 };

@@ -42,6 +42,8 @@ public class PermissionManager {
         public static final int AdminCompanyRemoval = 10;
 
         // 用户管理：
+
+
         // 列出当前组下其他用户
         public static final int AdminUserListOfCurrentGroup = 11;
 

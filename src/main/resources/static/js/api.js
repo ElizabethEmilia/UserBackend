@@ -29,6 +29,19 @@ async function __Miyuki_RequestPOST(url, data) {
     }
 }
 
+async function __Miyuki_RequestDELETE(url, data) {
+    try {
+        let r = await $.DELETE(url);
+        if (r.code  === 0) {
+            return r.data;
+        }
+        throw new Error(r.msg);
+    }
+    catch(err) {
+        throw new Error("和服务器之间的通讯发现错误");
+    }
+}
+
 function GET(url) {
     return function() {
         return __Miyuki_RequestGET(url);
@@ -38,6 +51,12 @@ function GET(url) {
 function POST(url, data) {
     return function() {
         return __Miyuki_RequestPOST(url, data);
+    }
+}
+
+function DELETE(url) {
+    return function() {
+        return __Miyuki_RequestDELETE(url);
     }
 }
 
@@ -62,6 +81,7 @@ export default {
     Account: {
         getBasicInfo: GET("/api/account/basic"),
     },
+
     Company: {
         getCount: GET("/api/company/count"),
         getList: GET("/api/company/list"),
@@ -82,5 +102,14 @@ export default {
         getCity: (province) => GET("/api/_/area/city?"+util.forGetParamsN({ province }))(),
         getDistruct: (province, city) => GET("/api/_/area/district?"+util.forGetParamsN({ province, city }))(),
 
-    }
+    },
+
+    // 角色
+    Role: {
+        getList: GET("/api/role/list"),
+        remove: roleid => DELETE("/api/role/" + roleid)(),
+        get: roleid => GET("/api/role/" + roleid)(),
+        modify: (roleid, data) => POST(`/api/role/${roleid}`, data)(),
+        addNew: (data) => POST('/api/role/new', data)(),
+    },
 }

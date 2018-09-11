@@ -90,6 +90,7 @@ export default (function(){
                         throw new Error(result);
                     }
                     this.tableData = result.data;
+                    this.$emit("onrecvdata", result.data);
                     console.log(`[PagedTable] 获取数据成功: `, url);
                 }
                 catch(err) {

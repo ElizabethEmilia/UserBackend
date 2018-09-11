@@ -232,6 +232,14 @@ const tTaxAccount = {
     balance: 0
 };
 
+const tRole = {
+    name: '',
+    value: 0,
+    id: 0,
+    templateID: 0,
+    remark: '',
+}
+
 export default {
     tAdmin,
     tComCert,
@@ -251,5 +259,6 @@ export default {
     tReceipt,
     tReceiptStat,
     tSignin,
-    tTaxAccount
+    tTaxAccount,
+    tRole,
 };

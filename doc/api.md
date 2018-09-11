@@ -383,6 +383,20 @@ RefusedWaitingPacking(11)
 
 * 修改密码 `POST /api/admin/password` 
 
+### 2.4 【S】角色和权限管理
+
+* 【L】角色列表 `POST /api/role/list`
+
+* 新增角色 `POST /api/role/new`
+
+* 查看角色详情 `GET /api/role/{roleid}`
+
+* 删除角色 `DELETE /api/role/{roleid}`
+
+* 修改角色 `POST /api/role/{roleid}`
+
+注意：权限管理使用一个整体权限的掩码来判断该用户是不是具有该模块的功能
+
 ## 3 账户信息模块【C】
  
 ### 3.1 账户信息
