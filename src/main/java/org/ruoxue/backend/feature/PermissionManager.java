@@ -1,7 +1,5 @@
 package org.ruoxue.backend.feature;
 
-import java.util.HashMap;
-
 /*
     权限管理器：在此模块配置各个模块的权限，并根据该模块的定义获取权限
  */
