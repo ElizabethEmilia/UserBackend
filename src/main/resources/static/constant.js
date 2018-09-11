@@ -27,21 +27,29 @@ const adminTypes = [ "无权限",  "操作员", "超级管理员", ];
 // 企业组织类型
 const enterpriseOrgizationTypes = [ "有限责任公司", "股份有限公司", "个人独资公司", "一人有限公司", "合伙企业", "合作企业", "合营企业", "外商投资公司" ];
 
-const Integers = {
-    CustomerType: { PERSONAL:0, ENTERPRISE:1},
-    CustomerIssuableReceiptType: {NEITHER:0, SPECICAL:1, NORMAL:2, BOTH:3},
-    ModulePrivilege: {CUSTOMER:1, ADMINISTRATOR:2},
-    PaymentMethod:{ONLINE_ALIPAY:0,ONLINE_WECHAT:1,ONLINE_BALANCE:2,ONLINE_TRANSACTION:3,PUBLIC_BANK:4,
-        PUBLIC_MONEY:5,PUBLIC_ALIPAY:6,OTHERS:7},
-    ExchangeStatus:{UNPAIED:0,SUCCESS:1,FAILED:2},
-    ExchangeType:{OUTCOME:0,INCONME:1},
-    PublicChargeState:{WAITING:0,CONFIRMED:1,CANCELED:2},
-    PaymentStatus:{UNPAIED:0,PAIED:1,CANCELED:2},
-    ReceiptType:{NORMAL:0,SPECIAL:1},
-    RECEIPT_STATUS:{TO_BE_SUBMITTED:0,PENDING:1,PASSED:2,REFUSED:3,ISSUED:4},
-    PreTaxStallsStatus:{UNSELECTED:0,SELECTED:1,RANGE_CHANGEED:2,PAID_DIFFERENCE:3,WITHDREW:4,INACTIVATED:5},
-    SallyRange:{}
-};
+// 预设销售额状态
+const expectedSalesStatus = [ "未设置", "已设置", "已修改", "撤回", "需要补交" ];
+
+const Integers = (function() {
+    let int = {
+        CustomerType: { PERSONAL:0, ENTERPRISE:1},
+        CustomerIssuableReceiptType: {NEITHER:0, SPECICAL:1, NORMAL:2, BOTH:3},
+        ModulePrivilege: {CUSTOMER:1, ADMINISTRATOR:2},
+        PaymentMethod:{ONLINE_ALIPAY:0,ONLINE_WECHAT:1,ONLINE_BALANCE:2,ONLINE_TRANSACTION:3,PUBLIC_BANK:4,
+            PUBLIC_MONEY:5,PUBLIC_ALIPAY:6,OTHERS:7},
+        ExchangeStatus:{UNPAIED:0,SUCCESS:1,FAILED:2},
+        ExchangeType:{OUTCOME:0,INCONME:1},
+        PublicChargeState:{WAITING:0,CONFIRMED:1,CANCELED:2},
+        PaymentStatus:{UNPAIED:0,PAIED:1,CANCELED:2},
+        ReceiptType:{NORMAL:0,SPECIAL:1},
+        RECEIPT_STATUS:{TO_BE_SUBMITTED:0,PENDING:1,PASSED:2,REFUSED:3,ISSUED:4},
+        PreTaxStallsStatus:{UNSELECTED:0,SELECTED:1,RANGE_CHANGEED:2,PAID_DIFFERENCE:3,WITHDREW:4,INACTIVATED:5},
+        SallyRange:{LESS_THAN_360K:1 << 1, BETWEEN_360K_AND_1M:1 << 2,},
+        ExpectedSalesStatus: { Unselected: 0, Selected: 1, Modified: 2, ShouldWithDraw: 3, ShouldComplement: 4 },
+    };
+
+    return int;
+})();
 
 
 export {
@@ -54,6 +62,7 @@ export {
     settingTypes,
     adminTypes,
     enterpriseOrgizationTypes,
+    expectedSalesStatus,
 
     Integers,
 };

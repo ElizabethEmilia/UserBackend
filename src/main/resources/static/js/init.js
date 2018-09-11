@@ -55,7 +55,8 @@ const tCompany = {
     oriTaxPackEnd: "",
     tmFirstEc: "",
     status: "",
-    name: ""
+    name: "",
+    ysaStatus: 0,
 };
 
 const tConfig = {

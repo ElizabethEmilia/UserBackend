@@ -15,6 +15,7 @@
                     :title="!isEdit ? '新增角色' : '编辑角色'"
                     v-model="editModalVisible"
                     @on-ok="() => isEdit ? updateRole():newRole()"
+                    :width="800"
             >
                 <RoleEdit v-if="editModalVisible" :edit="isEdit" v-model="selected" />
             </Modal>

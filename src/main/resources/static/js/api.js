@@ -112,4 +112,35 @@ export default {
         modify: (roleid, data) => POST(`/api/role/${roleid}`, data)(),
         addNew: (data) => POST('/api/role/new', data)(),
     },
+
+    // 税金预交
+    Tax: {
+
+        PreSelect: {
+            getLastItem: (cid) => GET(`/api/company/${cid}/sales/last`)(),
+            List: {
+                current: (cid) => GET(`/api/company/${cid}/current`)(),
+                all: (cid) => GET(`GET /api/company/${cid}/all`)(),
+            },
+            Administration: {
+                List: {
+                    current: cid=>GET(`/api/customer/_/company/${cid}/sales/list/current`)(),
+                    all: cid=>GET(`/api/customer/{uid|_}/company/${cid}/sales/list/all`)(),
+                },
+                Actions: {
+                    requestBack: cid=>POST(`/api/customer/_/company/${cid}/sales/request-back`)(),
+                    preSelect: cid=>POST(`/api/customer/_/company/${cid}/sales/preselect`)(),
+                    reselect: cid=>POST(`/api/customer/_/company/${cid}/sales/reselect`)(),
+                },
+            },
+            preSelect: (cid, range) => POST(`/api/company/${cid}/sales/preselect`, { ysaRange: range })(),
+            reselect: (cid, range) => POST(`/api/company/${cid}/sales/reselect`, { ysaRange: range })(),
+            complement: (cid) => POST(`/api/company/${cid}/sales/complement`, { r: 1 })(),
+            withdraw: (cid) => POST(`/api/company/${cid}/sales/withdraw`, { r: 1 })(),
+        },
+
+        Account: {
+
+        }
+    },
 }

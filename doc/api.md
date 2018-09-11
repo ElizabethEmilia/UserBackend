@@ -548,21 +548,32 @@ RefusedWaitingPacking(11)
 
 ## 6 税金管理
 
+
+### 6.1 年销售额预选
+
 > 说明：本模块中，所有的状态更改均根据最后一条数据来进行。
 
 1. 客户操作
 
-* 【L】列出当年的税金选择操作历史记录表： `GET /api/company/{cid}/current`
+* 【L】列出当年的税金选择操作历史记录表： `GET /api/company/{cid}/sales/list/current`
 
-* 【L】列出所有的税金操作记录表：`GET /api/company/{cid}/all`
+* 【L】列出所有的税金操作记录表：`GET /api/company/{cid}/sales/list/all`
 
-* 选择年销售额范围（选择大范围）：`POST /api/company/{cid}/tax/preselect`
+需要实现搜索功能：规则和之前的挥则一样
+
+参数： `status=<期望状态>&from=<查询起始时间>&to=<查询截止时间>`
+
+* 获取最后预选一条记录： `GET /api/company/{cid}/sales/last`
+
+* 选择年销售额范围（选择大范围）：`POST /api/company/{cid}/sales/preselect`
+
+参数： ysaRange: 范围
 
 > 限制：当且仅当status=0(未选定)的时候可以选择
 
-> Side-Affects：同时更新公司列表中的税率为选择范围对应的税率
+> Side-Affects：同时更新公司列表中的范围和税率为选择范围对应的范围和税率
 
-* 变更年销售额范围（选择小范围）：`POST /api/company/{cid}/tax/reselect`
+* 变更年销售额范围（选择小范围）：`POST /api/company/{cid}/sales/reselect`
 
 > 限制：仅限已经选择过的时候可以选择
 
@@ -570,13 +581,13 @@ RefusedWaitingPacking(11)
 
 > Side-Affects: 不更新公司列表的税率（因为档内选择税率不变）
 
-* 税金差额补交：（待和客户确认）`POST /api/company/{cid}/tax/charge`
+* 税金差额补交：（待和客户确认）`POST /api/company/{cid}/sales/complement`
 
-> 限制：仅限需要补交税金的情况，从余额扣除税金，并记录在案
+> 限制：仅限需要补交税金的情况，从余额扣除税金，并记录在案(需要计算补足的金额  这个地方只是定向)
 
 > 副作用：更新公司信息中的补交税金字段
 
-* 撤回变更：`POST /api/company/{cid}/tax/back`
+* 撤回变更：`POST /api/company/{cid}/sales/withdraw`
 
 > 限制：仅限需要撤回的情况 
 
@@ -584,13 +595,13 @@ RefusedWaitingPacking(11)
 
 2. 管理员操作
 
-* 【L】列出当年的税金选择操作历史记录表： `GET /api/customer/{uid|_}/company/{cid}/current`
+* 【L】列出当年的税金选择操作历史记录表： `GET /api/customer/{uid|_}/company/{cid}/sales/list/current`
 
-* 【L】列出所有的税金操作记录表：`GET /api/customer/{uid|_}/company/{cid}/all`
+* 【L】列出所有的税金操作记录表：`GET /api/customer/{uid|_}/company/{cid}/sales/list/all`
 
 * 自动更改税金状态：见3.0节说明
 
-* 手动更改税金状态：`POST /api/customer/{uid|_}/company/{cid}/tax/{action}`
+* 手动更改税金状态：`POST /api/customer/{uid|_}/company/{cid}/sales/{action}`
 
 ```
 action: 
