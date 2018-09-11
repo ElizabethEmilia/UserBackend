@@ -48,4 +48,6 @@ public interface TAdminMapper extends BaseMapper<TAdmin> {
     @Update("update t_admin set name = #{name}, roleid = #{roleid} where id = #{id}")
     Integer updateAdmin(@Param("id") Integer id, @Param("name") String name, @Param("roleid") Integer roleid);
 
+    List<Map<String, Object>> getAdminAndRole(@Param("id") Integer id);
+
 }

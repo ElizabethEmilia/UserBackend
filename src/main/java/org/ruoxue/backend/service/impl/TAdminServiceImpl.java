@@ -38,13 +38,9 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     @Override
     public Object basicGet(Integer uid) {
 //        获取admin实体
-        TAdmin admin = adminMapper.getTAdminByUid(uid);
+        List<Map<String, Object>> list = adminMapper.getAdminAndRole(uid);
 
-        if(ToolUtil.isEmpty(admin)){
-            return ResultUtil.error(-1, "未查到该管理员信息");
-        }
-
-        return ResultUtil.success(admin);
+        return XunBinKit.returnResult(list.size() > 0, -2, list.get(0), "查询成功", "未查到管理员信息");
     }
 
     @Override
