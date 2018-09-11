@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * <p>
@@ -38,8 +39,8 @@ public class TPublicChargeController {
 
     @ApiOperation("获取转账记录")
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)
-    public @ResponseBody Object listPublChargeStatus(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @PathVariable String status) {
-        return publicChargeService.listPublChargeStatus(page, size, status);
+    public @ResponseBody Object listPublChargeStatus(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Date start, @RequestParam(required = false) Date end, @PathVariable String status) {
+        return publicChargeService.listPublChargeStatus(page, size, status, start, end);
     }
 
 
