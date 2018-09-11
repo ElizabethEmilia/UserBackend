@@ -1,8 +1,10 @@
 package org.ruoxue.backend.service;
 
 import com.alibaba.fastjson.JSONObject;
-import org.ruoxue.backend.bean.TPublicCharge;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TPublicCharge;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -20,6 +22,6 @@ public interface ITPublicChargeService extends IService<TPublicCharge> {
 
     Object publChargeCancel(Integer id);
 
-    Object listPublChargeStatus(Integer page, Integer size, String status);
+    Object listPublChargeStatus(Integer page, Integer size, String status, Date start, Date end);
 	
 }

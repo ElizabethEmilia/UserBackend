@@ -105,7 +105,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
     }
 
     @Override
-    public Object listPublChargeStatus(Integer page, Integer size, String status) {
+    public Object listPublChargeStatus(Integer page, Integer size, String status, Date start, Date end) {
 
 //        获取uid
         Integer uid = XunBinKit.getUid();
@@ -133,7 +133,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         }
         page = (page - 1) * size;
 
-        List<TPublicCharge> list = publicChargeMapper.listPublicCharge(uid, page, size, map.get(status));
+        List<TPublicCharge> list = publicChargeMapper.listPublicCharge(uid, page, size, map.get(status), start, end);
         return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
     }
 }

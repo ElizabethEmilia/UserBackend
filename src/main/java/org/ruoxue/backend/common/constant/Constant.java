@@ -80,8 +80,8 @@ public final class Constant {
     1 - 收入
      */
     public class ExchangeType {
-        public final int OUTCOME = 0;
-        public final int INCONME = 1;
+        public static final int OUTCOME = 0;
+        public static final int INCOME = 1;
     }
 
     /*
