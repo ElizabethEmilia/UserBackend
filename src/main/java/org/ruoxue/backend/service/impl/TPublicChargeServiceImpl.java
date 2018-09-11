@@ -5,6 +5,8 @@ import org.ruoxue.backend.bean.TPublicCharge;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TPublicChargeMapper;
 import org.ruoxue.backend.service.ITPublicChargeService;
+import org.ruoxue.backend.util.ResultUtil;
+import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +30,11 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
 
     @Override
     public Object updatePublicchargeStatus(Integer uid, Integer pid, String status) {
-        System.out.println("---------2");
-        if (!XunBinKit.isEmptyStatus(uid, pid, status) ) {
-            return null;
+
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(pid) || ToolUtil.isEmpty(status)) {
+            return ResultUtil.error(-1, "参数错误");
         }
 
-        System.out.println("---------3");
         Map<String, Integer> map = new HashMap<>();
         map.put("confirm", Constant.PublicChargeState.CONFIRMED);
         map.put("cancel", Constant.PublicChargeState.CANCELED);
@@ -42,7 +43,6 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
             XunBinKit.returnCode(404, "Not Found");
             return null;
         }
-        System.out.println("---------4");
 
         Integer len = publicChargeMapper.updatePublicChangeStatus(pid, map.get(status));
 

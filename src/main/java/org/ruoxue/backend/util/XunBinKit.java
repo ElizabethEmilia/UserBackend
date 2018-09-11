@@ -26,27 +26,6 @@ public class XunBinKit {
     }
 
     /**
-     *  如果是参数错误，就直接返回400
-     *  Snow Halation:
-     * 打印forbidden
-     * @param param
-     * @return
-     */
-    public static boolean isEmptyStatus(Object ... param){
-        if(ToolUtil.isEmpty(param)){
-            HttpServletResponse response = getResponse();
-            response.setStatus(400);
-            try {
-                response.getWriter().write("Bad Request");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    /**
      *  封装返回结果
      */
     public static Object returnResult(boolean flag, Integer code, Object data, String succMsg, String errMsg){
@@ -54,17 +33,6 @@ public class XunBinKit {
             return ResultUtil.result(0, data, succMsg);
         } else {
             return ResultUtil.error(code, errMsg);
-        }
-    }
-
-    /**
-     *  封装非空验证
-     */
-    public static Object isEmpty(Object ... param){
-        if(ToolUtil.isEmpty(param)){
-            return ResultUtil.error(-1, "参数错误");
-        } else {
-            return null;
         }
     }
 

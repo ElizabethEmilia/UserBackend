@@ -5,6 +5,7 @@ import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TOrderMapper;
 import org.ruoxue.backend.service.ITOrderService;
+import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,9 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
     @Override
     public Object ordersStatus(Integer uid, Integer page, Integer size, String status) {
-        if (!XunBinKit.isEmptyStatus(uid, status) ) {
-            return null;
+
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(status)) {
+            return ResultUtil.error(-1, "参数错误");
         }
 
         Map<String, Integer> map = new HashMap<>();

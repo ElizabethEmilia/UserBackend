@@ -16,7 +16,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_Admin">
-		id,name,lid,privilege,wid,phone,createdate,modifieddate,status
+		id,name,lid,privilege,wid,phone,createdate,modifieddate,status,gid
 	</sql>
 
 	<select id="getAdminList" resultType="java.util.Map">

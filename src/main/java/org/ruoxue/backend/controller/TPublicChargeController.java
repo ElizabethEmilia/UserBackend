@@ -30,7 +30,6 @@ public class TPublicChargeController {
     @ApiOperation("修改客户的对公充值状态(确认/取消)")
     @RequestMapping(value = "/{uid}/publiccharge/{pid}/{status}", method = RequestMethod.POST)
     public @ResponseBody Object updatePublicchargeStatus(@PathVariable Integer uid, @PathVariable Integer pid, @PathVariable String status) {
-        System.out.println("---------");
         return publicChargeService.updatePublicchargeStatus(uid, pid, status);
     }
 	

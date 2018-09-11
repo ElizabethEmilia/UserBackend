@@ -1,11 +1,12 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -24,7 +25,7 @@ public class TAdmin extends Model<TAdmin> {
 	private Integer id;
 	private String name;
 	private Integer lid;
-	private Integer privilege;
+	private Integer roleid;
 	private String wid;
 	private String phone;
 	private Date createdate;
@@ -57,12 +58,12 @@ public class TAdmin extends Model<TAdmin> {
 		this.lid = lid;
 	}
 
-	public Integer getPrivilege() {
-		return privilege;
+	public Integer getRoleid() {
+		return roleid;
 	}
 
-	public void setPrivilege(Integer privilege) {
-		this.privilege = privilege;
+	public void setRoleid(Integer roleid) {
+		this.roleid = roleid;
 	}
 
 	public String getWid() {
@@ -124,7 +125,7 @@ public class TAdmin extends Model<TAdmin> {
 			"id=" + id +
 			", name=" + name +
 			", lid=" + lid +
-			", privilege=" + privilege +
+			", roleid=" + roleid +
 			", wid=" + wid +
 			", phone=" + phone +
 			", createdate=" + createdate +

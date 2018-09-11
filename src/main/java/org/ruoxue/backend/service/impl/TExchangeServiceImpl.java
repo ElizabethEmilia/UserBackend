@@ -6,6 +6,7 @@ import org.ruoxue.backend.bean.TPublicCharge;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TExchangeMapper;
 import org.ruoxue.backend.service.ITExchangeService;
+import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,8 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
     @Override
     public Object onlinecharge(Integer uid, Integer page, Integer size) {
 
-        if (!XunBinKit.isEmptyStatus(uid) ) {
-            return null;
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "参数错误");
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -51,7 +52,9 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
 
     @Override
     public Object publicchargeStatus(Integer uid, Integer page, Integer size, String status) {
-        XunBinKit.isEmptyStatus(uid, status);
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(status)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
 
         Map<String, Integer> map = new HashMap<>();
         map.put("all", null);

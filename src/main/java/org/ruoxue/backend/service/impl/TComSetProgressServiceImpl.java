@@ -34,8 +34,8 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
     @Override
     public Object getSetUp(String uid, Integer cid) {
 //        非空验证
-        if (!XunBinKit.isEmptyStatus(uid, cid) ) {
-            return null;
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
         }
 //        处理uid
         Integer userid = XunBinKit.getUidByString(uid);
@@ -53,8 +53,8 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
     @Override
     public Object addSetUp(String uid, Integer cid, Integer status, String note) {
 //        非空验证
-        if (!XunBinKit.isEmptyStatus(uid, cid, status, note) ) {
-            return null;
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(status) || ToolUtil.isEmpty(note)) {
+            return ResultUtil.error(-1, "参数错误");
         }
 
 //        插入一个设立进度
@@ -74,8 +74,8 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
     @Override
     public Object deleteSetUp(String uid, Integer cid) {
 //        非空验证
-        if (!XunBinKit.isEmptyStatus(uid, cid) ) {
-            return null;
+        if(ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid)){
+            return ResultUtil.error(-1, "参数错误");
         }
 
 //        处理uid

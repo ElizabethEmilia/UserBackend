@@ -23,7 +23,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -176,7 +175,6 @@ public class MainServiceImpl extends BaseController implements MainService {
 
     /**
      *  找回密码
-     * @param jsonObject
      * @return
      */
     @Override
