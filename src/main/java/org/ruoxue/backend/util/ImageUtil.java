@@ -4,10 +4,45 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
 public class ImageUtil {
+
+    // Test image util
+    public static void main(String[] args) {
+        try {
+            BufferedImage image = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\source.png"));
+            BufferedImage mask = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\overlay.png"));
+            BufferedImage back = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\source.png"));
+            // 获取mask的高度以才切到相同高度
+            int h = mask.getHeight();
+            int w = mask.getWidth();
+
+            // 随机图片验证码的位置
+            int x = (int)(Math.random() * (image.getWidth() - w));
+            int y = image.getHeight() - 10 - h;
+
+            image = image.getSubimage(x, y, w, h);
+
+            // 滑块的图片
+            ImageUtil.applyGrayscaleMaskToAlpha(image, mask);
+            ImageIO.write(image, "png", new File("C:\\Users\\Miyuki\\Desktop\\dst.png"));
+
+            // 暗化滑块背景
+            ImageUtil.changeBrightnessWithMask(image, mask, 0.5f);
+            ImageIO.write(image,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-dark.png"));
+
+            // 覆盖到原图上
+            ImageUtil.overlayImage(back, image, x, y);
+            ImageIO.write(back,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-overlay.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     // 通过黑底mask来获取图片区域（需要保证image和mask等高等宽）
     public static void applyGrayscaleMaskToAlpha(BufferedImage image, BufferedImage mask)
@@ -121,5 +156,7 @@ public class ImageUtil {
         }
         return null;
     }
+
+    // 生成验证码滑块
 
 }
