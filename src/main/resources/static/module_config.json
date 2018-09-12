@@ -10,7 +10,8 @@
         "system": "系统配置",
         "admin": "账号信息",
         "orders": "我的订单",
-        "role": "权限管理"
+        "role": "权限管理",
+        "group": "组管理"
     },
 
     "defaultModule": "欢迎使用后台管理系统"

@@ -1,13 +1,11 @@
 <template>
-    $END$
+
 </template>
 
 <script>
     export default {
-        name: "group"
+        data: () => ({
+
+        }),
     }
 </script>
-
-<style scoped>
-
-</style>

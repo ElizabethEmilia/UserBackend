@@ -84,7 +84,7 @@ export default {
 
     Company: {
         getCount: GET("/api/company/count"),
-        getList: GET("/api/company/list"),
+        getList: GET("/api/company/list?size=0"),
 
         SetupStates: {
             update: (stateArray) => Settings_Update('setup_states', stateArray.join(',')),
@@ -106,7 +106,7 @@ export default {
 
     // 角色
     Role: {
-        getList: GET("/api/role/list"),
+        getList: GET("/api/role/list?size=0"),
         remove: roleid => DELETE("/api/role/" + roleid)(),
         get: roleid => GET("/api/role/" + roleid)(),
         modify: (roleid, data) => POST(`/api/role/${roleid}`, data)(),
@@ -142,5 +142,24 @@ export default {
         Account: {
 
         }
+    },
+
+    // 组
+    Group: {
+        getList: GET(`/api/group/list`),
+        getSimplifiedList: GET(`/api/group/list-simple`),
+        add: data => POST(`/api/group/add`, data)(),
+        remove: gid => POST(`/api/group/${gid}/delete`, { r: 1 })(),
+        modify: (gid, data) => POST(`/api/group/${gid}/delete`, data)(),
+        getUserOfGroup: (gid) => GET(`/api/group/${gid}/user`)(),
+        getCustomerOfGroup: (gid) => GET(`/api/group/${gid}/customer`)(),
+    },
+
+    Admin: {
+        add: data => POST(`/api/admin/add`, data)(),
+        getList: GET(`/api/admin/list?size=0`),
+        remove: aid => POST(`/api/admin/${aid}/delete`, {r:1})(),
+        get: aid => GET(`/api/admin/${aid}/`)(),
+        modify: (aid, data) => POST(`/api/admin/${aid}/`, data)(),
     },
 }

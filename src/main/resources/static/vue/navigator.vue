@@ -35,6 +35,10 @@
                 <Icon type="md-leaf" />
                 用户管理
             </MenuItem>
+            <MenuItem name="group">
+                <Icon type="md-leaf" />
+                组管理
+            </MenuItem>
             <MenuItem name="log">
                 <Icon type="md-leaf" />
                 查看日志
