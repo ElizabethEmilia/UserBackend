@@ -1,6 +1,6 @@
 <template>
     <Card>
-        <PagedTable :columns="columns" data-source="admin/list" />
+        <PagedTable :columns="columns" data-source="system/log" />
     </Card>
 </template>
 

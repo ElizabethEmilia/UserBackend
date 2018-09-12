@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="float-left" style="margin-left: 20px;">
-                        <span style="font-size: 16px">管理员 / </span>
+                        <span style="font-size: 16px">{{ info.roleName }} / </span>
                         <span style="font-size: 20px; color: #000">{{ info.name }}</span>
                     </div>
                 </Row>
@@ -24,7 +24,7 @@
 
                     <Row class="line-margin">
                         <Col span="12"><Icon type="ios-call" /> {{ info.phone }}</Col>
-                        <Col span="12"><Icon type="ios-mail" /> 超级管理员（确认类型）  </Col>
+                         <Col span="12"><Icon type="ios-mail" /> {{ info.roleName }}  </Col>
                     </Row>
                     <!-- 用户信息显示结束 -->
                 </Row>

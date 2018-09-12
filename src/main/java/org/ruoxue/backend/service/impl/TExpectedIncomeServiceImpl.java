@@ -81,7 +81,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("all", null);
         map.put("income", Constant.ExchangeType.INCOME);
         map.put("outcome", Constant.ExchangeType.OUTCOME);

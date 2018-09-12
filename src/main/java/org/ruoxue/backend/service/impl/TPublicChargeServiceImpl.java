@@ -44,7 +44,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("confirm", Constant.PublicChargeState.CONFIRMED);
         map.put("cancel", Constant.PublicChargeState.CANCELED);
 
@@ -114,7 +114,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("all", null);
         map.put("pending", Constant.PublicChargeState.WAITING);
         map.put("confirmed", Constant.PublicChargeState.CONFIRMED);

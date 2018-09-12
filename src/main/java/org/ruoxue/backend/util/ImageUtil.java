@@ -82,20 +82,22 @@ public class ImageUtil {
                 int red1   = (color1 >>> 16) & 0xFF;
                 int green1 = (color1 >>> 8) & 0xFF;
                 int blue1  = (color1 >>> 0) & 0xFF;
-                float transparent1 = alpha1 / 255;
+                float transparent1 = (float)alpha1 / 255;
 
                 int alpha2 = (color2 >>> 24) & 0xFF;
                 int red2   = (color2 >>> 16) & 0xFF;
                 int green2 = (color2 >>> 8) & 0xFF;
                 int blue2  = (color2 >>> 0) & 0xFF;
-                float transparent2 = alpha2 / 255;
+                float transparent2 = (float)alpha2 / 255;
+
+                System.out.println(transparent2);
 
                 float transparent = transparent1 * transparent2;
                 float untransparent2 = 1-transparent2;
 
-                int red = (int)(red1 * untransparent2 + red2 * transparent2) / 2;
-                int green = (int)(green1 * untransparent2 + green2 * transparent2) / 2;
-                int blue = (int)(blue1 * untransparent2 + blue2 * transparent2) / 2;
+                int red = (int)(red1 * untransparent2 + red2 * transparent2);
+                int green = (int)(green1 * untransparent2 + green2 * transparent2);
+                int blue = (int)(blue1 * untransparent2 + blue2 * transparent2);
 
                 int color = ((int)((transparent1) * 255) << 24) | (red << 16) | (green << 8) | blue;
                 image.setRGB(x, y, color);

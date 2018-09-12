@@ -56,7 +56,7 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("all", null);
         map.put("pending", Constant.PublicChargeState.WAITING);
         map.put("confirmed", Constant.PublicChargeState.CONFIRMED);

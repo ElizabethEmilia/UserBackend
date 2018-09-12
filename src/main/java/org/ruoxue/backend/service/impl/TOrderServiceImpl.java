@@ -37,7 +37,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("all", null);
         map.put("pending", Constant.PaymentStatus.UNPAIED);
         map.put("paid", Constant.PaymentStatus.PAIED);
@@ -67,7 +67,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("all", null);
         map.put("pending", Constant.PaymentStatus.UNPAIED);
         map.put("paid", Constant.PaymentStatus.PAIED);
