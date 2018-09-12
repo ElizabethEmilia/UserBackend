@@ -177,7 +177,7 @@ API Key保存在数据库的t_config表中
 
 * 获取客户列表（可以根据客户名称和id搜索）
 
-1. 自己所属的客户：`GET /api/customer/list/self`以及`GET /api/customer/list`
+1. 自己所属的客户：`GET /api/customer/list/self`以及`GET /api/customer`
 
 2. 组内所属客户：`GET /api/customer/list/group`
 

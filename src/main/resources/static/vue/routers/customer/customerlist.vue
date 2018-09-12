@@ -5,12 +5,25 @@
             <a v-if="selected != -1" @click="selected = -1; $emit('on-back-to-list');" href="javascript:void(0)" style="margin-right: 10px;">返回</a>
              {{ cardTitle }}
         </p>
+
+        <div style="margin: 10px;">
+            <Input v-model="searchKey" placeholder="搜索客户ID或客户名称" />
+        </div>
+
+        <!-- TODO: 判断权限，不对的给alert -->
+        <Tabs v-model="viewRes" >
+            <TabPane label="当前账号客户" name="self"></TabPane>
+            <TabPane label="本组的客户" name="group"></TabPane>
+            <TabPane label="全部客户" name="all"></TabPane>
+        </Tabs>
+
         <PagedTable 
             :columns="columns"
              vif="typeof showList === 'undefined' || showList" 
              v-if="selected == -1"
-             data-source="customer"
+             :data-source="dataSource"
              @on-select="handleOnSelect"
+             :additional-params="additionalParams"
          />
          <div v-else>
              <CustomerOverview :cus-data="cdata"
@@ -49,6 +62,8 @@ export default {
         'showList', 'uid'
     ],
     data: () => ({
+        searchKey: '',
+        viewRes: "self",
         selected: -1, // 选择的客户ID
         cdata: {
             // 已经选择的客户数据    
@@ -90,6 +105,14 @@ export default {
     computed: {
         cardTitle() {
             return this.selected == -1 ? '客户列表':(`客户信息：${this.cdata.name}(${this.selected})`)
+        },
+        additionalParams() {
+            return util.forGetParams({ key: this.searchKey });
+        },
+        dataSource() {
+            if (this.viewRes === "self")
+                return "customer";
+            return "customer/list/" + this.viewRes;
         }
     },
     methods: {
