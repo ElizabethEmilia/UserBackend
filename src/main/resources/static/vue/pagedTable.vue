@@ -127,11 +127,13 @@ export default (function(){
         watch: {
             dataSource(val) {
                 console.log('[PagedTable] 数据源发生变化', val);
+                this.tableData = [];
                 this.page = 1;
                 this.getContentOfPage(1, this.size);
             },
             additionalParams(val) {
-                console.log('[PagedTable] AddiParams', val);
+                console.log('[PagedTable] 数据查询参数发生变化', val);
+                this.tableData = [];
                 this.page = 1;
                 this.getContentOfPage(1, this.size);
             }
