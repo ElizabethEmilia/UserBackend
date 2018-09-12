@@ -117,6 +117,7 @@ public class ImageUtil {
         {
             e.printStackTrace();
         }
+        return null;
     }
 
 }

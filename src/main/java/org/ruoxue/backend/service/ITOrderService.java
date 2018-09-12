@@ -1,7 +1,9 @@
 package org.ruoxue.backend.service;
 
-import org.ruoxue.backend.bean.TOrder;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TOrder;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -14,5 +16,7 @@ import com.baomidou.mybatisplus.service.IService;
 public interface ITOrderService extends IService<TOrder> {
 
     Object ordersStatus(Integer uid, Integer page, Integer size, String status);
+
+    Object listOrder(Integer cid, Integer type, Integer page, Integer size, String status, Date start, Date end);
 	
 }
