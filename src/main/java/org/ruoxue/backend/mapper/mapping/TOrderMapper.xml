@@ -22,4 +22,29 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="listOrder" resultType="java.util.Map">
+		select * from t_order
+		where 1 = 1
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="type != null and type != ''">
+			and type = #{type}
+		</if>
+		<if test="cid != null and cid != ''">
+			and cid = #{cid}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and tm_create > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and tm_create < #{end}
+			]]>
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
 </mapper>

@@ -65,6 +65,8 @@ public class TCompany extends Model<TCompany> {
 	private Date tmFirstEc;
 	private String status;
 	private String name;
+	@TableField("ysa_status")
+	private Integer ysaStatus;
 
 
 	public Integer getId() {
@@ -259,6 +261,14 @@ public class TCompany extends Model<TCompany> {
 		this.name = name;
 	}
 
+	public Integer getYsaStatus() {
+		return ysaStatus;
+	}
+
+	public void setYsaStatus(Integer ysaStatus) {
+		this.ysaStatus = ysaStatus;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -291,6 +301,7 @@ public class TCompany extends Model<TCompany> {
 			", tmFirstEc=" + tmFirstEc +
 			", status=" + status +
 			", name=" + name +
+			", ysaStatus=" + ysaStatus +
 			"}";
 	}
 }
