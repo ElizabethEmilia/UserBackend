@@ -8,6 +8,7 @@ import org.ruoxue.backend.service.ITCustomerService;
 import org.ruoxue.backend.service.ITSigninService;
 import org.ruoxue.backend.service.MainService;
 import org.ruoxue.backend.service.impl.TConfigServiceImpl;
+import org.ruoxue.backend.util.ImageUtil;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
@@ -15,13 +16,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.Buffer;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +63,36 @@ public class MainController extends BaseController {
         @RequestMapping(value = "/verifycode", method = RequestMethod.GET)
     public void gerenateVerifycode(HttpServletRequest request, HttpServletResponse response){
         mainService.gerenateVerifycode(request, response);
+    }
+
+    @ApiOperation("生成验证码接口（滑动）")
+    @RequestMapping(value = "/verifycode2", method = RequestMethod.GET)
+    @ResponseBody
+    public Object gerenateVerifycodeNew(HttpServletRequest request, HttpServletResponse response){
+        String path = System.getProperty("user.dir") + "/src/main/resources/res/";
+        File codeBackgroundDir = new File(path + "code/");
+        JSONObject components = new JSONObject();
+        if (!codeBackgroundDir.isDirectory()) {
+            return ResultUtil.error(1, "No verification code background avalible");
+        }
+        try {
+            String[] images = codeBackgroundDir.list();
+            File imgFile = new File(path + "code/" + images[(int) (Math.random() * images.length)]);
+            BufferedImage image = ImageIO.read(imgFile);
+            BufferedImage back = ImageIO.read(imgFile);
+            BufferedImage mask = ImageIO.read(new File(path +"mask.png"));
+
+            Integer x = ImageUtil.generateCode(image, mask, back);
+
+            components.put("bg", ImageUtil.toBase64String(back, "png"));
+            components.put("slider", ImageUtil.toBase64String(image, "png"));
+
+            return ResultUtil.success(components);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error(2, e.getMessage());
+        }
     }
 
     @ApiOperation("用户注册接口,同步插入sign表")

@@ -16,8 +16,11 @@ public class ImageUtil {
             BufferedImage image = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\source.png"));
             BufferedImage mask = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\overlay.png"));
             BufferedImage back = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\source.png"));
+
+
+            ImageUtil.generateCode(image, mask, back);
             // 获取mask的高度以才切到相同高度
-            int h = mask.getHeight();
+            /*(int h = mask.getHeight();
             int w = mask.getWidth();
 
             // 随机图片验证码的位置
@@ -37,9 +40,43 @@ public class ImageUtil {
             // 覆盖到原图上
             ImageUtil.overlayImage(back, image, x, y);
             ImageIO.write(back,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-overlay.png"));
+        */}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Integer generateCode(BufferedImage image, BufferedImage mask, BufferedImage back) {
+        try {
+            // 获取mask的高度以才切到相同高度
+            int h = mask.getHeight();
+            int w = mask.getWidth();
+
+            // 随机图片验证码的位置
+            int x = (int)(Math.random() * (image.getWidth() - w));
+            int y = image.getHeight() - 10 - h;
+
+            image = image.getSubimage(x, y, w, h);
+
+            // 滑块的图片
+            ImageUtil.applyGrayscaleMaskToAlpha(image, mask);
+            BufferedImage darken = image.getSubimage(0, 0, w, h);
+            ImageIO.write(image, "png", new File("C:\\Users\\Miyuki\\Desktop\\dst.png"));
+
+            // 暗化滑块背景
+            ImageUtil.changeBrightnessWithMask(darken, mask, 0.5f);
+            ImageIO.write(darken,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-dark.png"));
+
+            // 覆盖到原图上
+            ImageUtil.overlayImage(back, darken, x, y);
+            ImageIO.write(back,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-overlay.png"));
+
+            return x;
         }
         catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
     }
@@ -78,7 +115,7 @@ public class ImageUtil {
 
                 color = (alpha << 24) | (red << 16) | (green << 8) | blue;
                 image.setRGB(x, y, color);
-                System.out.println(alpha);
+                //System.out.println(alpha);
             }
         }
     }
@@ -101,7 +138,7 @@ public class ImageUtil {
 
                 color = (alpha << 24) | (red << 16) | (green << 8) | blue;
                 image.setRGB(x, y, color);
-                System.out.println(alpha);
+                //System.out.println(alpha);
             }
         }
     }
@@ -125,7 +162,7 @@ public class ImageUtil {
                 int blue2  = (color2 >>> 0) & 0xFF;
                 float transparent2 = (float)alpha2 / 255;
 
-                System.out.println(transparent2);
+                //System.out.println(transparent2);
 
                 float transparent = transparent1 * transparent2;
                 float untransparent2 = 1-transparent2;
