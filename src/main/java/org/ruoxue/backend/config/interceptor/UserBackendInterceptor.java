@@ -30,11 +30,11 @@ public class UserBackendInterceptor extends BaseController implements HandlerInt
 
 //        判断cookie中是否有jsession
         Cookie cookie = CookieUtil.getCookie(request, "JSESSIONID");
-//        System.out.println("-----------设置前cookie: " + cookie);
+//        加响应头
         if(ToolUtil.isEmpty(cookie)){
             response.setHeader("Set-Cookie", "JSESSIONID=" + request.getSession().getId());
         }
-//        System.out.println("-----------设置后: " + response.getHeader("Set-Cookie"));
+        response.setHeader("Allow-Cross-Origin", "*");
 
         return true;
     }

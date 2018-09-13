@@ -9,9 +9,11 @@ import org.ruoxue.backend.service.ITSigninService;
 import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -142,6 +144,34 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
             return ResultUtil.error(-5, "修改密码失败");
         }
 
+    }
+
+    @Override
+    public Object listByType(String type, Integer page, Integer size, String search) {
+
+//        session获取uid
+        Integer uid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "管理员不存在");
+        }
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("self", signinMapper.listSelf(uid, page, size, search));
+        map.put("group", signinMapper.listGroup(uid, page, size, search));
+        map.put("all", signinMapper.listAll(page, size, search));
+
+        List<Map<String, Object>> list = (List<Map<String, Object>>) map.get(type);
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
     }
 }
 

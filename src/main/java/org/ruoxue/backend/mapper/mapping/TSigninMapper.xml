@@ -23,4 +23,33 @@
 		update t_signin set password = #{password} where id = #{id}
 	</update>
 
+	<select id="listSelf" resultType="java.util.Map">
+		select * from t_admin where gid = (select gid from t_admin where id = #{id})
+		<![CDATA[
+			and id <> #{id}
+		]]>
+		<if test="search != null and search !=''">
+			and (id = #{search} or name like concat('%', #{search}, '%'))
+		</if>
+		order by id desc limit #{page}, #{size}
+	</select>
+
+	<select id="listGroup" resultType="java.util.Map">
+		select * from t_customer where aid in
+		(select * from (select id from t_admin where gid = (select gid from t_admin where id = #{id})) a)
+		<if test="search != null and search !=''">
+			and (uid = #{search} or name like concat('%', #{search}, '%'))
+		</if>
+		order by uid desc limit #{page}, #{size}
+	</select>
+
+	<select id="listAll" resultType="java.util.Map">
+		select * from t_customer where aid in
+		(select * from (select id from t_admin where gid in (select id from t_group b)) a)
+		<if test="search != null and search !=''">
+			and (uid = #{search} or name like concat('%', #{search}, '%'))
+		</if>
+		order by uid desc limit #{page}, #{size}
+	</select>
+
 </mapper>
