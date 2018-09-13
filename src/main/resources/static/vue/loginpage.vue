@@ -1,8 +1,8 @@
 <template>
-    <div style="right: 0; margin: 0 auto; position: absolute; top: 200px; height: 600px;">
+    <div style="right: 0; margin: 0 auto; position: absolute; top: 165px; height: 600px; background: #fff; ">
         <div >
             <!-- Component -->
-            <div v-if="current == 'LoginFrame'" class="border">
+            <div v-if="current == 'LoginFrame'" class="border" style="margin-top: 40px">
                 <LoginFrame @on-request-change-com="changeComp" @on-username="inputUser" @on-password="inputPassword" />
             </div>
             <div v-else-if="current == 'RegisterFrame'" class="border">
@@ -52,7 +52,6 @@ export default {
 
 <style>
     .border {
-        border: 2px rgb(231, 180, 107) solid;
-        border-radius: 4px;
+
     }
 </style>

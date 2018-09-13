@@ -6,7 +6,7 @@
         </div>
 
         <div style="margin-bottom: 5px;">
-            <span class="title-before-input"> <i class="required" />组描述 </span>
+            <span class="title-before-input"> 组描述 </span>
             <Input v-model="groupInfo.remark" placeholder="" clearable style="width: 200px" />
         </div>
 
@@ -39,6 +39,9 @@
         }),
         methods: {
             async create() {
+                if (!this.checkRequiredFields()) {
+                    return util.MessageBox.Show(this, "请填写所有必填项");
+                }
                 try {
                     await API.Group.add(this.groupInfo);
                     util.MessageBox.Show(this, "操作成功");
@@ -50,8 +53,11 @@
                 }
             },
             async modify() {
+                if (!this.checkRequiredFields()) {
+                    return util.MessageBox.Show(this, "请填写所有必填项");
+                }
                 try {
-                    await API.Group.add(this.groupInfo);
+                    await API.Group.modify(this.groupInfo.id, this.groupInfo);
                     util.MessageBox.Show(this, "操作成功");
                     this.$emit("on-complete", this.groupInfo);
                 }
@@ -59,7 +65,10 @@
                     console.log(e);
                     util.MessageBox.Show(this, "操作失败");
                 }
-            }
+            },
+            checkRequiredFields() {
+                return !(util.String.isNullOrEmpty(this.groupInfo.name));
+            },
         },
         computed: {
             isEdit() {
@@ -67,8 +76,6 @@
             }
         },
         mounted() {
-            this.getGroup();
-            this.getRole();
             if (typeof this.initInfo !== "undefined") {
                 this.groupInfo = this.initInfo;
             }

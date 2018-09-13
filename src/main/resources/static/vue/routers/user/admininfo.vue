@@ -12,7 +12,7 @@
                         v-for="(e,i) in roles"
                         :key="i"
                         :value="i"
-                >{{ e }}</Option>
+                >{{ e.name }}</Option>
             </Select>
         </div>
 
@@ -23,7 +23,7 @@
                         v-for="(e,i) in groups"
                         :key="i"
                         :value="i"
-                >{{ e }}</Option>
+                >{{ e.name }}</Option>
             </Select>
         </div>
 
@@ -71,6 +71,9 @@
             async getGroup() {
                 try {
                     this.groups = await API.Group.getSimplifiedList();
+                    if (typeof this.initInfo !== "undefined") {
+                        this.selectedGroupIndex = this.groups.map(e=>e.id).indexOf(this.initInfo.gid);
+                    }
                 }
                 catch(err) {
                     console.error(err);
@@ -79,12 +82,17 @@
             async getRole() {
                 try {
                     this.roles = await API.Group.getSimplifiedList();
+                    if (typeof this.initInfo !== "undefined") {
+                        this.selectedRoleIndex = this.roles.map(e=>e.id).indexOf(this.initInfo.roleid);
+                    }
                 }
                 catch(err) {
                     console.error(err);
                 }
             },
             async create() {
+                if (!this.checkInput())
+                    return util.MessageBox.Show(this, "请填写所有必填项");
                 try {
                     await API.Admin.add(this.adminInfo);
                     util.MessageBox.Show(this, "操作成功");
@@ -96,8 +104,10 @@
                 }
             },
             async modify() {
+                if (!this.checkInput())
+                    return util.MessageBox.Show(this, "请填写所有必填项");
                 try {
-                    await API.Admin.add(this.adminInfo);
+                    await API.Admin.modify(this.adminInfo.id, this.adminInfo);
                     util.MessageBox.Show(this, "操作成功");
                     this.$emit("on-complete", this.adminInfo);
                 }
@@ -105,6 +115,14 @@
                     console.log(e);
                     util.MessageBox.Show(this, "操作失败");
                 }
+            },
+            checkInput() {
+                return !(
+                    util.String.isNullOrEmpty(this.adminInfo.name) ||
+                    util.String.isNullOrEmpty(this.adminInfo.phone) ||
+                    this.adminInfo.roleid === null ||
+                    this.adminInfo.gid === null
+                )
             }
         },
         computed: {
@@ -127,10 +145,14 @@
         },
         watch: {
             selectedRoleIndex() {
-                this.adminInfo.role = this.selectedRole.id;
+                if (typeof this.selectedRole == "undefined")
+                    return null;
+                this.adminInfo.roleid = this.selectedRole.id;
             },
             selectedGroupIndex() {
-                this.adminInfo.group = this.selectedRole.id;
+                if (typeof this.selectedGroup == "undefined")
+                    return null;
+                this.adminInfo.gid = this.selectedGroup.id;
             }
         }
 

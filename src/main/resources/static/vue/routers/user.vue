@@ -7,11 +7,11 @@
 
         <PagedTable ref="data" :columns="columns" data-source="admin/list" />
 
-        <Modal v-model="dialogShouldShow" title="添加管理员">
+        <Modal v-model="dialogShouldShow" :title="selectedIndex == -1 ? '添加管理员' : '修改管理员信息'">
             <AdminInfo
                     :init-info="selectedAdmin"
                     v-if="dialogShouldShow"
-                    @on-complete="val => { selectedIndex = -1; newRequest = false; }"
+                    @on-complete="val => { selectedIndex = -1; newRequest = false;  $refs.data.refresh(); }"
             >
             </AdminInfo>
 
@@ -55,6 +55,19 @@ export default {
                         title: '操作',
                         width: 150,
                         render: (h,p) => h('div', [
+                            render.link(h, p, '删除', async function() {
+                                let obj = self.d[this.selectedIndex];
+                                await util.MessageBox.ComfirmAsync(self, "确认要删除管理员`" + obj.name + "`吗？");
+                                try {
+                                    await API.Group.remove(obj.id);
+                                    util.MessageBox.Show(self, "删除成功");
+                                    self.refresh();
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                    util.MessageBox.Show(self, "删除失败  " + typeof e.msg !== "undefined"? e.msg: "");
+                                }
+                            }),
                             render.link(h, p, '查看详情', function() {
                                 _this.selectedIndex = p.index;
                             })

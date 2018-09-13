@@ -150,7 +150,7 @@ export default {
         getSimplifiedList: GET(`/api/group/list-simple`),
         add: data => POST(`/api/group/add`, data)(),
         remove: gid => POST(`/api/group/${gid}/delete`, { r: 1 })(),
-        modify: (gid, data) => POST(`/api/group/${gid}/delete`, data)(),
+        modify: (gid, data) => POST(`/api/group/${gid}/modify`, data)(),
         getUserOfGroup: (gid) => GET(`/api/group/${gid}/user`)(),
         getCustomerOfGroup: (gid) => GET(`/api/group/${gid}/customer`)(),
     },

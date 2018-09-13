@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class UIController extends BaseController {
 
     public void responseBinary(String file, HttpServletResponse response) {
-        String path = System.getProperty("user.dir") + "/src/main/resources/static/";
+            String path = System.getProperty("user.dir") + "/src/main/resources/static/";
         file = path + file;
         response.setHeader("X-Resource-Mapped-By", "UIController");
         try {
