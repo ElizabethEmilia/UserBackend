@@ -1,5 +1,5 @@
 <template>
-    <Card dis-hover :bordered="false" style="text-align: center; background-color: #eee; background-color:rgba(255, 255, 255, 0.4); width: 450px; height: 500px;">
+    <Card dis-hover :bordered="false" style="text-align: center; background-color: #eee; background-color:rgba(255, 255, 255, 1); width: 450px; height: 500px;">
                 <h2 style="text-align: center">注册</h2>
                 
                 <div>
@@ -171,8 +171,8 @@ export default {
 }
 
 .tp {
-    background: rgba(255, 255, 255, 0.75);
-    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 1);
 }
 
 a.reg {

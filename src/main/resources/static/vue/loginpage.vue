@@ -1,20 +1,20 @@
 <template>
-    <div class="main">
-        <Row type="flex" justify="center" align="middle" class="main code-row-bg">
+    <div style="right: 0; margin: 0 auto; position: absolute; top: 200px; height: 600px;">
+        <div >
             <!-- Component -->
-            <div v-if="current == 'LoginFrame'" >
+            <div v-if="current == 'LoginFrame'" class="border">
                 <LoginFrame @on-request-change-com="changeComp" @on-username="inputUser" @on-password="inputPassword" />
             </div>
-            <div v-else-if="current == 'RegisterFrame'">
+            <div v-else-if="current == 'RegisterFrame'" class="border">
                 <RegisterFrame @on-request-change-com="changeComp" />
             </div>
-            <div v-else-if="current == 'ForgetPassword'">
+            <div v-else-if="current == 'ForgetPassword'" class="border">
                 <ForgetPassword @on-request-change-com="changeComp"  />
             </div>
-            <div v-else-if="current == 'ResetPassword'">
+            <div v-else-if="current == 'ResetPassword'" class="border">
                 <ResetPassword @on-request-change-com="changeComp" />
             </div>
-        </Row>
+        </div>
     </div>
 </template>
 
@@ -51,5 +51,8 @@ export default {
 </script>
 
 <style>
-
+    .border {
+        border: 2px rgb(231, 180, 107) solid;
+        border-radius: 4px;
+    }
 </style>
