@@ -3,7 +3,7 @@
     <Card class="card-margin">
             <Divider orientation="left"><h3>对公充值</h3></Divider>
             
-            <Tabs :value="req_url" @on-click="tabclick">
+            <Tabs v-model="req_url" @on-click="tabclick">
                 <TabPane label="全部" name="all"></TabPane>
                 <TabPane label="已确认" name="confirmed"></TabPane>
                 <TabPane label="待确认" name="pending"></TabPane>

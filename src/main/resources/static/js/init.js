@@ -240,7 +240,13 @@ const tRole = {
     id: 0,
     templateID: 0,
     remark: '',
-}
+};
+
+const tGroup = {
+    id: 0,
+    name: '',
+    remark: '',
+};
 
 export default {
     tAdmin,
@@ -263,4 +269,5 @@ export default {
     tSignin,
     tTaxAccount,
     tRole,
+    tGroup,
 };

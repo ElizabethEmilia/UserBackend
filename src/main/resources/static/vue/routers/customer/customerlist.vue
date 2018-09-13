@@ -6,25 +6,27 @@
              {{ cardTitle }}
         </p>
 
-        <div style="margin: 10px;">
-            <Input v-model="searchKey" placeholder="搜索客户ID或客户名称" />
+        <div v-if="selected == -1">
+            <div style="margin: 10px;">
+                <Input v-model="searchKey" placeholder="搜索客户ID或客户名称" />
+            </div>
+
+            <!-- TODO: 判断权限，不对的给alert -->
+            <Tabs v-model="viewRes" >
+                <TabPane label="当前账号客户" name="self"></TabPane>
+                <TabPane label="本组的客户" name="group"></TabPane>
+                <TabPane label="全部客户" name="all"></TabPane>
+            </Tabs>
+
+            <PagedTable
+                    :columns="columns"
+                    vif="typeof showList === 'undefined' || showList"
+                    :data-source="dataSource"
+                    @on-select="handleOnSelect"
+                    :additional-params="additionalParams"
+            />
         </div>
 
-        <!-- TODO: 判断权限，不对的给alert -->
-        <Tabs v-model="viewRes" >
-            <TabPane label="当前账号客户" name="self"></TabPane>
-            <TabPane label="本组的客户" name="group"></TabPane>
-            <TabPane label="全部客户" name="all"></TabPane>
-        </Tabs>
-
-        <PagedTable 
-            :columns="columns"
-             vif="typeof showList === 'undefined' || showList" 
-             v-if="selected == -1"
-             :data-source="dataSource"
-             @on-select="handleOnSelect"
-             :additional-params="additionalParams"
-         />
          <div v-else>
              <CustomerOverview :cus-data="cdata"
                 @on-select-company="val=>$emit('on-select-company',val)"
