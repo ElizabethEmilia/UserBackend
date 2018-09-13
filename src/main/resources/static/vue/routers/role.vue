@@ -8,7 +8,7 @@
                 <Button type="success" @click="v => {(isEdit = false); (selected={}); (editModalVisible = true)}">新增角色</Button>
             </div>
             <div class="cdmargin">
-                <PagedTable ref="datatable" data-source="role/list" :columns="columns" @onrecvdata="val =>data=val" />
+                <PagedTable ref="datatable" data-source="role" :columns="columns" @onrecvdata="val =>data=val" />
             </div>
 
             <Modal

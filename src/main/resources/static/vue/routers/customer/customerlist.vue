@@ -55,6 +55,7 @@ import util from '../../../js/util.js';
 import { industry, receiptStatus, memberType } from '../../../constant.js';
 import PagedTable from '../../pagedTable.vue';
 import CustomerOverview from './customeroverview.vue';
+import debounce from 'debounce';
 
 export default {
     components: {
@@ -65,6 +66,7 @@ export default {
     ],
     data: () => ({
         searchKey: '',
+        searchKeySubmit: '',
         viewRes: "self",
         selected: -1, // 选择的客户ID
         cdata: {
@@ -109,7 +111,13 @@ export default {
             return this.selected == -1 ? '客户列表':(`客户信息：${this.cdata.name}(${this.selected})`)
         },
         additionalParams() {
-            return util.forGetParams({ key: this.searchKey });
+            return util.forGetParams({
+                key: this.searchKeySubmit
+                        .replace(/什么/g, " ")
+                        .replace(/\s{2,}/g, " ")
+                        .replace(/\s$/, "")
+                        .replace(/^\s/, "")
+            });
         },
         dataSource() {
             if (this.viewRes === "self")
@@ -124,6 +132,11 @@ export default {
             this.$emit('on-select', cd);
             //alert('show info of ' + cd.name);
         }
+    },
+    watch: {
+        searchKey: debounce(function(val) {
+            this.searchKeySubmit = val;
+        }, 1000),
     },
     mounted() {
         //this.

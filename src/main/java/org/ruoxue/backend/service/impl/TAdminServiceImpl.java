@@ -40,7 +40,7 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
 //        获取admin实体
         List<Map<String, Object>> list = adminMapper.getAdminAndRole(uid);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list.get(0), "查询成功", "未查到管理员信息");
+        return XunBinKit.returnResult(list.size() > 0, -2, list.size() > 0 ? list.get(0) : null, "查询成功", "未查到管理员信息");
     }
 
     @Override

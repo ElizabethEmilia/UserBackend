@@ -20,7 +20,14 @@
             </div>
 
             <div v-else style="margin-top: 90px;">
-                正在登录... 
+                <Spin fix size="large">
+                    <p style="font-size: 13px; margin-top: 10px;">
+                        <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+                        <div>正在登录...</div>
+
+                    </p>
+                </Spin>
+
             </div>
     </Card>
 </template>
@@ -120,6 +127,15 @@ a.reg {
 }
 a.reg:hover {
     border-bottom: 1px solid gray;
+}
+
+.demo-spin-icon-load{
+    animation: ani-demo-spin 1s linear infinite;
+}
+@keyframes ani-demo-spin {
+    from { transform: rotate(0deg);}
+    50%  { transform: rotate(180deg);}
+    to   { transform: rotate(360deg);}
 }
 </style>
 

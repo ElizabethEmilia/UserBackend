@@ -8,7 +8,7 @@
             </div>
 
             <div style="margin-bottom: 5px;">
-                <span class="title-before-input"> <i class="required" />角色描述 </span>
+                <span class="title-before-input"> 角色描述 </span>
                 <Input v-model="roleEdit.remark" placeholder="" clearable style="width: 200px" />
             </div>
 

@@ -81,7 +81,7 @@
             },
             async getRole() {
                 try {
-                    this.roles = await API.Group.getSimplifiedList();
+                    this.roles = await API.Role.getList();
                     if (typeof this.initInfo !== "undefined") {
                         this.selectedRoleIndex = this.roles.map(e=>e.id).indexOf(this.initInfo.roleid);
                     }
@@ -130,7 +130,7 @@
                 return this.roles[this.selectedRoleIndex];
             },
             selectedGroup() {
-                return this.group[this.selectedGroupIndex];
+                return this.groups[this.selectedGroupIndex];
             },
             isEdit() {
                 return typeof this.initInfo !== "undefined";

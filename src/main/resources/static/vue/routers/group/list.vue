@@ -51,7 +51,7 @@
                             width: 150,
                             render: (h,p) => h('div', [
                                 render.link(h, p, '删除', async function() {
-                                    let obj = self.d[this.selectedIndex];
+                                    let obj = self.d[p.index];
                                     await util.MessageBox.ComfirmAsync(self, "确认要删除`" + obj.name + "`分组吗？");
                                     try {
                                         await API.Group.remove(obj.id);

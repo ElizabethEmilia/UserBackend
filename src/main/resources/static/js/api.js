@@ -106,7 +106,7 @@ export default {
 
     // 角色
     Role: {
-        getList: GET("/api/role/list?size=0"),
+        getList: GET("/api/role?size=0"),
         remove: roleid => DELETE("/api/role/" + roleid)(),
         get: roleid => GET("/api/role/" + roleid)(),
         modify: (roleid, data) => POST(`/api/role/${roleid}`, data)(),
