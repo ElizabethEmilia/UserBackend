@@ -4,6 +4,7 @@ import org.apache.http.HttpResponse;
 import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
+import org.ruoxue.backend.util.IO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,20 +16,40 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class UIController extends BaseController {
 
-    @GetMapping("/")
-    public String showHomePage() {
-        if (getSession().getAttribute("uid") == null) {
-            return "redirect:/login";
+    public void responseBinary(String file, HttpServletResponse response) {
+        String path = System.getProperty("user.dir") + "/src/main/resources/static/";
+        file = path + file;
+        response.setHeader("X-Resource-Mapped-By", "UIController");
+        try {
+            byte[] bytes = IO.read(file);
+            response.getOutputStream().write(bytes);
         }
-        return "index";
+        catch (Exception err) {
+            response.setStatus(404);
+        }
+    }
+
+    @GetMapping("/")
+    @ResponseBody
+    public void showHomePage(HttpServletResponse response) {
+        if (getSession().getAttribute("uid") == null) {
+            response.setStatus(301);
+            response.setHeader("Location", "/login");
+            return;
+        }
+        responseBinary("index.html", response);
+        return ;
     }
 
     @GetMapping("/login")
-    public String showLoginPage() {
+    @ResponseBody
+    public void showLoginPage(HttpServletResponse response) {
         if (getSession().getAttribute("uid") != null) {
-            return "redirect:/";
+            response.setStatus(301);
+            response.setHeader("Location", "/");
+            return;
         }
-        return "login";
+        responseBinary("login2.html", response);
     }
 
     @GetMapping("/reset")
