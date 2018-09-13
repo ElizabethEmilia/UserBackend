@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TSignin;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
   *  Mapper 接口
@@ -27,6 +30,12 @@ public interface TSigninMapper extends BaseMapper<TSignin> {
 
     @Delete("delete from t_signin where id = #{id}")
     Integer deleteSign(@Param("id") Integer id);
+
+    List<Map<String, Object>> listSelf(@Param("id") Integer id, @Param("page") Integer page, @Param("size") Integer size, @Param("search") String search);
+
+    List<Map<String, Object>> listGroup(@Param("id") Integer id, @Param("page") Integer page, @Param("size") Integer size, @Param("search") String search);
+
+    List<Map<String, Object>> listAll(@Param("page") Integer page, @Param("size") Integer size, @Param("search") String search);
 
 
 }
