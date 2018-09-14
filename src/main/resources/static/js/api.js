@@ -69,6 +69,9 @@ function Settings_Get(name) {
 }
 
 export default {
+    Login: {
+        heartbeat: GET('/api/login/heartbeat'),
+    },
     Customer: {
         deleteUser: (uid) => POST('/api/customer/${uid}/delete', __rd_post_body)(),
 
@@ -140,7 +143,7 @@ export default {
         },
 
         Account: {
-            
+
         }
     },
 
