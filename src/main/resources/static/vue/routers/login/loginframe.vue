@@ -3,16 +3,25 @@
                 <h2 style="text-align: center">登录系统</h2>
             <div v-if="!pending">
                 <div>
-                    <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus :maxlength="16" placeholder="用户名或手机号码" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 60px;" />
+                    <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus :maxlength="16" placeholder="用户名或手机号码" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 60px;   border-radius: 15px;" />
                 </div>
 
                 <!--验证码 -->
-                <VerifyCode @on-code="inputImageCode" prefix="md-code" />
+                <!--VerifyCode @on-code="inputImageCode" prefix="md-code" /-->
 
                 <div>
-                    <Input type="password" :readonly="pending" v-model="password" @on-click="login()" class="tp" prefix="md-lock"  :maxlength="32" placeholder="密码" :icon="pending ? 'ios-loading' : 'md-arrow-forward'" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 20px;" />
+                    <Input type="password" :readonly="pending" v-model="password" @on-1="login()" class="tp" prefix="md-lock"  :maxlength="32" placeholder="密码" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 20px; border-radius: 15px;" />
                 </div>
-            
+
+                <!--新版验证码 -->
+                <VerifyCodeSlider
+                        @on-verifyok="val => verifyOk = true"
+                        style="margin-left: 60px;margin-top: 20px;"/>
+
+                <div>
+                    <Button @click="login()" type="success" style="background: #f60;border-color: #f60; width: 300px; margin-top: 60px; font-size: 14px;">登录</Button>
+                </div>
+
                 <div style="margin-top: 15px;">
                     <a class="reg" href="javascript:void(0)" @click="show('RegisterFrame')">注册新用户</a> 
                     <a class="reg" style="margin-left: 10px;" href="javascript:void(0)" @click="show('ForgetPassword')">忘记密码</a>
@@ -24,7 +33,6 @@
                     <p style="font-size: 13px; margin-top: 10px;">
                         <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
                         <div>正在登录...</div>
-
                     </p>
                 </Spin>
 
@@ -39,25 +47,32 @@
 //   on-username (Username)        - 用户名
 
 import VerifyCode from '../../components/verifycode.vue';
+import VerifyCodeSlider from '../../components/trackverfcode.vue';
 import util from '../../../js/util.js';
 import $ from '../../../js/ajax.js';
 import md5 from 'js-md5';
 
 export default {
     components: {
-        VerifyCode
+        VerifyCode, VerifyCodeSlider,
     },
     data: () => ({
         username: '',
         password: '',
         code: '',
 
-        pending: false
+        pending: false,
+        verifyOk: false,
     }),
     methods: {
         async login() {
             if (util.isStringNullOrEmpty(this.username) || util.isStringNullOrEmpty(this.password)) {
                 util.MessageBox.Show(this, '请输入用户名和密码');
+                return;
+            }
+
+            if (!this.verifyOk) {
+                util.MessageBox.Show(this, '请拖动滑块拼图进行验证');
                 return;
             }
 
@@ -137,5 +152,9 @@ a.reg:hover {
     50%  { transform: rotate(180deg);}
     to   { transform: rotate(360deg);}
 }
+
+    .ivu-input {
+        border-radius: 15px;
+    }
 </style>
 

@@ -60,7 +60,5 @@ public class TCompanyController {
     public @ResponseBody Object addCompony(@Valid TCompany company, @PathVariable String uid){
         return companyService.addCompony(company, uid);
     }
-
-
 	
 }

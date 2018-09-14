@@ -82,11 +82,8 @@ public class MainController extends BaseController {
             BufferedImage back = ImageIO.read(imgFile);
             BufferedImage mask = ImageIO.read(new File(path +"mask.png"));
 
-            Integer x = ImageUtil.generateCode(image, mask, back);
-
-            components.put("bg", ImageUtil.toBase64String(back, "png"));
-            components.put("slider", ImageUtil.toBase64String(image, "png"));
-
+            Integer x = ImageUtil.generateCode(image, mask, back, components);
+            getSession().setAttribute("vercodepos", x);
             return ResultUtil.success(components);
         }
         catch (Exception e) {
@@ -94,6 +91,25 @@ public class MainController extends BaseController {
             return ResultUtil.error(2, e.getMessage());
         }
     }
+
+    @ApiOperation("验证验证码")
+    @RequestMapping(value = "/verifycode2", method = RequestMethod.POST)
+    @ResponseBody
+    public Object gerenateVerifycodeNew(Integer x, HttpServletResponse response){
+        Integer xs = (Integer)getSession().getAttribute("vercodepos");
+        if (xs == null) {
+            response.setStatus(403);
+            return "Forbidden";
+        }
+        // 允许正负偏差10px
+        if (x < xs-10 || x > xs+10) {
+            getSession().removeAttribute("vercodepos");
+            return ResultUtil.error(-2, "验证码不正确");
+        }
+        getSession().setAttribute("verifyok", true);
+        return ResultUtil.success();
+    }
+
 
     @ApiOperation("用户注册接口,同步插入sign表")
     @RequestMapping(value = "/register", method = RequestMethod.POST)

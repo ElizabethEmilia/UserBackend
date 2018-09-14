@@ -162,4 +162,9 @@ export default {
         get: aid => GET(`/api/admin/${aid}/`)(),
         modify: (aid, data) => POST(`/api/admin/${aid}/`, data)(),
     },
+
+    Verification: {
+        getImages: GET("/api/verifycode2"),
+        verify: x => POST("/api/verifycode2", { x })(),
+    }
 }

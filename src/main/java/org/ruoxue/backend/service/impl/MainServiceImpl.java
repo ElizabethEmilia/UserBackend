@@ -53,9 +53,8 @@ public class MainServiceImpl extends BaseController implements MainService {
         //        获取参数
         String name = jsonObject.getString("name");
         String password = jsonObject.getString("password");
-        String code = jsonObject.getString("code");
 
-        if(ToolUtil.isEmpty(name) || ToolUtil.isEmpty(password) || ToolUtil.isEmpty(code)){
+        if(ToolUtil.isEmpty(name) || ToolUtil.isEmpty(password)){
             return ResultUtil.error(-1, "请检查您的参数");
         }
 
@@ -65,9 +64,9 @@ public class MainServiceImpl extends BaseController implements MainService {
         TSignin signin = null;
         HttpSession session = getSession();
 
-//        获取生成的验证码
-        String genCode = (String) session.getAttribute("code");
-        if(genCode == null || !code.toUpperCase().equals(genCode.toUpperCase())){
+//        检查验证码
+        Boolean passed = (Boolean) getSession().getAttribute("verifyok");
+        if(passed == null || !passed){
             return ResultUtil.error(-4, "验证码不正确");
         }
 

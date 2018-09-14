@@ -286,7 +286,7 @@ export default {
             this.pendingUpload = false;
         },
         // 获取用户基本信息
-        async getBasicInfo() {
+        async getBasicInfo(callback) {
             try {
                 let result = await $.ajax('/api/account/basic');
                 if (result.code) {
@@ -294,6 +294,7 @@ export default {
                 }
                 this.info = result.data;
                 this.avatar = result.data.avatar;
+                typeof callback === "function" && callback(result);
             }
             catch(err) {
                  util.Debug.ralert('获取基本信息失败');
@@ -364,7 +365,10 @@ export default {
             }
     },
     created() {
-        this.getBasicInfo();
+        this.getBasicInfo(async (result) => {
+            await util.MessageBox.Show(this, "您还不是付费用户，即将前往产品介绍页面");
+            location.href='#';
+        });
         this.getRecentExchange();
         this.getCompanyCount();
     }

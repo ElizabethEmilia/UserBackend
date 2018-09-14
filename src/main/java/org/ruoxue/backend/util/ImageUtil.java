@@ -1,5 +1,7 @@
 package org.ruoxue.backend.util;
 
+import com.alibaba.fastjson.JSONObject;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -18,7 +20,7 @@ public class ImageUtil {
             BufferedImage back = ImageIO.read(new File("C:\\Users\\Miyuki\\Desktop\\source.png"));
 
 
-            ImageUtil.generateCode(image, mask, back);
+            //ImageUtil.generateCode(image, mask, back);
             // 获取mask的高度以才切到相同高度
             /*(int h = mask.getHeight();
             int w = mask.getWidth();
@@ -47,14 +49,14 @@ public class ImageUtil {
 
     }
 
-    public static Integer generateCode(BufferedImage image, BufferedImage mask, BufferedImage back) {
+    public static Integer generateCode(BufferedImage image, BufferedImage mask, BufferedImage back, JSONObject components) {
         try {
             // 获取mask的高度以才切到相同高度
             int h = mask.getHeight();
             int w = mask.getWidth();
 
             // 随机图片验证码的位置
-            int x = (int)(Math.random() * (image.getWidth() - w));
+            int x = (int)(Math.random() * (image.getWidth() - w - 50) + 50);
             int y = image.getHeight() - 10 - h;
 
             image = image.getSubimage(x, y, w, h);
@@ -62,15 +64,19 @@ public class ImageUtil {
             // 滑块的图片
             ImageUtil.applyGrayscaleMaskToAlpha(image, mask);
             BufferedImage darken = image.getSubimage(0, 0, w, h);
-            ImageIO.write(image, "png", new File("C:\\Users\\Miyuki\\Desktop\\dst.png"));
+            //ImageIO.write(image, "png", new File("C:\\Users\\Miyuki\\Desktop\\dst.png"));
+
+            components.put("slider", ImageUtil.toBase64String(image, "png"));
 
             // 暗化滑块背景
             ImageUtil.changeBrightnessWithMask(darken, mask, 0.5f);
-            ImageIO.write(darken,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-dark.png"));
+            //ImageIO.write(darken,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-dark.png"));
 
             // 覆盖到原图上
             ImageUtil.overlayImage(back, darken, x, y);
-            ImageIO.write(back,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-overlay.png"));
+            //ImageIO.write(back,  "png", new File("C:\\Users\\Miyuki\\Desktop\\dst-overlay.png"));
+
+            components.put("bg", ImageUtil.toBase64String(back, "png"));
 
             return x;
         }
