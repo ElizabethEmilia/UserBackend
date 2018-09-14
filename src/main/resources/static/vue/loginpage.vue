@@ -2,10 +2,10 @@
     <div style="right: 0; margin: 0 auto; position: absolute; top: 165px; height: 600px; background: #fff; ">
         <div >
             <!-- Component -->
-            <div v-if="current == 'LoginFrame'" class="border" style="margin-top: 40px">
+            <div v-show="current == 'LoginFrame'" class="border" style="margin-top: 40px">
                 <LoginFrame @on-request-change-com="changeComp" @on-username="inputUser" @on-password="inputPassword" />
             </div>
-            <div v-else-if="current == 'RegisterFrame'" class="border">
+            <div v-if="current == 'RegisterFrame'" class="border">
                 <RegisterFrame @on-request-change-com="changeComp" />
             </div>
             <div v-else-if="current == 'ForgetPassword'" class="border">

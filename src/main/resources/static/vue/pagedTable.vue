@@ -30,6 +30,7 @@ props:
       - url?page=1             获取第1页的内容
     - external: 外部控制的值和回调
     - height: 高度
+    - additional-params 额外查询参数
     
     * pageChange回调和onPageSizeChange回调由组件实现
      

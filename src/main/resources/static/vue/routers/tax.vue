@@ -1,15 +1,17 @@
 <template>
     <div>
-        <RangeSelect></RangeSelect>
+        <RangeSelect />
+        <TaxAccount />
     </div>
 </template>
 
 <script>
 import RangeSelect from './tax/range.vue';
+import TaxAccount from './tax/taxaccount.vue';
 
 export default {
     components: {
-        RangeSelect,
+        RangeSelect, TaxAccount,
     },
     data: () => ({
 

@@ -277,6 +277,59 @@ function __Miyuki_friendlySize(x) {
 	return String(x) + classifier[i] + "B";
 }
 
+/*
+  日期转换的处理
+ */
+function toTimestamp(date) {
+	return date.getTime();
+}
+
+function toDate(timestamp) {
+	return new Date(timestamp);
+}
+
+function toDateString(date) {
+    if (!(date instanceof Date))
+        return date;
+
+	let year = date.getFullYear();
+	let month = date.getMonth() + 1;
+	let day = date.getDate();
+	return year + '-' + month + '-' + day;
+}
+
+function toMonthString(date) {
+    if (!(date instanceof Date))
+        return date;
+
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    return year + '-' + month;
+}
+
+function toYearString(date) {
+    if (!(date instanceof Date))
+        return date;
+
+    let year = date.getFullYear();
+    return year;
+}
+
+function toTimeString(date) {
+	if (!(date instanceof Date))
+		return date;
+
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    let hour = date.getHours();  // 获取小时数(0-23)
+    let minute = date.getMinutes();  // 获取分钟数(0-59)
+    let second = date.getSeconds();  // 获取秒数(0-59)
+
+    return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+}
+
 export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
@@ -332,5 +385,15 @@ export default {
 		ComfirmAsync:  __Miyuki_MessageBoxAsyncBuilder('confirm'),
 		ShowComponent: __Miyuki_MessageBoxFromComponentBuilder('info'),
 		ShowComponentAsync: __Miyuki_MessageBoxFromComponentAsyncBuilder('confirm'),
+	},
+
+	// 日期
+	Date: {
+        toTimestamp,
+        toDate,
+        toDateString,
+        toMonthString,
+        toYearString,
+        toTimeString,
 	}
 }

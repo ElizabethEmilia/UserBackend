@@ -50,7 +50,7 @@
                 let img =this.$refs.img;
                 let selected = this.$refs.selected;
 
-                slider.style.visibility = img.style.visibility = 'hidden';
+                slider.style.display = img.style.display = 'none';
                 selected.style.width = "100%";
                 this.selectedBarText = '验证通过';
                 this.$emit("on-verifyok", true);
@@ -101,8 +101,8 @@
                 let selected = this.$refs.selected;
                 let tips = this.$refs.tips;
 
-                slider.style.visibility = 'visible';
-                img.style.visibility = null;
+                slider.style.display = 'block';
+                img.style.display = null;
                 slider.style.left = '0px';
                 selected.style.width = '0px';
                 this.selectedBarText = '';
