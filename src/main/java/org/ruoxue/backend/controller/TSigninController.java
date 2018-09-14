@@ -38,7 +38,7 @@ public class TSigninController {
         return signinService.updateCustomer(customer, uid);
     }
 
-    @ApiOperation("删除一个用户U")
+    @ApiOperation("删除一个用户")
     @RequestMapping(value = "/{uid}/delete", method = RequestMethod.POST)
     public @ResponseBody Object deleteCustomer(@PathVariable Integer uid) {
         return signinService.deleteCustomer(uid);
@@ -55,5 +55,17 @@ public class TSigninController {
     public @ResponseBody Object updatePwssword(@RequestParam String password, @PathVariable Integer uid) {
         return signinService.updatePwssword(password, uid);
     }
-	
+
+
+    /**
+     *  获取客户列表
+     * ** 可以根据客户名称和id搜索
+     */
+    @ApiOperation("获取客户列表(self, group, all)")
+    @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
+    public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false    ) String search) {
+        return signinService.listByType(type, page, size, search);
+    }
+
+
 }

@@ -25,5 +25,7 @@ public interface ITSigninService extends IService<TSignin> {
     Object listCustomer(Integer page, Integer size);
 
     Object updatePwssword(String password, Integer uid);
+
+    Object listByType(String type, Integer page, Integer size, String search);
 	
 }
