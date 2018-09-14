@@ -55,6 +55,9 @@
     </Menu>
 </template>
 <script>
+    import API from '../js/api.js';
+    import util from '../js/util.js';
+
     export default {
         data () {
             return {
@@ -71,6 +74,17 @@
         },
         computed: {
             
+        },
+        mounted() {
+            setTimeout(async () => {
+                try {
+                    await API.Login.heartbeat();
+                }
+                catch(e) {
+                    await util.MessageBox.ShowAsync(this, "您已与服务器断开连接，请重新登录");
+                    location.href = "/login";
+                }
+            }, 30000);
         }
     }
 </script>
