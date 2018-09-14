@@ -25,4 +25,16 @@ public interface ITCompanyService extends IService<TCompany> {
 
     Object addCompony(TCompany company, String uid);
 
+    Object listCompanys(String search, Integer page, Integer size);
+
+    Object getCompanyInfo(Integer cid);
+
+    Object getCompanySetUp(Integer cid, Integer page, Integer size);
+
+    Object getCompanyCert(Integer cid, Integer page, Integer size);
+
+    Object countCompanyCertById(Integer cid, Integer id);
+
+    Object countCompany();
+
 }

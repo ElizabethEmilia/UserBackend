@@ -1,14 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -16,7 +15,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-11
+ * @since 2018-09-14
  */
 @TableName("t_public_charge")
 public class TPublicCharge extends Model<TPublicCharge> {

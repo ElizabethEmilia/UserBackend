@@ -2,40 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ruoxue.backend.mapper.TCompanyMapper">
 
-	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TCompany">
-		<id column="id" property="id" />
-		<result column="uid" property="uid" />
-		<result column="parent" property="parent" />
-		<result column="lpname" property="lpname" />
-		<result column="tax_type" property="taxType" />
-		<result column="vat_type" property="vatType" />
-		<result column="ysa_range" property="ysaRange" />
-		<result column="pre_tax_ratio" property="preTaxRatio" />
-		<result column="va_tax_ratio" property="vaTaxRatio" />
-		<result column="vatr_freq" property="vatrFreq" />
-		<result column="cb_tax" property="cbTax" />
-		<result column="ea_tax" property="eaTax" />
-		<result column="lea_tax" property="leaTax" />
-		<result column="river_tax" property="riverTax" />
-		<result column="ent_org_type" property="entOrgType" />
-		<result column="inv_type" property="invType" />
-		<result column="business_type" property="businessType" />
-		<result column="tax_pack_start" property="taxPackStart" />
-		<result column="tax_pack_end" property="taxPackEnd" />
-		<result column="ori_tax_pack_start" property="oriTaxPackStart" />
-		<result column="ori_tax_pack_end" property="oriTaxPackEnd" />
-		<result column="tm_first_ec" property="tmFirstEc" />
-		<result column="status" property="status" />
-	</resultMap>
-
 	<select id="listCompany" resultType="java.util.Map">
 		select * from t_company
 		where 1 = 1
 		<if test="uid != -1">
 			and uid = #{uid}
 		</if>
-		order by id DESC limit #{page}, #{size}
+		order by id DESC limit #{page},#{size}
 	</select>
 
 	<select id="listCompanyAll" resultType="java.util.Map">
@@ -53,7 +26,7 @@
 		<if test="uid != -1">
 			and uid = #{uid}
 		</if>
-		and id = #{cid}
+		and id = #{cid} order by id desc limit 1
 	</select>
 
 	<delete id="deleteCompany">
@@ -72,5 +45,14 @@
 			and uid = #{uid}
 		</if>
 	</delete>
+
+	<select id="listCompanys" resultType="java.util.Map">
+		select * from t_company
+		where 1 = 1
+		<if test="search != null and search != ''">
+			and (id = #{search} or name like concat('%', #{search}, '%'))
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
 
 </mapper>

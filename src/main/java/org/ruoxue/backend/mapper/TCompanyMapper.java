@@ -1,9 +1,11 @@
 package org.ruoxue.backend.mapper;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.ruoxue.backend.bean.TComCert;
 import org.ruoxue.backend.bean.TCompany;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -33,5 +35,28 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
 
 //    删除所有的公司
     Integer deleteCompanys(@Param("uid") Integer uid);
+
+    //    获取公司列表
+    List<Map<String, Object>> listCompanys(@Param("search") String search, @Param("page") Integer page, @Param("size") Integer size);
+
+    //    获取一个公司的信息
+    @Select("select * from t_company where id = #{id}")
+    TCompany getCompanyById(@Param("id") Integer id);
+
+    //    获取一个公司的设立进度，并按时间排序
+    @Select("select * from t_com_set_progress where cid = #{cid} order by tm desc limit #{page},#{size}")
+    List<Map<String, Object>> listCompanySetUp(@Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
+
+    //    获取一个公司的证件照
+    @Select("select * from t_com_cert where cid = #{cid} limit #{page},#{size}")
+    List<Map<String, Object>> listComCertByCid(@Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
+
+    //    获取一个公司的证件照信息
+    @Select("select * from t_com_cert where cid = #{cid} and id = #{id}")
+    TComCert getComCertById(@Param("cid") Integer cid, @Param("id") Integer id);
+
+    //    获取该用户拥有的公司数量
+    @Select("select count(1) num from t_company where uid = #{uid}")
+    Integer countCompanyByUid(@Param("uid") Integer uid);
 
 }

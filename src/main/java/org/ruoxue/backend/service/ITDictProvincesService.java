@@ -13,8 +13,6 @@ import org.ruoxue.backend.bean.TDictProvinces;
  */
 public interface ITDictProvincesService extends IService<TDictProvinces> {
 
-    Object getProvince();
-
     Object jsonToCVS(String json, String filename);
 	
 }

@@ -27,12 +27,6 @@ public class TDictProvincesController {
     @Resource
     private ITDictProvincesService dictProvincesService;
 
-    @ApiOperation("获取省份列表")
-    @RequestMapping(value = "/area/province", method = RequestMethod.GET)
-    public @ResponseBody Object getProvince(){
-        return dictProvincesService.getProvince();
-    }
-
     @ApiOperation("导出任意JSON对象数组到csv表格")
     @RequestMapping(value = "/export", method = RequestMethod.POST)
     public @ResponseBody  Object jsonToCVS(@RequestParam String json, @RequestParam String filename) {
