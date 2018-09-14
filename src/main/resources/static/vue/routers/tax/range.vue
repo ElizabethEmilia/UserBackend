@@ -207,7 +207,10 @@
         },
         computed: {
             searchParams() {
-                return util.forGetParams(this.param);
+                return util.forGetParams(Object.assign({}, this.param, {
+                    from: util.Date.toDateString(this.param.from),
+                    to: util.Date.toDateString(this.param.to),
+                }));
             },
             selectedCompany() {
                 return this.company[this.selected];

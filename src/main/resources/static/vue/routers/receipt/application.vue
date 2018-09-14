@@ -218,7 +218,10 @@ export default {
                 .toFixed(2));
         },
         searchParams() {
-            return util.forGetParams(this.selected);
+            return util.forGetParams(Object.assign({}, this.selected, {
+                start: util.Date.toDateString(this.selected.start),
+                end: util.Date.toDateString(this.selected.end),
+            }));
         },
 
 
