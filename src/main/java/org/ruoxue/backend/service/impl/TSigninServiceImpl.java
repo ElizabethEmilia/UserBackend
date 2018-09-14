@@ -164,7 +164,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         }
         page = (page - 1) * size;
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("self", signinMapper.listSelf(uid, page, size, search));
         map.put("group", signinMapper.listGroup(uid, page, size, search));
         map.put("all", signinMapper.listAll(page, size, search));
