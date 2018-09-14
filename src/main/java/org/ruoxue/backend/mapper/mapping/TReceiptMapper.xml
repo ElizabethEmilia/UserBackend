@@ -55,4 +55,29 @@
 		and id = #{id}
 	</select>
 
+	<select id="receiptList" resultType="java.util.Map">
+		select * from t_receipt
+		where 1 = 1
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="type != null and type != ''">
+			and rec_type = #{type}
+		</if>
+		<if test="cid != null and cid != ''">
+			and cid = #{cid}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and tm_submit > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and tm_submit < #{end}
+			]]>
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
 </mapper>

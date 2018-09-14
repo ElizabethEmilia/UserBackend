@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ruoxue.backend.mapper.TTaxAccountDetailMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TTaxAccountDetail">
+		<id column="id" property="id" />
+		<result column="cid" property="cid" />
+		<result column="rangeid" property="rangeid" />
+		<result column="receipt_amount" property="receiptAmount" />
+		<result column="pre_tax_retio" property="preTaxRetio" />
+		<result column="type" property="type" />
+		<result column="change_amount" property="changeAmount" />
+		<result column="change_type" property="changeType" />
+		<result column="account_type" property="accountType" />
+		<result column="bank_account" property="bankAccount" />
+		<result column="tm_op" property="tmOp" />
+	</resultMap>
+
+</mapper>

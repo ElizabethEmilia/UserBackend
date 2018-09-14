@@ -1,16 +1,13 @@
 package test;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.ruoxue.backend.util.XunBinKit;
 
 public class NumTest {
 
     @Test
-    public void test1(){
+    public void test1() {
+        System.out.println(XunBinKit.getYearLastTime());
 
     }
-
-
 }

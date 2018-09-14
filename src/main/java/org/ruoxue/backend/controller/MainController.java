@@ -25,9 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.Buffer;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -155,6 +153,18 @@ public class MainController extends BaseController {
         return mainService.resetpwd(jsonObject);
     }
 
+    @ApiOperation("心跳包 ")
+    @RequestMapping(value = "/login/heartbeat", method = RequestMethod.GET)
+    public @ResponseBody Object loginHeart(){
+
+//        获取uid
+        Integer uid = XunBinKit.getUid();
+
+        boolean b = ToolUtil.isNotEmpty(uid) ? true : false;
+
+        return ResultUtil.success(b);
+    }
+
     @RequestMapping(value = "/config.js", method = RequestMethod.GET)
     public void generateConfigJs() throws IOException {
         HttpSession session = getSession();
@@ -183,5 +193,7 @@ public class MainController extends BaseController {
         response.setStatus(200);
         pw.close();
     }
+
+
 
 }

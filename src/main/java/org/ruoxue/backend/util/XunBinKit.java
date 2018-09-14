@@ -5,12 +5,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 /**
  *  志勋 + 佳斌 工具类
  */
 public class XunBinKit {
+
+    /**
+     *  获取年底时间
+     */
+    public static Date getYearLastTime() {
+        String time = Calendar.getInstance().get(Calendar.YEAR) + "-12" + "-31 " + "23:59:59";
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
     /**
      *  处理异常，返回状态码
@@ -56,6 +74,14 @@ public class XunBinKit {
         HttpSession session = HttpKit.getRequest().getSession();
         Integer uid = (Integer) session.getAttribute("uid");
         return uid;
+    }
+
+    /**
+     *  获取用户session对象
+     */
+    public static HttpSession getSession(){
+        HttpSession session = HttpKit.getRequest().getSession();
+        return session;
     }
 
     /**
