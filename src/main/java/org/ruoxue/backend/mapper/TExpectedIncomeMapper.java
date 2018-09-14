@@ -3,11 +3,14 @@ package org.ruoxue.backend.mapper;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TExpectedIncome;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,5 +25,22 @@ public interface TExpectedIncomeMapper extends BaseMapper<TExpectedIncome> {
 
     List<TExchange> listExchange(@Param("type") Integer type, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size, @Param("start") Date start, @Param("end") Date end);
 
+//    客户
+    List<Map<String, Object>> listExpectIncomeByYear(@Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
 
+    List<Map<String, Object>> listExpectIncome(@Param("cid") Integer cid, @Param("status") Integer status, @Param("page") Integer page, @Param("size") Integer size, @Param("from") Date from, @Param("to") Date to);
+
+    @Select("select * from t_expected_income where cid = #{cid} order by tm_activate desc limit 1")
+    TExpectedIncome getExpectLast(@Param("cid") Integer cid);
+
+//    管理员
+    List<Map<String, Object>> listAdminCurrentByYear(@Param("cid") Integer cid, @Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size);
+
+    List<Map<String, Object>> listAdminCurrent(@Param("cid") Integer cid, @Param("uid") Integer uid, @Param("status") Integer status, @Param("page") Integer page, @Param("size") Integer size, @Param("from") Date from, @Param("to") Date to);
+
+    TExpectedIncome getExceptByUidAndCid(@Param("uid") Integer uid, @Param("cid") Integer cid);
+
+//    更改状态
+    @Update("update t_expected_income set status = #{status} where id = #{id}")
+    Integer updateExpectById(@Param("status") Integer status, @Param("id") Integer id);
 }

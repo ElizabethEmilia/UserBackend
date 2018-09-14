@@ -38,5 +38,75 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="listExpectIncomeByYear" resultType="java.util.Map">
+		select * from t_expected_income
+		where tm_inactivate like concat('%', year(curdate()), '%')
+		and cid = #{cid}
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="listExpectIncome" resultType="java.util.Map">
+		select * from t_expected_income
+		where 1 = 1
+		and cid = #{cid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="from != null and from != ''">
+			<![CDATA[
+				and tm_inactivate > #{from}
+			]]>
+		</if>
+		<if test="to != null and to != ''">
+			<![CDATA[
+				and tm_inactivate < #{to}
+			]]>
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+
+	<select id="listAdminCurrentByYear" resultType="java.util.Map">
+		select * from t_expected_income
+		where tm_inactivate like concat('%', year(curdate()), '%')
+		and cid = #{cid}
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="listAdminCurrent" resultType="java.util.Map">
+		select * from t_expected_income
+		where 1 = 1
+		and cid = #{cid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		<if test="from != null and from != ''">
+			<![CDATA[
+				and tm_inactivate > #{from}
+			]]>
+		</if>
+		<if test="to != null and to != ''">
+			<![CDATA[
+				and tm_inactivate < #{to}
+			]]>
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="getExceptByUidAndCid" resultType="org.ruoxue.backend.bean.TExpectedIncome">
+		select * from t_expected_income
+		where cid = #{cid}
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		order by tm_activate desc limit 1
+	</select>
+
 
 </mapper>
