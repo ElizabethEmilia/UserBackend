@@ -50,7 +50,7 @@
                 let img =this.$refs.img;
                 let selected = this.$refs.selected;
 
-                slider.style.display = img.style.display = 'none';
+                slider.style.visibility = img.style.visibility = 'hidden';
                 selected.style.width = "100%";
                 this.selectedBarText = '验证通过';
                 this.$emit("on-verifyok", true);
@@ -93,6 +93,21 @@
                     console.error(e);
                     this.verifyFailed();
                 }
+            },
+            reload() {
+                let slider = this.$refs.slider;
+                let track =this.$refs.track;
+                let img =this.$refs.img;
+                let selected = this.$refs.selected;
+                let tips = this.$refs.tips;
+
+                slider.style.visibility = 'visible';
+                img.style.visibility = null;
+                slider.style.left = '0px';
+                selected.style.width = '0px';
+                this.selectedBarText = '';
+                this.resoreErrorState();
+                this.loadImage();
             }
         },
         mounted() {

@@ -1,7 +1,7 @@
 <template>
     <Card dis-hover :bordered="false" style="text-align: center; background-color: #eee; background-color:rgba(255, 255, 255, 1); width: 450px; height: 300px;">
                 <h2 style="text-align: center">登录系统</h2>
-            <div v-if="!pending">
+            <div v-show="!pending">
                 <div>
                     <Input class="tp" :readonly="pending" v-model="username" prefix="md-contact" autofocus :maxlength="16" placeholder="用户名或手机号码" style="background: rgba(255, 255, 255, 0.75);border-color: rgba(255, 255, 255, 0.8); width: 300px; margin-top: 60px;   border-radius: 15px;" />
                 </div>
@@ -15,7 +15,8 @@
 
                 <!--新版验证码 -->
                 <VerifyCodeSlider
-                        @on-verifyok="val => verifyOk = true"
+                        ref="verfcode"
+                        @on-verifyok="verifyOKHandler"
                         style="margin-left: 60px;margin-top: 20px;"/>
 
                 <div>
@@ -28,7 +29,7 @@
                 </div>
             </div>
 
-            <div v-else style="margin-top: 90px;">
+            <div v-show="pending" style="margin-top: 90px;">
                 <Spin fix size="large">
                     <p style="font-size: 13px; margin-top: 10px;">
                         <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
@@ -93,11 +94,15 @@ export default {
                     location.href = "./";
                 }
                 else {
+                    this.$refs.verfcode.reload();
+                    this.verifyOk = false;
                     await util.MessageBox.ShowAsync(this, '' + result.msg);
                     this.pending = false;
                 }
             }
             catch(err) {
+                this.$refs.verfcode.reload();
+                this.verifyOk = false;
                 await util.MessageBox.ShowAsync(this, '无法连接服务器');
                 this.pending = false;
             }
@@ -109,6 +114,13 @@ export default {
         inputImageCode(val) {
             this.code = val;
         },
+        verifyOKHandler() {
+            this.verifyOk = true;
+            // 如果输完密码和用户名了  直接登录，不需要用户点登录按钮
+            if (!util.isStringNullOrEmpty(this.username) && !util.isStringNullOrEmpty(this.password)) {
+                this.login();
+            }
+        }
     },
     watch: {
         username(val) {
