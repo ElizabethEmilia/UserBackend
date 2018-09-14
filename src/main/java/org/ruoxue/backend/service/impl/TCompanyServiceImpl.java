@@ -1,6 +1,7 @@
 package org.ruoxue.backend.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.ruoxue.backend.bean.TComCert;
 import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.mapper.TCompanyMapper;
 import org.ruoxue.backend.service.ITCompanyService;
@@ -147,6 +148,96 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         } else {
             return ResultUtil.error(-2, "添加失败");
         }
+    }
+
+    @Override
+    public Object listCompanys(String search, Integer page, Integer size) {
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<Map<String, Object>> list = companyMapper.listCompanys(search, page, size);
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+    }
+
+    @Override
+    public Object getCompanyInfo(Integer cid) {
+        if (ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        TCompany company = companyMapper.getCompanyById(cid);
+
+        return XunBinKit.returnResult(ToolUtil.isNotEmpty(company), -2, company, "查询成功", "查询失败");
+    }
+
+    @Override
+    public Object getCompanySetUp(Integer cid, Integer page, Integer size) {
+        if (ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<Map<String, Object>> list = companyMapper.listCompanySetUp(cid, page, size);
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list,"查询成功", "查询失败");
+    }
+
+    @Override
+    public Object getCompanyCert(Integer cid, Integer page, Integer size) {
+        if (ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<Map<String, Object>> list = companyMapper.listComCertByCid(cid, page, size);
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+    }
+
+    @Override
+    public Object countCompanyCertById(Integer cid, Integer id) {
+
+        if (ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        TComCert comCert = companyMapper.getComCertById(cid, id);
+
+        return XunBinKit.returnResult(ToolUtil.isNotEmpty(comCert), -2, comCert, "查询成功", "查询失败");
+    }
+
+    @Override
+    public Object countCompany() {
+
+        Integer uid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "用户未登录");
+        }
+
+        Integer count = companyMapper.countCompanyByUid(uid);
+
+        return ResultUtil.success(count);
     }
 
 
