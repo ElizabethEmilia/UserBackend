@@ -674,7 +674,7 @@ action:
 
 说明同上
 
-* 【L】税金账户明细：`GET /api/tax/detail`
+* 【L】税金账户明细：`GET /api/customer/{cid}/tax/detail`
 
 说明同上
 

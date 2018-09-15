@@ -1,7 +1,9 @@
 package org.ruoxue.backend.service;
 
-import org.ruoxue.backend.bean.TTaxAccount;
 import com.baomidou.mybatisplus.service.IService;
+import org.ruoxue.backend.bean.TTaxAccount;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -12,5 +14,16 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-08-30
  */
 public interface ITTaxAccountService extends IService<TTaxAccount> {
-	
+
+    Object listTaxStat(Integer cid, Date yfrom, Date yto, Integer page, Integer size);
+
+    Object listTaxDetail(Integer cid, Date mfrom, Date mto, Integer page, Integer size);
+
+
+    Object listTaxStatAdmin(Integer cid, Date yfrom, Date yto, Integer page, Integer size);
+
+    Object listTaxDetailAdmin(Integer cid, Date mfrom, Date mto, Integer page, Integer size);
+
+    Object updateTax(Integer cid, Integer uid, Double tax);
+
 }
