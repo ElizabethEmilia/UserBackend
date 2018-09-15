@@ -752,6 +752,139 @@ tax； 税金收支
 
 * 备份并加密数据库 `POST /api/sysctrl/dbbackup`
 
+## 10 支付相关
+
+### 10.1 支付宝
+
+交易表(t_exchange)
+
+| Field     | Type          | Null | Key | Default | Extra          |
+|-----------|---------------|------|-----|---------|----------------|
+| id        | int(11)       | NO   | PRI | NULL    | auto_increment |
+| running   | int(11)       | YES  |     | NULL    |                |
+| uid       | int(11)       | YES  |     | NULL    |                |
+| cid       | int(11)       | YES  |     | NULL    |                |
+| amount    | decimal(10,0) | YES  |     | NULL    |                |
+| paymethod | int(11)       | YES  |     | NULL    |                |
+| note      | mediumtext    | YES  |     | NULL    |                |
+| tm        | datetime      | YES  |     | NULL    |                |
+| state     | int(11)       | YES  |     | NULL    |                |
+| type      | int(11)       | YES  |     | NULL    |                |
+
+订单表(t_order)
+
+| Field     | Type          | Null | Key | Default | Extra          |
+|-----------|---------------|------|-----|---------|----------------|
+| id        | int(11)       | NO   | PRI | NULL    | auto_increment |
+| cid       | int(11)       | YES  |     | NULL    |                |
+| type      | varchar(32)   | YES  |     | NULL    |                |
+| amount    | decimal(10,0) | YES  |     | NULL    |                |
+| status    | int(11)       | YES  |     | NULL    |                |
+| tm_create | datetime      | YES  |     | NULL    |                |
+| tm_paid   | datetime      | YES  |     | NULL    |                |
+| running   | int(11)       | YES  |     | NULL    | 交易表的订单号   |
+
+
+* 提交付款【C】： `GET /api/pay/alipay/start`
+
+此页面向支付宝付款页面发送post，在前端界面。
+
+查找商品表中的item ID, 并获取商品信息。
+
+在此页面提交前，在订单列表充值表中添加“待付款”状态，并且加入数据库，设置订单流水编号(`running`)并传给支付宝。
+
+参数：`itemid` 商品表中的ID <可选，和`name`,`amount`互斥>
+
+传入该参数时，表示这是来自于商品列表的付款请求
+
+注意：当存在itemid时，需要先从商品表中获取商品信息记录，同时在订单表中添加一条记录，并且设置为该条目的流水号
+
+参数：`name`<可选>和`amount`<可选> 商品的名称和价格 <可选，和`itemid`互斥>
+
+（注意）对于购买商品的情况，若当余额足够时，就不发生付款充值流程，直接扣款并设置购买订单为已付款。
+
+（注意）对于特殊商品，包含副作用，见商品管理。(若addyear不为0，则购买后按年增加用户的付费期限)
+
+（1）若两个参数同时出现，表示这是一个自定义名称和价格的订单，同上面的，在订单表中添加一条记录，并且设置为该条目的流水号
+
+（2）若只有amount参数，则表示该交易是充值。不需要插入订单表，只需要插入交易表。
+
+（3）name参数不可单独出现，直接返回400 Bad Request
+
+若其他参数组合，，直接返回400 Bad Request
+
+（关于订单表的说明）订单表状态设置为“待支付”
+
+返回值：form值（已实现，不需改动）
+    
+* 付款信息回调【P】： `GET /api/pay/alipay/finish`
+
+参数：支付宝文档钦定，代码中已实现，不需改动。
+
+支付宝在支付以后调用的回调界面，用于显示付款结果
+
+在此页面被回调时，在订单充值表中修改订单状态为"等待付款机构处理结果"状态。
+
+（关于订单表的说明）如果订单表存在对应记录，状态设置为“待确认”
+
+* 付款信息通知回调【P】： `POST /api/pay/alipay/notify`
+
+参数：支付宝文档钦定，代码中已实现并已验证，不需改动。
+
+返回值：已实现。
+
+支付宝在付款成功以后向客户端发送的通知，付款结果以此为准。在收到通知后，将状态设置为“充值成功”状态
+
+在收到该通知时，如果存在订单，那么需要更改订单状态为已付款。
+
+* 付款信息查询【C+】： `POST /api/pay/alipay/query`
+
+参数：订单流水号 `running`
+
+为没有及时更新的内容提供查询接口，若查询结果显示付款成功或失败，则更新为对应的状态
+
+### 10.2 微信
+
+（注意）说明同支付宝，不再赘述。
+
+* 提交付款【C】： `GET /api/pay/alipay/start`
+
+* 付款信息回调【P】： `GET /api/pay/alipay/finish`
+
+* 付款信息通知回调【P】： `POST /api/pay/alipay/notify`
+
+* 付款信息查询【C+】： `POST /api/pay/alipay/query`
+
+## 11 商品接口
+
+商品表
+
+| Field       | Type        | Null | Key | Default | Extra          |
+|-------------|-------------|------|-----|---------|----------------|
+| id          | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(64) | YES  |     | NULL    |                |
+| price       | double      | YES  |     | NULL    |                |
+| description | text        | YES  |     | NULL    |                |
+| image       | text        | YES  |     | NULL    |                |
+| removable   | int(11)     | NO   |     | 0       |                |
+| addyear     | int         | NO   |     | 0       |                |
+
+（说明） 默认存在商品若removable属性为1 则该商品无法删除
+
+（说明） 若addyear不为0，则购买后按年增加用户的付费期限
+
+* 【L】【C+】信息的商品列表 `GET /api/items/list`
+
+返回数据表中所有信息
+
+* 商品的添加【S】 `POST /api/items/add`
+
+* 商品的修改【S】 `POST /api/items/{itemid}/modify`
+
+* 商品的删除【S】 `POST /api/items/{itemid}/delete`
+
+* 商品信息的获取【P】 `GET /api/items/{itemid}`
+
 # 计划任务
 
 系统定期执行的任务，包括

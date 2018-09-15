@@ -65,12 +65,14 @@ public final class Constant {
 
     0 - 未付款
     1 - 充值成功
-    2 - 充值失败
+    2 - 发生异常
+    3 - 等待付款机构处理结果
      */
     public class ExchangeStatus {
         public final int UNPAIED = 0;
         public final int SUCCESS = 1;
         public final int FAILED = 2;
+        public final int WAITING = 3;
     }
 
     /*
@@ -103,11 +105,13 @@ public final class Constant {
     0 - 待支付
     1 - 已支付
     2 - 已取消
+    3 - 待确认
      */
     public class PaymentStatus {
         public static final int UNPAIED = 0;
         public static final int PAIED = 1;
         public static final int CANCELED = 2;
+        public static final int NOT_CONFIRMED = 3;
     }
 
     /*
