@@ -156,6 +156,7 @@ public final class Constant {
         public static final int WITHDREW = 4;
         public static final int INACTIVATED = 5;
         public static final int REQUESTED_WITHDRAW = 6;
+        public static final int DIFFERENCE_TO_PAY = 7;
     }
 
     /*(
