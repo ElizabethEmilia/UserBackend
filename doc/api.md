@@ -470,15 +470,7 @@ RefusedWaitingPacking(11)
 
 ### 3.3 在线充值
 
-* 支付宝充值`POST /api/charge/alipay`
-
-* 微信充值`POST /api/charge/wechat`
-
-其他的API采用第三方： [第三方微信API](https://github.com/ihaolin/wepay) 和
- [第三方支付宝API](https://github.com/ihaolin/alipay)
-```
-涉及到现实资金的需要再三谨慎
-```
+见第10章
  
 ### 3.4 对公转账
  
