@@ -18,8 +18,6 @@
 
 <script>
 
-/// TODO: 将系统配置项加载进缓存。
-
 import ConfigItem from './configitem.vue';
 import { settingTypes } from '../../../constant.js';
 

@@ -3,8 +3,10 @@ package org.ruoxue.backend.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TComCert;
+import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.mapper.TComCertMapper;
 import org.ruoxue.backend.service.ITComCertService;
+import org.ruoxue.backend.util.Base64Util;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
@@ -99,8 +101,7 @@ public class TComCertServiceImpl extends ServiceImpl<TComCertMapper, TComCert> i
         TComCert comCert = new TComCert();
         comCert.setUid(Integer.parseInt(uid));
         comCert.setCid(cid);
-//        TODO
-        comCert.setCertImg(certImg);
+        comCert.setCertImg(Base64Util.GenerateImageFromDataURI(certImg));
         comCert.setCertName(certName);
         comCert.setCertNo(certNo);
         comCert.setStatus(1);

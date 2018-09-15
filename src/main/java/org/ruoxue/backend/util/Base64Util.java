@@ -43,7 +43,13 @@ public class Base64Util {
      * @return 以保存的文件名
      */
     public static String GenerateImageFromDataURI(String imgStr)
-    {   //对字节数组字符串进行Base64解码并生成图片
+    {
+        // Initialize image file saving path
+        if (Base64Util.baseImageSavePath == null) {
+            String savePath=System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+            Base64Util.baseImageSavePath = savePath;
+        }
+        //对字节数组字符串进行Base64解码并生成图片
         if (imgStr == "") //图像数据为空
         {
             System.out.println("Empty string");
@@ -66,7 +72,7 @@ public class Base64Util {
             }
 
             imgStr = imgStr.replaceAll("^data:(\\w+)\\/(\\w+);(\\w+),", "").replaceAll(" ","+");
-            System.out.println(imgStr);
+            //System.out.println(imgStr);
             //byte[] data = Base64.decodeBase64(imgStr);
             String imgFilePath = "" + (new Date().getTime()) + (int)(Math.random() * 1000) + "." + extension;//新生成的图片
 

@@ -49,11 +49,6 @@ public class TCustomerController extends BaseController {
     @ApiOperation("修改头像")
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public @ResponseBody Object avatar(@RequestParam String img){
-        // Initialize image file saving path
-        if (Base64Util.baseImageSavePath == null) {
-            String savePath=System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
-            Base64Util.baseImageSavePath = savePath;
-        }
         return customerService.avatar(img);
     }
 
