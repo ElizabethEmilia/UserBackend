@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.service.ITLogsService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Date;
+
 /**
  * <p>
  *  服务实现类
@@ -16,5 +19,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements ITLogsService {
-	
+
+    @Resource
+    TLogsMapper mapper;
+
+    public Boolean actionLog(Integer aid, Date tm, String description, Integer cls) {
+        return mapper.actionLog(aid, tm, description, cls);
+    }
+
+    public Boolean actionLogNow(Integer aid, String description, Integer cls) {
+        return actionLog(aid, new Date(), description, cls);
+    }
 }
