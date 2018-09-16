@@ -1,7 +1,6 @@
 package org.ruoxue.backend.bean;
 
 import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -15,17 +14,19 @@ import java.io.Serializable;
  * @author fengjb
  * @since 2018-09-16
  */
-@TableName("t_logs")
-public class TLogs extends Model<TLogs> {
+@TableName("t_shop_items")
+public class TShopItems extends Model<TShopItems> {
 
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
-	private Integer aid;
-	private Date tm;
+	private String name;
+	private Double price;
 	private String description;
-	private Integer cls;
+	private String image;
+	private Integer removable;
+	private Integer addyear;
 
 
 	public Integer getId() {
@@ -36,20 +37,20 @@ public class TLogs extends Model<TLogs> {
 		this.id = id;
 	}
 
-	public Integer getAid() {
-		return aid;
+	public String getName() {
+		return name;
 	}
 
-	public void setAid(Integer aid) {
-		this.aid = aid;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Date getTm() {
-		return tm;
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setTm(Date tm) {
-		this.tm = tm;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public String getDescription() {
@@ -60,12 +61,28 @@ public class TLogs extends Model<TLogs> {
 		this.description = description;
 	}
 
-	public Integer getCls() {
-		return cls;
+	public String getImage() {
+		return image;
 	}
 
-	public void setCls(Integer cls) {
-		this.cls = cls;
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Integer getRemovable() {
+		return removable;
+	}
+
+	public void setRemovable(Integer removable) {
+		this.removable = removable;
+	}
+
+	public Integer getAddyear() {
+		return addyear;
+	}
+
+	public void setAddyear(Integer addyear) {
+		this.addyear = addyear;
 	}
 
 	@Override
@@ -75,12 +92,14 @@ public class TLogs extends Model<TLogs> {
 
 	@Override
 	public String toString() {
-		return "TLogs{" +
+		return "TShopItems{" +
 			"id=" + id +
-			", aid=" + aid +
-			", tm=" + tm +
+			", name=" + name +
+			", price=" + price +
 			", description=" + description +
-			", cls=" + cls +
+			", image=" + image +
+			", removable=" + removable +
+			", addyear=" + addyear +
 			"}";
 	}
 }
