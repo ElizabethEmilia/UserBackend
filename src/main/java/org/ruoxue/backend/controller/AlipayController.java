@@ -1,17 +1,17 @@
 package org.ruoxue.backend.controller;
 
 import com.alipay.api.internal.util.AlipaySignature;
+import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.service.IAlipayService;
 import org.ruoxue.backend.service.ITLogsService;
-import org.ruoxue.backend.util.AlipayUtil;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,14 +24,22 @@ public class AlipayController {
     @Resource
     ITLogsService logsService;
 
+    @Resource
+    private IAlipayService alipayService;
+
+//    添加事务管理(保证五性)
+    @Transactional
     @RequestMapping("start")
-    public void startPayment(String orderID, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-        AlipayUtil.startPayment(orderID, "iPhone XS Max 512GB", 14000.00, httpRequest, httpResponse );
+    public void startPayment(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
+                             @RequestParam(required = false) Integer itemid, @RequestParam(required = false) String name, @RequestParam(required = false) Double amount) {
+//        调用service层
+        alipayService.startPayment(httpRequest, httpResponse, itemid, name, amount);
+
     }
 
     /// 这个函数是回调  但是不一定确实成功了，只是给用户显示的界面
     /// 结果以下面那个notify为准
-    @RequestMapping("finsih")
+    @RequestMapping("finish")
     public void finishPaymant(@RequestParam("out_trade_no") String out_trade_no,
                                        @RequestParam("total_amount") Double total_amount,
                                        @RequestParam("sign") String sign,
@@ -41,7 +49,19 @@ public class AlipayController {
                                        @RequestParam("seller_id") String seller_id,
                                        @RequestParam("timestamp") String timestamp,
                                        HttpServletRequest request,
-                                       HttpServletResponse response) {
+                                       HttpServletResponse response,
+                                       Map map) throws IOException {
+//        调用service层
+        alipayService.finishPaymant(Long.valueOf(out_trade_no), request, response);
+
+//        将参数显示
+        map.put("out_trade_no", out_trade_no);
+        map.put("total_amount", total_amount);
+        map.put("trade_no", trade_no);
+        map.put("timestamp", timestamp);
+        map.put("pay_method", "支付宝");
+
+//          正则匹配    TODO
 
         try {
             // 避免其他人来自非本站的请作为回调
@@ -66,6 +86,12 @@ public class AlipayController {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap, Constant.AlipayConfig.ALIPAY_PUBLIC_KEY, CHARSET, Constant.AlipayConfig.SIGN_TYPE); //调用SDK验证签名
             if(signVerified){
                 // TODO 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
+
+                Long orderid = Long.valueOf(params.get("out_trade_no"));
+
+//                调用service
+                alipayService.notifyQuery(orderid, response);
+
                 response.getWriter().println("success");
             }else{
                 // TODO 验签失败则记录异常日志，并在response中返回failure.
@@ -81,6 +107,18 @@ public class AlipayController {
             e.printStackTrace();
         }
 
+    }
+
+    @ApiOperation("付款信息查询")
+    @RequestMapping("/query")
+    public @ResponseBody Object queryOrder(@RequestParam String running) {
+        return alipayService.queryOrder(running);
+    }
+
+    @ApiOperation("查询最后一个订单状态")
+    @RequestMapping("/last-order")
+    public @ResponseBody Object queryLastOrder() {
+        return alipayService.queryLastOrder();
     }
 
 }

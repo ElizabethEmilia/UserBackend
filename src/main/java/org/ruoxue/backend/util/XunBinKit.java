@@ -17,6 +17,20 @@ import java.util.Random;
 public class XunBinKit {
 
     /**
+     *  获取时间戳+三位随机数
+     */
+    public static Long getTimeAppendThreeNum(){
+
+        Date date = new Date();
+        Long time = date.getTime();
+
+        String threeNum = XunBinKit.generateNum(3);
+
+
+        return Long.valueOf(time + "" + threeNum);
+    }
+
+    /**
      *  获取年底时间
      */
     public static Date getYearLastTime() {
@@ -115,6 +129,19 @@ public class XunBinKit {
         StringBuilder sb = new StringBuilder();
         Random rand = new Random();
         for(int i = 0; i < 6; i++){
+            int num = rand.nextInt(10);
+            sb.append(num + "");
+        }
+        return sb.toString();
+    }
+
+    /**
+     *  随机生成n位数字
+     */
+    public static String generateNum(Integer n){
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random();
+        for(int i = 0; i < n; i++){
             int num = rand.nextInt(10);
             sb.append(num + "");
         }

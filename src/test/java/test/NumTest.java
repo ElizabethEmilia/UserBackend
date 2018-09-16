@@ -7,7 +7,8 @@ public class NumTest {
 
     @Test
     public void test1() {
-        System.out.println(XunBinKit.getYearLastTime());
+
+        System.out.println(XunBinKit.getTimeAppendThreeNum());
 
     }
 }
