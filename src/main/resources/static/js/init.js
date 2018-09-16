@@ -248,6 +248,16 @@ const tGroup = {
     remark: '',
 };
 
+const tItem = {
+    id         : 0,
+    name       : "",
+    price      : 0,
+    description: "",
+    image      : "",
+    removable  : 1,
+    addyear    : 0,
+};
+
 export default {
     tAdmin,
     tComCert,
@@ -270,4 +280,5 @@ export default {
     tTaxAccount,
     tRole,
     tGroup,
+    tItem,
 };

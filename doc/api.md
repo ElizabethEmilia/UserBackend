@@ -829,11 +829,11 @@ tax； 税金收支
 
 在收到该通知时，如果存在订单，那么需要更改订单状态为已付款。
 
-* 付款信息查询【C+】： `POST /api/pay/alipay/query`
+* 付款信息查询【C+】： `GET /api/pay/alipay/query`
 
 参数：订单流水号 `running`
 
-为没有及时更新的内容提供查询接口，若查询结果显示付款成功或失败，则更新为对应的状态
+为没有及时更新的内容提供查询接口，若查询结果显示付款成功或失败，则更新为对应的状态。
 
 ### 10.2 微信
 
@@ -845,7 +845,7 @@ tax； 税金收支
 
 * 付款信息通知回调【P】： `POST /api/pay/alipay/notify`
 
-* 付款信息查询【C+】： `POST /api/pay/alipay/query`
+* 付款信息查询【C+】： `GET /api/pay/alipay/query`
 
 ## 11 商品接口
 

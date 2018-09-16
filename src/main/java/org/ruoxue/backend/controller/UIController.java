@@ -75,6 +75,7 @@ public class UIController extends BaseController {
 
         String username = "";
         String avatar = "";
+        String isCustomerPaid = "false";
 
         if (userInfoObj instanceof TAdmin) {
             TAdmin admin = (TAdmin)userInfoObj;
@@ -84,6 +85,7 @@ public class UIController extends BaseController {
             TCustomer customer = (TCustomer)userInfoObj;
             username = customer.getName();
             avatar = customer.getAvatar().replaceAll("\"", "\\\"");
+            isCustomerPaid = customer.getPaid() == 1 ? "true" : "false";
         }
 
         String scripts = "/* This file is auto-generated in order to present basic user info. */\n" +
@@ -91,7 +93,8 @@ public class UIController extends BaseController {
                 "window.config.username = \"" + username +"\";\n" +
                 "window.config.avatar = \"" + avatar + "\";\n" +
                 "window.config.isAdmin = " + isAdmin + "; \n" +
-                "window.config.isSuperAdmin = " + isSuperAdmin;
+                "window.config.isSuperAdmin = " + isSuperAdmin + "; \n" +
+                "window.config.isCustomerPaid = " + isCustomerPaid + ";";
         return scripts;
     }
 
