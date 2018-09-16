@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-14
+ * @since 2018-09-16
  */
 @TableName("t_tax_account")
 public class TTaxAccount extends Model<TTaxAccount> {
