@@ -13,6 +13,7 @@ import org.ruoxue.backend.util.AlipayUtil;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.io.IOException;
 /**
  *  支付功能服务层实现类
  */
+@Service
 public class AlipayServiceImpl implements IAlipayService {
 
     @Resource

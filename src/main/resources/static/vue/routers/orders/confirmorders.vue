@@ -57,7 +57,7 @@
         }),
         methods: {
             async startPay() {
-                if (this.onlinePayMethod == -1)
+                if (this.onlinePayMethod === -1)
                     return util.MessageBox.Show(this, "请选择支付方式");
                 // 原来的方法是window open现在不是了
                 //let r = await API.Payment.Alipay.start(this.param);

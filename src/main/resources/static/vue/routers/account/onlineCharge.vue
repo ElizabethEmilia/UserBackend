@@ -20,7 +20,7 @@
                 
             </div>
 
-            <div style="margin-top: 5px; margin-left: 30px;">
+            <!--div style="margin-top: 5px; margin-left: 30px;">
                 <span style="font-size: 14px; width: 100px; display:inline-block">
                     支付方式
                 </span> 
@@ -29,8 +29,7 @@
                     <Radio label="支付宝" :value="1"></Radio>
                 </RadioGroup>
                 
-                
-            </div>
+            </div-->
 
             <div style="margin-top: 5px; margin-left: 30px;">
                 <Checkbox v-model="onlinePayReadTerms">我已阅读<a href="javascript:void(0)" @click="readTerms()">《服务条款》</a></Checkbox>。
@@ -38,8 +37,34 @@
             </div>
 
             <div class="inline-margin">
-                <Button :loading="pending" type="primary"  style="width: 200px;" shape="circle" icon="ios-card" :disabled="!onlinePayReadTerms" @click="onlinePaymentCharge">充值</Button>
+                <Button type="primary"  style="width: 200px;" shape="circle" icon="ios-card" :disabled="!onlinePayReadTerms" @click="onlinePaymentCharge">充值</Button>
             </div>
+
+            <Modal v-model="confirmDialogVisible" fullscreen >
+                <div slot="footer">
+                </div>
+
+                <ConfirmOrders
+                        @on-start-pay="val => {confirmDialogVisible = false; confirmResultDialog=true; payMethod = val;}"
+                        @on-cancel="confirmDialogVisible = false;"
+                        :param="{ amount: chargeAmount }" />
+
+            </Modal>
+
+            <Modal
+                    :closable="false"
+                    :mask-closable="false"
+                    v-model="confirmResultDialog">
+                <ConfirmResult
+                        :method="payMethod"
+                        @on-cancel="val => confirmResultDialog = false"
+                />
+
+                <div slot="footer">
+                </div>
+
+            </Modal>
+
         </Card>
 
 </template>
@@ -50,14 +75,23 @@ import { industry, memberType, paymentMethod, publicOrderStatus } from '../../..
 import '../../../css/style.less';
 import util from '../../../js/util.js';
 import ServiceTermsDialog from './dialogs/serviceterms.vue';
+import API from '../../../js/api.js';
+import ConfirmOrders from '../../routers/orders/confirmorders.vue';
+import ConfirmResult from '../../components/confirmchargeresult.vue';
 
 export default {
+    components: {
+        ConfirmOrders, ConfirmResult,
+    },
     data: () => ({
-        onlinePayMethod: "微信支付",
         onlinePayAmount: 0,
         onlinePayReadTerms: false,
 
-        pending: false,
+        confirmDialogVisible: false,
+        confirmResultDialog: false,
+        payMethod: '',
+
+        chargeAmount: 0,
     }),
     methods: {
         // 在线充值
@@ -73,19 +107,20 @@ export default {
                 util.MessageBox.Show(this, '请输入整数');
                 return;
             }
-            // 充值种类
-            let type = ({ "微信支付": "wechat", "支付宝": "alipay" })[this.onlinePayMethod];
 
-            try {
-                let result = await $.ajax('/api/charge/' + type, { amount });
-                if (result.code) {
-                    return util.MessageBox.Show(this, '充值失败。' + result.msg);
-                }
-                util.MessageBox.Show(this, '暂时不知道充值陈宫需要其他的什么步骤  但肯定不是这样就能成功的   肯定还需要其他的步骤');
-            }
-            catch(err) {
-                util.MessageBox.Show(this, '无法连接服务器');
-            }
+            // 充值种类
+            //let type = ({ "微信支付": "wechat", "支付宝": "alipay" })[this.onlinePayMethod];
+
+            //try {
+            //    let result = await $.ajax('/api/charge/' + type, { amount });
+            //    if (result.code) {
+            //        return util.MessageBox.Show(this, '充值失败。' + result.msg);
+            //    }
+            //    util.MessageBox.Show(this, '暂时不知道充值陈宫需要其他的什么步骤  但肯定不是这样就能成功的   肯定还需要其他的步骤');
+            //}
+            //catch(err) {
+            //    util.MessageBox.Show(this, '无法连接服务器');
+            //}
         },
         // 阅读服务协议
         readTerms() {
