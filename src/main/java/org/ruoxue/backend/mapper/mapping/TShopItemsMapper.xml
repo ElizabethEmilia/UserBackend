@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ruoxue.backend.mapper.TShopItemsMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="org.ruoxue.backend.bean.TShopItems">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="price" property="price" />
+		<result column="description" property="description" />
+		<result column="image" property="image" />
+		<result column="removable" property="removable" />
+		<result column="addyear" property="addyear" />
+	</resultMap>
+
+</mapper>

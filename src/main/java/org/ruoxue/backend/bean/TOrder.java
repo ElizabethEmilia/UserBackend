@@ -1,13 +1,14 @@
 package org.ruoxue.backend.bean;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableName;
-import java.io.Serializable;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-14
+ * @since 2018-09-16
  */
 @TableName("t_order")
 public class TOrder extends Model<TOrder> {
@@ -32,6 +33,7 @@ public class TOrder extends Model<TOrder> {
 	private Date tmCreate;
 	@TableField("tm_paid")
 	private Date tmPaid;
+	private Integer running;
 
 
 	public Integer getId() {
@@ -90,6 +92,14 @@ public class TOrder extends Model<TOrder> {
 		this.tmPaid = tmPaid;
 	}
 
+	public Integer getRunning() {
+		return running;
+	}
+
+	public void setRunning(Integer running) {
+		this.running = running;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -105,6 +115,7 @@ public class TOrder extends Model<TOrder> {
 			", status=" + status +
 			", tmCreate=" + tmCreate +
 			", tmPaid=" + tmPaid +
+			", running=" + running +
 			"}";
 	}
 }
