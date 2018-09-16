@@ -849,6 +849,10 @@ tax； 税金收支
 
 * 付款信息查询【C+】： `GET /api/pay/alipay/query`
 
+### 10.3 查询
+
+* 查询最后一个订单状态：`GET /api/pay/last-order`
+
 ## 11 商品接口
 
 商品表
