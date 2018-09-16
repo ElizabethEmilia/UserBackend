@@ -69,10 +69,10 @@ public final class Constant {
     3 - 等待付款机构处理结果
      */
     public class ExchangeStatus {
-        public final int UNPAIED = 0;
-        public final int SUCCESS = 1;
-        public final int FAILED = 2;
-        public final int WAITING = 3;
+        public static final int UNPAIED = 0;
+        public static final int SUCCESS = 1;
+        public static final int FAILED = 2;
+        public static final int WAITING = 3;
     }
 
     /*

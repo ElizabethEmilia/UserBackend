@@ -841,13 +841,13 @@ tax； 税金收支
 
 （注意）说明同支付宝，不再赘述。
 
-* 提交付款【C】： `GET /api/pay/alipay/start`
+* 提交付款【C】： `GET /api/pay/wepay/start`
 
-* 付款信息回调【P】： `GET /api/pay/alipay/finish`
+* 付款信息回调【P】： `GET /api/pay/wepay/finish`
 
-* 付款信息通知回调【P】： `POST /api/pay/alipay/notify`
+* 付款信息通知回调【P】： `POST /api/pay/wepay/notify`
 
-* 付款信息查询【C+】： `GET /api/pay/alipay/query`
+* 付款信息查询【C+】： `GET /api/pay/wepay/query`
 
 ### 10.3 查询
 
@@ -864,10 +864,10 @@ tax； 税金收支
 | price       | double      | YES  |     | NULL    |                |
 | description | text        | YES  |     | NULL    |                |
 | image       | text        | YES  |     | NULL    |                |
-| removable   | int(11)     | NO   |     | 0       |                |
-| addyear     | int         | NO   |     | 1       |                |
+| removable   | int(11)     | NO   |     | 1       |                |
+| addyear     | int         | NO   |     | 0       |                |
 
-（说明） 默认存在商品若removable属性为1 则该商品无法删除
+（说明） 默认存在商品若removable属性为0 则该商品无法删除
 
 （说明） 若addyear不为0，则购买后按年增加用户的付费期限
     

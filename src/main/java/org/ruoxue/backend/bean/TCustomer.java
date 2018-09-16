@@ -1,13 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.math.BigDecimal;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ public class TCustomer extends Model<TCustomer> {
 	@TableField("other_contact")
 	private String otherContact;
 	private Integer paid;
-	private BigDecimal balance;
+	private Double balance;
 	@TableField("rec_type")
 	private Integer recType;
 	@TableField("reg_date")
@@ -189,11 +189,11 @@ public class TCustomer extends Model<TCustomer> {
 		this.paid = paid;
 	}
 
-	public BigDecimal getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(BigDecimal balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
