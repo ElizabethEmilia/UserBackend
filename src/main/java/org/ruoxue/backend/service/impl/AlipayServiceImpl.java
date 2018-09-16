@@ -9,16 +9,14 @@ import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TOrderMapper;
 import org.ruoxue.backend.mapper.TShopItemsMapper;
 import org.ruoxue.backend.service.IAlipayService;
-import org.ruoxue.backend.util.AlipayUtil;
-import org.ruoxue.backend.util.ResultUtil;
-import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.util.XunBinKit;
+import org.ruoxue.backend.util.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  *  支付功能服务层实现类
@@ -49,74 +47,87 @@ public class AlipayServiceImpl implements IAlipayService {
             balance = customer.getBalance();
         }
 
-//        使用商品号查询
-        if (ToolUtil.isNotEmpty(itemid) && ToolUtil.isEmpty(name) && ToolUtil.isEmpty(amount)) {
-
-            TShopItems shopItems = shopItemsMapper.getItemById(itemid);
-
-            if (ToolUtil.isEmpty(shopItems)) {
-                response.setStatus(503);
-                return;
-            } else {
-
-//                余额充足
-                if (balance >= amount) {
-
-//                在订单表添加一条记录(已付款且不发生充值)
-                    TOrder order = new TOrder();
-                    order.setRunning(orderID);
-                    order.setStatus(Constant.PaymentStatus.PAIED);
-                    order.insert();
-
-//                    直接扣款更改余额
-                    balance = balance - amount;
-                    customerMapper.updateBalance(balance, customer.getUid());
-
-//                在exchange表中插入一条数据
-                    TExchange exchange = new TExchange();
-                    exchange.setRunning(orderID);
-                    exchange.setState(Constant.ExchangeStatus.UNPAIED);
-                    exchange.insert();
-                    return;
-                } else {
-//                    余额不足,直接插入订单表
-                    TOrder order = new TOrder();
-                    order.setRunning(orderID);
-                    order.setStatus(Constant.PaymentStatus.UNPAIED);
-                    order.insert();
-                    AlipayUtil.startPayment(orderID + "", shopItems.getName(), shopItems.getPrice(), request, response );
+        try{
+    //        使用商品号查询
+            if (ToolUtil.isNotEmpty(itemid) && ToolUtil.isEmpty(name) && ToolUtil.isEmpty(amount)) {
+                TShopItems shopItems = shopItemsMapper.getItemById(itemid);
+                if (ToolUtil.isEmpty(shopItems)) {
+                    response.setStatus(503);
                     return;
                 }
+                else {
+    //                余额充足
+                    if (balance >= amount) {
+
+    //                在订单表添加一条记录(已付款且不发生充值)
+                        TOrder order = new TOrder();
+                        order.setRunning(orderID);
+                        order.setStatus(Constant.PaymentStatus.PAIED);
+                        order.insert();
+
+    //                    直接扣款更改余额
+                        balance = balance - amount;
+                        customerMapper.updateBalance(balance, customer.getUid());
+
+    //                在exchange表中插入一条数据
+                        TExchange exchange = new TExchange();
+                        exchange.setRunning(orderID);
+                        exchange.setState(Constant.ExchangeStatus.UNPAIED);
+                        exchange.insert();
+
+                        // 扣除余额后输出交易成功
+
+                        response.getWriter().println(
+                                PaymentResultUtil.paymentResult(
+                                        orderID.toString(),
+                                        amount.toString(),
+                                        "-",
+                                        new Date().toString(),
+                                        "余额"
+                                )
+                        );
+
+                        return;
+                    } else {
+    //                    余额不足,直接插入订单表
+                        TOrder order = new TOrder();
+                        order.setRunning(orderID);
+                        order.setStatus(Constant.PaymentStatus.UNPAIED);
+                        order.insert();
+                        AlipayUtil.startPayment(orderID + "", shopItems.getName(), shopItems.getPrice(), request, response );
+                        return;
+                    }
+                }
+
             }
-        }
 
-//        name + ammount
-        if (ToolUtil.isNotEmpty(name) && ToolUtil.isNotEmpty(amount) && ToolUtil.isEmpty(amount)) {
-//            插入order表
-            TOrder order = new TOrder();
-            order.setStatus(Constant.PaymentStatus.UNPAIED);
-            order.setRunning(orderID);
-            order.insert();
-            AlipayUtil.startPayment(orderID + "", name, amount, request, response );
-            return;
-        }
+    //        name + ammount
+            if (ToolUtil.isNotEmpty(name) && ToolUtil.isNotEmpty(amount) && ToolUtil.isEmpty(amount)) {
+    //            插入order表
+                TOrder order = new TOrder();
+                order.setStatus(Constant.PaymentStatus.UNPAIED);
+                order.setRunning(orderID);
+                order.insert();
+                AlipayUtil.startPayment(orderID + "", name, amount, request, response );
+                return;
+            }
 
-//        amount(充值)
-        if (ToolUtil.isNotEmpty(amount) && ToolUtil.isEmpty(name) && ToolUtil.isEmpty(itemid)) {
-//            只插入交易表
-            TExchange exchange = new TExchange();
-            exchange.setState(Constant.PaymentStatus.UNPAIED);
-            exchange.setAmount(amount);
-            exchange.setRunning(orderID);
-            exchange.insert();
-            return;
-        }
+    //        amount(充值)
+            if (ToolUtil.isNotEmpty(amount) && ToolUtil.isEmpty(name) && ToolUtil.isEmpty(itemid)) {
+    //            只插入交易表
+                TExchange exchange = new TExchange();
+                exchange.setState(Constant.PaymentStatus.UNPAIED);
+                exchange.setAmount(amount);
+                exchange.setRunning(orderID);
+                exchange.insert();
+                AlipayUtil.startPayment(orderID + "", "增薪宝-在线充值" + amount + "元", amount, request, response );
+                return;
+            }
 
 //          其他组合直接400 Bad Request
-        try {
             response.setStatus(400);
             response.getWriter().write("ERROR! Bad Request");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

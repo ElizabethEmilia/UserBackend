@@ -3,6 +3,7 @@ package org.ruoxue.backend.util;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import org.ruoxue.backend.common.constant.Constant;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public class AlipayUtil {
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(RETURN_URL);
-        alipayRequest.setNotifyUrl(RETURN_URL);//在公共参数中设置回跳和通知地址
+        alipayRequest.setNotifyUrl(NOTOFY_URL);//在公共参数中设置回跳和通知地址
         String passback = URLEncoder.encode("id="+PROVIDER_ID+"&order="+orderID);
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderID + "\"," +

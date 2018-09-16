@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.service.IAlipayService;
 import org.ruoxue.backend.service.ITLogsService;
+import org.ruoxue.backend.util.PaymentResultUtil;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,19 +50,7 @@ public class AlipayController {
                                        @RequestParam("seller_id") String seller_id,
                                        @RequestParam("timestamp") String timestamp,
                                        HttpServletRequest request,
-                                       HttpServletResponse response,
-                                       Map map) throws IOException {
-//        调用service层
-        alipayService.finishPaymant(Long.valueOf(out_trade_no), request, response);
-
-//        将参数显示
-        map.put("out_trade_no", out_trade_no);
-        map.put("total_amount", total_amount);
-        map.put("trade_no", trade_no);
-        map.put("timestamp", timestamp);
-        map.put("pay_method", "支付宝");
-
-//          正则匹配    TODO
+                                       HttpServletResponse response) throws IOException {
 
         try {
             // 避免其他人来自非本站的请作为回调
@@ -70,8 +59,12 @@ public class AlipayController {
                 return;
             }
 
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().println("Success!! Trade Number: " + trade_no + "; Payment Amount: " + total_amount);
+            alipayService.finishPaymant(Long.valueOf(out_trade_no), request, response);
+
+//        将参数显示
+            response.getWriter().println(
+                PaymentResultUtil.paymentResult(out_trade_no, total_amount.toString(), trade_no, timestamp, "支付宝")
+            );
         }
         catch (Exception e) {
             e.printStackTrace();

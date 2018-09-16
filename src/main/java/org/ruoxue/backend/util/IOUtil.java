@@ -1,8 +1,9 @@
 package org.ruoxue.backend.util;
 
 import java.io.*;
+import java.util.Scanner;
 
-public class IO {
+public class IOUtil {
     public static byte[] read(String inputFileName) throws Exception{
         File file = new File(inputFileName);
         byte[] result = new byte[(int)file.length()];
@@ -20,5 +21,9 @@ public class IO {
         }
 
         return result;
+    }
+
+    public static String readAsString(String fileName) throws Exception {
+        return new Scanner(new File(fileName)).useDelimiter("\\Z").next();
     }
 }

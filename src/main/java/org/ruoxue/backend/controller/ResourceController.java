@@ -2,11 +2,10 @@ package org.ruoxue.backend.controller;
 
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.util.Base64Util;
-import org.ruoxue.backend.util.IO;
+import org.ruoxue.backend.util.IOUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,7 +22,7 @@ public class ResourceController extends BaseController {
         file = path + file;
         response.setHeader("X-Resource-Mapped-By", "ResourceController");
         try {
-            byte[] bytes = IO.read(file);
+            byte[] bytes = IOUtil.read(file);
             response.getOutputStream().write(bytes);
         }
         catch (Exception err) {

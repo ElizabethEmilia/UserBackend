@@ -208,7 +208,9 @@ public final class Constant {
         public static final String SIGN_TYPE = "RSA";
         public static final String PROVIDER_ID = "2088102175886961";
 
-        public static final String RETURN_URL = "http://localhost:8070/api/pay/alipay/finsih";
+        public static final String RETURN_URL = "http://localhost:8070/api/pay/alipay/finish";
+        public static final String NOTOFY_URL = "http://ruoxue.org/api/pay/alipay/notify";
+
     }
 
     public class WxPayConfig {

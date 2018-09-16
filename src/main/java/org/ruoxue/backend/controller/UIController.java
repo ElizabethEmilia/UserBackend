@@ -4,10 +4,9 @@ import org.apache.http.HttpResponse;
 import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
-import org.ruoxue.backend.util.IO;
+import org.ruoxue.backend.util.IOUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +16,11 @@ import javax.servlet.http.HttpSession;
 public class UIController extends BaseController {
 
     public void responseBinary(String file, HttpServletResponse response) {
-            String path = System.getProperty("user.dir") + "/src/main/resources/static/";
+        String path = System.getProperty("user.dir") + "/src/main/resources/static/";
         file = path + file;
         response.setHeader("X-Resource-Mapped-By", "UIController");
         try {
-            byte[] bytes = IO.read(file);
+            byte[] bytes = IOUtil.read(file);
             response.getOutputStream().write(bytes);
         }
         catch (Exception err) {
@@ -53,11 +52,14 @@ public class UIController extends BaseController {
     }
 
     @GetMapping("/reset")
-    public String showRestPasswordPage() {
+    @ResponseBody
+    public void showRestPasswordPage(HttpServletResponse response) {
         if (getSession().getAttribute("uid") != null) {
-            return "redirect:/";
+            response.setStatus(301);
+            response.setHeader("Location", "/");
+            return;
         }
-        return "login";
+        responseBinary("login2.html", response);
     }
 
     @GetMapping("/user.js")

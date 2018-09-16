@@ -11,7 +11,7 @@ public interface IAlipayService {
     void startPayment(HttpServletRequest request, HttpServletResponse response, Integer itemid,
                       String name, Double amount);
 
-    void finishPaymant(Long orderid, HttpServletRequest request, HttpServletResponse response);
+    void finishPaymant(Long orderid, HttpServletRequest request, HttpServletResponse response)  throws Exception;
 
     void notifyQuery(Long orderid, HttpServletResponse response);
 

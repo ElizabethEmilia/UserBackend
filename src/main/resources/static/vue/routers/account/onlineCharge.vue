@@ -57,7 +57,7 @@
                     v-model="confirmResultDialog">
                 <ConfirmResult
                         :method="payMethod"
-                        @on-cancel="val => confirmResultDialog = false"
+                        @on-cancel="handleCancel"
                 />
 
                 <div slot="footer">
@@ -98,16 +98,20 @@ export default {
         async onlinePaymentCharge() {
             //console.log(Vue, $);
             let amount = Number(this.onlinePayAmount);
-            if (this.onlinePayAmount === "" || Number.isNaN(amount)) {
-                util.MessageBox.Show(this, '请输入数字');
-                return;
-            }
+            if (this.onlinePayAmount === "" || Number.isNaN(amount))
+                return util.MessageBox.Show(this, '请输入数字');
             // 检查是不是整数
-            if (Number.parseInt(amount) != amount) {
-                util.MessageBox.Show(this, '请输入整数');
-                return;
-            }
+            if (Number.parseInt(amount) !== amount)
+                return util.MessageBox.Show(this, '请输入整数');
 
+            // 检查数字大小
+            if (100 > amount)
+                return util.MessageBox.Show(this, '最少充值100元');
+            if (amount > 1000000)
+                return util.MessageBox.Show(this, '最多充值1,000,000元');
+
+            this.chargeAmount = amount;
+            this.confirmDialogVisible = true;
             // 充值种类
             //let type = ({ "微信支付": "wechat", "支付宝": "alipay" })[this.onlinePayMethod];
 
@@ -133,6 +137,10 @@ export default {
                     }
                  })
             })
+        },
+
+        handleCancel() {
+            location.href = "./";
         }
     },
     computed: {
