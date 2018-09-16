@@ -58,7 +58,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-2, "用户不存在");
         }
 
-        BigDecimal balance = customer.getBalance();         //余额
+        Double balance = customer.getBalance();         //余额
         BigDecimal income = exchangeMapper.countIncome(uid);    //总收入
         BigDecimal outcome = exchangeMapper.countOutcome(uid);    //总收入
         BigDecimal lastIncome = exchangeMapper.countLastIncome(uid);    //总收入

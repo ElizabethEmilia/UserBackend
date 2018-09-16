@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -122,7 +121,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     private boolean insertCustomer(String name, String phone, Integer industry, Integer type, TCustomer customer, TSignin signin){
         customer.setAddress("");
         customer.setAvatar("");
-        customer.setBalance(BigDecimal.valueOf(0.0));
+        customer.setBalance(0.0);
         customer.setCity("");
         customer.setDistrict("");
         customer.setEmail("");

@@ -36,4 +36,13 @@ public interface TShopItemsMapper extends BaseMapper<TShopItems> {
     @Update("update t_shop_items set name = #{name}, price = #{price}, description = #{description}, image = #{image}, addyear = #{addyear} where id = #{id}")
     Integer updateItem(@Param("name") String name, @Param("price") Double price, @Param("description") String description, @Param("image") String image, @Param("addyear") Integer addyear, @Param("id") Integer id);
 
+//    通过name查询一个商品
+    @Select("select * from t_shop_items where name = #{name} order by id desc limit 1")
+    TShopItems getItemByName(@Param("name") String name);
+
+//    修改商品年限
+    @Update("update t_shop_items set addyear = #{addyear} where id = #{id}")
+    Integer updateAddYear(@Param("addyear") Integer addyear, @Param("id") Integer id);
+
+
 }

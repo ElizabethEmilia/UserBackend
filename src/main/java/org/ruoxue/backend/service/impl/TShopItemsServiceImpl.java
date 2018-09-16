@@ -62,6 +62,14 @@ public class TShopItemsServiceImpl extends ServiceImpl<TShopItemsMapper, TShopIt
             return ResultUtil.error(-1, "参数错误");
         }
 
+////        商品副作用
+//        TShopItems items = shopItemsMapper.getItemByName(name);
+//        if (ToolUtil.isNotEmpty(items)) {
+//            addyear = addyear + items.getAddyear();
+//            Integer len = shopItemsMapper.updateAddYear(addyear, items.getId());
+//            return XunBinKit.returnResult(len > 0, 1, null, "商品年限增加成功", "商品年限增加失败");
+//        }
+
         TShopItems shopItems = new TShopItems();
         shopItems.setAddyear(addyear);
 
