@@ -1,5 +1,6 @@
 package org.ruoxue.backend.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import org.ruoxue.backend.bean.TShopItems;
 
@@ -12,5 +13,15 @@ import org.ruoxue.backend.bean.TShopItems;
  * @since 2018-09-16
  */
 public interface ITShopItemsService extends IService<TShopItems> {
-	
+
+    Object listItems(Integer page, Integer size);
+
+    Object addItems(JSONObject jsonObject);
+
+    Object updateItems(JSONObject jsonObject, Integer itemid);
+
+    Object removeItems(Integer itemid);
+
+    Object getItems(Integer itemid);
+
 }

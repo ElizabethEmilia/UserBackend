@@ -1,10 +1,6 @@
 package org.ruoxue.backend.controller;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayTradePagePayRequest;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.service.ITLogsService;
 import org.ruoxue.backend.util.AlipayUtil;
@@ -14,16 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.*;
+import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.CHARSET;
 
 @RestController
 @RequestMapping("/api/pay/alipay/")
