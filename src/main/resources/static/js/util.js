@@ -330,6 +330,28 @@ function toTimeString(date) {
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+/// Any
+function Object_isNullOrUndefined(obj) {
+	return obj === null || typeof obj === "undefined";
+}
+
+/// Network
+
+function network_post(URL, PARAMS) {
+	let temp_form = document.createElement("form");
+	temp_form.action = URL;
+	temp_form.target = "_blank";
+	temp_form.method = "post";
+	temp_form.style.display = "none";
+	for (let x in PARAMS) {
+		let opt = document.createElement("textarea"); 
+		opt.name = x;
+		opt.value = PARAMS[x];
+		temp_form.appendChild(opt);
+	} document.body.appendChild(temp);
+	temp_form.submit();
+}
+
 export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
@@ -339,6 +361,8 @@ export default {
 	getQueryParameter, // 获取页面参数
 	isStringNullOrEmpty, // 测试字符串是否为空
 	passwordMatchesRestriction, // 判断密码是否符合复杂性要求
+
+	isNullOrUndefined: Object_isNullOrUndefined,
 
 	// 字符相关
 	Character: {
@@ -395,5 +419,9 @@ export default {
         toMonthString,
         toYearString,
         toTimeString,
+	},
+
+	Network: {
+        POSTInNewWindow: network_post,
 	}
 }

@@ -169,5 +169,23 @@ export default {
     Verification: {
         getImages: GET("/api/verifycode2"),
         verify: x => POST("/api/verifycode2", { x })(),
+    },
+
+    ShopItems: {
+        getList: GET("/api/items/list"),
+        add:  data => POST("/api/items/add", data)(),
+        modify: (itemid, data) => POST(`/api/items/{itemid}/modify`)(),
+        get: itemid => GET(`/api/items/${itemid}`)(),
+    },
+    
+    Payment: {
+        Alipay: {
+            query: (running) => GET("/api/pay/alipay/query?" + util.forGetParams({running}))(),
+            start: (params) => GET("/api/pay/alipay/start?" + util.forGetParams(params))(),
+        },
+        Wepay: {
+            query: (running) => GET("/api/pay/wepay/query?" + util.forGetParams({running}))(),
+            start: (params) => GET("/api/pay/wepay/start?" + util.forGetParams(params))(),
+        }
     }
 }

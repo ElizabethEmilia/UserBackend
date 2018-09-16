@@ -45,6 +45,17 @@
                 let moduleName = ModuleConfig.displayNames[name];
                 this.moduleName = moduleName ? moduleName : '';
             }
+        },
+        mounted() {
+            setTimeout(async () => {
+                try {
+                    await API.Login.heartbeat();
+                }
+                catch(e) {
+                    await util.MessageBox.ShowAsync(this, "您已与服务器断开连接，请重新登录");
+                    location.href = "/login";
+                }
+            }, 30000);
         }
     }
 </script>

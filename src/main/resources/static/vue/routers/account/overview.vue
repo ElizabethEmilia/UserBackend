@@ -366,8 +366,10 @@ export default {
     },
     created() {
         this.getBasicInfo(async (result) => {
-            await util.MessageBox.Show(this, "您还不是付费用户，即将前往产品介绍页面");
-            location.href='#';
+            // NOTE: 付费用户直接看不道这个页面了
+            //await util.MessageBox.Show(this, "您还不是付费用户，即将前往产品介绍页面");
+            //location.href='#';
+            // TODO: 对于快到期的用户  需要判断什么时候到期并显示
         });
         this.getRecentExchange();
         this.getCompanyCount();

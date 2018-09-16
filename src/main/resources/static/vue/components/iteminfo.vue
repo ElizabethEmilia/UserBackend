@@ -11,17 +11,17 @@
                 </Col>
                 <Col span="16">
                     <h2>
-                        {{  }}
+                        {{ iteminfo.name }}
                     </h2>
                     <div >
-                        适用于各种行业的个人独资企业的一站式服务产品，全程自动化操作，享政府核准超低税率。​
+                       {{ iteminfo.description }}
                     </div>
                     <Divider />
 
                     费用价格:
-                    <span class="price">12000</span>元/年
+                    <span class="price">{{ iteminfo.price }}</span>元/年
                     <div>
-                        <div class="button">
+                        <div class="button" @click="buyNow">
                             立即购买
                         </div>
                     </div>
@@ -34,6 +34,31 @@
         <div v-else>
             正在加载商品
         </div>
+
+        <Modal v-model="confirmDialogVisible" fullscreen >
+            <div slot="footer">
+            </div>
+
+            <ConfirmOrders
+                    @on-start-pay="val => {confirmDialogVisible = false; confirmResultDialog=true; payMethod = val;}"
+                    @on-cancel="confirmDialogVisible = false;"
+                    :param="{ itemid: itemid }" />
+
+        </Modal>
+
+        <Modal
+                :closable="false"
+                :mask-closable="false"
+                v-model="confirmResultDialog">
+            <ConfirmResult
+                :method="payMethod"
+                @on-cancel="val => confirmResultDialog = false"
+            />
+
+            <div slot="footer">
+            </div>
+
+        </Modal>
     </div>
 </template>
 
@@ -46,12 +71,23 @@
 
     import init from '../../js/init.js';
     import util from '../../js/util.js';
+    import API from '../../js/api.js';
+    import ConfirmOrders from '../routers/orders/confirmorders.vue';
+    import ConfirmResult from './confirmchargeresult.vue';
 
     export default {
         name: "ItemInfo",
-
+        components: {
+            ConfirmOrders, ConfirmResult,
+        },
+        props: [
+            'itemid'
+        ],
         data: () => ({
-            iteminfo: init.tItem,
+            iteminfo: null,
+            confirmDialogVisible: false,
+            confirmResultDialog: false,
+            payMethod: '',
         }),
         computed: {
             bigImageStyle() {
@@ -59,10 +95,29 @@
                     return {};
                 }
                 return {
-                    backgroundImage: "url(" + image + ")"
+                    background: "url(" + this.iteminfo.image + ")"
                 };
             },
 
+        },
+        methods: {
+            async getItem(id) {
+                try {
+                    this.iteminfo = await API.ShopItems.get(id);
+                }
+                catch (e) {
+                    util.MessageBox.Show(this, "无法获取商品信息。(id=" + id +")");
+                }
+            },
+            buyNow() {
+                this.confirmDialogVisible = true; /// TODO: 业务在其他地方做
+                this.$emit("on-buy", this.itemid);
+            }
+        },
+        mounted() {
+            if (util.String.isNullOrEmpty(this.itemid)) {
+                this.getItem(this.itemid);
+            }
         }
     }
 </script>
@@ -71,9 +126,10 @@
 
     .bigimage {
         height: 300px;
-        background-color: #eee;
+        background: #eee;
         margin-right: 15px;
         background-size: 100% auto;
+        background-repeat: no-repeat;
     }
 
     div.button {
@@ -99,7 +155,7 @@
 
     span.price {
         color: orangered;
-        font-size: 15px;
+        font-size: 28px;
         font-weight: bold;
     }
 </style>

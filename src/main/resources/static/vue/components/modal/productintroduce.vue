@@ -5,13 +5,14 @@
         </div>
 
         <div class="center" style="font-size: 13.5px; width: 1000px; ">
-            <ItemInfo />
+            <ItemInfo :itemid="5" />
         </div>
     </div>
 </template>
 
 <script>
     import ItemInfo from '../iteminfo.vue';
+    import util from '../../../js/util.js';
 
     export default {
         components: {
@@ -22,6 +23,7 @@
         }),
         mounted() {
             document.documentElement.style.background = '#fff';
+            util.MessageBox.Show(this, "你尚未订购产品或者订购已经过期，需要购买商品才能进入后台");
         }
     }
 </script>
