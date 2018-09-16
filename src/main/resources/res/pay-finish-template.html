@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>支付结果</title>
+</head>
+<body>
+<style>
+    .main {
+        width: 800px;
+        margin: 0 auto;
+    }
+
+    .box {
+        background: lightgoldenrodyellow;
+        padding: 5px 15px 5px 15px;
+        border: 1px solid orange;
+    }
+</style>
+
+<div class="main">
+    <h2>支付成功</h2>
+    <div class="box">
+        <p>您的支付已经成功。您可以关掉这个页面，在网页中点击“已完成付款”。</p>
+        <p>
+            <b>订单流水号：</b> ${out_trande_no} <br/>
+            <b>${pay_method}订单流水号：</b> ${trade_no} <br/>
+            <b>付款金额：</b> ${total_amount} <br/>
+            <b>支付时间：</b> ${timestamp}
+        </p>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
