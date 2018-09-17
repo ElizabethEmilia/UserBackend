@@ -63,48 +63,6 @@ public class WepayController {
 
     }
 
-    /// 这个函数是回调  但是不一定确实成功了，只是给用户显示的界面
-    /// 结果以下面那个notify为准
-    @RequestMapping("finish")
-    public void finishPaymant(@RequestParam("out_trade_no") String out_trade_no,
-                              @RequestParam("total_amount") Double total_amount,
-                              @RequestParam("sign") String sign,
-                              @RequestParam("trade_no") String trade_no,
-                              @RequestParam("auth_app_id") String auth_app_id,
-                              @RequestParam("app_id") String app_id,
-                              @RequestParam("seller_id") String seller_id,
-                              @RequestParam("timestamp") String timestamp,
-                              HttpServletRequest request,
-                              HttpServletResponse response,
-                              Map map) throws IOException {
-//        调用service层
-        alipayService.finishPaymant(Long.valueOf(out_trade_no), request, response);
-
-//        将参数显示
-        map.put("out_trade_no", out_trade_no);
-        map.put("total_amount", total_amount);
-        map.put("trade_no", trade_no);
-        map.put("timestamp", timestamp);
-        map.put("pay_method", "微信");
-
-//          正则匹配    TODO
-
-        try {
-            // 避免其他人来自非本站的请作为回调
-            if (!seller_id.equals(Constant.AlipayConfig.PROVIDER_ID)) {
-                response.setStatus(403);
-                return;
-            }
-
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().println("Success!! Trade Number: " + trade_no + "; Payment Amount: " + total_amount);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     @RequestMapping("notify")
     public void notify(@RequestParam String notifyData) {
         try {

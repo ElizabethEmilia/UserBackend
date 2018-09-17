@@ -839,11 +839,9 @@ tax； 税金收支
 
 ### 10.2 微信
 
-（注意）说明同支付宝，不再赘述。
+（注意）业务逻辑同支付宝，微信没有返回地址。因此业务逻辑没有第二步，直接在收到notify时改为已付款。
 
 * 提交付款【C】： `GET /api/pay/wepay/start`
-
-* 付款信息回调【P】： `GET /api/pay/wepay/finish`
 
 * 付款信息通知回调【P】： `POST /api/pay/wepay/notify`
 
