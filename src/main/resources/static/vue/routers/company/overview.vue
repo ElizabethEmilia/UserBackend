@@ -48,7 +48,7 @@
                     </Row>
                     <Row class="line-margin">
                         <Col span="6">企业组织类型</Col>
-                        <Col span="18">{{ info.entOrgType }}</Col>
+                        <Col span="18">个人独资企业</Col>
                     </Row>
 
 
@@ -114,14 +114,16 @@
 
                         <div style="margin-bottom: 5px;">
                             <span class="title-before-input wider"> <i class="required" />企业组织类型 </span>
-                            <Select v-model="infoSave.entOrgType" style="width:200px">
+                            <!--Select v-model="infoSave.entOrgType" style="width:200px">
                                 <Option v-for="(e,i) in enterpriseOrgizationTypes" :value="i" :key="i">{{ e }}</Option>
-                            </Select>
+                            </Select-->
+                            个人独资企业
                         </div>
 
                         <div style="margin-bottom: 5px;">
                             <span class="title-before-input wider"> <i class="required" />投资类型 </span>
-                            <Input v-model="infoSave.invType" clearable placeholder="" style="width: 200px" />
+                            <!--Input v-model="infoSave.invType" clearable placeholder="" style="width: 200px" /-->
+                            个人独资
                         </div>
 
                         <div style="margin-bottom: 5px;">

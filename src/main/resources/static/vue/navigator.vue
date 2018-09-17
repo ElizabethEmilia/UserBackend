@@ -31,6 +31,10 @@
                 <Icon type="md-heart" />
                 客户管理
             </MenuItem>
+            <MenuItem name="srvpack">
+                <Icon type="md-heart" />
+                服务包管理
+            </MenuItem>
             <MenuItem name="user">
                 <Icon type="md-leaf" />
                 用户管理

@@ -895,7 +895,7 @@ tax； 税金收支
 
 ### 12.2 公司管理【管理员】
 
-* 手动延长某个公司的服务期限：`POST /api/customer/{_|uid}/company/{cid}/addtime`
+* 手动延长某个公司的服务期限：`POST /api/customer/{_|uid}/company/{cid}/renew`
 
 参数：`months` 延长的月份数
 

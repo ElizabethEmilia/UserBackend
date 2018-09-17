@@ -8,7 +8,7 @@
                 <Button type="success" @click="v => {(isEdit = false); (selected={}); (editModalVisible = true)}">新增角色</Button>
             </div>
             <div class="cdmargin">
-                <PagedTable ref="datatable" data-source="role" :columns="columns" @onrecvdata="val =>data=val" />
+                <PagedTable ref="datatable" data-source="role/list" :columns="columns" @onrecvdata="val =>data=val" />
             </div>
 
             <Modal
@@ -61,6 +61,7 @@
                                             await util.MessageBox.ComfirmAsync(self, "确定要删除该角色吗？");
                                             await API.Role.remove(self.d[p.index].id);
                                             util.MessageBox.Show(this, "删除角色成功");
+                                            this.$refs.datatable.refresh();
                                         }
                                         catch(err) {
                                             console.error(err);

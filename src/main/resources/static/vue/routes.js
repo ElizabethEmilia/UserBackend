@@ -10,6 +10,7 @@ import Admin from './routers/admin.vue';
 import Orders from './routers/orders.vue';
 import Role from './routers/role.vue';
 import Group from './routers/group.vue';
+import ServicePack from './routers/srvpack.vue';
 
 export default [
     { path: '/', component: window.config && window.config.isAdmin ? Admin : Account },
@@ -25,4 +26,5 @@ export default [
     { path: '/orders', component: Orders },
     { path: '/role', component: Role },
     { path: "/group", component: Group },
+    { path: "/srvpack", component: ServicePack },
 ]

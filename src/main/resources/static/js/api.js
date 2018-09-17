@@ -78,7 +78,7 @@ export default {
         Company: {
             newCompany: (uid, data) => POST(`/api/customer/${uid}/company/new`, data)(),
             deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body),
-            addServiceTime: (cid, months) => POST(`/api/customer/_/company/${cid}/addtime`, { months }),
+            renew: (cid, params) => POST(`/api/customer/_/company/${cid}/addtime`, params),
         }
     },
     Account: {
@@ -187,5 +187,5 @@ export default {
             query: (running) => GET("/api/pay/wepay/query?" + util.forGetParams({running}))(),
             start: (params) => GET("/api/pay/wepay/start?" + util.forGetParams(params))(),
         }
-    }
+    },
 }

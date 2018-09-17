@@ -27,6 +27,8 @@
     import Navigator from './navigator.vue';
     import RequirePayment from './components/modal/requirepayment.vue';
     import ModuleConfig from '../module_config.json';
+    import util from '../js/util.js';
+    import API from '../js/api.js';
 
     const defaultModuleName = ModuleConfig.defaultModule;
 
@@ -52,6 +54,7 @@
                     await API.Login.heartbeat();
                 }
                 catch(e) {
+                    console.error(e);
                     await util.MessageBox.ShowAsync(this, "您已与服务器断开连接，请重新登录");
                     location.href = "/login";
                 }

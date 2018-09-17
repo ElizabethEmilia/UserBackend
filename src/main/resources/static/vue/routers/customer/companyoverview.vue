@@ -49,7 +49,7 @@
                     </Row>
                     <Row class="line-margin">
                         <Col span="6">企业组织类型</Col>
-                        <Col span="18">{{ info.entOrgType }}</Col>
+                        <Col span="18">个人独资企业</Col>
                     </Row>
 
 
@@ -73,63 +73,64 @@
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />征税类型 </span>
+                            <span class="title-before-input wider">征税类型 </span>
                             <Select v-model="infoSave.taxType" style="width:200px">
                                 <Option v-for="(e,i) in [1,2,3,4,5,6]" :value="i" :key="i">{{ e }}</Option>
                             </Select>
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />增值纳税人类型 </span>
+                            <span class="title-before-input wider">增值纳税人类型 </span>
                             <Select v-model="infoSave.vatType" style="width:200px">
                                 <Option v-for="(e,i) in [1,2,3,4,5,6]" :value="i" :key="i">{{ e }}</Option>
                             </Select>
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />增值税税率 </span>
+                            <span class="title-before-input wider">增值税税率 </span>
                             <Input v-model="infoSave.vaTaxRatio" placeholder="" style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />增值税报税频率 </span>
+                            <span class="title-before-input wider">增值税报税频率 </span>
                             <Input v-model="infoSave.vatrFreq" clearable placeholder="" style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />城建税 </span>
+                            <span class="title-before-input wider">城建税 </span>
                             <Input v-model="infoSave.cbTax" clearable placeholder="" style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />教育费附加 </span>
+                            <span class="title-before-input wider">教育费附加 </span>
                             <Input v-model="infoSave.eaTax" clearable placeholder="" style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />地方教育费附加 </span>
+                            <span class="title-before-input wider">地方教育费附加 </span>
                             <Input v-model="infoSave.leaTax" clearable placeholder="" style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />河道费 </span>
+                            <span class="title-before-input wider">河道费 </span>
                             <Input v-model="infoSave.riverTax" clearable placeholder="" style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />企业组织类型 </span>
-                            <Select v-model="infoSave.entOrgType" style="width:200px">
+                            <span class="title-before-input wider">企业组织类型 </span>
+                            <!--Select v-model="infoSave.entOrgType" style="width:200px">
                                 <Option v-for="(e,i) in enterpriseOrgizationTypes" :value="i" :key="i">{{ e }}</Option>
-                            </Select>
+                            </Select-->
+                            个人独资企业
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />投资类型 </span>
-                            <Input v-model="infoSave.invType" clearable placeholder="" style="width: 200px" />
+                            <span class="title-before-input wider">投资类型 </span>
+                            个人独资
                         </div>
 
                         <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider"> <i class="required" />主营业务类别 </span>
+                            <span class="title-before-input wider">主营业务类别 </span>
                             <Input type="textarea" v-model="infoSave.businessType" placeholder="" style="width: 200px" />
                         </div>
 

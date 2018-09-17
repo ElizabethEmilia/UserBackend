@@ -239,7 +239,7 @@ const tRole = {
     value: 0,
     id: 0,
     templateID: 0,
-    remark: '',
+    remarks: '',
 };
 
 const tGroup = {

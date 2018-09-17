@@ -9,7 +9,7 @@
 
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> 角色描述 </span>
-                <Input v-model="roleEdit.remark" placeholder="" clearable style="width: 200px" />
+                <Input v-model="roleEdit.remarks" placeholder="" clearable style="width: 200px" />
             </div>
 
             <h2>角色权限</h2>
