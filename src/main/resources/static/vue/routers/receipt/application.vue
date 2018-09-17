@@ -49,7 +49,7 @@
             </div>
         </Modal>
 
-        <Modal v-model="shouldOpenDialogEdit" :title="'申请' + receiptTyString">
+        <Modal :width="800" v-model="shouldOpenDialogEdit" :title="'申请' + receiptTyString" style="font-size: 13.5px !important;">
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input">发票类型 </span>
                 <span> {{ receiptTyString }} </span>
@@ -60,7 +60,7 @@
             </div>
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input">税金预交率 </span>
-                <span> {{ applicationCompanyInfo.preTaxRetio*100 }}% </span>
+                <span> {{ applicationCompanyInfo.preTaxRatio*100 }}% </span>
             </div>
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> <i class="required" />客户名称 </span>
@@ -71,8 +71,13 @@
                 <MoneyInput v-model="applicationData.recAmount" style="width: 200px"></MoneyInput>
             </div>
             <div style="margin-bottom: 5px;">
+                <span class="title-before-input"> <i class="required" />送达地址 </span>
+                <Input v-model="applicationData.address" placeholder="" clearable style="width: 200px" />
+            </div>
+            <p>若自取，请在送达地址栏<a href="javascript:void(0)" @click="applicationData.address='自取'">填入“自取”</a></p>
+            <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> 预交税金 </span>
-                ￥{{ applicationCompanyInfo.preTaxRetio*applicationData.recAmount }}
+                ￥{{ applicationCompanyInfo.preTaxRatio*applicationData.recAmount }}
             </div>
             <div slot="footer" style="text-align: right">
                 <Button type="primary" @click="submit">确定</Button>
@@ -91,6 +96,14 @@ import receiptstate from './receipt_s.js';
 import NewApplicationDialog from './dialog/new.vue';
 import API from '../../../js/api.js';
 import MoneyInput from '../../components/moneyinput.vue';
+
+let adinit = {
+    "cid": -1,
+    "recType": "",
+    "cusName": "",
+    "recAmount": 0,
+    "address": "",
+};
     
 export default {
     components: {
@@ -143,13 +156,7 @@ export default {
         shouldOpenDialogEdit: false,
         receiptTyString: '',
         applicationCompanyInfo: {},
-        applicationData: {
-            "cid": 0,
-            "recType": "",
-            "cusName": "",
-            "recAmount": 0,
-            "address": "",
-        }
+        applicationData: adinit,
 
     }),
     methods: {
@@ -181,7 +188,9 @@ export default {
                 if (vatr_freq === -1) {
                     return util.MessageBox.Show(this, "你公司的报税频率还未完善，无法开具发票");
                 }
-                debugger;
+                this.applicationData = adinit;
+                this.applicationData.cid = this.selectedNew.cid;
+                this.applicationData.ty = this.selectedNew.ty;
                 this.shouldOpenDialogNew = false;
                 this.shouldOpenDialogEdit = true;
             }
@@ -191,10 +200,25 @@ export default {
         },
         async submit() {
             try {
+                this.applicationData.cid = this.selectedNew.cid;
+                this.applicationData.ty = this.selectedNew.ty;
+                let d = this.applicationData;
+                if (d.cid === -1)
+                    return util.MessageBox.Show(this, "请选择公司");
+                if (util.String.isNullOrEmpty(d.cusName))
+                    return util.MessageBox.Show(this, "请输入客户名称");
+                if (d.amount <= 0)
+                    return util.MessageBox.Show(this, "请输入金额");
+                if (util.String.isNullOrEmpty(d.address))
+                    return util.MessageBox.Show(this, "请输入送达地址，若自取，填写“自取”");
 
+                await API.Receipt.newApplication(d);
+                util.MessageBox.Show(this, "申请成功");
+                this.shouldOpenDialogEdit = false;
             }
             catch(e) {
-
+                console.error(e);
+                util.MessageBox.Show(this, "申请失败");
             }
         },
     },

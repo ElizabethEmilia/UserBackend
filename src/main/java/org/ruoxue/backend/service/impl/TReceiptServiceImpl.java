@@ -94,7 +94,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 //        获取参数
         Integer uid = XunBinKit.getUid();
         Integer cid = jsonObject.getInteger("cid");
-        Integer receType = jsonObject.getInteger("receType");
+        Integer receType = jsonObject.getInteger("recType");
         String cusName = jsonObject.getString("cusName");
         Double recAmount = jsonObject.getDouble("recAmount");
         String address = jsonObject.getString("address");

@@ -190,6 +190,6 @@ export default {
     },
 
     Receipt: {
-        newApplication: (data) => POST(`/api/receipt/new`)(),
+        newApplication: (data) => POST(`/api/receipt/new`, data)(),
     }
 }
