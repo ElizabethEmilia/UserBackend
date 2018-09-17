@@ -2,20 +2,20 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.common.constant.ConfigNames;
-import org.ruoxue.backend.mapper.MainMapper;
-import org.ruoxue.backend.mapper.TConfigMapper;
-import org.ruoxue.backend.mapper.TCustomerMapper;
-import org.ruoxue.backend.mapper.TSigninMapper;
+import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITCustomerService;
 import org.ruoxue.backend.util.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * <p>
@@ -39,6 +39,12 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 
     @Resource
     private TConfigMapper configMapper;
+
+    @Resource
+    private TCompanyMapper companyMapper;
+
+    @Resource
+    private TExchangeMapper exchangeMapper;
 
     @Override
     public Object CustomerRegister(JSONObject jsonObject, HttpSession session) {
@@ -222,6 +228,135 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         } else {
             return ResultUtil.error(-1, "头像修改失败");
         }
+    }
+
+    @Override
+    public Object adminAddtime(String uid, Integer cid, Integer months) {
+
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(months)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+//        处理uid
+        Integer userid = XunBinKit.getUidByString(uid);
+
+        TCustomer customer = customerMapper.getTCustomerByUid(userid);
+
+        if (ToolUtil.isEmpty(customer)) {
+            return ResultUtil.error(-2, "该客户不存在");
+        }
+
+//        获取公司
+        TCompany company = companyMapper.getCompanyById(cid);
+
+        if (ToolUtil.isEmpty(company)) {
+            return ResultUtil.error(-3, "要充值的公司不存在");
+        }
+
+//        获取公司的到期时间
+        Date endDate = company.getTaxPackEnd();
+
+//        系统当前时间
+        Date now = new Date();
+
+//        给到期时间 续费 +月
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(endDate);
+        calendar.add(Calendar.MONTH, months);
+        endDate = calendar.getTime();
+
+//        格式化时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+//        查看续费后是否扔欠费
+        boolean c = endDate.getTime() < now.getTime() ? true : false;
+
+        companyMapper.updateEndTime(cid, endDate);
+        if (c) {
+            customerMapper.updatePaid(userid, 0);
+            return ResultUtil.result(-4, sdf.format(endDate), "该公司缴费后仍欠费");
+        } else {
+            customerMapper.updatePaid(userid, 1);
+            return ResultUtil.result(0, sdf.format(endDate), "交费成功");
+        }
+
+    }
+
+    @Override
+    public Object listCharge(Integer uid, Integer page, Integer size) {
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "用户未登录");
+        }
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<TExchange> list = exchangeMapper.getOnlinecharge(uid, page, size);
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+    }
+
+    @Override
+    public Object listDeadline() {
+
+//        获取uid
+        Integer uid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "用户未登录");
+        }
+
+//        先获取客户所有的公司,遍历公司列表,获取到期时间(endDate > now && endDate - 1 < now)的公司直接删除
+        List<Map<String, Object>> list = companyMapper.listCompanyAll(uid);
+        if (list.size() > 0) {
+            Iterator<Map<String,Object>> it = list.iterator();
+            while (it.hasNext()) {
+                Map<String, Object> map = it.next();
+                Date endDate = (Date) map.get("tax_pack_end");
+                Date now = new Date();
+                Calendar calendar =Calendar.getInstance();
+                calendar.setTime(endDate);
+                calendar.add(Calendar.MONTH, -1);
+                Date end = calendar.getTime();
+                if (endDate.getTime() > now.getTime() && end.getTime() < now.getTime()) {
+//                  保留一个月内过期的公司
+                } else {
+                    it.remove();
+                }
+            }
+        }
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+    }
+
+    @Override
+    public Object listExchangeByUid(Integer page, Integer size) {
+
+//        获取uid
+        Integer uid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "用户未登录");
+        }
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<TExchange> list = exchangeMapper.getOnlinecharge(uid, page, size);
+
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+
     }
 
 }

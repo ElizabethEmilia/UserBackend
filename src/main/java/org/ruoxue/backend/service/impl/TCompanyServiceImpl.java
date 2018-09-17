@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +53,19 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         if(size == 0){
 //          全部列表
             list = companyMapper.listCompanyAll(userid);
+
         } else {
             list = companyMapper.listCompany(userid, page, size);
+        }
+
+//       判断到期时间，返回paid = 0/1;
+        for (Map<String, Object> map : list) {
+            Date endDate = (Date) map.get("tax_pack_end");
+            if (endDate.getTime() < new Date().getTime()) {
+                map.put("expired", 1);
+            } else {
+                map.put("expired", 0);
+            }
         }
 
         return ResultUtil.success(list);

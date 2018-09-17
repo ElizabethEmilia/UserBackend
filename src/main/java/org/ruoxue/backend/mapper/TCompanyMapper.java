@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.ruoxue.backend.bean.TComCert;
 import org.ruoxue.backend.bean.TCompany;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +60,17 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
     //    获取该用户拥有的公司数量
     @Select("select count(1) num from t_company where uid = #{uid}")
     Integer countCompanyByUid(@Param("uid") Integer uid);
+
+//    修改服务到期时间
+    @Update("update t_company set tax_pack_end = #{tax_pack_end} where id = #{id}")
+    Integer updateEndTime(@Param("id") Integer id, @Param("tax_pack_end") Date tax_pack_end);
+
+//    获取所有用户所有公司的列表
+    @Select("select * from t_company order by id desc")
+    List<Map<String, Object>> listComAll();
+
+//    更新所有公司预选状态为0
+    @Update("update t_company set ysa_status = 0")
+    Integer updateStatus();
 
 }

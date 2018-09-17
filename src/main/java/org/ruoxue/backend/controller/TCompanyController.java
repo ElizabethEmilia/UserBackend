@@ -63,10 +63,6 @@ public class TCompanyController {
 
     /**
      *  公司管理模块
-     * @param search
-     * @param page
-     * @param size
-     * @return
      */
     @ApiOperation("获取公司列表")
     @RequestMapping(value = "/company/list", method = RequestMethod.GET)
