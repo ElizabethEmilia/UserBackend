@@ -28,6 +28,6 @@ public interface ITReceiptService extends IService<TReceipt> {
 
     Object exportReceipt();
 
-    Object statReceipt();
+    Object statReceipt(Integer page, Integer size);
 
 }

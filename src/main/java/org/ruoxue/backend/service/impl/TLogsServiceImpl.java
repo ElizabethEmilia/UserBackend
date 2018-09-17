@@ -1,13 +1,17 @@
 package org.ruoxue.backend.service.impl;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TLogs;
 import org.ruoxue.backend.mapper.TLogsMapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.service.ITLogsService;
+import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,7 +25,7 @@ import java.util.Date;
 public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements ITLogsService {
 
     @Resource
-    TLogsMapper mapper;
+    private TLogsMapper mapper;
 
     public Boolean actionLog(Integer aid, Date tm, String description, Integer cls) {
         return mapper.actionLog(aid, tm, description, cls);
@@ -29,5 +33,19 @@ public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements
 
     public Boolean actionLogNow(Integer aid, String description, Integer cls) {
         return actionLog(aid, new Date(), description, cls);
+    }
+
+    @Override
+    public Object listLog(Integer page, Integer size) {
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<Map<String, Object>> list = mapper.listLogs(page, size);
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
     }
 }
