@@ -2,7 +2,7 @@
     <div class="ft13">
         <Row>
             <Col span="4">公司名称</Col>
-            <Col span="8">{{ infoSave.lpname }}</Col>
+            <Col span="8">{{ infoSave.name }}</Col>
             <Col span="4"></Col>
             <Col span="8"></Col>
         </Row>

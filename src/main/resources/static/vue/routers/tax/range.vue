@@ -20,7 +20,7 @@
                     <Option
                             v-for="(e, i) in company"
                             :key="i" :value="i"
-                    >{{ e.lpname }}</Option>
+                    >{{ e.name }}</Option>
                 </Select>
             </div>
 
@@ -113,8 +113,13 @@
         }),
         methods: {
             async getCompany() {
-                let r = await API.Company.getList();
-                this.company = r;
+                try {
+                    let r = await API.Company.getList();
+                    this.company = r;
+                }
+                catch (e) {
+                    console.log(e);
+                }
             },
             async processPreselect() {
                 if (typeof this.selectedCompany === "undefined") {

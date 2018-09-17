@@ -2,7 +2,7 @@
     <Card class="card-margin">
         <p slot="title">
             <a v-if="selected != -1" @click="selected = -1; $emit('on-back-to-user-list');" href="javascript:void(0)" style="margin-right: 10px;">返回</a>
-            {{ info.lpname }}
+            {{ info.name }}
         </p>
         <!-- 信息总览 -->
         <Row>
@@ -11,7 +11,7 @@
                     <div :style="avatar ? { backgroundImage: 'url(' + avatar + ')' }:{}" class="avatar float-left">
                     </div>
                     <div class="float-left" style="margin-left: 20px;">
-                        <span style="font-size: 20px; color: #000">{{ info.lpname }}</span>
+                        <span style="font-size: 20px; color: #000">{{ info.name }}</span>
                         <p> {{ info.entOrgType }} </p>
                     </div>
                 </Row>
@@ -21,11 +21,11 @@
 
                     <Row class="line-margin">
                         <Col span="6">公司名称</Col>
-                        <Col span="18">{{ info.lpname }}</Col>
+                        <Col span="18">{{ info.name }}</Col>
                     </Row>
                     <Row class="line-margin">
                         <Col span="6">法人姓名</Col>
-                        <Col span="18">undefined</Col>
+                        <Col span="18">{{ info.lpname }}</Col>
                     </Row>
                     <Row class="line-margin">
                         <Col span="6">征税类型</Col>
@@ -64,7 +64,7 @@
                     <Card :bordered="false" dis-hover>
                         <div style="margin-bottom: 5px;">
                             <span class="title-before-input wider"> <i class="required" />公司名称 </span>
-                            <Input v-model="infoSave.lpname" placeholder="" clearable style="width: 200px" />
+                            <Input v-model="infoSave.name" placeholder="" clearable style="width: 200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">

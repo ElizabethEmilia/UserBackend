@@ -10,12 +10,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="公司名称" label-position="top">
-                            <Input v-model="formData.lpname" placeholder="" />
+                            <Input v-model="formData.name" placeholder="" />
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="法人名称" label-position="top">
-                            <Input v-model="formData.name" placeholder="" />
+                            <Input v-model="formData.lpname" placeholder="" />
                         </FormItem>
                     </Col>
                 </Row>

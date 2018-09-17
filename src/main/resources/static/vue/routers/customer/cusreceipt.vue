@@ -3,7 +3,7 @@
          <Divider orientation="left"><h3>开票申请</h3></Divider>
         
         <Select v-model="selected.cid" placeholder="申请公司" style="width: 200px; margin-left: 5px;">
-            <Option v-for="(e, i) in companies" :value="e.cid" :key="e.cid">{{e.lpname}}</Option>
+            <Option v-for="(e, i) in companies" :value="e.cid" :key="e.cid">{{e.name}}</Option>
         </Select>
 
         <Select v-model="selected.type" placeholder="发票类型" style="width: 130px;  margin-left: 5px;">
@@ -51,8 +51,7 @@ export default {
     props: [ 'cid', 'uid' ],
     data: () => ({
         companies: [
-            { cid: 1, lpname: "大乔科技工作室" },
-            { cid: 2, lpname: "小乔科技工作室" }
+
         ],
         columns() {
             let self = this;

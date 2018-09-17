@@ -1,6 +1,6 @@
 <template>
     <Card  class="card-margin">
-         <Divider orientation="left"><h3>{{ pending ? '公司信息':info.lpname }}</h3></Divider>
+         <Divider orientation="left"><h3>{{ pending ? '公司信息':info.name }}</h3></Divider>
         
         <div style="margin-top: 20px;">
             <Table :show-header="false" :columns="col" :data="data"/>
@@ -30,7 +30,7 @@ export default {
         pending: true,
         info: {
             id: 1,
-            lpname: '加载中...',
+            name: '加载中...',
             taxType: 1,
             vatType: 1,
             yasType: 1,
@@ -50,6 +50,7 @@ export default {
             oriTaxPackEnd: 1,
             tmFirstEx: 1,
             status: 0,
+            lpname: '',
         }
     }),
     methods: {

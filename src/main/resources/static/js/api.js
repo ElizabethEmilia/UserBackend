@@ -87,7 +87,7 @@ export default {
 
     Company: {
         getCount: GET("/api/company/count"),
-        getList: GET("/api/company/list?size=0"),
+        getList: GET("/api/company/list?size=10000"),
 
         SetupStates: {
             update: (stateArray) => Settings_Update('setup_states', stateArray.join(',')),
@@ -188,4 +188,8 @@ export default {
             start: (params) => GET("/api/pay/wepay/start?" + util.forGetParams(params))(),
         }
     },
+
+    Receipt: {
+        newApplication: (data) => POST(`/api/receipt/new`)(),
+    }
 }

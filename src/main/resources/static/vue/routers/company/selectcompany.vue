@@ -3,7 +3,7 @@
     <Card shadow class="card-margin" style="z-index:99999;opacity: 0.9">
         <span style="margin-right: 10px;">公司</span>
         <Select v-model="selected" placeholder="选择你要查看的公司" style="width: 300px;">
-            <Option v-for="(e, i) in companies" :value="i" :key="i">{{e.lpname}}</Option>
+            <Option v-for="(e, i) in companies" :value="i" :key="i">{{e.name}}</Option>
         </Select>
         <div style="margin-top: 5px;"> </div>
     </Card>
@@ -29,8 +29,7 @@ export default {
     },
     data: () => ({
         companies: [
-            { cid: 1, lpname: "大乔科技工作室" },
-            { cid: 2, lpname: "大乔科技工作室" }
+
         ],
         selected: -1,
         columns: [

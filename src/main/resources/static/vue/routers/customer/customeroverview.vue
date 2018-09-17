@@ -112,7 +112,7 @@
                     <Card :bordered="false" dis-hover>
                         <p slot="title">客户的公司 ({{ companyCount }})</p>
                         <CellGroup v-if="companyCount > 0" @on-click="selectCompany">
-                            <Cell v-for="(e,i) in companyList" :title="e.lpname" :key="i" 
+                            <Cell v-for="(e,i) in companyList" :title="e.name" :key="i"
                                 :name='i'
                             />
                         </CellGroup>

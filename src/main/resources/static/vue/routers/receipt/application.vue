@@ -3,7 +3,7 @@
          <Divider orientation="left"><h3>我的开票申请</h3></Divider>
         
         <Select v-model="selected.cid" placeholder="申请公司" style="width: 200px; margin-left: 5px;">
-            <Option v-for="(e, i) in companies" :value="e.id" :key="i">{{e.lpname}}</Option>
+            <Option v-for="(e, i) in companies" :value="e.id" :key="i">{{e.name}}</Option>
         </Select>
 
         <Select v-model="selected.type" placeholder="发票类型" style="width: 130px;  margin-left: 5px;">
@@ -56,7 +56,7 @@
             </div>
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> 申请公司 </span>
-                {{ applicationCompanyInfo.lpname }} ({{ applicationCompanyInfo.id }})
+                {{ applicationCompanyInfo.name }} ({{ applicationCompanyInfo.id }})
             </div>
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input">税金预交率 </span>
@@ -75,7 +75,7 @@
                 ￥{{ applicationCompanyInfo.preTaxRetio*applicationData.recAmount }}
             </div>
             <div slot="footer" style="text-align: right">
-                <Button type="primary" @click="e=>1">确定</Button>
+                <Button type="primary" @click="submit">确定</Button>
                 <Button type="default" @click="shouldOpenDialogEdit = false">取消</Button>
             </div>
         </Modal>
@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
 import { receiptType, receiptStatus, Integers } from '../../../constant.js';
 import PagedTable from '../../pagedTable.vue';
@@ -145,21 +144,18 @@ export default {
         receiptTyString: '',
         applicationCompanyInfo: {},
         applicationData: {
-            "cid": "",
+            "cid": 0,
             "recType": "",
             "cusName": "",
             "recAmount": 0,
             "address": "",
-            // 要求后端查询预交税率
         }
 
     }),
     methods: {
         async getCompanies() {
             try {
-                let result = await $.ajax('/api/company/list');
-                if (result.code === 0)
-                    this.companies = result.data;
+                this.companies = util.Objects.convUnderlineToHampObjectArray(await API.Company.getList());
             }
             catch (e) {
                 console.error(e);
@@ -178,9 +174,6 @@ export default {
             try {
                 let user = this.userInfo != null ? this.userInfo :
                     (this.userInfo = await API.Account.getBasicInfo());
-                if (user.paid === 0 && this.selectedNew.ty === Integers.ReceiptType.SPECIAL) {
-                    return util.MessageBox.Show(this, "你没有权限开具此类发票");
-                }
                 this.receiptTyString = receiptType[this.selectedNew.ty];
                 // 获取报税频率
                 this.applicationCompanyInfo = this.companies.filter(e=>e.id===this.selectedNew.cid)[0];
@@ -188,13 +181,22 @@ export default {
                 if (vatr_freq === -1) {
                     return util.MessageBox.Show(this, "你公司的报税频率还未完善，无法开具发票");
                 }
+                debugger;
                 this.shouldOpenDialogNew = false;
                 this.shouldOpenDialogEdit = true;
             }
             catch(err) {
                 console.error(err);
             }
-        }
+        },
+        async submit() {
+            try {
+
+            }
+            catch(e) {
+
+            }
+        },
     },
     computed: {
         totalReceiptAmount() {

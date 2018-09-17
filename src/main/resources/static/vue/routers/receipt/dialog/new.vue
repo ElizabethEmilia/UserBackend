@@ -4,7 +4,7 @@
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> <i class="required" />选择公司 </span>
                 <Select v-model="cid" style="width:200px">
-                    <Option v-for="(e,i) in companies" :value="e.id" :key="i">{{ e.lpname }}</Option>
+                    <Option v-for="(e,i) in companies" :value="e.id" :key="i">{{ e.name }}</Option>
                 </Select>
 
             </div>

@@ -352,6 +352,22 @@ function network_post(URL, PARAMS) {
 	temp_form.submit();
 }
 
+/// Object驼峰
+
+function convUnderlineToHamp(name) {
+    return name.replace(/_(\w)/g, m=>m.toUpperCase()).replace(/_/g, '');
+}
+
+function convUnderlineToHampObject(obj) {
+    let k = Object.keys(obj);
+    let h = k.map(convUnderlineToHamp);
+    return Object.assign({}, ...h.map((e,i)=>({[e]:obj[k[i]]})));
+}
+
+function convUnderlineToHampObjectArray(arr) {
+	return arr.map(convUnderlineToHampObject);
+}
+
 export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
@@ -363,6 +379,12 @@ export default {
 	passwordMatchesRestriction, // 判断密码是否符合复杂性要求
 
 	isNullOrUndefined: Object_isNullOrUndefined,
+
+	// 对象
+	Objects: {
+        convUnderlineToHampObject, // 将下划线的对象转为驼峰的对象
+        convUnderlineToHampObjectArray,
+	},
 
 	// 字符相关
 	Character: {
@@ -388,6 +410,7 @@ export default {
 	String: {
 		isNullOrEmpty: isStringNullOrEmpty,
 		isVividPassword: passwordMatchesRestriction,
+        convUnderlineToHamp, // 将下划线字符串转为驼峰字符串
 	},
 
 	// 状态机
