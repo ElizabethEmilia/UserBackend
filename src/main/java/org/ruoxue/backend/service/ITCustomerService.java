@@ -25,5 +25,17 @@ public interface ITCustomerService extends IService<TCustomer> {
     Object password(String old_pwd, String new_pwd);
 
     Object avatar(String img);
-	
+
+
+    /**
+     *  9.17
+     */
+    Object adminAddtime(String uid, Integer cid, Integer months, Double price);
+
+    Object listCharge(Integer uid, Integer page, Integer size);
+
+    Object listDeadline();
+
+    Object listExchangeByUid(Integer page, Integer size);
+
 }
