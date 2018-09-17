@@ -71,8 +71,8 @@ public class TReceiptController {
 
     @ApiOperation("开票情况统计,开票情况统计")
     @RequestMapping(value = "/receipt/stat", method = RequestMethod.GET)
-    public @ResponseBody Object statReceipt() {
-        return 1;
+    public @ResponseBody Object statReceipt(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        return receiptService.statReceipt(page, size);
     }
 
 
