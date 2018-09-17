@@ -12,14 +12,15 @@
         <Modal v-model="dialogShouldOpen" title="为客户公司续期">
             <p>
                 续期月数 <br />
-                <InputNumber v-model="params.months" />
+                <InputNumber v-model="params.months" style="width: 200px;"/>
             </p>
             <p>
                 续期价格 <br />
-                <InputNumber v-model="params.price" />
+                <InputNumber v-model="params.price" style="width: 200px;"/>
             </p>
-            <div slot="footer" style="display: none">
-                <Button @click="renew">续期</Button>
+            <div slot="footer">
+                <Button type="success" @click="renew">续期</Button>
+                <Button @click="dialogShouldOpen = false">取消</Button>
             </div>
         </Modal>
     </Card>
@@ -45,8 +46,8 @@
                 isAdmin: window.config.isAdmin,
 
                 params: {
-                    price: 12,
-                    months: 0,
+                    price: 12000,
+                    months: 12,
                 },
                 columns() {
                     let self = this;
@@ -78,7 +79,10 @@
             },
             dialogShouldOpen: {
                 get() { return this.selectedIndex !== -1; },
-                set(val) { val || (this.selectedIndex = -1); }
+                set(val) { val || (this.selectedIndex = -1, this.params = {
+                    price: 0,
+                        months: 12,
+                }); }
             }
         },
         methods: {
@@ -108,13 +112,16 @@
                     "续期"+this.params.months+"个月吗？");
 
                 try {
-                    await util.Customer.Company.renew(this.selectedItem.cid, this.params);
-                    util.MessageBox.Show(this, "操作成功");
+                    await API.Customer.Company.renew(this.selectedItem.uid, this.selectedItem.id, this.params);
                     this.$refs.data.refresh();
+                    alert("操作成功");
+                    this.selectedIndex = -1;
                 }
                 catch (e) {
                     console.error(e);
-                    util.MessageBox.Show(this, "操作失败");
+                    alert("操作失败" + (e.msg ? '' : e.msg));
+                    this.selectedIndex = -1;
+
                 }
             }
         },

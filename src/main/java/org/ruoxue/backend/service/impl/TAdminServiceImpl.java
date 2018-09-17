@@ -116,11 +116,11 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
 //        获取参数
         String name = jsonObject.getString("name");
         Integer roleid = jsonObject.getInteger("roleid");
-        String wid = jsonObject.getString("wid");
+        Integer gid = jsonObject.getInteger("gid");
         String phone = jsonObject.getString("phone");
         String password = jsonObject.getString("password");
 
-        if(ToolUtil.isEmpty(name) || ToolUtil.isEmpty(roleid) || ToolUtil.isEmpty(wid) || ToolUtil.isEmpty(phone) || ToolUtil.isEmpty(password)){
+        if(ToolUtil.isEmpty(name) || ToolUtil.isEmpty(roleid) || ToolUtil.isEmpty(gid) || ToolUtil.isEmpty(phone) || ToolUtil.isEmpty(password)){
             return ResultUtil.error(-1, "参数错误");
         }
 
@@ -133,14 +133,14 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
         TSignin signin = insertSign(password);
 
         TAdmin admin = new TAdmin();
-        admin.setWid(wid);
+        admin.setWid("");
         admin.setStatus(1);
         admin.setModifieddate(new Date());
         admin.setLid(signin.getId());
         admin.setCreatedate(new Date());
         admin.setName(name);
         admin.setPhone(phone);
-        admin.setGid(0);
+        admin.setGid(gid);
         admin.setRoleid(roleid);
         boolean b = admin.insert();
 

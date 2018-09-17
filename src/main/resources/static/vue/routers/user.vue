@@ -25,7 +25,7 @@
 import PagedTable from '../pagedTable.vue';
 import AdminInfo from './user/admininfo.vue';
 import { adminTypes } from '../../constant.js';
-import $ from '../../js/ajax.js';
+import API from '../../js/api.js';
 import util from '../../js/util.js';
 import render from '../../js/render.js';
 
@@ -59,13 +59,13 @@ export default {
                                 let obj = self.d[p.index];
                                 await util.MessageBox.ComfirmAsync(self, "确认要删除管理员`" + obj.name + "`吗？");
                                 try {
-                                    await API.Group.remove(obj.id);
+                                    await API.Admin.remove(obj.id);
                                     util.MessageBox.Show(self, "删除成功");
                                     self.refresh();
                                 }
                                 catch (e) {
                                     console.error(e);
-                                    util.MessageBox.Show(self, "删除失败  " + typeof e.msg !== "undefined"? e.msg: "");
+                                    util.MessageBox.Show(self, "删除失败  " + (typeof e.msg !== "undefined"? e.msg: ""));
                                 }
                             }),
                             render.link(h, p, '查看详情', function() {

@@ -55,6 +55,7 @@
     import API from '../../../js/api.js';
     import util from '../../../js/util.js';
     import init from '../../../js/init.js';
+    import md5 from 'js-md5';
 
     export default {
         props: [ 'initInfo' ],
@@ -94,7 +95,7 @@
                 if (!this.checkInput())
                     return util.MessageBox.Show(this, "请填写所有必填项");
                 try {
-                    await API.Admin.add(this.adminInfo);
+                    await API.Admin.add(Object.assign({}, this.adminInfo, { password: md5(this.adminInfo.password) }));
                     util.MessageBox.Show(this, "操作成功");
                     this.$emit("on-complete", this.adminInfo);
                 }
@@ -107,7 +108,7 @@
                 if (!this.checkInput())
                     return util.MessageBox.Show(this, "请填写所有必填项");
                 try {
-                    await API.Admin.modify(this.adminInfo.id, this.adminInfo);
+                    await API.Admin.modify(this.adminInfo.id, Object.assign({}, this.adminInfo, { password: md5(this.adminInfo.password) }));
                     util.MessageBox.Show(this, "操作成功");
                     this.$emit("on-complete", this.adminInfo);
                 }
