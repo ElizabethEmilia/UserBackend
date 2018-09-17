@@ -921,6 +921,12 @@ tax； 税金收支
 
 * 【L】查看自己的充值记录（exchange表）`GET /api/charge-list`
 
+### 12.4 查看最后一笔交易的完成情况【客户】
+
+* 查看最后一笔交易的完成情况：`GET /api/exchange/last`
+
+返回值： true/false
+
 # 计划任务
 
 系统定期执行的任务，包括
