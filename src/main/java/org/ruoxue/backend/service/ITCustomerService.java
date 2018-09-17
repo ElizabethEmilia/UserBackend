@@ -30,7 +30,7 @@ public interface ITCustomerService extends IService<TCustomer> {
     /**
      *  9.17
      */
-    Object adminAddtime(String uid, Integer cid, Integer months);
+    Object adminAddtime(String uid, Integer cid, Integer months, Double price);
 
     Object listCharge(Integer uid, Integer page, Integer size);
 

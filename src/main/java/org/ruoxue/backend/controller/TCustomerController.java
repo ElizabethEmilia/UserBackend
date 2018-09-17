@@ -54,9 +54,9 @@ public class TCustomerController extends BaseController {
      *  9月17日客户最新要求
      */
     @ApiOperation("手动延长某个公司的服务期限")
-    @RequestMapping(value = "/customer/{uid}/company/{cid}/addtime", method = RequestMethod.GET)
-    public @ResponseBody Object adminAddtime(@PathVariable String uid, @PathVariable Integer cid, @RequestParam Integer months){
-        return customerService.adminAddtime(uid, cid, months);
+    @RequestMapping(value = "/customer/{uid}/company/{cid}/addtime", method = RequestMethod.POST)
+    public @ResponseBody Object adminAddtime(@PathVariable String uid, @PathVariable Integer cid, @RequestParam Integer months, @RequestParam Double price){
+        return customerService.adminAddtime(uid, cid, months, price);
     }
 
     @ApiOperation("查看客户的充值记录（exchange表）")

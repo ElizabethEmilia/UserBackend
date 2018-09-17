@@ -231,7 +231,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     }
 
     @Override
-    public Object adminAddtime(String uid, Integer cid, Integer months) {
+    public Object adminAddtime(String uid, Integer cid, Integer months, Double price) {
 
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(months)) {
             return ResultUtil.error(-1, "参数错误");
@@ -245,6 +245,17 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         if (ToolUtil.isEmpty(customer)) {
             return ResultUtil.error(-2, "该客户不存在");
         }
+
+//        余额不足直接返回403
+        Double balance = customer.getBalance();
+        if (balance < price) {
+            XunBinKit.getResponse().setStatus(403);
+            return ResultUtil.error(-5, "余额不足");
+        }
+
+//        更新余额
+        balance -= price;
+        customerMapper.updateBalance(balance, userid);
 
 //        获取公司
         TCompany company = companyMapper.getCompanyById(cid);
@@ -312,6 +323,14 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
             return ResultUtil.error(-1, "用户未登录");
         }
 
+
+        TCustomer customer = customerMapper.getTCustomerByUid(uid);
+
+        String user_name = null;
+        if(ToolUtil.isNotEmpty(customer)) {
+            user_name = customer.getName();
+        }
+
 //        先获取客户所有的公司,遍历公司列表,获取到期时间(endDate > now && endDate - 1 < now)的公司直接删除
         List<Map<String, Object>> list = companyMapper.listCompanyAll(uid);
         if (list.size() > 0) {
@@ -326,6 +345,8 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
                 Date end = calendar.getTime();
                 if (endDate.getTime() > now.getTime() && end.getTime() < now.getTime()) {
 //                  保留一个月内过期的公司
+//                  在返回值中put一个user_name
+                    map.put("user_name", user_name);
                 } else {
                     it.remove();
                 }
