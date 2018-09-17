@@ -44,5 +44,13 @@
 	</select>
 
 
+	<update id="updatePaid">
+		update t_customer set paid = #{paid}
+		<if test="uid != -1">
+			where uid = #{uid}
+		</if>
+	</update>
+
+
 
 </mapper>
