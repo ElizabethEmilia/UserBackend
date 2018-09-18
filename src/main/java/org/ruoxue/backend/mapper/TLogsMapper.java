@@ -1,11 +1,15 @@
 package org.ruoxue.backend.mapper;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.ruoxue.backend.bean.TLogs;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,5 +24,9 @@ public interface TLogsMapper extends BaseMapper<TLogs> {
 
     @Insert("insert into t_logs (aid, tm, description, cls) values(#{aid},#{tm},#{description},#{cls})")
     Boolean actionLog(Integer aid, Date tm, String description, Integer cls);
+
+//    查询日志的列表
+    @Select("select * from t_logs order by id DESC limit #{page}, #{size}")
+    List<Map<String, Object>> listLogs(@Param("page") Integer page, @Param("size") Integer size);
 
 }
