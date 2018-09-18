@@ -59,7 +59,7 @@
                     <Divider dashed orientation="right" >
                         <a v-if="hashBeforeModify != hashAfterModify" @click="discardChanges()" href="javascript:void(0)" style="margin-right: 10px;">放弃更改</a>
                         <a href="javascript:void(0)" v-if="hashAfterModify == hashBeforeModify" @click="editMode=false">返回</a>
-                        <a v-else :disabled="pendingSave" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
+                        <a v-else :disabled="pendingSave || !P.AdminCompanyAddAndModify" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
                     </Divider>
                     <Card :bordered="false" dis-hover>
                         <div style="margin-bottom: 5px;">
@@ -144,10 +144,10 @@
                         <p slot="title">操作</p>
 
                         <CellGroup>
-                            <Cell name="edit" title="编辑公司资料" />
+                            <Cell v-if="P.AdminCompanyAddAndModify" name="edit" title="编辑公司资料" />
                             <Cell name="mamage" title="公司设立进度" />
                             <Cell name="mamage" title="公司证照" />
-                            <Cell name="delete" title="删除公司" style="color: red"/>
+                            <Cell v-if="P.AdminCompanyRemoval" name="delete" title="删除公司" style="color: red"/>
                         </CellGroup>
 
                     </Card>
@@ -196,6 +196,7 @@
             district: ['东区', '西区'],
             pendingSave: false, //记录是否在保存
             pendingUpload: false, //是否正在上传头像
+            P: window.config.P,
         }),
         methods: {
             // 基础信息的编辑

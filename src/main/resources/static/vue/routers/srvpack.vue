@@ -100,9 +100,13 @@
                 let stantard = this.params.months * 1000;
                 if (price < stantard) {
                     addi = "(该价格低于标准价格)";
+                    if (!window.config.P.SetDiscount)
+                        return util.MessageBox.Show(this, "您没有权限为客户设置打折价。");
                 }
                 else if (price > stantard) {
                     addi = "(该价格高于标准价格)";
+                    if (!window.config.P.SetDiscount)
+                        return util.MessageBox.Show(this, "您没有权限为客户设置高于标准价格的价格。");
                 }
 
                 await util.MessageBox.ComfirmAsync(this, "确实要以"

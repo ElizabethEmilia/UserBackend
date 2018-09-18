@@ -14,8 +14,8 @@
             <!-- TODO: 判断权限，不对的给alert -->
             <Tabs v-model="viewRes" >
                 <TabPane label="当前账号客户" name="self"></TabPane>
-                <TabPane label="本组的客户" name="group"></TabPane>
-                <TabPane label="全部客户" name="all"></TabPane>
+                <TabPane label="本组的客户" name="group" v-if="P.AdminCustomerListOfCurrentGroup"></TabPane>
+                <TabPane label="全部客户" name="all" v-if="P.AdminCustomerListAll"></TabPane>
             </Tabs>
 
             <PagedTable
@@ -65,6 +65,8 @@ export default {
         'showList', 'uid'
     ],
     data: () => ({
+        P: window.config.P,
+
         searchKey: '',
         searchKeySubmit: '',
         viewRes: "self",

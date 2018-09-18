@@ -82,9 +82,13 @@ public class UIController extends BaseController {
         String avatar = "";
         String isCustomerPaid = "false";
 
+        String scriptIfAdmin = "";
+
         if (userInfoObj instanceof TAdmin) {
             TAdmin admin = (TAdmin)userInfoObj;
             username = admin.getName();
+
+            scriptIfAdmin = "window.config.adminGroupID = " + admin.getGid() + ";\n";
         }
         else if (userInfoObj instanceof TCustomer) {
             TCustomer customer = (TCustomer)userInfoObj;
@@ -101,6 +105,9 @@ public class UIController extends BaseController {
                 "window.config.isSuperAdmin = " + isSuperAdmin + "; \n" +
                 "window.config.isCustomerPaid = " + isCustomerPaid + ";\n" +
                 "window.config.permission = " + permission + ";\n";
+
+        scripts += scriptIfAdmin;
+
         return scripts;
     }
 

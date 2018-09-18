@@ -165,6 +165,7 @@
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
 import '../../../css/style.less';
 import util from '../../../js/util.js';
+import init from '../../../js/init.js';
 import $ from '../../../js/ajax.js';
 import md5 from 'js-md5';
 import ModifyPassword from './modifyPassword.vue';

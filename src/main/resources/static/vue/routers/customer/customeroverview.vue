@@ -40,7 +40,7 @@
                         <Divider dashed orientation="right" >
                             <a v-if="hashBeforeModify != hashAfterModify" @click="discardChanges()" href="javascript:void(0)" style="margin-right: 10px;">放弃更改</a>
                             <a href="javascript:void(0)" v-if="hashAfterModify == hashBeforeModify" @click="editMode=false">返回</a>
-                            <a v-else :disabled="pendingSave" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
+                            <a v-else :disabled="pendingSave || !AdminCustomerModify" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
                         </Divider>
                         <Card :bordered="false" dis-hover>
                             <div style="margin-bottom: 5px;">
@@ -116,7 +116,7 @@
                                 :name='i'
                             />
                         </CellGroup>
-                        <p style="text-align: center; margin: 10px; 0 10px; 0" v-else>
+                        <p style="text-align: center; margin: 10px 0 10px 0" v-else>
                             列表为空
                         </p>
                     </Card>
@@ -126,9 +126,9 @@
                             <p slot="title">客户管理</p>
                             
                             <CellGroup @on-click="cellGroupClick">
-                                <Cell name="edit" title="编辑资料" />
-                                <Cell name="newcompany" title="新增公司" />
-                                <Cell name="delete" title="删除客户" style="color: red"/>
+                                <Cell v-if="P.AdminCustomerModify" name="edit" title="编辑资料" />
+                                <Cell v-if="P.AdminCompanyAddAndModify" name="newcompany" title="新增公司" />
+                                <Cell v-if="P.AdminCustomerRemoval" name="delete" title="删除客户" style="color: red"/>
                             </CellGroup>
 
                         </Card>
@@ -172,11 +172,11 @@ export default {
         editMode: false,
         selectedCompany: -1,
         stats: {
-            income: 1000,
-            lastIncome: 1000,
-            outcome: 200,
-            lastOutcome: 20,
-            balance: 1000000,
+            income: 0,
+            lastIncome: 0,
+            outcome: 0,
+            lastOutcome: 0,
+            balance: 0,
         },
         avatar: null,
         industry,
@@ -188,6 +188,8 @@ export default {
         pendingUpload: false, //是否正在上传头像
 
         sholdNewCompanyDialogOpen: false,
+
+        P: window.config.P,
     }),
     methods: {
          // 基础信息的编辑

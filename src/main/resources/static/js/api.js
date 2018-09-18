@@ -73,13 +73,14 @@ export default {
         heartbeat: GET('/api/login/heartbeat'),
     },
     Customer: {
-        deleteUser: (uid) => POST('/api/customer/${uid}/delete', __rd_post_body)(),
+        deleteUser: (uid) => POST(`/api/customer/${uid}/delete`, __rd_post_body)(),
+        addNew: (data) => POST(`/api/customer/new`, data)(),
 
         Company: {
             newCompany: (uid, data) => POST(`/api/customer/${uid}/company/new`, data)(),
             deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body),
             renew: (uid, cid, params) => POST(`/api/customer/${uid}/company/${cid}/addtime`, params)(),
-        }
+        },
     },
     Account: {
         getBasicInfo: GET("/api/account/basic"),

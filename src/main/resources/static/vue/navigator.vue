@@ -35,23 +35,23 @@
                 <Icon type="md-heart" />
                 服务包管理
             </MenuItem>
-            <MenuItem name="user">
+            <MenuItem name="user" v-if="P.AdminUserListOfCurrentGroup">
                 <Icon type="md-leaf" />
                 用户管理
             </MenuItem>
-            <MenuItem name="group">
+            <MenuItem name="group" v-if="P.AdminUserListAll && P.AdminUserModifyOthers">
                 <Icon type="md-leaf" />
                 组管理
             </MenuItem>
-            <MenuItem name="log">
+            <MenuItem name="log" v-if="P.LogViewAndExport">
                 <Icon type="md-leaf" />
                 查看日志
             </MenuItem>
-            <MenuItem name="role">
+            <MenuItem name="role" v-if="P.PermissionManger">
                 <Icon type="md-leaf" />
                 权限管理
             </MenuItem>
-            <MenuItem name="system">
+            <MenuItem name="system" v-if="P.SystemConfigAdvanced">
                 <Icon type="md-leaf" />
                 系统配置
             </MenuItem>
@@ -61,6 +61,9 @@
 <script>
     import API from '../js/api.js';
     import util from '../js/util.js';
+    import PM from '../js/permission.js';
+
+    window.config.P = PM.forAllPermissions();
 
     export default {
         data () {
@@ -68,6 +71,7 @@
                 active: 1,
                 isAdmin: window.config.isAdmin,
                 isSuperAdmin: window.config.isSuperAdmin,
+                P: PM.forAllPermissions()
             }
         },
         methods: {

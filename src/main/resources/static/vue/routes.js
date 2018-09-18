@@ -11,20 +11,43 @@ import Orders from './routers/orders.vue';
 import Role from './routers/role.vue';
 import Group from './routers/group.vue';
 import ServicePack from './routers/srvpack.vue';
+import PM from '../js/permission.js';
 
-export default [
-    { path: '/', component: window.config && window.config.isAdmin ? Admin : Account },
-    { path: '/account', component: Account },
-    { path: '/company', component: Company },
-    { path: '/customer', component: Customer },
-    { path: '/log', component: Log },
-    { path: '/receipt', component: Receipt },
-    { path: '/tax', component: Tax },
-    { path: '/user', component: User },
-    { path: '/system', component: System },
-    { path: '/admin', component: Admin },
-    { path: '/orders', component: Orders },
-    { path: '/role', component: Role },
-    { path: "/group", component: Group },
-    { path: "/srvpack", component: ServicePack },
-]
+export default (function() {
+
+    let userModules = [
+        { path: '/', component: window.config && window.config.isAdmin ? Admin : Account },
+        { path: '/account', component: Account },
+        { path: '/company', component: Company },
+        { path: '/tax', component: Tax },
+        { path: '/receipt', component: Receipt },
+        { path: '/orders', component: Orders },
+    ];
+    let commonModules = [
+        { path: "/srvpack", component: ServicePack },
+    ];
+    // 用户模块
+    if (!window.config.isAdmin) {
+        return userModules.concat(commonModules);
+    }
+
+    // 管理员模块
+    let adminModules = [
+        { path: '/admin', component: Admin },
+        { path: '/', component: Admin },
+        { path: '/customer', component: Customer },
+        ...commonModules
+    ];
+
+    PM.filterArrayElements(PM.Modules.LogViewAndExport, adminModules,
+        { path: '/log', component: Log });
+    PM.filterArrayElements(PM.Modules.AdminUserListOfCurrentGroup, adminModules,
+        { path: '/user', component: User });
+    PM.filterArrayElements(PM.Modules.SystemConfigAdvanced, adminModules,
+        { path: '/system', component: System });
+    PM.filterArrayElements(PM.Modules.PermissionManger, adminModules,
+        { path: '/role', component: Role });
+    PM.filterArrayElements([PM.Modules.AdminUserListAll, PM.Modules.AdminUserModifyOthers], adminModules,
+        { path: "/group", component: Group});
+    return adminModules;
+})();
