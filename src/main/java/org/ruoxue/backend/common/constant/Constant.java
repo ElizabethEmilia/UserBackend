@@ -219,6 +219,7 @@ public final class Constant {
         public static final String KEY = "<undefined>";
         public static final String CERT_PATH = "<undefined>";
         public static final boolean WX_CONFIGURED = false;
+        public static final String NOTIFY_URL = "http://ruoxue.org/api/pay/wepay/notify";
     }
 
     public class LogUsers {

@@ -41,7 +41,7 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
     int insertReturnsID(TExchange entity);
 
     @Update("update t_exchange set running=#{running} where id=#{id}")
-    boolean updateRunningByID(int id, long running);
+    boolean updateRunningByID1(int id, long running);
 
     @Update("update t_exchange set state=#{state} where id=#{id}")
     boolean updateStateByID(int id, int state);
@@ -51,4 +51,9 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
 
     @Select("select * from t_exchange where id=#{id}")
     TExchange getEntityByID(int id);
+
+    // 获取最后一条交易记录
+    /// TODO: 改为仅查询微信
+    @Select("select * from t_exchange order by id DESC limit 1")
+    TExchange getLastTransaction();
 }
