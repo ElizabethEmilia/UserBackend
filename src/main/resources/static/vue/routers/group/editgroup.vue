@@ -57,7 +57,7 @@
                     return util.MessageBox.Show(this, "请填写所有必填项");
                 }
                 try {
-                    await API.Group.modify(this.groupInfo.id, this.groupInfo);
+                    await API.Group.modify(this.initInfo.id, this.groupInfo);
                     util.MessageBox.Show(this, "操作成功");
                     this.$emit("on-complete", this.groupInfo);
                 }
@@ -78,6 +78,10 @@
         mounted() {
             if (typeof this.initInfo !== "undefined") {
                 this.groupInfo = this.initInfo;
+                this.groupInfo = {
+                    name: this.initInfo.name,
+                    remark: this.initInfo.remark,
+                };
             }
         },
         watch: {

@@ -25,7 +25,7 @@ public class XunBinKit {
     /**
      *  权限获取role的value值
      */
-    public Integer getPermission(){
+    public static Integer getPermission(){
         Integer permission = (Integer) getSession().getAttribute("permission");
         if (ToolUtil.isEmpty(permission))
             return 0;
@@ -36,9 +36,9 @@ public class XunBinKit {
      *  权限
      */
     public static boolean canAccessModule(int moduleID) {
-        int p = new XunBinKit().getPermission();
+        int p = getPermission();
 
-        if (PermissionManager.canAccess(moduleID, p)) {
+        if (!PermissionManager.canAccess(moduleID, p)) {
             getResponse().setStatus(403);
             getResponse().setHeader("X-Access-Control", "Permission denied with permission=" + p + ", mask=" + (1 << moduleID));
             return false;

@@ -108,12 +108,14 @@
                 if (!this.checkInput())
                     return util.MessageBox.Show(this, "请填写所有必填项");
                 try {
-                    await API.Admin.modify(this.adminInfo.id, Object.assign({}, this.adminInfo, { password: md5(this.adminInfo.password) }));
+                    await API.Admin.modify(this.adminInfo.id, Object.assign({}, this.adminInfo,
+                        util.String.isNullOrEmpty(this.adminInfo.password) ?
+                            {} : { password: md5(this.adminInfo.password) }));
                     util.MessageBox.Show(this, "操作成功");
                     this.$emit("on-complete", this.adminInfo);
                 }
                 catch (e) {
-                    console.log(e);
+                    console.error(e);
                     util.MessageBox.Show(this, "操作失败");
                 }
             },

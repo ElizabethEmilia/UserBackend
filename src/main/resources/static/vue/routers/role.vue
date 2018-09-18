@@ -44,7 +44,7 @@
                     return [
                         { title: "序号", type: 'index' },
                         { title: '角色名', key: 'name' },
-                        { title: '权限值', key: 'value' },
+                        { title: '描述', key: 'remarks' },
                         {
                             title: '操作',
                             render: (h,p)=> {

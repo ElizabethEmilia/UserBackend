@@ -5,6 +5,8 @@ import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.util.IOUtil;
+import org.ruoxue.backend.util.ToolUtil;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -72,6 +74,7 @@ public class UIController extends BaseController {
         Integer role = (Integer)session.getAttribute("role");
         String isAdmin = role <= 2 ? "true" : "false";
         String isSuperAdmin = role == 1 ? "true" : "false";
+        String permission = XunBinKit.getPermission().toString();
 
         Object userInfoObj = session.getAttribute("obj");
 
@@ -96,7 +99,8 @@ public class UIController extends BaseController {
                 "window.config.avatar = \"" + avatar + "\";\n" +
                 "window.config.isAdmin = " + isAdmin + "; \n" +
                 "window.config.isSuperAdmin = " + isSuperAdmin + "; \n" +
-                "window.config.isCustomerPaid = " + isCustomerPaid + ";";
+                "window.config.isCustomerPaid = " + isCustomerPaid + ";\n" +
+                "window.config.permission = " + permission + ";\n";
         return scripts;
     }
 
