@@ -2,7 +2,9 @@ package org.ruoxue.backend.controller;
 
 
 import io.swagger.annotations.ApiOperation;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITConfigService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ public class TConfigController {
     @ApiOperation("系统设置列表")
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public @ResponseBody Object setting(){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.SystemConfigAdvanced)) return null;
         return configService.setting();
     }
 

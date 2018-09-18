@@ -6,6 +6,8 @@ import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.mapper.MainMapper;
+import org.ruoxue.backend.mapper.TAdminMapper;
+import org.ruoxue.backend.mapper.TRoleMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.MainService;
 import org.ruoxue.backend.util.Md5Util;
@@ -40,6 +42,12 @@ public class MainServiceImpl extends BaseController implements MainService {
 
     @Resource
     private TSigninMapper signinMapper;
+
+    @Resource
+    private TRoleMapper roleMapper;
+
+    @Resource
+    private TAdminMapper adminMapper;
 
     /*
         备注： 在session中的内容
@@ -88,6 +96,11 @@ public class MainServiceImpl extends BaseController implements MainService {
             signin = signinMapper.selectById(admin.getId());
             session.setAttribute("username", admin.getName());
             session.setAttribute("obj", admin);
+
+            Integer roleId = admin.getRoleid();
+            Integer value = roleMapper.getRoleById(roleId).getValue();
+            session.setAttribute("permission", value);
+
             return md5Salt(signin, password, session, admin.getId());
         }
         else {

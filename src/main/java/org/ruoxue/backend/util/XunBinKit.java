@@ -22,32 +22,33 @@ import java.util.Random;
  */
 public class XunBinKit {
 
-    @Resource
-    private TAdminMapper adminMapper;
-
-    @Resource
-    private PermissionManager permissionManager;
-
-    @Resource
-    private TRoleMapper roleMapper;
-
     /**
      *  权限获取role的value值
      */
     public Integer getPermission(){
-        Integer uid = getUid();
-
-        if (ToolUtil.isEmpty(uid)) {
+        Integer permission = (Integer) getSession().getAttribute("permission");
+        if (ToolUtil.isEmpty(permission))
             return 0;
+        return permission;
+    }
+
+    /**
+     *  权限
+     */
+    public static boolean canAccessModule(int moduleID) {
+        int p = new XunBinKit().getPermission();
+
+        if (PermissionManager.canAccess(moduleID, p)) {
+            getResponse().setStatus(403);
+            getResponse().setHeader("X-Access-Control", "Permission denied with permission=" + p + ", mask=" + (1 << moduleID));
+            return false;
         }
 
-        TAdmin admin = adminMapper.getTAdminByUid(uid);
-
-        Integer roleId = admin.getRoleid();
-
-        Integer value = roleMapper.getRoleById(roleId).getValue();
-
-        return value;
+        getResponse().setHeader("X-Access-Control", "Permission OK, with permission=" + p + ", mask=" + (1 << moduleID));
+        return true;
+    }
+    public static boolean shouldReject(int moduleID) {
+        return !canAccessModule(moduleID);
     }
 
 
