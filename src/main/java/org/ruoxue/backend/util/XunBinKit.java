@@ -1,6 +1,12 @@
 package org.ruoxue.backend.util;
 
 
+import org.ruoxue.backend.bean.TAdmin;
+import org.ruoxue.backend.feature.PermissionManager;
+import org.ruoxue.backend.mapper.TAdminMapper;
+import org.ruoxue.backend.mapper.TRoleMapper;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,6 +21,36 @@ import java.util.Random;
  *  志勋 + 佳斌 工具类
  */
 public class XunBinKit {
+
+    @Resource
+    private TAdminMapper adminMapper;
+
+    @Resource
+    private PermissionManager permissionManager;
+
+    @Resource
+    private TRoleMapper roleMapper;
+
+    /**
+     *  权限获取role的value值
+     */
+    public Integer getPermission(){
+        Integer uid = getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return 0;
+        }
+
+        TAdmin admin = adminMapper.getTAdminByUid(uid);
+
+        Integer roleId = admin.getRoleid();
+
+        Integer value = roleMapper.getRoleById(roleId).getValue();
+
+        return value;
+    }
+
+
 
     /**
      *  获取时间戳+三位随机数
@@ -90,7 +126,7 @@ public class XunBinKit {
         return uid;
     }
 
-    /**
+   /**
      *  获取用户session对象
      */
     public static HttpSession getSession(){
