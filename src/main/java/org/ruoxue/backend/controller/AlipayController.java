@@ -34,7 +34,7 @@ public class AlipayController {
     public void startPayment(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
                              @RequestParam(required = false) Integer itemid, @RequestParam(required = false) String name, @RequestParam(required = false) Double amount) {
 //        调用service层
-        alipayService.startPayment(httpRequest, httpResponse, itemid, name, amount);
+        alipayService.startPayment(httpRequest, httpResponse, amount);
 
     }
 
@@ -59,7 +59,7 @@ public class AlipayController {
                 return;
             }
 
-            alipayService.finishPaymant(Long.valueOf(out_trade_no), request, response);
+            alipayService.finishPaymant(Integer.parseInt(out_trade_no), request, response);
 
 //        将参数显示
             response.getWriter().println(
@@ -78,16 +78,15 @@ public class AlipayController {
         try {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap, Constant.AlipayConfig.ALIPAY_PUBLIC_KEY, CHARSET, Constant.AlipayConfig.SIGN_TYPE); //调用SDK验证签名
             if(signVerified){
-                // TODO 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
-
-                Long orderid = Long.valueOf(params.get("out_trade_no"));
+                // 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，
+                // 校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
+                Integer orderid = Integer.parseInt(params.get("out_trade_no"));
 
 //                调用service
-                alipayService.notifyQuery(orderid, response);
-
+                alipayService.notifyQuery(orderid, response, params);
                 response.getWriter().println("success");
             }else{
-                // TODO 验签失败则记录异常日志，并在response中返回failure.
+                // 验签失败则记录异常日志，并在response中返回failure.
                 response.getWriter().println("failure");
 
                 response.getOutputStream().println("非法访问者你好，你的APP ID我们已经记下，我们将保存这个请求并向支付宝举报。");

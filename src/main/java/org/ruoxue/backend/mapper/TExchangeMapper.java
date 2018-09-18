@@ -1,9 +1,7 @@
 package org.ruoxue.backend.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TPublicCharge;
 
@@ -37,4 +35,20 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
 
     BigDecimal countLastOutcome(@Param("uid") Integer uid);
 
+    @Insert("insert into t_exchange (uid, amount, paymethod, tm, type) " +
+            "values(#{uid}, #{amount}, #{paymethod}, #{tm}, #{type})")
+    @SelectKey(statement="select LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class)
+    int insertReturnsID(TExchange entity);
+
+    @Update("update t_exchange set running=#{running} where id=#{id}")
+    boolean updateRunningByID(int id, long running);
+
+    @Update("update t_exchange set state=#{state} where id=#{id}")
+    boolean updateStateByID(int id, int state);
+
+    @Update("update t_exchange set running=#{running} where id=#{id}")
+    boolean updateRunningByID(int id, String running);
+
+    @Select("select * from t_exchange where id=#{id}")
+    TExchange getEntityByID(int id);
 }

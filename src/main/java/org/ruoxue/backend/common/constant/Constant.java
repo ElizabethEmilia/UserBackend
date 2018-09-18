@@ -50,14 +50,14 @@ public final class Constant {
     7 - 其他
      */
     public class PaymentMethod {
-        public final int ONLINE_ALIPAY = 0;
-        public final int ONLINE_WECHAT = 1;
-        public final int ONLINE_BALANCE = 2;
-        public final int ONLINE_TRANSACTION = 3;
-        public final int PUBLIC_BANK = 4;
-        public final int PUBLIC_MONEY = 5;
-        public final int PUBLIC_ALIPAY = 6;
-        public final int OTHERS = 7;
+        public static final int ONLINE_ALIPAY = 0;
+        public static final int ONLINE_WECHAT = 1;
+        public static final int ONLINE_BALANCE = 2;
+        public static final int ONLINE_TRANSACTION = 3;
+        public static final int PUBLIC_BANK = 4;
+        public static final int PUBLIC_MONEY = 5;
+        public static final int PUBLIC_ALIPAY = 6;
+        public static final int OTHERS = 7;
     }
 
     /*
@@ -230,6 +230,8 @@ public final class Constant {
         public static final int MIDIUM = 1;
         public static final int HIGHER = 2;
         public static final int DANGEROUS = 3;
+        public static final int IMPORTANT = 3;
+
     }
 
 }
