@@ -42,10 +42,9 @@ public class WepayController {
     private TExchangeMapper exchangeMapper;
 
     @RequestMapping("start")
-    public void start(@RequestParam Integer amount, HttpServletRequest request, HttpServletResponse response) {
+    public Object start(@RequestParam Integer amount, HttpServletRequest request, HttpServletResponse response) {
         if (!Constant.WxPayConfig.WX_CONFIGURED) {
-            response.setStatus(503);
-            return;
+            return ResultUtil.error(-1, "服务器端未配置微信支付");
         }
 
         try {
@@ -74,10 +73,20 @@ public class WepayController {
             Map<String, String> resp = wxpay.unifiedOrder(data);
             System.out.println(resp);
 
-            /// TODO; 需要将codeurl生成图片
+            /// 将codeurl生成图片[前端完成]
+            if (wxpay.isPayResultNotifySignatureValid(resp)) {
+                // 签名正确进行处理。
+                // 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
+                return ResultUtil.success(resp);
+            }
+            else {
+                // 签名错误，如果数据里没有sign字段，也认为是签名错误
+                return ResultUtil.error(-1, "签名校验失败");
+            }
         }
         catch (Exception e) {
-
+            e.printStackTrace();
+            return ResultUtil.error(-2, e.getMessage());
         }
 
     }
