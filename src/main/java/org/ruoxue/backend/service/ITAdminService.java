@@ -28,6 +28,6 @@ public interface ITAdminService extends IService<TAdmin> {
 
     Object getAdminByAid(Integer aid);
 
-    Object updateAdmin(Integer aid, String name, Integer roleid);
+    Object updateAdmin(Integer aid, JSONObject jsonObject);
 	
 }

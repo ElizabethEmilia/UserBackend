@@ -3,10 +3,11 @@ package org.ruoxue.backend.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITSigninService;
-import org.springframework.web.bind.annotation.*;
-
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -47,6 +48,7 @@ public class TSigninController {
     @ApiOperation("获取用户信息列表")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody Object listCustomer(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll)) return null;
         return signinService.listCustomer(page, size);
     }
 
@@ -64,6 +66,7 @@ public class TSigninController {
     @ApiOperation("获取客户列表(self, group, all)")
     @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
     public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false    ) String search) {
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll)) return null;
         return signinService.listByType(type, page, size, search);
     }
 

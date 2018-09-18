@@ -45,8 +45,7 @@ public interface TAdminMapper extends BaseMapper<TAdmin> {
     @Select("select * from t_admin where id = #{id}")
     TAdmin getAdminByAid(@Param("id") Integer id);
 
-    @Update("update t_admin set name = #{name}, roleid = #{roleid} where id = #{id}")
-    Integer updateAdmin(@Param("id") Integer id, @Param("name") String name, @Param("roleid") Integer roleid);
+    Integer updateAdminByJson(@Param("id") Integer id, @Param("name") String name, @Param("roleid") Integer roleid, @Param("phone") String phone);
 
     List<Map<String, Object>> getAdminAndRole(@Param("id") Integer id);
 

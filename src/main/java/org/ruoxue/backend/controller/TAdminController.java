@@ -4,7 +4,9 @@ package org.ruoxue.backend.controller;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.common.controller.BaseController;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITAdminService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,7 @@ public class TAdminController extends BaseController {
     @ApiOperation("获取账号信息")
     @RequestMapping(value = "/basic", method = RequestMethod.GET)
     public @ResponseBody Object basicGet(){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListOfCurrentAccount)) return null;
 //        获取用户id
         Integer uid = (Integer) getSession().getAttribute("uid");
         return adminService.basicGet(uid);
@@ -37,6 +40,7 @@ public class TAdminController extends BaseController {
     @ApiOperation("修改账号信息")
     @RequestMapping(value = "/basic", method = RequestMethod.POST)
     public @ResponseBody Object basicPost(@RequestBody JSONObject jsonObject){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerModify)) return null;
         return adminService.basicPost(jsonObject);
     }
 
@@ -66,6 +70,7 @@ public class TAdminController extends BaseController {
     @ApiOperation("删除管理员")
     @RequestMapping(value = "/{aid}/delete", method = RequestMethod.POST)
     public @ResponseBody Object adminRemove(@PathVariable Integer aid){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerRemoval)) return null;
         return adminService.removeAdmin(aid);
     }
 
@@ -77,8 +82,8 @@ public class TAdminController extends BaseController {
 
     @ApiOperation("修改管理员信息")
     @RequestMapping(value = "/{aid}", method = RequestMethod.POST)
-    public @ResponseBody Object updateAdmin(@PathVariable Integer aid, @RequestParam String name, @RequestParam Integer roleid){
-        return adminService.updateAdmin(aid, name, roleid);
+    public @ResponseBody Object updateAdmin(@PathVariable Integer aid, @RequestBody JSONObject jsonObject){
+        return adminService.updateAdmin(aid, jsonObject);
     }
 
 

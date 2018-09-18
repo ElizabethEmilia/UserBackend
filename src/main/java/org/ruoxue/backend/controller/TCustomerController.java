@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITCustomerService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,7 @@ public class TCustomerController extends BaseController {
     @ApiOperation("修改账号信息")
     @RequestMapping(value = "/account/basic", method = RequestMethod.POST)
     public @ResponseBody Object basicPost(@RequestBody String json){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerModify)) return null;
         return customerService.basicPost(JSONObject.parseObject(json, TCustomer.class));
     }
 
