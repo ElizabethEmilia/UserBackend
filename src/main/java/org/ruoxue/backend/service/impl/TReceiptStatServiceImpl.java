@@ -28,7 +28,6 @@ public class TReceiptStatServiceImpl extends ServiceImpl<TReceiptStatMapper, TRe
 
     @Override
     public Object receiptStat(String uid) {
-//        TODO
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "参数错误");
         }
@@ -37,6 +36,6 @@ public class TReceiptStatServiceImpl extends ServiceImpl<TReceiptStatMapper, TRe
 
         List<TReceiptStat> list = receiptStatMapper.listReceiptStat(userid);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, null, "查询成功", "查询失败");
+        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
     }
 }
