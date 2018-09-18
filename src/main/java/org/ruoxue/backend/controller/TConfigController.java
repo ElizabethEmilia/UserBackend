@@ -36,18 +36,21 @@ public class TConfigController {
     @ApiOperation("获取系统设置, 根据key取value值")
     @RequestMapping(value = "/settings/{key}", method = RequestMethod.GET)
     public @ResponseBody Object settingKey(@PathVariable String key){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.SystemConfigAdvanced)) return null;
         return configService.settingKey(key);
     }
 
     @ApiOperation("修改系统设置")
     @RequestMapping(value = "/settings/{key}", method = RequestMethod.POST)
     public @ResponseBody Object updateSettingKey(@PathVariable String key, @RequestParam String value){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.SystemConfigAdvanced)) return null;
         return configService.updateSettingKey(key, value);
     }
 
     @ApiOperation("清空回收站, 删除表中状态为3的 数据(客户表、管理员表)")
     @RequestMapping(value = "/settings/clear-cache", method = RequestMethod.GET)
     public @ResponseBody Object clearCache(){
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.SystemConfigAdvanced)) return null;
         return configService.clearCache();
     }
 

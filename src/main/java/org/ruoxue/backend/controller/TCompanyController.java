@@ -3,7 +3,9 @@ package org.ruoxue.backend.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCompany;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITCompanyService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +75,7 @@ public class TCompanyController {
     @ApiOperation("获取某一个公司的信息")
     @RequestMapping(value = "/company/{cid}/info", method = RequestMethod.GET)
     public @ResponseBody Object getCompanyInfo(@PathVariable Integer cid) {
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCompanyAddAndModify)) return null;
         return companyService.getCompanyInfo(cid);
     }
 

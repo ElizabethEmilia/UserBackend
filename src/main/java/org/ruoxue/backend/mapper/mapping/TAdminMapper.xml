@@ -33,4 +33,9 @@
 		select a.*,b.name as roleName, b.value as roleValue from t_admin a, t_role b where a.roleid = b.id and a.id = #{id}
 	</select>
 
+	<update id="updateAdminByJson">
+		update t_admin set name = #{name}, roleid = #{roleid}, phone = #{phone}
+		 where id = #{id}
+	</update>
+
 </mapper>

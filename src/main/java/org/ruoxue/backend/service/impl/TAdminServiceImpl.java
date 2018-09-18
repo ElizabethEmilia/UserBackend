@@ -177,9 +177,20 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     }
 
     @Override
-    public Object updateAdmin(Integer aid, String name, Integer roleid) {
-        if(ToolUtil.isEmpty(aid) || ToolUtil.isEmpty(name) || ToolUtil.isEmpty(roleid)){
+    public Object updateAdmin(Integer aid, JSONObject jsonObject) {
+
+//        获取参数
+        String name = jsonObject.getString("name");
+        Integer roleid = jsonObject.getInteger("roleid");
+        String phone = jsonObject.getString("phone");
+        String password = jsonObject.getString("password");
+
+        if(ToolUtil.isEmpty(aid) || ToolUtil.isEmpty(name) || ToolUtil.isEmpty(roleid) || ToolUtil.isEmpty(phone)){
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(password)) {
+            password = Md5Util.getMD5(password);
         }
 
         TAdmin admin = adminMapper.getAdminByAid(aid);
@@ -187,9 +198,13 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
             return ResultUtil.error(-3, "没有查询到管理员信息");
         }
 
-        Integer len = adminMapper.updateAdmin(aid, name, roleid);
+//        修改密码
+        Integer len1 = signinMapper.updatePassword(password, admin.getLid());
 
-        return XunBinKit.returnResult(len > 0, -2, null, "修改成功", "修改失败");
+//        修改账号信息
+        Integer len2 = adminMapper.updateAdminByJson(aid, name, roleid, phone);
+
+        return XunBinKit.returnResult((len1 + len2 == 2), -2, null, "修改成功", "修改失败");
     }
 
     //    插入sign表
