@@ -304,6 +304,13 @@ function toDate(timestamp) {
 	return new Date(timestamp);
 }
 
+function toDateSafe(timestamp) {
+	let ts = Number(timestamp);
+	if (isNaN(ts) || ts === 0)
+		return timestamp;
+	return new Date(ts);
+}
+
 function toDateString(date) {
     if (!(date instanceof Date))
         return date;
@@ -456,6 +463,7 @@ export default {
 	Date: {
         toTimestamp,
         toDate,
+        toDateSafe,
         toDateString,
         toMonthString,
         toYearString,

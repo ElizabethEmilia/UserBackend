@@ -94,6 +94,7 @@ export default (function(){
                     if (result.code != 0) {
                         throw new Error(result);
                     }
+                    result.data = util.Objects.convUnderlineToHampObjectArray(result.data);
                     this.tableData = result.data;
                     this.$emit("onrecvdata", result.data);
                     console.log(`[PagedTable] 获取数据成功: `, url);

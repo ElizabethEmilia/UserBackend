@@ -322,18 +322,18 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     private Integer getCodeByAction(String action) {
 //        做一个HashMap,存储路径与值得映射
         Map<String, Integer> map = new HashMap<String, Integer>();
-        map.put("submit", 0);
-        map.put("refuse-submit", 1);
-        map.put("accept", 2);
-        map.put("distrib-dist", 3);
-        map.put("distrib-self", 4);
-        map.put("receipt", 5);
-        map.put("discard", 6);
-        map.put("pack", 7);
-        map.put("send", 8);
-        map.put("selfrecv", 9);
-        map.put("refuse-packing", 10);
-        map.put("recv", 11);
+        map.put("submit", Constant.RECEIPT_STATUS.Submitted);
+        map.put("refuse-submit", Constant.RECEIPT_STATUS.RefusedWaitingSubmit);
+        map.put("accept", Constant.RECEIPT_STATUS.Checked);
+        map.put("distrib-dist", Constant.RECEIPT_STATUS.DistributedDistrib);
+        map.put("distrib-self", Constant.RECEIPT_STATUS.DistributedSelf);
+        map.put("receipt", Constant.RECEIPT_STATUS.Receipted);
+        map.put("discard", Constant.RECEIPT_STATUS.Abondoned);
+        map.put("pack", Constant.RECEIPT_STATUS.Packed);
+        map.put("send", Constant.RECEIPT_STATUS.VerifiedAndSent);
+        map.put("selfrecv", Constant.RECEIPT_STATUS.ReceivedCompleted);
+        map.put("refuse-packing", Constant.RECEIPT_STATUS.RefusedWaitingPacking);
+        map.put("recv", Constant.RECEIPT_STATUS.ReceivedCompleted);
         System.out.println("-------------map: " + map);
 
         return map.get(action);
