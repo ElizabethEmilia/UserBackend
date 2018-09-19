@@ -1,13 +1,13 @@
 <template>
     <div style="display: inline-block">
         <Select v-model="selected[0]" style="width: 100px;" placeholder="省/市/自治区">
-            <Option v-for="(e,i) in provinces" :value="e" :key="e">{{ e }}</Option>
+            <Option v-for="(e,i) in provinces" :value="e" :key="i">{{ e }}</Option>
         </Select>
         <Select v-model="selected[1]" style="width: 100px;" :placeholder="isDirectAdministratedCities?'县/区/市':'地级市'">
-            <Option v-for="(e,i) in cities" :value="e" :key="e">{{ e }}</Option>
+            <Option v-for="(e,i) in cities" :value="e" :key="i">{{ e }}</Option>
         </Select>
         <Select v-model="selected[2]" style="width: 100px;" :disabled="isDirectAdministratedCities" :placeholder="isDirectAdministratedCities?'':'县/区/市'">
-            <Option v-for="(e,i) in districts" :value="e" :key="e">{{ e }}</Option>
+            <Option v-for="(e,i) in districts" :value="e" :key="i">{{ e }}</Option>
         </Select>
     </div>
 </template>

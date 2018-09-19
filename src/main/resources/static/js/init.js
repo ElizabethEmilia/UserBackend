@@ -8,7 +8,7 @@ const tAdmin = {
     phone: "",
     createdate: "",
     modifieddate: "",
-    status: 0
+    status: 0,
 };
 
 
@@ -91,7 +91,8 @@ const tCustomer = {
     balance: 0,
     recType: 0,
     regDate: "",
-    status: 0
+    status: 0,
+    aid: 0,
 };
 
 const tDictAreas = {

@@ -4,7 +4,9 @@
             :current="page" 
             :columns="columns_t" 
             :data="tableData"
-            :height="height">
+            :height="height"
+            :loading="loading"
+        >
         </Table>        
         <Page 
             :total="count" 
@@ -66,6 +68,7 @@ export default (function(){
                 size: 10,
                 page: 1,
                 columns_t,
+                loading: true,
             }); 
         },
         created() {
@@ -83,6 +86,7 @@ export default (function(){
                 this.$emit('sizechanged', s);
             },
             async getContentOfPage(page, size=10) {
+                this.loading = true;
                 let add_param = util.isStringNullOrEmpty(this.additionalParams)?'':'&'+this.additionalParams;
                 let url = this.requestUrl + `?page=${page}&size=${size}${add_param}`;
                 try {
@@ -93,10 +97,12 @@ export default (function(){
                     this.tableData = result.data;
                     this.$emit("onrecvdata", result.data);
                     console.log(`[PagedTable] 获取数据成功: `, url);
+                    this.loading = false;
                 }
                 catch(err) {
                     console.error(`[PagedTable] 获取数据失败: `, url);
                     this.$emit('onajaxerror', err);
+                    this.loading = false;
                 }
             },
             async getCount() {

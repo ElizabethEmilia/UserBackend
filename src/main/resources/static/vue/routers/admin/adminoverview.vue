@@ -67,6 +67,7 @@
     import $ from '../../../js/ajax.js';
     import md5 from 'js-md5';
     import ModifyPassword from './adminmodifypwd.vue';
+    import init from '../../../js/init.js';
 
     /**
      * 事件
@@ -79,13 +80,7 @@
             ModifyPassword
         },
         data: () => ({
-            info: {
-                uid: 0,
-                lid: -1,
-                name: 'Miyuki',
-                privilege: 1,
-                phone: '110',
-            },
+            info: init.tAdmin,
             infoSave: {},
             companyCount: 2,
             editMode: false,

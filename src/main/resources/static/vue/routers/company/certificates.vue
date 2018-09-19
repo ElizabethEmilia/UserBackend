@@ -2,7 +2,7 @@
     <Card  class="card-margin">
          <Divider orientation="left"><h3>公司证照</h3></Divider>
         
-        <PagedTable v-if="selected != -1" :columns="columns" :data-source="`company/${cid}/cert`" />
+        <PagedTable :columns="columns" :data-source="`company/${cid}/cert`" />
         <div style="margin-top: 20px;">
 
         </div>

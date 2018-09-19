@@ -1,7 +1,10 @@
 <template>
     <div>
+        <div class="logo" onclick="location.href='http://pmo076db8.hz1.17uhui.com.cn/page72'">
+            <img :src="'http://pmo076db8.pic40.websiteonline.cn/upload/nmww.png'" title="增薪宝" alt="增薪宝">
+        </div>
         <div class="layout" v-if="isAdmin || isCustomerPaid">
-            <Sider :style="{position: 'fixed', width: '240px', minWidth: '240px', maxWidth: '240px', height: '100vh', left: 0, overflow: 'auto', overflowY: 'hidden'}">
+            <Sider :style="{position: 'fixed', width: '240px', minWidth: '240px', maxWidth: '240px', height: '100vh', left: 0, overflow: 'auto', overflowY: 'hidden', paddingTop: '40px'}">
                 <Navigator @menuselect="menusel"/>
             </Sider>
             <Layout :style="{marginLeft: '240px'}">
@@ -82,4 +85,14 @@
 .ib {
     display: inline-block;
 }
+
+    .logo {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 99999;
+        padding-left: 45px;
+        padding-top: 25px;
+        cursor: pointer;
+    }
 </style>

@@ -50,7 +50,7 @@ public class TReceiptController {
     }
 
     @ApiOperation("开票列表")
-    @RequestMapping(value = "/receipt/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/receipt/list", method = RequestMethod.GET)
     public @ResponseBody Object receiptList(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer cid,
                                             @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer status, @RequestParam(required = false) Date start,
                                             @RequestParam(required = false) Date end) {

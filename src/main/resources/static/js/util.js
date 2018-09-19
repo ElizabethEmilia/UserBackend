@@ -17,10 +17,18 @@ function forPostParams(obj) {
 function forGetParams(obj) {
     if (typeof obj !== "object")
         throw new Error("obj is not an object");
+    obj = removeEmptyAttributes(obj);
     return encodeURI(Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
 }
 
 function forGetParamsN(obj) {
+    if (typeof obj !== "object")
+        throw new Error("obj is not an object");
+    obj = removeEmptyAttributes(obj);
+    return (Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
+}
+
+function forGetParamsNR(obj) {
     if (typeof obj !== "object")
         throw new Error("obj is not an object");
     return (Object.keys(obj).map(e=>e + '=' + obj[e]).join('&'));
@@ -39,6 +47,14 @@ function getQueryParameter(param) {
 			return pair[1];
 	}
     return null;
+}
+
+function removeEmptyAttributes(obj) {
+    let keys = Object.keys(obj);
+    let t = keys.filter(e=>obj[e]!=='');
+    if (t.length == 0)
+        return {};
+    return Object.assign(... t.map(e=>({[e]: obj[e]})));
 }
 
 function isStringNullOrEmpty(str) {
@@ -372,6 +388,7 @@ export default {
     forGetParams, // 通过对象生成Get方法参数
 	forPostParams,  // 通过对象生成Post方法参数
     forGetParamsN,
+    forGetParamsNR,
 	forPostParamsQueryString, // 通过对象生成Post方法参数(不采用JSON)
 	forGetURL,    // 通过对象生成Get方法地址
 	getQueryParameter, // 获取页面参数
@@ -384,6 +401,7 @@ export default {
 	Objects: {
         convUnderlineToHampObject, // 将下划线的对象转为驼峰的对象
         convUnderlineToHampObjectArray,
+        removeEmptyAttributes,
 	},
 
 	// 字符相关

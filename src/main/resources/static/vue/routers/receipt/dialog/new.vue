@@ -10,7 +10,7 @@
             </div>
 
             <div style="margin-bottom: 5px;">
-                <span class="title-before-input"> <i class="required" />选择公司 </span>
+                <span class="title-before-input"> <i class="required" />发票类型 </span>
                 <Select v-model="ty" style="width:200px">
                     <Option v-for="(e,i) in receiptType" :value="i" :key="i">{{ e }}</Option>
                 </Select>

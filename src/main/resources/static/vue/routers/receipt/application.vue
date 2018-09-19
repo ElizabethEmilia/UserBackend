@@ -190,7 +190,7 @@ export default {
                 }
                 this.applicationData = adinit;
                 this.applicationData.cid = this.selectedNew.cid;
-                this.applicationData.ty = this.selectedNew.ty;
+                this.applicationData.recType = this.selectedNew.ty;
                 this.shouldOpenDialogNew = false;
                 this.shouldOpenDialogEdit = true;
             }

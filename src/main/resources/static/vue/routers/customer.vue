@@ -70,7 +70,7 @@
 
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> <i class="required" />手机号 </span>
-                <Input v-model="infoSave.phone" disabled placeholder="" style="width: 200px" />
+                <Input v-model="infoSave.phone" placeholder="" style="width: 200px" />
             </div>
 
             <div style="margin-bottom: 5px;">
