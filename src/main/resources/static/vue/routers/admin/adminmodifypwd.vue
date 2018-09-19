@@ -53,14 +53,15 @@
                 this.pending = true;
                 try {
                     let result = await $.ajax('/api/admin/password', {
-                        old: md5(this.old),
-                        new: md5(this.New),
+                        old_pwd: md5(this.old),
+                        new_pwd: md5(this.New),
                     });
                     this.pending = false;
                     if (result.code) {
                         return util.MessageBox.Error(this, result.msg);
                     }
-                    util.MessageBox.Error(this, '修改密码成功');
+                    util.MessageBox.Show(this, '修改密码成功');
+                    this.old = this.New = this.re = "";
                 }
                 catch(err) {
                     this.pending = false;

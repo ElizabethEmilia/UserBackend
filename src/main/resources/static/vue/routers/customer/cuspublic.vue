@@ -25,6 +25,7 @@ import PagedTable from '../../pagedTable.vue';
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
 import '../../../css/style.less';
 import $ from '../../../js/ajax.js';
+import util from '../../../js/util.js';
 
 let _uid = -1;
 
