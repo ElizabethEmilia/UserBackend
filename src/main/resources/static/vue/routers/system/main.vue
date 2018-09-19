@@ -3,7 +3,7 @@
          <Divider orientation="left"><h3>系统配置</h3></Divider>
        
             <Alert type="success">
-                提示：在此处可以配置系统中大部分可以配置的项。修改设置后，设置自动保存
+                修改设置后，设置自动保存
             </Alert>
 
             <div v-if="fetchState == fetchStates.failed" style="margin-top: 15px; margin-left: 30px; color: red"  >

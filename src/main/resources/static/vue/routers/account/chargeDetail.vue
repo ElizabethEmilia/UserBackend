@@ -12,7 +12,7 @@
             <TabPane label="支出" name="outcome"></TabPane>
         </Tabs>
         {{ '/chargedetail/' + res_url }}
-        <PagedTable :columns="columns" :data-source="'chargedetail/' + res_url" />
+        <PagedTable :columns="columns" :data-source="'exchange/' + res_url" />
     </Card>
 </template>
 
@@ -20,6 +20,7 @@
     import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
     import '../../../css/style.less';
     import PagedTable from '../../pagedTable.vue';
+    import util from '../../../js/util.js';
 
     export default {
         data: () => ({
@@ -27,12 +28,12 @@
             columns() {
                 return [
                     { title: '序号', type: 'index', width: 80 },
-                    { title: '公司ID', key: 'cid'  },
-                    { title: '公司名称', key: 'cname'  },
-                    { title: '收支金额', key: 'amount'  },
-                    { title: '支付方式', render: (h,p) => h('span', {}, this.tableData[p.index].paymentMethod)  }, // key: paymethod
-                    { title: '说明', key: 'note'  },
-                    { title: '交易时间', key: 'tm'  }, 
+                    { title: '公司ID', key: 'cid' ,width: 100 },
+                    { title: '公司名称', key: 'cname' ,width: 200 },
+                    { title: '收支金额', key: 'amount',width: 150  },
+                    { title: '支付方式',width: 160, render: (h,p) => h('span', {}, this.tableData[p.index].paymentMethod)  }, // key: paymethod
+                    { title: '说明', key: 'note', width: 200  },
+                    { title: '交易时间', width: 200, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tm)))  },
                             
                 ];
             },

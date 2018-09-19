@@ -34,8 +34,8 @@
 
             <ButtonGroup style="margin: 15px;">
                 <Button @click="shouldNewChargeDialogOpen = true;">新增订单</Button>
-                <Button>取消订单</Button>
-                <Button>查看详情</Button>
+                <!--Button>取消订单</Button>
+                <Button>查看详情</Button-->
             </ButtonGroup>
 
             <PagedTable :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
