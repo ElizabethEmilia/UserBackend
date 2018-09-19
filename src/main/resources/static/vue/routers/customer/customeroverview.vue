@@ -117,7 +117,7 @@
                             />
                         </CellGroup>
                         <p style="text-align: center; margin: 10px 0 10px 0" v-else>
-                            列表为空
+                            {{ loading ? '正在加载列表...':'列表为空' }}
                         </p>
                     </Card>
                     
@@ -151,6 +151,7 @@ import $ from '../../../js/ajax.js';
 import md5 from 'js-md5';
 import API from '../../../js/api.js';
 import CustomerOverviewDialog from './dialog/newcompany.vue';
+import SelectArea from '../../components/areaselect.vue';
 
 /**
  * 事件
@@ -161,7 +162,7 @@ import CustomerOverviewDialog from './dialog/newcompany.vue';
 
 export default {
     components: {
-        CustomerOverviewDialog,
+        CustomerOverviewDialog, SelectArea,
     },
     props: [ 'cusData' ],
     data: () => ({
@@ -186,6 +187,7 @@ export default {
         district: ['东区', '西区'],
         pendingSave: false, //记录是否在保存
         pendingUpload: false, //是否正在上传头像
+        loading: true,
 
         sholdNewCompanyDialogOpen: false,
 
@@ -291,11 +293,13 @@ export default {
                 if (result.code) {
                     return alert('获取公司失败：' + result.msg);
                 }
+                this.loading = false;
                 this.companyCount = result.data.length;
                 this.companyList = result.data;
             }
             catch(err) {
-                 util.Debug.ralert('获取公司失败');
+                this.loading = false;
+                util.Debug.ralert('获取公司失败');
             }
         },
         async discardChanges() {
@@ -349,6 +353,15 @@ export default {
             // 更改后的HASH值
             hashAfterModify() {
                 return md5(util.forGetParams(this.infoSave));
+            },
+            // 城市地址
+            area: {
+                get() {
+                    return [ this.infoSave.province, this.infoSave.city, this.infoSave.district ];
+                },
+                set(val) {
+                    [ this.infoSave.province, this.infoSave.city, this.infoSave.district ] = val;
+                }
             },
         },
     created() {

@@ -49,7 +49,7 @@ let receiptStateMap = {
     [states.Saved]: {
         [states.Submitted]: receiptAction.Submit,
     },
-    [states.Submited]: {
+    [states.Submitted]: {
         [states.RefusedWaitingSubmit]: receiptAction.RefuseSubmit,
         [states.Checked]: receiptAction.Accept,
     },
@@ -81,10 +81,10 @@ let receiptStateMap = {
 }
 
 // from , to, render, params
-function renderVDOM(f, t, h, p, self, baseURL) {
+function renderVDOM(f, t, h, p, self, baseURL, beforeOperation) {
     let action = receiptStateMap[f][t];
     // 如果转台转换不存在
-    if (typeof action == "undefined")
+    if (typeof action === "undefined")
         return [];
     let DividerVDOM = h('span', {}, ' | ');
     let LinkVDOM = h('a', {
@@ -94,8 +94,13 @@ function renderVDOM(f, t, h, p, self, baseURL) {
                 if (!confirm('确认执行“' + receiptActionName[action] + '”操作吗？'))
                     return;
                 let id = self.d[p.index].id;
+                let addiparam = {};
+                if (typeof beforeOperation === "function") {
+                    if (!beforeOperation(action, addiparam))
+                        return;
+                }
                 try {
-                    let r = await $.ajax(`${baseURL}/${id}/${action}`, {id});
+                    let r = await $.ajax(`${baseURL}/${id}/${action}`, Object.assign({id}, addiparam));
                     if (r.code)
                         return alert('操作失败' + r.msg);
                     alert('操作成功');
@@ -112,13 +117,13 @@ function renderVDOM(f, t, h, p, self, baseURL) {
 }
 
 // 根据当前状态进行render
-function render(state, h, p, self, baseURL) {
+function render(state, h, p, self, baseURL, beforeOperation) {
     let to = receiptStateMap[state];
     if (!to) return [];
     let kt = Object.keys(to);
     let rA = []
     for (let t of kt)
-        rA = [ ...rA, ...renderVDOM(state, t, h, p, self, baseURL) ];
+        rA = [ ...rA, ...renderVDOM(state, t, h, p, self, baseURL, beforeOperation) ];
     return rA;
 }
 

@@ -2,7 +2,8 @@
     <div>
         <Button type="success"
                 v-if="selectedUser.uid < 0"
-                @click="addCustomerDialogShouldShow = true;"
+                @click="showDialog"
+                style="margin-bottom: 12px;"
         >增加客户</Button>
 
         <CustomerList 
@@ -74,6 +75,25 @@
             </div>
 
             <div style="margin-bottom: 5px;">
+                <Checkbox v-model="addForOthers">
+                    为其他管理员添加
+                </Checkbox>
+            </div>
+
+            <div style="margin-bottom: 5px;" v-show="addForOthers">
+                <span class="title-before-input"> <i class="required" />所属组 </span>
+                <Select v-model="selectedGid" style="width:200px">
+                    <Option v-for="(e,i) in groups" :value="e.id" :key="e.id">{{ e.name }}</Option>
+                </Select>
+            </div>
+            <div style="margin-bottom: 5px;" v-show="addForOthers">
+                <span class="title-before-input"> <i class="required" />所属管理员 </span>
+                <Select v-model="selectedAid" style="width:200px">
+                    <Option v-for="(e,i) in admins" :value="e.id" :key="e.id">{{ e.name }}</Option>
+                </Select>
+            </div>
+
+            <div style="margin-bottom: 5px;">
                 <span class="title-before-input">邮箱 </span>
                 <Input v-model="infoSave.email" placeholder="" clearable style="width: 200px" />
             </div>
@@ -123,6 +143,7 @@ import CustomerReceiptStat from './customer/cusreceiptstat.vue';
 import CustomerCompanyOverview from './customer/companyoverview.vue';
 import CustomerCompanySetup from './customer/comsetup.vue';
 import CustomerCompanyCertificate from './customer/comcert.vue';
+import SelectArea from '../components/areaselect.vue';
 import init from '../../js/init.js';
 import API from '../../js/api.js';
 import util from '../../js/util.js';
@@ -133,22 +154,39 @@ export default {
     components: {
         CustomerList, CustomerCompantInformation, CustomerPublic, CustomerOrder,
         CustomerReceipt, CustomerReceiptStat, CustomerCompanyOverview,
-        CustomerCompanySetup, CustomerCompanyCertificate,
+        CustomerCompanySetup, CustomerCompanyCertificate, SelectArea,
     },
     data: () => ({
         selectedCompany: { id: -1 },
         selectedUser: { uid: -1 },
+
+        addForOthers: false,
 
         addCustomerDialogShouldShow: false,
         infoSave: init.tCustomer,
 
         industry,
         memberType,
-        pending: false
+        pending: false,
+
+        selectedGid: -1,
+        selectedAid: -1,
+
+        groups: [],
+        admins: [],
     }),
     computed: {
         selectedCompanyID() { return this.selectedCompany.id; },
-        selectedUserID() { return this.selectedUser.uid; }
+        selectedUserID() { return this.selectedUser.uid; },
+        // 城市地址
+        area: {
+            get() {
+                return [ this.infoSave.province, this.infoSave.city, this.infoSave.district ];
+            },
+            set(val) {
+                [ this.infoSave.province, this.infoSave.city, this.infoSave.district ] = val;
+            }
+        },
     },
     methods: {
         async addNewCustomer() {
@@ -161,14 +199,19 @@ export default {
                 I.type === -1 || I.industry === -1)
                 return util.MessageBox.Show(this, "请填写所有必填信息");
 
-            if (window.config.adminGroupID !== I.gid) {
-                // 为别的组添加
-                if (window.config.P.AdminCustomerListOfCurrentGroup || window.config.P.AdminCustomerListAll);
-                else return util.MessageBox.Show(this, "该管理员账户没有权限为其他组用户添加用户");
+            // add for others
+            if (!this.addForOthers) {
+                I.aid = window.config.adminID;
+            }
+            else {
+                if (this.selectedAid === -1) {
+                    return util.MessageBox.Show(this, "请选择一个管理员");
+                }
+                I.aid = this.selectedAid;
             }
 
             try {
-                await API.Customer.addNew(this.infoSave);
+                await API.Customer.addNew(I);
                 util.MessageBox.Show(this, "操作成功");
                 this.addCustomerDialogShouldShow = false;
             }
@@ -176,6 +219,46 @@ export default {
                 console.error(e);
                 util.MessageBox.Show(this, '操作失败');
             }
+        },
+        showDialog() {
+            if (!window.config.P.AdminCustomerAdd) {
+                util.MessageBox.Show(this, "该账号没有权限添加用户");
+                return;
+            }
+            this.addCustomerDialogShouldShow = true;
+        },
+        async loadGroups() {
+            this.groups = await API.Group.getSimplifiedList();
+        },
+        async loadAdmins() {
+            this.admins = await API.Group.getUserOfGroup(this.selectedGid);
+        }
+    },
+    watch: {
+        addForOthers(val) {
+            if (!val) return;
+            if (window.config.P.AdminCustomerListOfCurrentGroup || window.config.P.AdminCustomerListAll);
+            else{
+                util.MessageBox.Show(this, "该账号没有权限为其他人添加用户");
+                this.addForOthers = false;
+                return;
+            }
+            this.loadGroups();
+            this.selectedGid =window.config.adminGroupID;
+            this.selectedAid =window.config.adminID;
+        },
+        selectedGid(val) {
+            if (val === -1) {
+                return this.admins = [];
+            }
+            else if (window.config.adminGroupID !== val) {
+                // 为别的组添加
+                if (window.config.P.AdminCustomerListAll);
+                else
+                    return util.MessageBox.Show(this, "该管理员没有权限为其他组用户添加用户");
+            }
+            this.loadAdmins();
+            this.selectedAid = -1;
         }
     }
 }

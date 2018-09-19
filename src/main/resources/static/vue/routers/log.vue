@@ -21,9 +21,13 @@
                 return [
                     //{ type: 'selection', width: 60, align: 'center' },
                     { title: '序号', type: 'index', width: 100 },
-                    { title: '管理员ID', key: 'id',  },
-                    { title: '时间',  key: 'tm' },
-                    { title: '描述', key: 'description' },
+                    { title: '管理员名称', key: 'name', width: 250 },
+                    {
+                        title: '时间',
+                        render: (h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tm))),
+                        width: 200,
+                    },
+                    { title: '描述', key: 'description', width: 600 },
 
                 ]
             },

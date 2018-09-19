@@ -2,7 +2,7 @@
     <Card  class="card-margin">
         <Divider orientation="left"><h3>公司证照</h3></Divider>
 
-        <PagedTable v-if="selected != -1" :columns="columns" :data-source="`customer/_/company/${cid}/cert`" />
+        <PagedTable ref="dt" :columns="columns" :data-source="`customer/_/company/${cid}/cert`" />
         <div style="margin-top: 20px;">
             <Button type="success" @click="dialogVisible.newCert = true">上传证照</Button>
         </div>
@@ -14,6 +14,7 @@
             :width="800"
             v-model="dialogVisible.newCert"
             title="新增证照"
+            @on-ok="upload"
         >
             <Row>
                 <Col span="12">
@@ -38,17 +39,11 @@
 </template>
 
 <script>
-    import $ from '../../../js/ajax.js';
+    import API from '../../../js/api.js';
     import util from '../../../js/util.js';
     import PagedTable from '../../pagedTable.vue';
     import UploadFile from '../../components/uploadfile.vue';
-
-    const certInit = {
-        cid: '',
-        certNo: '',
-        certName: '',
-        certImg: '',
-    };
+    import init from '../../../js/init.js';
 
     export default {
         props: [ 'cid' ],
@@ -56,7 +51,7 @@
             PagedTable, UploadFile
         },
         data: () => ({
-            newCert: certInit,
+            newCert: init.tComCert,
             dialogVisible: {
                 newCert: false,
             },
@@ -80,12 +75,16 @@
                                     },
                                     on: {
                                         async click() {
-                                            let r = await $.ajax('/api/customer/_/cert/'+self.p(params).id+'/delete');
-                                            if (r.code === 0) {
-                                                util.MessageBox.Show(this, "删除成功");
-                                                return self.refresh();
+                                            try {
+                                                let r = API.Company.Certificates.remove(params.row.id);
+                                                util.MessageBox.Show(self, "删除成功");
+                                                self.refresh();
                                             }
-                                            return util.MessageBox.Show(this, "删除失败");
+                                            catch (e) {
+                                                console.error(e);
+                                                return util.MessageBox.Show(self, "删除失败");
+                                            }
+
                                         }
                                     }
                                 }, '删除'),
@@ -96,6 +95,30 @@
             },
         }),
         methods: {
+            async upload() {
+                let C = this.newCert;
+                let certName = C.certName, certImg = C.certImg.data, certNo = C.certNo;
+                debugger;
+                if (util.String.isNullOrEmpty(certName) ||
+                        util.String.isNullOrEmpty(certImg) ||
+                        util.String.isNullOrEmpty(certNo)
+                ) {
+                    util.MessageBox.Show(this, "请输入所有必填信息");
+                    this.dialogVisible.newCert = true;
+                    return;
+                }
+
+                // start upload
+                try {
+                    await API.Company.Certificates.add(this.cid, Object.assign(C, { certImg }));
+                    util.MessageBox.Show(this, "添加成功");
+                    this.$refs.dt.refresh();
+                }
+                catch (e) {
+                    console.error(e);
+                    util.MessageBox.Show(this, "添加失败:" + e.msg);
+                }
+            }
         },
     }
 </script>

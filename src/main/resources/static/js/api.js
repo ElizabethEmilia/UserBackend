@@ -77,6 +77,7 @@ export default {
         addNew: (data) => POST(`/api/customer/new`, data)(),
 
         Company: {
+            getList: (uid) => POST(`/api/customer/${ uid }/company/list`)(),
             newCompany: (uid, data) => POST(`/api/customer/${uid}/company/new`, data)(),
             deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body),
             renew: (uid, cid, params) => POST(`/api/customer/${uid}/company/${cid}/addtime`, params)(),
@@ -92,6 +93,10 @@ export default {
 
         SetupStates: {
             update: (stateArray) => Settings_Update('setup_states', stateArray.join(',')),
+        },
+        Certificates: {
+            remove: (cid) => POST(`/api/customer/_/cert/${cid}/delete`, { r: 1})(),
+            add: (cid, data) => POST(`/api/customer/_/company/${cid}/newcert`, data)(),
         }
     },
     Setting: {
@@ -155,7 +160,7 @@ export default {
         add: data => POST(`/api/group/add`, data)(),
         remove: gid => POST(`/api/group/${gid}/delete`, { r: 1 })(),
         modify: (gid, data) => POST(`/api/group/${gid}/modify`, data)(),
-        getUserOfGroup: (gid) => GET(`/api/group/${gid}/user`)(),
+        getUserOfGroup: (gid) => GET(`/api/group/${gid}/user?size=10000`)(),
         getCustomerOfGroup: (gid) => GET(`/api/group/${gid}/customer`)(),
     },
 

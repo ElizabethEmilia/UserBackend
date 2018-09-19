@@ -122,8 +122,6 @@ export default {
             });
         },
         dataSource() {
-            if (this.viewRes === "self")
-                return "customer";
             return "customer/list/" + this.viewRes;
         }
     },

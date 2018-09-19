@@ -72,7 +72,7 @@ public class UIController extends BaseController {
         }
 
         Integer role = (Integer)session.getAttribute("role");
-        String isAdmin = role <= 2 ? "true" : "false";
+        String isAdmin = "false";
         String isSuperAdmin = role == 1 ? "true" : "false";
         String permission = XunBinKit.getPermission().toString();
 
@@ -87,8 +87,10 @@ public class UIController extends BaseController {
         if (userInfoObj instanceof TAdmin) {
             TAdmin admin = (TAdmin)userInfoObj;
             username = admin.getName();
+            isAdmin = "true";
 
             scriptIfAdmin = "window.config.adminGroupID = " + admin.getGid() + ";\n";
+            scriptIfAdmin += "window.config.adminID = " + admin.getId() + ";\n";
         }
         else if (userInfoObj instanceof TCustomer) {
             TCustomer customer = (TCustomer)userInfoObj;

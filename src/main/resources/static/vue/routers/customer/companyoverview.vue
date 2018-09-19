@@ -1,7 +1,7 @@
 <template>
     <Card class="card-margin">
         <p slot="title">
-            <a v-if="selected != -1" @click="selected = -1; $emit('on-back-to-user-list');" href="javascript:void(0)" style="margin-right: 10px;">返回</a>
+            <a  @click="$emit('on-back-to-user-list');" href="javascript:void(0)" style="margin-right: 10px;">返回</a>
             {{ info.name }}
         </p>
         <!-- 信息总览 -->

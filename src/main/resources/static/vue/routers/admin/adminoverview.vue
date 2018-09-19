@@ -163,10 +163,10 @@
                     if (result.code) {
                         return alert('获取基本信息失败：' + result.msg);
                     }
-                    this.info = result.data;
-                    this.avatar = result.data.avatar;
+                    this.info = result.data[0];
                 }
                 catch(err) {
+                    console.error(err);
                     util.Debug.ralert('获取基本信息失败');
                 }
             },
@@ -188,9 +188,19 @@
             // 更改后的HASH值
             hashAfterModify() {
                 return md5(util.forGetParams(this.infoSave));
-            }
+            },
+
+            // 城市地址
+            area: {
+                get() {
+                    return [ this.infoSave.province, this.infoSave.city, this.infoSave.district ];
+                },
+                set(val) {
+                    [ this.infoSave.province, this.infoSave.city, this.infoSave.district ] = val;
+                }
+            },
         },
-        created() {
+        mounted() {
             this.getBasicInfo();
         }
     }

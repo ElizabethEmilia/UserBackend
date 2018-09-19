@@ -54,9 +54,9 @@
 
                     return [
                         { title: '序号', type: 'index', width: 100 },
-                        { title: '用户名', key: 'user_name' },
+                        { title: '用户名', key: 'userName' },
                         { title: '公司名称', key: 'name', },
-                        { title: '服务包到期时间', key: 'ori_tax_pack_end' },
+                        { title: '服务包到期时间', key: 'oriTaxPackEnd' },
                         window.config.isAdmin ? {
                             title: '操作',
                             width: 150,
@@ -111,7 +111,7 @@
 
                 await util.MessageBox.ComfirmAsync(this, "确实要以"
                     +this.params.price+"元的价格，" + addi +
-                    "给客户"+this.selectedItem.user_name+"(uid:"+this.selectedItem.uid+")的公司[" +
+                    "给客户"+this.selectedItem.userName+"(uid:"+this.selectedItem.uid+")的公司[" +
                     this.selectedItem.name + "]" +
                     "续期"+this.params.months+"个月吗？");
 

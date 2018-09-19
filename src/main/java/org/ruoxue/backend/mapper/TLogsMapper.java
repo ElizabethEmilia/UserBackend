@@ -26,7 +26,7 @@ public interface TLogsMapper extends BaseMapper<TLogs> {
     Boolean actionLog(Integer aid, Date tm, String description, Integer cls);
 
 //    查询日志的列表
-    @Select("select * from t_logs order by id DESC limit #{page}, #{size}")
+    @Select("select t_logs.*, t_admin.name from t_logs ,t_admin where t_logs.aid=t_admin.id order by id DESC limit #{page}, #{size}")
     List<Map<String, Object>> listLogs(@Param("page") Integer page, @Param("size") Integer size);
 
 }

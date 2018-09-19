@@ -2,7 +2,7 @@
     <Card  class="card-margin">
         <Divider orientation="left"><h3>公司设立进度</h3></Divider>
 
-        <PagedTable v-if="selected != -1" :columns="columns" :data-source="`customer/_/company/${cid}/setup`" />
+        <PagedTable :columns="columns" :data-source="`customer/_/company/${cid}/setup`" />
         <div style="margin-top: 20px;">
             <Button @click="dialogVisible = true">新增设立进度</Button>
         </div>
@@ -50,12 +50,7 @@
     import PagedTable from '../../pagedTable.vue';
     import md5 from 'js-md5';
     import API from '../../../js/api.js';
-
-    const progressInit = {
-        cid: -1,
-        state: "",
-        note: "",
-    }
+    import init from '../../../js/init.js';
 
     export default {
         props: [ 'cid' ],
@@ -63,8 +58,8 @@
             PagedTable,
         },
         data: () => ({
-            states:  window.config.settings.setup_states.split(','),
-            newProgress: progressInit,
+            states:  window.config.setup_states.split(','),
+            newProgress: init.tComSetProgress,
             dialogVisible: false,
             columns() {
                 return [
@@ -100,7 +95,7 @@
         },
         computed: {
             isNewState() {
-                return this.newProgress.state.length !== 0 && this.states.filter(e=>e===this.newProgress.state).length !== 0;
+                return this.states.length !== 0 && this.states.filter(e=>e===this.newProgress.state).length !== 0;
             }
         },
         mounted() {

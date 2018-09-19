@@ -8,11 +8,11 @@ RUN curl -sSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binari
 
 ENV MAVEN_HOME /usr/share/maven
 
-COPY . /data/springboot-helloworld
-WORKDIR /data/springboot-helloworld
+COPY . /data/springboot
+WORKDIR /data/springboot
 
 RUN ["mvn", "clean", "install"]
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "target/helloworld-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/userbackend-0.0.1-SNAPSHOT.jar"]

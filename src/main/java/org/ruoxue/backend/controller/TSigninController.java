@@ -66,7 +66,10 @@ public class TSigninController {
     @ApiOperation("获取客户列表(self, group, all)")
     @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
     public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false    ) String search) {
-        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll)) return null;
+        if (type.equals("group") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListOfCurrentGroup))
+            return null;
+        if (type.equals("all") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll))
+            return null;
         return signinService.listByType(type, page, size, search);
     }
 

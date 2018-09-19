@@ -98,8 +98,11 @@ public class TComCertServiceImpl extends ServiceImpl<TComCertMapper, TComCert> i
             return ResultUtil.error(-1, "参数错误");
         }
 
+        int iUid = -1;
+        try { iUid = Integer.parseInt(uid); } catch (Exception e) { }
+
         TComCert comCert = new TComCert();
-        comCert.setUid(Integer.parseInt(uid));
+        comCert.setUid(iUid);
         comCert.setCid(cid);
         comCert.setCertImg(Base64Util.GenerateImageFromDataURI(certImg));
         comCert.setCertName(certName);

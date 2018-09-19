@@ -2,7 +2,9 @@ package org.ruoxue.backend.controller;
 
 
 import io.swagger.annotations.ApiOperation;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITLogsService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +22,7 @@ import javax.annotation.Resource;
  * @since 2018-08-30
  */
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/system")
 public class TLogsController {
 
     @Resource
@@ -29,6 +31,7 @@ public class TLogsController {
     @ApiOperation("日志列表")
     @RequestMapping(value = "/log", method = RequestMethod.GET)
     public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.LogViewAndExport)) return null;
         return logsService.listLog(page, size);
     }
 
