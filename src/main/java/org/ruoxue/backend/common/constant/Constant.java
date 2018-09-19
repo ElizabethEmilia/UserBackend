@@ -128,18 +128,32 @@ public final class Constant {
     /*
     开票表（状态）
 
-    0 - 待提交
-    1 - 待审核
-    2 - 审核通过
-    3 - 审核未通过
-    4 - 已开票（和客户确认此状态是否存在）
+    0 - 已提交
+    1 - 已提交，待审核
+    2 - 已审核，待分配
+    3 - 已分配（分配），待开票
+    4 - 已分配（自取），待开票
+    5 - 已开票。待打包
+    6 - 已打包,待核对
+    7 - 已核对，已寄送
+    8 - 已签收
+    9 - 已驳回，待提交
+    10 - 已开票 已作废
+    11 - 已驳回，待打包
      */
     public class RECEIPT_STATUS {
-        public static final int TO_BE_SUBMITTED = 0;
-        public static final int PENDING = 1;
-        public static final int PASSED = 2;
-        public static final int REFUSED = 3;
-        public static final int ISSUED = 4;
+        public static final int Saved = 0;
+        public static final int Submitted = 1;
+        public static final int Checked = 2;
+        public static final int DistributedDistrib = 3;
+        public static final int DistributedSelf = 4;
+        public static final int Receipted = 5;
+        public static final int Packed = 6;
+        public static final int VerifiedAndSent = 7;
+        public static final int ReceivedCompleted = 8;
+        public static final int RefusedWaitingSubmit = 9;
+        public static final int Abondoned = 10;
+        public static final int RefusedWaitingPacking = 11;
     }
 
     /*
