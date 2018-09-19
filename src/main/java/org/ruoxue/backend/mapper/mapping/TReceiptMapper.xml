@@ -56,28 +56,28 @@
 	</select>
 
 	<select id="receiptList" resultType="java.util.Map">
-		select * from t_receipt
-		where 1 = 1
+		select a.*, b.name from t_receipt a, t_company b
+		where 1 = 1 and a.cid = b.id
 		<if test="status != null">
-			and status = #{status}
+			and a.status = #{status}
 		</if>
 		<if test="type != null and type != ''">
-			and rec_type = #{type}
+			and a.rec_type = #{type}
 		</if>
 		<if test="cid != null and cid != ''">
-			and cid = #{cid}
+			and a.cid = #{cid}
 		</if>
 		<if test="start != null and start != ''">
 			<![CDATA[
-				and tm_submit > #{start}
+				and a.tm_submit > #{start}
 			]]>
 		</if>
 		<if test="end != null and end != ''">
 			<![CDATA[
-				and tm_submit < #{end}
+				and a.tm_submit < #{end}
 			]]>
 		</if>
-		order by id DESC limit #{page}, #{size}
+		order by a.id DESC limit #{page}, #{size}
 	</select>
 
 </mapper>
