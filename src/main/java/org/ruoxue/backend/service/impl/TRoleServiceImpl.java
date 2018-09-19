@@ -39,7 +39,8 @@ public class TRoleServiceImpl extends ServiceImpl<TRoleMapper, TRole> implements
         page = (page - 1) * size;
 
         List<Map<String, Object>> list = roleMapper.list(page, size);
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+
+        return ResultUtil.success(list);
     }
 
     @Override

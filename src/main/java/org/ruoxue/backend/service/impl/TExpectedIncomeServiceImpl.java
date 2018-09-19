@@ -101,7 +101,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         List<TExchange> list = expectedIncomeMapper.listExchange(map.get(type), cid, page, size, start, end);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         List<Map<String, Object>> list = expectedIncomeMapper.listExpectIncomeByYear(cid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         List<Map<String, Object>> list = expectedIncomeMapper.listExpectIncome(cid, status, page, size, from, to);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         List<Map<String, Object>> list = expectedIncomeMapper.listAdminCurrentByYear(cid, userid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -272,7 +272,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         List<Map<String, Object>> list = expectedIncomeMapper.listAdminCurrent(cid, userid, status, page, size, from, to);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override

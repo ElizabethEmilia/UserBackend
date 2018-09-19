@@ -171,7 +171,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
 
         List<Map<String, Object>> list = (List<Map<String, Object>>) map.get(type);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 }
 

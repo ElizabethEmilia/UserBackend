@@ -134,6 +134,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         page = (page - 1) * size;
 
         List<TPublicCharge> list = publicChargeMapper.listPublicCharge(uid, page, size, map.get(status), start, end);
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+
+        return ResultUtil.success(list);
     }
 }

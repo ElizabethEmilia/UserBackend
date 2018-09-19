@@ -47,7 +47,7 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
 
         List<TExchange> list = exchangeMapper.getOnlinecharge(uid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -77,6 +77,6 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
 
         List<TPublicCharge> list = exchangeMapper.getPublicCharge(uid, page, size, map.get(status));
 
-        return XunBinKit.returnResult(list.size() > 0, -3, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 }
