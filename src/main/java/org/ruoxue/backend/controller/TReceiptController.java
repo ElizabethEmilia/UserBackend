@@ -35,8 +35,8 @@ public class TReceiptController {
 
     @ApiOperation("管理员对开票申请的 XXX")
     @RequestMapping(value = "/customer/{uid}/receipt/{rid}/{action}", method = RequestMethod.POST)
-    public @ResponseBody Object receiptRequest(@PathVariable String uid, @PathVariable Integer rid, @PathVariable String action) {
-        return receiptService.receiptRequest(uid, rid, action);
+    public @ResponseBody Object receiptRequest(@PathVariable String uid, @PathVariable Integer rid, @PathVariable String action, @RequestParam(required = false) String reason) {
+        return receiptService.receiptRequest(uid, rid, action, reason);
     }
 
 

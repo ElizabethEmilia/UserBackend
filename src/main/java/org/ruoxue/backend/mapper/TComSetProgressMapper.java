@@ -23,6 +23,6 @@ public interface TComSetProgressMapper extends BaseMapper<TComSetProgress> {
     Integer deleteSetUp(@Param("uid") Integer uid, @Param("cid") Integer cid);
 
 //    根据uid和cid获取公司最后一个进度status
-    String getStatusByLast();
+    String getStatusByLast(@Param("uid") Integer uid, @Param("cid") Integer cid);
 
 }

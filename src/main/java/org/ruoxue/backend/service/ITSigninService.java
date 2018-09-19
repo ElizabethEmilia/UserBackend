@@ -1,5 +1,6 @@
 package org.ruoxue.backend.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TSignin;
@@ -13,6 +14,8 @@ import org.ruoxue.backend.bean.TSignin;
  * @since 2018-08-30
  */
 public interface ITSigninService extends IService<TSignin> {
+
+    Object customerAdd(JSONObject jsonObject);
 
     TSignin getSigninByUid(Integer id);
 

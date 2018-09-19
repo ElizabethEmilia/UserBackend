@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-16
+ * @since 2018-09-19
  */
 @TableName("t_company")
 public class TCompany extends Model<TCompany> {
@@ -27,9 +27,9 @@ public class TCompany extends Model<TCompany> {
 	private Integer parent;
 	private String lpname;
 	@TableField("tax_type")
-	private Integer taxType;
+	private String taxType;
 	@TableField("vat_type")
-	private Integer vatType;
+	private String vatType;
 	@TableField("ysa_range")
 	private Integer ysaRange;
 	@TableField("pre_tax_ratio")
@@ -47,9 +47,9 @@ public class TCompany extends Model<TCompany> {
 	@TableField("river_tax")
 	private Double riverTax;
 	@TableField("ent_org_type")
-	private Integer entOrgType;
+	private String entOrgType;
 	@TableField("inv_type")
-	private Integer invType;
+	private String invType;
 	@TableField("business_type")
 	private String businessType;
 	@TableField("tax_pack_start")
@@ -100,19 +100,19 @@ public class TCompany extends Model<TCompany> {
 		this.lpname = lpname;
 	}
 
-	public Integer getTaxType() {
+	public String getTaxType() {
 		return taxType;
 	}
 
-	public void setTaxType(Integer taxType) {
+	public void setTaxType(String taxType) {
 		this.taxType = taxType;
 	}
 
-	public Integer getVatType() {
+	public String getVatType() {
 		return vatType;
 	}
 
-	public void setVatType(Integer vatType) {
+	public void setVatType(String vatType) {
 		this.vatType = vatType;
 	}
 
@@ -180,19 +180,19 @@ public class TCompany extends Model<TCompany> {
 		this.riverTax = riverTax;
 	}
 
-	public Integer getEntOrgType() {
+	public String getEntOrgType() {
 		return entOrgType;
 	}
 
-	public void setEntOrgType(Integer entOrgType) {
+	public void setEntOrgType(String entOrgType) {
 		this.entOrgType = entOrgType;
 	}
 
-	public Integer getInvType() {
+	public String getInvType() {
 		return invType;
 	}
 
-	public void setInvType(Integer invType) {
+	public void setInvType(String invType) {
 		this.invType = invType;
 	}
 

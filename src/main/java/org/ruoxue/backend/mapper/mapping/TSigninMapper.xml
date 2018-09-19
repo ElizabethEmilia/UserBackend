@@ -34,7 +34,7 @@
 	<select id="listGroup" resultType="java.util.Map">
 		select * from t_customer where aid in (
 			select aid from t_admin where gid = (
-				select gid from t_admin where id = 3
+				select gid from t_admin where id = #{id}
 			)
 		)
 		<if test="search != null and search !=''">

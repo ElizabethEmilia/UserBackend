@@ -1,12 +1,12 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-16
+ * @since 2018-09-19
  */
 @TableName("t_exchange")
 public class TExchange extends Model<TExchange> {
@@ -26,7 +26,7 @@ public class TExchange extends Model<TExchange> {
 	private Long running;
 	private Integer uid;
 	private Integer cid;
-	private Double amount;
+	private BigDecimal amount;
 	private Integer paymethod;
 	private String note;
 	private Date tm;
@@ -66,11 +66,11 @@ public class TExchange extends Model<TExchange> {
 		this.cid = cid;
 	}
 
-	public Double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

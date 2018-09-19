@@ -83,7 +83,7 @@ public class MainServiceImpl extends BaseController implements MainService {
 
         // 获取到了客户
         if (ToolUtil.isNotEmpty(customer)) {
-            signin = signinMapper.selectById(customer.getUid());
+            signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
             session.setAttribute("username", customer.getName());
             session.setAttribute("obj", customer);
             return md5Salt(signin, password, session, customer.getUid());
@@ -93,7 +93,7 @@ public class MainServiceImpl extends BaseController implements MainService {
         TAdmin admin = mainMapper.getAdminByNameOrPhone(name);
         if(ToolUtil.isNotEmpty(admin)){
             // 管理员
-            signin = signinMapper.selectById(admin.getId());
+            signin = signinMapper.getSigninByUid(admin.getLid());
             session.setAttribute("username", admin.getName());
             session.setAttribute("obj", admin);
 

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-16
+ * @since 2018-09-19
  */
 @TableName("t_com_set_progress")
 public class TComSetProgress extends Model<TComSetProgress> {
