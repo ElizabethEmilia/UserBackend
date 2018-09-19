@@ -51,7 +51,7 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
     }
 
     @Override
-    public Object addSetUp(String uid, Integer cid, Integer status, String note) {
+    public Object addSetUp(String uid, Integer cid, String status, String note) {
 //        非空验证
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(status) || ToolUtil.isEmpty(note)) {
             return ResultUtil.error(-1, "参数错误");
@@ -61,7 +61,7 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
         TComSetProgress comSetProgress = new TComSetProgress();
         comSetProgress.setCid(cid);
         comSetProgress.setNote(note);
-        comSetProgress.setStatus(status + "");
+        comSetProgress.setStatus(status);
         comSetProgress.setTm(new Date());
         comSetProgress.setUid(Integer.parseInt(uid));
         boolean b = comSetProgress.insert();
@@ -87,12 +87,14 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
 //        获取公司实体
         TCompany company = companyMapper.getCompany(userid, cid);
 
-//        获取最后一个公司进度
-        String status = comSetProgressMapper.getStatusByLast();
+        if (ToolUtil.isNotEmpty(company)) {
+ //        获取最后一个公司进度
+            String status = comSetProgressMapper.getStatusByLast(userid, cid);
 
 //        更新公司进度
-        company.setStatus(status);
-        company.updateById();
+            company.setStatus(status);
+            company.updateById();
+        }
 
         return XunBinKit.returnResult(len == 1, -2, null, "删除成功", "删除失败");
     }

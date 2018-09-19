@@ -15,7 +15,7 @@ public interface ITComSetProgressService extends IService<TComSetProgress> {
 
     Object getSetUp(String uid, Integer cid);
 
-    Object addSetUp(String uid, Integer cid, Integer status, String note);
+    Object addSetUp(String uid, Integer cid, String status, String note);
 
     Object deleteSetUp(String uid, Integer cid);
 

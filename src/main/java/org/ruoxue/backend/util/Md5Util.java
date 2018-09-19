@@ -5,10 +5,8 @@ import java.security.MessageDigest;
 public class Md5Util {
 
     public static void main(String[] args) {
-        String pwd = getMD5("96e79218965eb72c92a549dd5a330112");
-        System.out.println("-------------pwd: " + pwd);
-        String pwd1 = getMD5("123456");
-        System.out.println(pwd.equals(pwd1));
+        String pwd1 = "123456";
+        System.out.println(getMD5(pwd1));
     }
 
     //生成MD5

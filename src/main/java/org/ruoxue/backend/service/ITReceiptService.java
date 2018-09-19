@@ -18,7 +18,7 @@ public interface ITReceiptService extends IService<TReceipt> {
 
     Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end);
 
-    Object receiptRequest(String uid, Integer rid, String action);
+    Object receiptRequest(String uid, Integer rid, String action, String reason);
 
     Object receiptAdd(JSONObject jsonObject);
 
