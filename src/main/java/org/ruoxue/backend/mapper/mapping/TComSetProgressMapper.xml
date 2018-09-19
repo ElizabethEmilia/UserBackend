@@ -36,7 +36,7 @@
 		<if test="uid != -1">
 			and uid = #{uid}
 		</if>
-		and cid = #{cid}
+		and id = #{cid}
 		order by id desc limit 1
 	</select>
 

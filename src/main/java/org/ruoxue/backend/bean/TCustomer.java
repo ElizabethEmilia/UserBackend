@@ -15,7 +15,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-16
+ * @since 2018-09-19
  */
 @TableName("t_customer")
 public class TCustomer extends Model<TCustomer> {

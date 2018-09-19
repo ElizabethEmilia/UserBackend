@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-16
+ * @since 2018-09-19
  */
 @TableName("t_shop_items")
 public class TShopItems extends Model<TShopItems> {

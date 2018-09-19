@@ -63,11 +63,15 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     }
 
     @Override
-    public Object receiptRequest(String uid, Integer rid, String action) {
+    public Object receiptRequest(String uid, Integer rid, String action, String reason) {
 
 //        非空验证
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(rid) || ToolUtil.isEmpty(action)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isEmpty(reason)) {
+            reason = "";
         }
 
         Integer userid = XunBinKit.getUidByString(uid);
@@ -82,6 +86,8 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         Integer statusCode = getCodeByAction(action);
 
         receipt.setStatus(statusCode);
+        receipt.setReason(reason);
+
         boolean b = receipt.updateById();
 
         return XunBinKit.returnResult(b, -3, null, "修改成功", "修改失败");

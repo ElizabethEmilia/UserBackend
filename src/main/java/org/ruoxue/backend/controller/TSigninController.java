@@ -1,6 +1,7 @@
 package org.ruoxue.backend.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.feature.PermissionManager;
@@ -26,6 +27,12 @@ public class TSigninController {
 
     @Resource
     private ITSigninService signinService;
+
+    @ApiOperation("新增客户")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public @ResponseBody Object customerAdd(@RequestBody JSONObject jsonObject) {
+        return signinService.customerAdd(jsonObject);
+    }
 
     @ApiOperation("获取用户基本信息")
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
@@ -65,7 +72,7 @@ public class TSigninController {
      */
     @ApiOperation("获取客户列表(self, group, all)")
     @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
-    public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false    ) String search) {
+    public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) String search) {
         if (type.equals("group") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListOfCurrentGroup))
             return null;
         if (type.equals("all") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll))

@@ -31,7 +31,7 @@ public class TComSetProgressController {
 
     @ApiOperation("添加客户公司设立进度")
     @RequestMapping(value = "/{uid}/company/{cid}/setup/new", method = RequestMethod.POST)
-    public @ResponseBody Object addSetUp(@PathVariable String uid, @PathVariable Integer cid, @RequestParam Integer status, @RequestParam String note){
+    public @ResponseBody Object addSetUp(@PathVariable String uid, @PathVariable Integer cid, @RequestParam String status, @RequestParam String note){
         return comSetProgressService.addSetUp(uid, cid, status, note);
     }
 
