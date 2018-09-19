@@ -44,6 +44,7 @@
     import PagedTable from '../../pagedTable.vue';
     import UploadFile from '../../components/uploadfile.vue';
     import init from '../../../js/init.js';
+    import render from '../../../js/render.js';
 
     export default {
         props: [ 'cid' ],
@@ -66,28 +67,23 @@
                     {
                         title: '操作',
                         key: 'action',
-                        render: (h, params) => {
-                            console.log(h, params);
+                        render: (h, p) => {
                             return h('div', [
-                                h('a', {
-                                    props: {
-                                        href: 'javascript:void(0)',
-                                    },
-                                    on: {
-                                        async click() {
-                                            try {
-                                                let r = API.Company.Certificates.remove(params.row.id);
-                                                util.MessageBox.Show(self, "删除成功");
-                                                self.refresh();
-                                            }
-                                            catch (e) {
-                                                console.error(e);
-                                                return util.MessageBox.Show(self, "删除失败");
-                                            }
-
+                                render.link(h, p, '删除', async function() {
+                                    await util.MessageBox.ComfirmAsync(this, "确实要删除吗？");
+                                        try {
+                                            let r = API.Company.Certificates.remove(p.row.id);
+                                            util.MessageBox.Show(self, "删除成功");
+                                            self.refresh();
                                         }
-                                    }
-                                }, '删除'),
+                                        catch (e) {
+                                            console.error(e);
+                                            return util.MessageBox.Show(self, "删除失败");
+                                        }
+                                    }),
+                                render.link(h, p, '查看', function() {
+                                    window.open('/res/avatar/' + p.row.certImg);
+                                })
                             ]);
                         }
                     },

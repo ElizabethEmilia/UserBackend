@@ -2,7 +2,7 @@
     <Card  class="card-margin">
         <Divider orientation="left"><h3>公司设立进度</h3></Divider>
 
-        <PagedTable :columns="columns" :data-source="`customer/_/company/${cid}/setup`" />
+        <PagedTable ref="dt" :columns="columns" :data-source="`customer/_/company/${cid}/setup`" />
         <div style="margin-top: 20px;">
             <Button @click="dialogVisible = true">新增设立进度</Button>
         </div>
@@ -14,6 +14,7 @@
             :width="600"
             title="新增设立进度"
             v-model="dialogVisible"
+            @on-ok="add"
         >
             <div style="margin: 15px 0 15px 0">
 
@@ -69,11 +70,37 @@
                     { title: '时间', key: 'tm' }, //string
                     { title: '状态', key: 'status' }, /// string
                     { title: '备注', key: 'note' }, // string
-                    { title: '操作', render: (h,p)=>h('a', { on: { click() { alert('1234'); } } }) }
+                    { title: '操作', render: (h,p)=>h('a', { on: { async click() {
+                       await API.Company.SetupProgress.remove(p.row.cid, p.row.id);
+                                } } }, '删除') }
                 ];
             }
         }),
         methods: {
+            async add() {
+                let I = this.newProgress;
+
+                if (this.cid == undefined || this.cid == null ||this.cid <=-1) {
+                    return util.MessageBox.Show(this, "请选择公司");
+                }
+                I.cid = this.cid;
+
+                if (util.String.isNullOrEmpty(I.state)) {
+                    return util.MessageBox.Show(this, "请输入公司状态");
+                }
+
+                try {
+                    let r = await API.Company.SetupProgress.add(this.cid, {
+                        status: I.state,
+                        note: I.note,
+                    });
+                    util.MessageBox.Show(this, "添加成功");
+                }
+                catch (e) {
+                    console.error(e);
+                    util.MessageBox.Error(this, "添加失败");
+                }
+            }
         },
         watch: {
             states: {

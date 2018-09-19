@@ -16,7 +16,7 @@
                     </div>
                 </Row>
                 <Row v-if="!editMode">
-                    <Divider dashed orientation="right" ><a href="javascript:void(0)" @click="edit_basicInformation()">编辑</a></Divider>
+                    <Divider dashed orientation="right" ><a :disabled="P.AdminCompanyAddAndModify" href="javascript:void(0)" @click="edit_basicInformation()">编辑</a></Divider>
                     <!-- 用户信息显示开始 -->
 
                     <Row class="line-margin">
@@ -143,11 +143,9 @@
                     <Card  :bordered="false" dis-hover>
                         <p slot="title">操作</p>
 
-                        <CellGroup>
+                        <CellGroup @on-click="cellGroupClick">
                             <Cell v-if="P.AdminCompanyAddAndModify" name="edit" title="编辑公司资料" />
-                            <Cell name="mamage" title="公司设立进度" />
-                            <Cell name="mamage" title="公司证照" />
-                            <Cell v-if="P.AdminCompanyRemoval" name="delete" title="删除公司" style="color: red"/>
+                            <Cell v-if="P.AdminCompanyRemoval" name="remove" title="删除公司" style="color: red"/>
                         </CellGroup>
 
                     </Card>
@@ -309,6 +307,29 @@
                 await util.MessageBox.ComfirmAsync(this, "确认放弃更改?");
                 this.editMode=false;
             },
+
+            // click cell group
+            cellGroupClick(name) {
+                const handlers = {
+                    edit: () => { this.editMode = true; },
+                    remove: async () => {
+                        if (!window.config.P.AdminCompanyRemoval) {
+                            return util.MessageBox.Show(this, "该管理员没有权限删除公司");
+                        }
+                        await util.MessageBox.ComfirmAsync(this, "确定要删除该公司吗？");
+                        console.log('13234');
+                        try {
+                            await API.Company.deleteCompany(this.cusData.id);
+                            util.MessageBox.Show(this, "删除成功");
+                        }
+                        catch (err) {
+                            console.log(err);
+                            util.MessageBox.Show(this, "删除失败");
+                        }
+                    }
+                };
+                handlers[name]();
+            }
         },
         watch: {
             editMode(val) {

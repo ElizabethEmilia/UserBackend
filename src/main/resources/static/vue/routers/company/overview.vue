@@ -137,7 +137,7 @@
             <Col span="12">
 
                 <Row>
-                    <Card  :bordered="false" dis-hover>
+                    <!--Card  :bordered="false" dis-hover>
                         <p slot="title">操作</p>
 
                         <CellGroup>
@@ -145,7 +145,7 @@
                             <Cell name="mamage" title="公司证照" />
                         </CellGroup>
 
-                    </Card>
+                    </Card-->
                 </Row>
             </Col>
         </Row>

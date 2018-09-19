@@ -40,7 +40,7 @@
                         <Divider dashed orientation="right" >
                             <a v-if="hashBeforeModify != hashAfterModify" @click="discardChanges()" href="javascript:void(0)" style="margin-right: 10px;">放弃更改</a>
                             <a href="javascript:void(0)" v-if="hashAfterModify == hashBeforeModify" @click="editMode=false">返回</a>
-                            <a v-else :disabled="pendingSave || !AdminCustomerModify" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
+                            <a v-else :disabled="pendingSave || !P.AdminCustomerModify" href="javascript:void(0)" @click="saveChanges_basicInformation">{{ pendingSave?'正在':'' }}保存</a>
                         </Divider>
                         <Card :bordered="false" dis-hover>
                             <div style="margin-bottom: 5px;">
@@ -128,7 +128,7 @@
                             <CellGroup @on-click="cellGroupClick">
                                 <Cell v-if="P.AdminCustomerModify" name="edit" title="编辑资料" />
                                 <Cell v-if="P.AdminCompanyAddAndModify" name="newcompany" title="新增公司" />
-                                <Cell v-if="P.AdminCustomerRemoval" name="delete" title="删除客户" style="color: red"/>
+                                <Cell v-if="P.AdminCustomerRemoval" name="remove" title="删除客户" style="color: red"/>
                             </CellGroup>
 
                         </Card>
@@ -318,7 +318,10 @@ export default {
                 newcompany: () => {
                     this.sholdNewCompanyDialogOpen = true;
                 },
-                "delete": async () => {
+                remove: async () => {
+                    if (!window.config.P.AdminCustomerRemoval) {
+                        return util.MessageBox.Show(this, "该管理员没有权限删除客户");
+                    }
                     await util.MessageBox.ComfirmAsync(this, "确定要删除该客户吗？");
                     console.log('13234');
                     try {

@@ -40,13 +40,10 @@ export default {
                                 },
                                 on: {
                                     click() {
-                                        /// TODO: 看一下这么做图片打印
-                                        let certURL = self.tableData[params.index].certImg;
-                                        window.open(certURL);
-                                        console.log('index: 打印' + params.index);
+                                        window.open('/res/avatar/' + params.certImg)
                                     }
                                 }
-                            }, '打印'),
+                            }, '查看'),
                         ]);
                     }
                 },

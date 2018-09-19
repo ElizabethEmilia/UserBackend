@@ -97,6 +97,10 @@ export default {
         Certificates: {
             remove: (cid) => POST(`/api/customer/_/cert/${cid}/delete`, { r: 1})(),
             add: (cid, data) => POST(`/api/customer/_/company/${cid}/newcert`, data)(),
+        },
+        SetupProgress: {
+            add: (cid, data) => POST(`/api/customer/_/company/${cid}/setup/new`, data)(),
+            remove: (cid, sid) => POST(`/api/customer/_/company/${cid}/setup/${sid}/delete`)(),
         }
     },
     Setting: {

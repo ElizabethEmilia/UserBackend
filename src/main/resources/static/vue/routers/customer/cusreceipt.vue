@@ -3,7 +3,7 @@
          <Divider orientation="left"><h3>开票申请</h3></Divider>
         
         <Select v-model="selected.cid" placeholder="申请公司" style="width: 200px; margin-left: 5px;">
-            <Option v-for="(e, i) in companies" :value="e.cid" :key="e.cid">{{e.name}}</Option>
+            <Option v-for="(e, i) in companies" :value="e.id" :key="e.id">{{e.name}}</Option>
         </Select>
 
         <Select v-model="selected.type" placeholder="发票类型" style="width: 130px;  margin-left: 5px;">
@@ -27,7 +27,7 @@
             </Col>
         </Row>
 
-        <PagedTable v-if="selected != -1" 
+        <PagedTable
             :columns="columns" 
             :data-source="dataSource"
             :additional-params="searchParams"
@@ -78,6 +78,7 @@ export default {
                                 params.reason = prompt('输入拒绝原因：');
                                 return true;
                             }
+                            return true;
                         }
                     )),
                 }
