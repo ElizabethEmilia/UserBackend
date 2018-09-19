@@ -40,7 +40,8 @@ export default {
                                 },
                                 on: {
                                     click() {
-                                        window.open('/res/avatar/' + params.certImg)
+                                        //console.log("sdasdsads",params);
+                                        window.open('/res/avatar/' + params.row.certImg)
                                     }
                                 }
                             }, '查看'),

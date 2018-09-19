@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -55,6 +56,10 @@ public class AlipayServiceImpl implements IAlipayService {
                 exchange.setPaymethod(Constant.PaymentMethod.ONLINE_ALIPAY);
                 exchange.setCid(-1);
                 exchange.setState(Constant.ExchangeStatus.UNPAIED);
+                exchange.setAmount(new BigDecimal(amount));
+                exchange.setNote("增薪宝-在线充值" + amount + "元");
+                exchange.setType(Constant.ExchangeType.INCOME);
+
                 Integer orderID = exchangeMapper.insertReturnsID(exchange);
 
                 AlipayUtil.startPayment(orderID.toString(), "增薪宝-在线充值" + amount + "元", amount, request, response );

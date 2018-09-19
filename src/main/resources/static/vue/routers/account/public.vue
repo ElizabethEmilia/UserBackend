@@ -38,13 +38,17 @@
                 <Button>查看详情</Button-->
             </ButtonGroup>
 
-            <PagedTable :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
+            <PagedTable ref="dt" :columns="publicTransferColumnName" :data-source="dataSource + req_url" />
     
             <Modal :width="800" title="新增订单" v-model="shouldNewChargeDialogOpen" @on-cancel="shouldNewChargeDialogOpen = false" >
                 <PublicChargeDialog @on-input="inputNewInfo" @on-selectcredit="selectCredit" />
                 <div slot="footer">
                     <Button @click="newOrderAdd" type="success" size="middle" long :loading="onProcesssing" >新增订单</Button>
                 </div>
+            </Modal>
+
+            <Modal :width="800" title="支付凭据" v-model="detailDialog">
+
             </Modal>
     </Card>
 </template>
@@ -64,6 +68,7 @@ export default {
         PagedTable, PublicChargeDialog
     },
     data: () => ({
+        detailDialog: false,
         shouldNewChargeDialogOpen: false,
         publicBankAccount: [ // 从配置文件获取
             {
@@ -108,37 +113,36 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/charge/public/${id}/cancel`, { r: Math.random() });
                                             if (result.code) {
-                                                util.MessageBox.Show(this, '操作失败');
+                                                util.MessageBox.Show(self, '操作失败');
                                             }
                                             else {
-                                                util.MessageBox.Success(this, '操作成功');
+                                                util.MessageBox.Success(self, '操作成功');
                                             }
                                         }
                                         catch(err) {
-                                            util.MessageBox.Success(this, '操作失败');
+                                            util.MessageBox.Success(self, '操作失败');
                                         }
                                     }
                                 }
-                            }, '取消订单'),
-                            h('span', {}, ' | '),
+                            }, params.row.status===2?'':'取消订单'),
+                            h('span', {}, params.row.status===2?'':' | '),
                             h('a', {
                                 props: {
                                     href: 'javascript:void(0)',
                                 },
                                 on: {
                                     async click() {
-                                        let info = self.tableData[params.index];
-                                        /// 弹出对话框
+                                        window.open('/res/avatar/'+params.row.credit);
                                     }
                                 }
-                            }, '查看详情')
+                            }, '查看支付凭据')
                         ]);
                     }
                 }
             ]
         },
 
-        dataSource: "publiccharge/",
+        dataSource: "charge/public/",
         req_url: "all",
 
         newConfig: { },
@@ -182,6 +186,8 @@ export default {
                 return util.MessageBox.Show(this, "必须上传凭据")
             }
 
+            N.credit = this.credit.data;
+
             switch (N.type) {
                 case Integers.PaymentMethod.PUBLIC_ALIPAY:
                     if (util.String.isNullOrEmpty(N.account)) {
@@ -203,11 +209,13 @@ export default {
                 let r = await $.ajax("/api/charge/public/new", N);
                 this.onProcesssing = false;
                 if (r.code === 0) {
-                    return util.MessageBox.Show(this, "新增订单成功。");
+                    this.shouldNewChargeDialogOpen = false;
+                    util.MessageBox.Show(this, "新增订单成功。");
+                    this.$refs.dt.refresh();
+                    return;
                 }
                 else {
-                    this.shouldNewChargeDialogOpen = false;
-                    util.MessageBox.Show(this, "新增订单失败。");
+                    util.MessageBox.Show(this, "新增订单失败。"+r.msg);
                 }
             }
             catch(err) {

@@ -168,12 +168,12 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-2, "该用户未登录");
         }
 
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        map.put(2, 3);
-        map.put(4, 7);
-        map.put(8, 8);
+        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        map.put(1, 0.03);
+        map.put(2, 0.06);
+        map.put(4, 0.07);
 
-        Integer preTaxRatio = map.get(ysaRange);
+        Double preTaxRatio = map.get(ysaRange);
         if (ToolUtil.isEmpty(preTaxRatio)) {
             return ResultUtil.error(-3, "类型未找见");
         }
@@ -185,7 +185,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         expectedIncome.setStatus(0);
         expectedIncome.setUid(uid);
         expectedIncome.setYsaRange(ysaRange);
-        expectedIncome.setYsaRange(preTaxRatio);
+        expectedIncome.setPreTaxRatio(preTaxRatio);
         expectedIncome.setTmActivate(new Date());
         expectedIncome.setTmOp(new Date());
         expectedIncome.setTmInactivate(XunBinKit.getYearLastTime());
@@ -198,7 +198,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
     @Override
     public Object reselect(Integer cid, Integer ysaRange) {
 
-        if(ToolUtil.isEmpty(cid) || ToolUtil.isNotEmpty(ysaRange)) {
+        if(ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(ysaRange)) {
             return ResultUtil.error(-1, "参数错误");
         }
 

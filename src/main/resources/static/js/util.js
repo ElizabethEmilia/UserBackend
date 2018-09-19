@@ -353,6 +353,10 @@ function toTimeString(date) {
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+function toTimeStringFromTimestamp(timestamp) {
+	return toTimeString(toDateSafe(timestamp));
+}
+
 /// Any
 function Object_isNullOrUndefined(obj) {
 	return obj === null || typeof obj === "undefined";
@@ -468,6 +472,7 @@ export default {
         toMonthString,
         toYearString,
         toTimeString,
+        toTimeStringFromTimestamp,
 	},
 
 	Network: {

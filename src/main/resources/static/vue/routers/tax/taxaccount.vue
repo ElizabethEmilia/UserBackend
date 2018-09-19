@@ -8,18 +8,20 @@
 
         <Tabs>
             <TabPane label="税金账户余额" name="all">
-                <Select v-model="params.cid" placeholder="公司名称" style="width: 200px; margin-left: 5px;">
-                    <Option v-for="(e, i) in companies" :value="e.id" :key="e.id">{{e.name}}</Option>
-                </Select>
+                <div style="padding: 10px;">
+                    <Select v-model="params.cid" placeholder="公司名称" style="width: 200px; margin-left: 5px;">
+                        <Option v-for="(e, i) in companies" :value="e.id" :key="e.id">{{e.name}}</Option>
+                    </Select>
 
-                年份：
-                <DatePicker type="year" v-model="params.yfrom" style="width: 200px"></DatePicker>
-                 -
-                <DatePicker type="year" v-model="params.yto" style="width: 200px"></DatePicker>
+                    年份：
+                    <DatePicker type="year" v-model="params.yfrom" style="width: 200px"></DatePicker>
+                    -
+                    <DatePicker type="year" v-model="params.yto" style="width: 200px"></DatePicker>
+                </div>
 
                 <PagedTable
                         :columns="columnsBalance"
-                        data-source="to-be-set"
+                        data-source="tax/stat"
                         :additional-params="paramsGet"
                 />
             </TabPane>
@@ -39,7 +41,7 @@
 
                 <PagedTable
                         :columns="columnsDetail"
-                        data-source="to-be-set"
+                        data-source="tax/detail"
                         :additional-params="paramDetailGet"
                 />
 
@@ -87,8 +89,8 @@
                     { title: '年份', key: 'year' },
                     { title: '公司ID', key: 'cid' },
                     { title: '公司名称', key: 'name' },
-                    { title: '当年有效税金预交率', key: 'tyAptRatio' },
-                    { title: '税金余额', key: 'balance' },
+                    { title: '当年有效税金预交率', key: 'preTaxRatio' },
+                    { title: '税金余额', key: 'sumAmount' },
                 ]
             },
             columnsDetail() {
@@ -158,8 +160,8 @@
             },
             paramDetailGet() {
                 return util.forGetParams(Object.assign({}, this.paramDetail, {
-                    mfrom: util.Date.toYearString(this.params.mfrom),
-                    mto: util.Date.toYearString(this.params.mto),
+                    mfrom: util.Date.toMonthString(this.paramDetail.mfrom),
+                    mto: util.Date.toMonthString(this.paramDetail.mto),
                 }));
             }
         },

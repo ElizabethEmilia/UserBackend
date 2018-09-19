@@ -114,7 +114,7 @@
         methods: {
             async getCompany() {
                 try {
-                    let r = await API.Company.getList();
+                    let r = util.Objects.convUnderlineToHampObjectArray( await API.Company.getList() );
                     this.company = r;
                 }
                 catch (e) {
@@ -223,7 +223,7 @@
             tableDataSource() {
                 if (typeof this.selectedCompany === "undefined")
                     return "no-data-set";
-                return `/api/company/${this.selectedCompany.id}/sales/list/${this.res_url}`;
+                return `company/${this.selectedCompany.id}/sales/list/${this.res_url}`;
             }
         },
         mounted() {

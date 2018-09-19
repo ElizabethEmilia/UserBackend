@@ -18,16 +18,13 @@
 
          <DatePicker v-model='selected.end' type="date" placeholder="截止日期" style="width: 130px; margin-left: 5px;"></DatePicker>
 
-        <Row style="margin-top: 10px;">
+        <Row style="margin: 10px;">
             <Col span="16">
                 当前查询 开票金额合计：{{ totalReceiptAmount }}, 预缴税合计： {{ preTaxTotal }}
             </Col>
             <Col span="8">
                 <ButtonGroup>
-                    <Button @click="newApplication">新增</Button>
-                    <Button>提交</Button>
-                    <Button>删除</Button>
-                    
+                    <Button type="success" @click="newApplication">新增开票申请</Button>
                 </ButtonGroup>
             </Col>
         </Row>

@@ -35,8 +35,8 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
 
     BigDecimal countLastOutcome(@Param("uid") Integer uid);
 
-    @Insert("insert into t_exchange (uid, amount, paymethod, tm, type) " +
-            "values(#{uid}, #{amount}, #{paymethod}, #{tm}, #{type})")
+    @Insert("insert into t_exchange (uid, amount, paymethod, tm, type, note, state) " +
+            "values(#{uid}, #{amount}, #{paymethod}, #{tm}, #{type}, #{note}, #{state})")
     @SelectKey(statement="select LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class)
     int insertReturnsID(TExchange entity);
 
