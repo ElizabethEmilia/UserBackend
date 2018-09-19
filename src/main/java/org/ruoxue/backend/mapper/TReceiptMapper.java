@@ -1,10 +1,7 @@
 package org.ruoxue.backend.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.ruoxue.backend.bean.TReceipt;
 
 import java.util.Date;
@@ -31,6 +28,13 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
 
 //    开票列表
     List<Map<String, Object>> receiptList(@Param("cid") Integer cid, @Param("type") Integer type, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
+
+    @Update("update t_receipt set status = #{status} where id = #{id}")
+    Integer updateStatusToSub(@Param("status") Integer status, @Param("id") Integer id);
+
+//    根据rid获取receipt实体
+    @Select("select * from t_receipt where id = #{id}")
+    TReceipt getReceiptById(@Param("id") Integer id);
 
     @Delete("delete from t_receipt where id = #{id}")
     Integer removeReceipt(@Param("id") Integer id);

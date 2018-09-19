@@ -75,6 +75,12 @@ public class TReceiptController {
         return receiptService.statReceipt(page, size);
     }
 
+    @ApiOperation("将开票状态设置为提交")
+    @RequestMapping(value = "/receipt/{rid}/submit", method = RequestMethod.POST)
+    public @ResponseBody Object updateStatusToSub(@PathVariable Integer rid) {
+        return receiptService.updateStatusToSub(rid);
+    }
+
 
 
 }

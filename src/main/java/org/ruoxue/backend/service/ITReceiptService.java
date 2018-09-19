@@ -30,4 +30,6 @@ public interface ITReceiptService extends IService<TReceipt> {
 
     Object statReceipt(Integer page, Integer size);
 
+    Object updateStatusToSub(Integer rid);
+
 }

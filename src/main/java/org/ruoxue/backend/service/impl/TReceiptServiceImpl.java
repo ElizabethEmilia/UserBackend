@@ -6,6 +6,7 @@ import org.json.CDL;
 import org.json.JSONArray;
 import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.bean.TReceipt;
+import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCompanyMapper;
 import org.ruoxue.backend.mapper.TReceiptMapper;
 import org.ruoxue.backend.service.ITDictProvincesService;
@@ -237,7 +238,26 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
         return ResultUtil.success(list);
     }
-//    当月普票次数
+
+    @Override
+    public Object updateStatusToSub(Integer rid) {
+
+        if (ToolUtil.isEmpty(rid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        TReceipt receipt = receiptMapper.getReceiptById(rid);
+
+        if (ToolUtil.isEmpty(receipt)) {
+            return ResultUtil.error(-2, "此开票不存在");
+        }
+
+        Integer len = receiptMapper.updateStatusToSub(Constant.RECEIPT_STATUS.Submitted, rid);
+
+        return XunBinKit.returnResult(len > 0, -3, null, "Success", "Error");
+    }
+
+    //    当月普票次数
     private Integer countTimeMonthPTickets(Integer cid) {
         List<Integer> list = receiptMapper.countTimePTickets(cid);
         return list.size();
