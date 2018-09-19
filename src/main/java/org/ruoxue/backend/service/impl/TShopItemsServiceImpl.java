@@ -44,7 +44,7 @@ public class TShopItemsServiceImpl extends ServiceImpl<TShopItemsMapper, TShopIt
 
         List<Map<String, Object>> listItems = shopItemsMapper.list(page, size);
 
-        return XunBinKit.returnResult(listItems.size() > 0, -2, listItems, "查询成功", "查询失败");
+        return ResultUtil.success(listItems);
 
     }
 

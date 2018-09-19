@@ -39,7 +39,8 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
         page = (page - 1) * size;
 
         List<Map<String, Object>> list = groupMapper.listGroup(page, size);
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
 
         List<Map<String, Object>> list = groupMapper.listSimple();
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -110,7 +111,7 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
 
         List<Map<String, Object>> list = groupMapper.listGroupAdmin(gid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -129,6 +130,6 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
 
         List<Map<String, Object>> list = groupMapper.listGroupCustomer(gid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 }

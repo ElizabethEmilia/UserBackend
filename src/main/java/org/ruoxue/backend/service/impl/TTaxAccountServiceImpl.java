@@ -52,7 +52,7 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
             map.put("preTaxRatio", dou);
         }
 
-        return XunBinKit.returnResult(listGroup.size() > 0, -2, listGroup,"查询成功", "查询失败");
+        return ResultUtil.success(listGroup);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
 
         List<Map<String, Object>> list = taxAccountMapper.listTaxDetail(page, size, cid, mfrom, mto);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
 
@@ -94,7 +94,7 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
             map.put("preTaxRatio", dou);
         }
 
-        return XunBinKit.returnResult(listGroup.size() > 0, -2, listGroup,"查询成功", "查询失败");
+        return ResultUtil.success(listGroup);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
 
         List<Map<String, Object>> list = taxAccountMapper.listTaxDetail(page, size, cid, mfrom, mto);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override

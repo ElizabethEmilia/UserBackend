@@ -174,7 +174,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
 
         List<Map<String, Object>> list = companyMapper.listCompanys(search, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
 
         List<Map<String, Object>> list = companyMapper.listCompanySetUp(cid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list,"查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -223,7 +223,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
 
         List<Map<String, Object>> list = companyMapper.listComCertByCid(cid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override

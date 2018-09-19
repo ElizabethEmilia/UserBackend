@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TLogs;
 import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.service.ITLogsService;
+import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,6 +46,7 @@ public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements
         page = (page - 1) * size;
 
         List<Map<String, Object>> list = mapper.listLogs(page, size);
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+
+        return ResultUtil.success(list);
     }
 }

@@ -58,7 +58,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
         List<TOrder> list = orderMapper.listOrderByStatus(uid, page, size, map.get(status));
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -88,6 +88,6 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
         List<Map<String, Object>> list = orderMapper.listOrder(cid, type, page, size, map.get(status), start, end);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 }

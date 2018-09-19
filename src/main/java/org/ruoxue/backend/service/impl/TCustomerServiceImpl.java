@@ -310,7 +310,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 
         List<TExchange> list = exchangeMapper.getOnlinecharge(uid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -353,7 +353,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
             }
         }
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -376,7 +376,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 
         List<TExchange> list = exchangeMapper.getOnlinecharge(uid, page, size);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "Success", "Error");
+        return ResultUtil.success(list);
 
     }
 

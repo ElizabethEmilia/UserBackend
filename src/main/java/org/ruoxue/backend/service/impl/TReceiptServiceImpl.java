@@ -58,7 +58,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 //        查询list
         List<Map<String, Object>> list = receiptMapper.listReceipt(uid, cid, page, size, type, status, start, end);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "列表为空");
+        return ResultUtil.success(list);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
         List<Map<String, Object>> list = receiptMapper.receiptList(cid, type, page, size, status, start, end);
 
-        return XunBinKit.returnResult(list.size() > 0, -2, list, "查询成功", "查询失败");
+        return ResultUtil.success(list);
     }
 
     @Override
