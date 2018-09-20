@@ -1,6 +1,6 @@
 <template>
     <Card  class="card-margin">
-        <Divider orientation="left"><h3>我的开票申请</h3></Divider>
+        <Divider orientation="left"><h3>税金账户</h3></Divider>
 
         <Alert type="success">
             温馨提示：

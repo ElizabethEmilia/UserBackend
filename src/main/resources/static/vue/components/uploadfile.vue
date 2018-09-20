@@ -6,7 +6,7 @@
             <div style="padding: 60px 0" v-if="base64 == null">
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                 <p style="font-size: 16px;">{{ title }}</p>
-                <p style="font-size: 12px; color: #999;">仅支持5MB以内的图片</p>
+                <p style="font-size: 12px; color: #999;">仅支持1MB以内的图片</p>
             </div>
             
             <div v-else style="position:relative">
@@ -70,6 +70,7 @@ export default {
                 this.$emit('input', fileContent);
             }
             catch(err) {
+                util.MessageBox.Show(this, "文件大小超过限制");
                 console.error(err);
             }
         },

@@ -25,19 +25,19 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
-	<select id="countIncome" resultType="java.math.BigDecimal">
+	<select id="countIncome" resultType="java.lang.Double">
 		select sum(amount) from t_exchange where uid = #{uid} and type = 1
 	</select>
 
-	<select id="countOutcome" resultType="java.math.BigDecimal">
+	<select id="countOutcome" resultType="java.lang.Double">
 		select sum(amount) from t_exchange where uid = #{uid} and type = 0
 	</select>
 
-	<select id="countLastIncome" resultType="java.math.BigDecimal">
+	<select id="countLastIncome" resultType="java.lang.Double">
 		select amount from t_exchange where uid = #{uid} and type = 1 order by tm desc limit 1
 	</select>
 
-	<select id="countLastOutcome" resultType="java.math.BigDecimal">
+	<select id="countLastOutcome" resultType="java.lang.Double">
 		select amount from t_exchange where uid = #{uid} and type = 0 order by tm desc limit 1
 	</select>
 

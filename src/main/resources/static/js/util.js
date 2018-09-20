@@ -136,7 +136,7 @@ function getFileContentAsync(fileInput, resultIn = ReaderFileResultType.DATA_UTL
 	let file = fileInput.files[0];
 	return new Promise((resolve, reject) => {
 		reader.onload = e => {
-			if (e.target.result.length<=2097152) {
+			if (e.target.result.length<=1038336) {
 				let ret = e.target.result;
 				if (resultIn === ReaderFileResultType.BASE64) 
 					ret = dataUrlToBase64(ret);

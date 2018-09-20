@@ -28,7 +28,7 @@ export default (function() {
     ];
     // 用户模块
     if (!window.config.isAdmin) {
-        return userModules.concat(commonModules);
+        return  [...userModules, ...commonModules];
     }
 
     // 管理员模块

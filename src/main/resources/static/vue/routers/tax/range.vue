@@ -90,7 +90,7 @@
                     { title: '预计年销售额范围', type: 'rsaRange' },
                     { title: '税金预缴率', type: 'preTaxRatio' },
                     { title: '税金预交档次状态', type: 'status' },
-                    { title: '税金预交率生效时间', type: 'activeDate' },
+                    { title: '税金预交率生效时间', type: 'activateDate' },
                     { title: '税金预交率失效时间', type: 'inactivateDate' },
                     { title: '操作人', type: 'oper' },
                     { title: '操作时间', type: 'tmOp' },

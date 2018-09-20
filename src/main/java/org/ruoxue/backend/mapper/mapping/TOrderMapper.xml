@@ -26,25 +26,25 @@
 		select a.*, b.uid, b.name from t_order a, t_company b
 		where b.id = a.cid and b.uid = #{uid}
 		<if test="status != null">
-			and t_order.status = #{status}
+			and a.status = #{status}
 		</if>
 		<if test="type != null and type != ''">
-			and t_order.type = #{type}
+			and a.type = #{type}
 		</if>
 		<if test="cid != null and cid != ''">
-			and t_order.cid = #{cid}
+			and a.cid = #{cid}
 		</if>
 		<if test="start != null and start != ''">
 			<![CDATA[
-				and t_order.tm_create > #{start}
+				and a.tm_create > #{start}
 			]]>
 		</if>
 		<if test="end != null and end != ''">
 			<![CDATA[
-				and t_order.tm_create < #{end}
+				and a.tm_create < #{end}
 			]]>
 		</if>
-		order by t_order.id DESC limit #{page}, #{size}
+		order by a.id DESC limit #{page}, #{size}
 	</select>
 
 </mapper>
