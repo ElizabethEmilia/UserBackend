@@ -33,6 +33,26 @@ public class TReceiptController {
         return receiptService.listReceipt(uid, cid, page, size, type, status, start, end);
     }
 
+    @ApiOperation("开票情况统计的查看统计数据功能")
+    @RequestMapping(value = "/customer/tax/stat", method = RequestMethod.GET)
+    public @ResponseBody Object listTaxStat(@RequestParam(required = false) Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size,
+                                            @RequestParam(required = false) Integer status, @RequestParam(required = false) Integer type,
+                                            @RequestParam(required = false) Date start, @RequestParam(required = false) Date end){
+        return receiptService.listTaxStat(cid, page, size, type, status, start, end);
+    }
+
+    @ApiOperation("开票情况统计的修改功能")
+    @RequestMapping(value = "/tax/stat/{uid}/{cid}/qinding", method = RequestMethod.POST)
+    public @ResponseBody Object updateReceiptStat(@PathVariable Integer uid, @PathVariable Integer cid, @RequestBody JSONObject jsonObject) {
+        return receiptService.updateReceiptStat(uid, cid, jsonObject);
+    }
+
+    @ApiOperation("开票统计的修改记录")
+    @RequestMapping(value = "/tax/stat/{uid}/qinding-log", method = RequestMethod.GET)
+    public @ResponseBody Object listReceiptStatUpdate(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        return receiptService.listReceiptStatUpdate(uid, page, size);
+    }
+
     @ApiOperation("管理员对开票申请的 XXX")
     @RequestMapping(value = "/customer/{uid}/receipt/{rid}/{action}", method = RequestMethod.POST)
     public @ResponseBody Object receiptRequest(@PathVariable String uid, @PathVariable Integer rid, @PathVariable String action, @RequestParam(required = false) String reason) {

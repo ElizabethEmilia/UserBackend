@@ -3,6 +3,7 @@ package org.ruoxue.backend.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TRole;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TRoleMapper;
 import org.ruoxue.backend.service.ITRoleService;
 import org.ruoxue.backend.util.ResultUtil;
@@ -27,6 +28,9 @@ public class TRoleServiceImpl extends ServiceImpl<TRoleMapper, TRole> implements
 
     @Resource
     private TRoleMapper roleMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object list(Integer page, Integer size) {
@@ -65,6 +69,9 @@ public class TRoleServiceImpl extends ServiceImpl<TRoleMapper, TRole> implements
         role.setValue(value);
         boolean b = role.insert();
 
+        Integer uid = XunBinKit.getUid();
+        logsMapper.addLog(uid, "新增角色", 1);
+
         return XunBinKit.returnResult(b, -2, null, "新增角色成功", "添加角色失败");
     }
 
@@ -92,6 +99,9 @@ public class TRoleServiceImpl extends ServiceImpl<TRoleMapper, TRole> implements
 
         Integer len = roleMapper.removeRole(roleid);
 
+        Integer uid = XunBinKit.getUid();
+        logsMapper.addLog(uid, "删除角色", 1);
+
         return XunBinKit.returnResult(len > 0, -3, null, "删除角色成功", "删除角色失败");
     }
 
@@ -116,6 +126,8 @@ public class TRoleServiceImpl extends ServiceImpl<TRoleMapper, TRole> implements
         }
 
         Integer len = roleMapper.updateRole(name, value, remarks, roleid);
+        Integer uid = XunBinKit.getUid();
+        logsMapper.addLog(uid, "修改角色", 1);
 
         return XunBinKit.returnResult(len > 0, -3, null, "角色修改成功", "角色修改失败");
     }

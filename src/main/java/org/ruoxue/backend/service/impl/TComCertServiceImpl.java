@@ -3,8 +3,8 @@ package org.ruoxue.backend.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TComCert;
-import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.mapper.TComCertMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.service.ITComCertService;
 import org.ruoxue.backend.util.Base64Util;
 import org.ruoxue.backend.util.ResultUtil;
@@ -30,6 +30,9 @@ public class TComCertServiceImpl extends ServiceImpl<TComCertMapper, TComCert> i
 
     @Resource
     private TComCertMapper comCertMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object listCert(String uid, Integer cid, Integer page, Integer size) {
@@ -79,6 +82,9 @@ public class TComCertServiceImpl extends ServiceImpl<TComCertMapper, TComCert> i
         Integer userid = XunBinKit.getUidByString(uid);
 //        删除某一个证件
         Integer len = comCertMapper.deleteCert(userid, certid);
+
+        logsMapper.addLog(userid, "删除证件", 1);
+
         if(len == 1){
             return ResultUtil.success(0, "删除成功");
         } else {
@@ -109,6 +115,9 @@ public class TComCertServiceImpl extends ServiceImpl<TComCertMapper, TComCert> i
         comCert.setCertNo(certNo);
         comCert.setStatus(1);
         comCert.setTmUpd(new Date());
+
+        logsMapper.addLog(iUid, "添加证件", 1);
+
         boolean b = comCert.insert();
         if(b){
             return ResultUtil.success(0, "上传证件成功");

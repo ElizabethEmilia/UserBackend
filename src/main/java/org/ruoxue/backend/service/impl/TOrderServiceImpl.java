@@ -3,6 +3,7 @@ package org.ruoxue.backend.service.impl;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TOrderMapper;
 import org.ruoxue.backend.service.ITOrderService;
 import org.ruoxue.backend.util.ResultUtil;
@@ -29,6 +30,9 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
     @Resource
     private TOrderMapper orderMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object ordersStatus(Integer uid, Integer page, Integer size, String status) {

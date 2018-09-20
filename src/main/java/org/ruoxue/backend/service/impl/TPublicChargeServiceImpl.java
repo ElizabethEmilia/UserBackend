@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TPublicCharge;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TExchangeMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TPublicChargeMapper;
 import org.ruoxue.backend.service.ITPublicChargeService;
 import org.ruoxue.backend.util.Base64Util;
@@ -14,7 +15,6 @@ import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +37,9 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
     @Resource
     private TExchangeMapper exchangeMapper;
 
+    @Resource
+    private TLogsMapper logsMapper;
+
     @Override
     public Object updatePublicchargeStatus(Integer uid, Integer pid, String status) {
 
@@ -54,6 +57,8 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         }
 
         Integer len = publicChargeMapper.updatePublicChangeStatus(pid, map.get(status));
+
+        logsMapper.addLog(-1, "修改对公充值表", 1);
 
         return XunBinKit.returnResult(len > 0, -2, null,"修改成功", "修改失败");
     }
@@ -100,6 +105,8 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         }
 
         Integer len = publicChargeMapper.updatePublicChangeStatus(id, 2);
+
+        logsMapper.addLog(-1, "修改对公充值表", 1);
 
         return XunBinKit.returnResult(len > 0, -2, null, "取消成功", "取消失败");
     }

@@ -46,6 +46,34 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="listTaxStat" resultType="java.util.Map">
+		select sum(rec_amount) sumAmount, sum(pretax) sumPreTax  from t_receipt
+		where status not in (9, 11)
+		<if test="uid != null and uid != ''">
+			and uid = #{uid}
+		</if>
+		<if test="cid != null and cid != ''">
+			and cid = #{cid}
+		</if>
+		<if test="type != null and type != ''">
+			and rec_type = #{type}
+		</if>
+		<if test="status != null and status != ''">
+			and status = #{status}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and tm_submit > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and tm_submit < #{end}
+			]]>
+		</if>
+		order by id DESC limit #{page}, #{size}
+	</select>
+
 	<select id="getReceipt" resultType="org.ruoxue.backend.bean.TReceipt">
 		select * from t_receipt
 		where 1 = 1

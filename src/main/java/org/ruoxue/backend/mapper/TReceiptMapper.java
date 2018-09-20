@@ -23,7 +23,11 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
     List<Map<String, Object>> listReceipt(@Param("uid") String uid, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size,
                                           @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
 
-//      根据uid和rid获取receipt实体
+//      开票情况统计的查看统计数据功能
+    List<Map<String, Object>> listTaxStat(@Param("uid") Integer uid, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size,
+                                          @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
+
+    //      根据uid和rid获取receipt实体
     TReceipt getReceipt(@Param("uid") Integer uid, @Param("id") Integer id);
 
 //    开票列表

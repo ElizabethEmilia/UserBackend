@@ -5,10 +5,7 @@ import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.common.controller.BaseController;
-import org.ruoxue.backend.mapper.MainMapper;
-import org.ruoxue.backend.mapper.TAdminMapper;
-import org.ruoxue.backend.mapper.TRoleMapper;
-import org.ruoxue.backend.mapper.TSigninMapper;
+import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.MainService;
 import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
@@ -49,6 +46,9 @@ public class MainServiceImpl extends BaseController implements MainService {
     @Resource
     private TAdminMapper adminMapper;
 
+    @Resource
+    private TLogsMapper logsMapper;
+
     /*
         备注： 在session中的内容
          username:  用户名
@@ -86,6 +86,10 @@ public class MainServiceImpl extends BaseController implements MainService {
             signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
             session.setAttribute("username", customer.getName());
             session.setAttribute("obj", customer);
+
+//            记录日志
+            logsMapper.addLog(-1, "用户" + customer.getName() + "登录", 1);
+
             return md5Salt(signin, password, session, customer.getUid());
         }
 
@@ -100,6 +104,9 @@ public class MainServiceImpl extends BaseController implements MainService {
             Integer roleId = admin.getRoleid();
             Integer value = roleMapper.getRoleById(roleId).getValue();
             session.setAttribute("permission", value);
+
+//            登录日志
+            logsMapper.addLog(admin.getId(), "管理员登录", 1);
 
             return md5Salt(signin, password, session, admin.getId());
         }
@@ -245,6 +252,9 @@ public class MainServiceImpl extends BaseController implements MainService {
         signin.setPassword(md5SaltPwd);
         signin.setToken(md5Token);
         signin.updateById();
+
+        logsMapper.addLog(signin.getId(), "修改密码", 1);
+
         return ResultUtil.success();
     }
 

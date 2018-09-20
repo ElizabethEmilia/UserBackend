@@ -49,4 +49,5 @@ public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements
 
         return ResultUtil.success(list);
     }
+
 }

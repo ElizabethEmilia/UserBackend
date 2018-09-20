@@ -5,6 +5,7 @@ import org.ruoxue.backend.bean.TComSetProgress;
 import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.mapper.TComSetProgressMapper;
 import org.ruoxue.backend.mapper.TCompanyMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.service.ITComSetProgressService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
@@ -31,6 +32,9 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
 
     @Resource
     private TCompanyMapper companyMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object getSetUp(String uid, Integer cid) {
@@ -72,6 +76,8 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
         }
         boolean b = comSetProgress.insert();
 
+        logsMapper.addLog(-1, "添加一个公司设立进度", 1);
+
 //        返回结果
         return XunBinKit.returnResult(b, -2, null,"添加成功", "添加失败");
 
@@ -89,6 +95,8 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
 
 //        删除设立进度
         Integer len = comSetProgressMapper.deleteSetUp(userid, cid);
+
+        logsMapper.addLog(-1, "删除一个公司设立进度", 1);
 
 //        获取公司实体
         TCompany company = companyMapper.getCompany(userid, cid);

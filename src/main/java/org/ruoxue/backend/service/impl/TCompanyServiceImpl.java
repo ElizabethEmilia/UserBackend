@@ -7,6 +7,7 @@ import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.bean.TExpectedIncome;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCompanyMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.service.ITCompanyService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
@@ -32,6 +33,9 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
 
     @Resource
     private TCompanyMapper companyMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object listCompany(String uid, Integer page, Integer size) {
@@ -112,6 +116,9 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         company.setTmFirstEc(com.getTmFirstEc());
         company.setStatus(com.getStatus());
         boolean b = com.updateById();
+
+        logsMapper.addLog(-1, "修改公司信息", 1);
+
         if(b){
             return ResultUtil.success(0, "修改成功");
         } else {
@@ -128,6 +135,9 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         Integer userid = XunBinKit.getUidByString(uid);
 //        删除一个公司
         Integer len = companyMapper.deleteCompany(userid, cid);
+
+        logsMapper.addLog(-1, "删除公司信息", 1);
+
         if(len == 1){
             return ResultUtil.success(0, "删除成功");
         } else {
@@ -144,6 +154,9 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         Integer userid = XunBinKit.getUidByString(uid);
 //        删除客户的所有公司
         Integer len = companyMapper.deleteCompanys(userid);
+
+        logsMapper.addLog(-1, "删除所有公司", 1);
+
         return ResultUtil.success(0,"您一共删除了" + len + "个公司");
     }
 
@@ -192,6 +205,8 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         company.setVatrFreq(vatr_freq);
         company.setEntOrgType(ent_org_type);
         company.setName(name);
+
+        logsMapper.addLog(-1, "添加一个公司", 1);
 
         System.out.println("-------------company: " + company);
 
