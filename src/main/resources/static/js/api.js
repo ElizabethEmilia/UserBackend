@@ -74,12 +74,12 @@ export default {
     },
     Customer: {
         deleteUser: (uid) => POST(`/api/customer/${uid}/delete`, __rd_post_body)(),
-        addNew: (data) => POST(`/api/customer/new`, data)(),
+        addNew: (data) => POST(`/api/customer/add`, data)(),
 
         Company: {
             getList: (uid) => POST(`/api/customer/${ uid }/company/list`)(),
             newCompany: (uid, data) => POST(`/api/customer/${uid}/company/new`, data)(),
-            deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body),
+            deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body)(),
             renew: (uid, cid, params) => POST(`/api/customer/${uid}/company/${cid}/addtime`, params)(),
         },
     },

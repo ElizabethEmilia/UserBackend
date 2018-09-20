@@ -4,7 +4,7 @@
 
         <PagedTable ref="dt" :columns="columns" :data-source="`customer/_/company/${cid}/setup`" />
         <div style="margin-top: 20px;">
-            <Button @click="dialogVisible = true">新增设立进度</Button>
+            <Button type="success" @click="dialogVisible = true">新增设立进度</Button>
         </div>
         <div style="margin-top: 20px;">
 
@@ -70,9 +70,17 @@
                     { title: '时间', key: 'tm' }, //string
                     { title: '状态', key: 'status' }, /// string
                     { title: '备注', key: 'note' }, // string
-                    { title: '操作', render: (h,p)=>h('a', { on: { async click() {
-                       await API.Company.SetupProgress.remove(p.row.cid, p.row.id);
-                                } } }, '删除') }
+                    {
+                        title: '操作',
+                        render: (h,p)=>h('a', {
+                            on: {
+                                click: async () => {
+                                    await util.MessageBox.ComfirmAsync(this, "确认要删除吗？");
+                                    await API.Company.SetupProgress.remove(p.row.cid, p.row.id);
+                                }
+                            }
+                        }, '删除')
+                    }
                 ];
             }
         }),

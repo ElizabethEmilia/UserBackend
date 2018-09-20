@@ -6,7 +6,8 @@
                 style="margin-bottom: 12px;"
         >增加客户</Button>
 
-        <CustomerList 
+        <CustomerList
+                ref="list"
             @on-select="u=>selectedUser=u" 
             @on-select-company="c=>selectedCompany=c"
             @on-back-to-list="u=>selectedUser={uid:-1}"
@@ -147,6 +148,7 @@ import SelectArea from '../components/areaselect.vue';
 import init from '../../js/init.js';
 import API from '../../js/api.js';
 import util from '../../js/util.js';
+import md5 from 'js-md5';
 import { industry, memberType, paymentMethod, publicOrderStatus } from '../../constant.js';
 
 
@@ -210,9 +212,13 @@ export default {
                 I.aid = this.selectedAid;
             }
 
+            // set default password
+            I.password = md5(I.phone);
+
             try {
                 await API.Customer.addNew(I);
-                util.MessageBox.Show(this, "操作成功");
+                util.MessageBox.Show(this, "添加用户成功，默认用户密码为手机号码");
+                this.$refs.list.$refs.dt.refresh();
                 this.addCustomerDialogShouldShow = false;
             }
             catch(e) {

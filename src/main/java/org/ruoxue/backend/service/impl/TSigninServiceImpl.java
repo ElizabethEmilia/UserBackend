@@ -93,6 +93,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         customer.setAddress(address);
         customer.setProvince(province);
         customer.setAid(aid);
+        customer.setAvatar("");
         boolean b = customer.insert();
 
         return XunBinKit.returnResult(b, -3, null, "Success", "Error");

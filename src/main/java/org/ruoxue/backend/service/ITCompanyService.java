@@ -37,4 +37,6 @@ public interface ITCompanyService extends IService<TCompany> {
 
     Object countCompany();
 
+    Object removeSetupState(Integer cid,  Integer setupid);
+
 }

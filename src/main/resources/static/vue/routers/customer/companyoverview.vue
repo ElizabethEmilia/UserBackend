@@ -16,7 +16,7 @@
                     </div>
                 </Row>
                 <Row v-if="!editMode">
-                    <Divider dashed orientation="right" ><a :disabled="P.AdminCompanyAddAndModify" href="javascript:void(0)" @click="edit_basicInformation()">编辑</a></Divider>
+                    <Divider dashed orientation="right" ><a :disabled="!P.AdminCompanyAddAndModify" href="javascript:void(0)" @click="edit_basicInformation()">编辑</a></Divider>
                     <!-- 用户信息显示开始 -->
 
                     <Row class="line-margin">
@@ -74,21 +74,12 @@
 
                         <div style="margin-bottom: 5px;">
                             <span class="title-before-input wider">征税类型 </span>
-                            <Select v-model="infoSave.taxType" style="width:200px">
-                                <Option v-for="(e,i) in [1,2,3,4,5,6]" :value="i" :key="i">{{ e }}</Option>
-                            </Select>
+                            <Input v-model="infoSave.taxType" style="width:200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
                             <span class="title-before-input wider">增值纳税人类型 </span>
-                            <Select v-model="infoSave.vatType" style="width:200px">
-                                <Option v-for="(e,i) in [1,2,3,4,5,6]" :value="i" :key="i">{{ e }}</Option>
-                            </Select>
-                        </div>
-
-                        <div style="margin-bottom: 5px;">
-                            <span class="title-before-input wider">增值税税率 </span>
-                            <Input v-model="infoSave.vaTaxRatio" placeholder="" style="width: 200px" />
+                            <Input v-model="infoSave.vatType" style="width:200px" />
                         </div>
 
                         <div style="margin-bottom: 5px;">
@@ -161,6 +152,7 @@
     import '../../../css/style.less';
     import util from '../../../js/util.js';
     import $ from '../../../js/ajax.js';
+    import API from '../../../js/api.js';
     import md5 from 'js-md5';
 
     /**
@@ -311,7 +303,10 @@
             // click cell group
             cellGroupClick(name) {
                 const handlers = {
-                    edit: () => { this.editMode = true; },
+                    edit: () => {
+                        this.editMode = true
+                        this.infoSave = Object.assign({}, this.info);
+                    },
                     remove: async () => {
                         if (!window.config.P.AdminCompanyRemoval) {
                             return util.MessageBox.Show(this, "该管理员没有权限删除公司");
@@ -319,7 +314,9 @@
                         await util.MessageBox.ComfirmAsync(this, "确定要删除该公司吗？");
                         console.log('13234');
                         try {
-                            await API.Company.deleteCompany(this.cusData.id);
+                            await API.Customer.Company.deleteCompany(this.comData.id);
+                            this.$emit('on-back-to-user-list');
+                            this.$parent.$refs.list.$refs.overview.getCompany();
                             util.MessageBox.Show(this, "删除成功");
                         }
                         catch (err) {

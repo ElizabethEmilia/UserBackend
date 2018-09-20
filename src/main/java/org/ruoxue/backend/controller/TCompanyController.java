@@ -63,6 +63,12 @@ public class TCompanyController {
         return companyService.addCompony(company, uid);
     }
 
+    @ApiOperation("删除设立进度")
+    @PostMapping("/customer/_/company/{cid}/setup/{setupid}/delete")
+    public @ResponseBody Object removeSetupState(@PathVariable Integer cid,@PathVariable Integer setupid) {
+        return companyService.removeSetupState(cid, setupid);
+    }
+
     /**
      *  公司管理模块
      */

@@ -1,10 +1,7 @@
 package org.ruoxue.backend.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.ruoxue.backend.bean.TComCert;
 import org.ruoxue.backend.bean.TCompany;
 
@@ -39,7 +36,7 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
     Integer deleteCompanys(@Param("uid") Integer uid);
 
     //    获取公司列表
-    List<Map<String, Object>> listCompanys(@Param("search") String search, @Param("page") Integer page, @Param("size") Integer size);
+    List<Map<String, Object>> listCompanys(@Param("search") String search, @Param("page") Integer page, @Param("size") Integer size, @Param("uid") Integer uid);
 
     //    获取一个公司的信息
     @Select("select * from t_company where id = #{id}")
@@ -72,5 +69,9 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
 //    更新所有公司预选状态为0
     @Update("update t_company set ysa_status = 0")
     Integer updateStatus();
+
+    // 删除设立进度
+    @Delete("delete from t_com_set_progress where id=#{id}")
+    Boolean removeSetupState(Integer cid,  Integer id);
 
 }

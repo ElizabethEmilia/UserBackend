@@ -73,7 +73,7 @@ public class UIController extends BaseController {
 
         Integer role = (Integer)session.getAttribute("role");
         String isAdmin = "false";
-        String isSuperAdmin = role == 1 ? "true" : "false";
+        String isSuperAdmin = role != null && role == 1 ? "true" : "false";
         String permission = XunBinKit.getPermission().toString();
 
         Object userInfoObj = session.getAttribute("obj");
@@ -95,7 +95,8 @@ public class UIController extends BaseController {
         else if (userInfoObj instanceof TCustomer) {
             TCustomer customer = (TCustomer)userInfoObj;
             username = customer.getName();
-            avatar = customer.getAvatar().replaceAll("\"", "\\\"");
+            if (customer.getAvatar() != null)
+                avatar = customer.getAvatar().replaceAll("\"", "\\\"");
             isCustomerPaid = customer.getPaid() == 1 ? "true" : "false";
         }
 

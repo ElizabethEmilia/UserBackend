@@ -325,7 +325,7 @@ export default {
                     await util.MessageBox.ComfirmAsync(this, "确定要删除该客户吗？");
                     console.log('13234');
                     try {
-                        await API.Customer.deleteUser(this.info.id);
+                        await API.Customer.deleteUser(this.info.uid);
                         util.MessageBox.Show(this, "删除成功");
                         this.$emit('on-request-update-list', "删除成功");
                         this.$emit('on-back-to-user-list', "ok");

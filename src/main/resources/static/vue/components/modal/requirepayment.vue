@@ -51,7 +51,7 @@
         height: 60px;
         line-height: 60px;
         font-size: 13.5px;
-        background: #222;
+        background: #333;
         color: white;
     }
 

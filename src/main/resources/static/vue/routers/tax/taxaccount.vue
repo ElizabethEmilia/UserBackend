@@ -114,7 +114,7 @@
         methods: {
             async getCompanies() {
                 try {
-                    let result = await $.ajax('/api/company/list?size=0');
+                    let result = await API.Company.getList();
                     if (result.code === 0)
                         this.companies = result.data;
                 }

@@ -61,7 +61,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
 //       判断到期时间，返回paid = 0/1;
         for (Map<String, Object> map : list) {
             Date endDate = (Date) map.get("tax_pack_end");
-            if (endDate.getTime() < new Date().getTime()) {
+            if (endDate == null || endDate.getTime() < new Date().getTime()) {
                 map.put("expired", 1);
             } else {
                 map.put("expired", 0);
@@ -172,7 +172,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = companyMapper.listCompanys(search, page, size);
+        List<Map<String, Object>> list = companyMapper.listCompanys(search, page, size, XunBinKit.getUid());
 
         return ResultUtil.success(list);
     }
@@ -250,6 +250,25 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         Integer count = companyMapper.countCompanyByUid(uid);
 
         return ResultUtil.success(count);
+    }
+
+    @Override
+    public Object removeSetupState(Integer cid, Integer setupid) {
+        Integer uid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "用户未登录");
+        }
+
+        if (ToolUtil.isEmpty(setupid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        return ResultUtil.result(
+                companyMapper.removeSetupState(cid, setupid) ? 0 : 1,
+                null, "删除失败"
+        );
+
     }
 
 

@@ -13,12 +13,13 @@
 
             <!-- TODO: 判断权限，不对的给alert -->
             <Tabs v-model="viewRes" >
-                <TabPane label="当前账号客户" name="self"></TabPane>
+                <TabPane label="当前管理员所属的客户" name="self"></TabPane>
                 <TabPane label="本组的客户" name="group" v-if="P.AdminCustomerListOfCurrentGroup"></TabPane>
                 <TabPane label="全部客户" name="all" v-if="P.AdminCustomerListAll"></TabPane>
             </Tabs>
 
             <PagedTable
+                    ref="dt"
                     :columns="columns"
                     vif="typeof showList === 'undefined' || showList"
                     :data-source="dataSource"
@@ -28,7 +29,7 @@
         </div>
 
          <div v-else>
-             <CustomerOverview :cus-data="cdata"
+             <CustomerOverview ref="overview" :cus-data="cdata"
                 @on-select-company="val=>$emit('on-select-company',val)"
                 @on-back-to-user-list="selected = -1; $emit('on-back-to-list');"
               />

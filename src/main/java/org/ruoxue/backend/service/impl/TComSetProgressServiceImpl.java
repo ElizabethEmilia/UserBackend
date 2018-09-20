@@ -12,6 +12,7 @@ import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -40,7 +41,7 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
 //        处理uid
         Integer userid = XunBinKit.getUidByString(uid);
 //        获取公司设立进度
-        TComSetProgress comSetProgress = comSetProgressMapper.getSetUp(userid, cid);
+        ArrayList<TComSetProgress> comSetProgress = comSetProgressMapper.getSetUp(userid, cid);
 
         if(ToolUtil.isEmpty(comSetProgress)){
             return ResultUtil.error(-2, "查不到公司设立进度");
@@ -63,7 +64,12 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
         comSetProgress.setNote(note);
         comSetProgress.setStatus(status);
         comSetProgress.setTm(new Date());
-        comSetProgress.setUid(Integer.parseInt(uid));
+        try {
+            comSetProgress.setUid(Integer.parseInt(uid));
+        }
+        catch (Exception e) {
+            comSetProgress.setUid(-1);
+        }
         boolean b = comSetProgress.insert();
 
 //        返回结果

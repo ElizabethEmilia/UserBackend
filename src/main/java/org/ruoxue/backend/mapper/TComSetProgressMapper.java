@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TComSetProgress;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
+import java.util.ArrayList;
+
 /**
  * <p>
   *  Mapper 接口
@@ -17,7 +19,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 public interface TComSetProgressMapper extends BaseMapper<TComSetProgress> {
 
 //    查看公司设立进度
-    TComSetProgress getSetUp(@Param("uid") Integer uid, @Param("cid") Integer cid);
+    ArrayList<TComSetProgress> getSetUp(@Param("uid") Integer uid, @Param("cid") Integer cid);
 
 //    删除一个公司设立进度
     Integer deleteSetUp(@Param("uid") Integer uid, @Param("cid") Integer cid);
