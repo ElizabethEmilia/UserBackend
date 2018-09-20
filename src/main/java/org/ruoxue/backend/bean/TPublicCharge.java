@@ -1,13 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.math.BigDecimal;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ public class TPublicCharge extends Model<TPublicCharge> {
 	private Integer id;
 	private Integer uid;
 	private Integer type;
-	private BigDecimal amount;
+	private Double amount;
 	private String name;
 	private String account;
 	private String bank;
@@ -62,11 +62,11 @@ public class TPublicCharge extends Model<TPublicCharge> {
 		this.type = type;
 	}
 
-	public BigDecimal getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

@@ -1,8 +1,11 @@
 package org.ruoxue.backend.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TComCert;
 import org.ruoxue.backend.bean.TCompany;
+import org.ruoxue.backend.bean.TExpectedIncome;
+import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCompanyMapper;
 import org.ruoxue.backend.service.ITCompanyService;
 import org.ruoxue.backend.util.ResultUtil;
@@ -145,16 +148,65 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
     }
 
     @Override
-    public Object addCompony(TCompany company, String uid) {
-        if(ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(company)){
+    public Object addCompony(JSONObject jsonObject, Integer uid) {
+
+//        获取参数
+        String lpname = jsonObject.getString("lpname");
+        Integer parent = jsonObject.getInteger("parent");
+        String tax_type = jsonObject.getString("taxType");
+        String vat_type = jsonObject.getString("vatType");
+        Double pre_tax_ratio = jsonObject.getDouble("preTaxRatio");
+        Double va_tax_ratio = jsonObject.getDouble("vaTaxRatio");
+        Double vatr_freq = jsonObject.getDouble("vatrFreq");
+        Double cb_tax = jsonObject.getDouble("cbTax");
+        Double ea_tax = jsonObject.getDouble("eaTax");
+        Double lea_tax = jsonObject.getDouble("leaTax");
+        Double river_tax = jsonObject.getDouble("riverTax");
+        String ent_org_type = jsonObject.getString("entOrgType");
+        String inv_type = jsonObject.getString("invType");
+        String business_type = jsonObject.getString("businessType");
+        String name = jsonObject.getString("name");
+
+        if(ToolUtil.isEmpty(uid)){
             return ResultUtil.error(-1, "参数错误");
         }
-//        处理uid
-        Integer userid = XunBinKit.getUidByString(uid);
-        System.out.println("-------------company: " + company);
-        company.setUid(userid);
+
+        TCompany company = new TCompany();
+        company.setTaxPackEnd(new Date());
+        company.setTaxPackStart(new Date());
+        company.setParent(parent);
+        company.setUid(uid);
         company.setStatus("");
+        company.setCbTax(cb_tax);
+        company.setEaTax(ea_tax);
+        company.setBusinessType(business_type);
+        company.setLeaTax(lea_tax);
+        company.setInvType(inv_type);
+        company.setLpname(lpname);
+        company.setPreTaxRatio(pre_tax_ratio);
+        company.setRiverTax(river_tax);
+        company.setTaxType(tax_type);
+        company.setVaTaxRatio(va_tax_ratio);
+        company.setVatType(vat_type);
+        company.setYsaRange(0);
+        company.setVatrFreq(vatr_freq);
+        company.setEntOrgType(ent_org_type);
+        company.setName(name);
+
+        System.out.println("-------------company: " + company);
+
         boolean b = company.insert();
+
+        TExpectedIncome expectedIncome = new TExpectedIncome();
+        expectedIncome.setCid(company.getId());
+        expectedIncome.setUid(uid);
+        expectedIncome.setStatus(Constant.PreTaxStallsStatus.UNSELECTED);
+        expectedIncome.setTmActivate(new Date());
+        expectedIncome.setTmInactivate(XunBinKit.getYearLastTime());
+        expectedIncome.setOper("系统");
+        expectedIncome.setTmOp(new Date());
+        expectedIncome.insert();
+
         if(b){
             return ResultUtil.success(0, "添加成功");
         } else {

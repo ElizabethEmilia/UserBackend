@@ -62,7 +62,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
     public Object publChargeAdd(JSONObject jsonObject) {
 //        获取参数
         Integer type = jsonObject.getInteger("type");
-        BigDecimal amount = jsonObject.getBigDecimal("amount");
+        Double amount = jsonObject.getDouble("amount");
         String name = jsonObject.getString("name");
         String account = jsonObject.getString("account");
         String bank = jsonObject.getString("bank");

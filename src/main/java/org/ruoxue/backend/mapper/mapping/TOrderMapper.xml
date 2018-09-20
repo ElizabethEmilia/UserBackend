@@ -23,8 +23,8 @@
 	</select>
 
 	<select id="listOrder" resultType="java.util.Map">
-		select * from t_order, t_company
-		where t_company.id = t_order.cid and t_company.uid = #{uid}
+		select a.*, b.uid, b.name from t_order a, t_company b
+		where b.id = a.cid and b.uid = #{uid}
 		<if test="status != null">
 			and t_order.status = #{status}
 		</if>

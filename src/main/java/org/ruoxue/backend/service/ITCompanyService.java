@@ -1,5 +1,6 @@
 package org.ruoxue.backend.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import org.ruoxue.backend.bean.TCompany;
 
@@ -23,7 +24,7 @@ public interface ITCompanyService extends IService<TCompany> {
 
     Object deleteCompanys(String uid);
 
-    Object addCompony(TCompany company, String uid);
+    Object addCompony(JSONObject jsonObject, Integer uid);
 
     Object listCompanys(String search, Integer page, Integer size);
 
