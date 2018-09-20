@@ -72,6 +72,6 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
 
     // 删除设立进度
     @Delete("delete from t_com_set_progress where id=#{id}")
-    Boolean removeSetupState(Integer cid,  Integer id);
+    Boolean removeSetupState(@Param("cid") Integer cid, @Param("id") Integer id);
 
 }

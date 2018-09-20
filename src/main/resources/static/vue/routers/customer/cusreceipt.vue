@@ -65,6 +65,7 @@ export default {
                 {title:"开票金额（含税）",key:"recAmount", width: 140},
                 {title:"税金预交率",width: 140,render:(h,p)=>h('span',{},""+(self.d[p.index].pretaxRatio*100)+"%")},
                 {title:"预交税金",key:"pretax", width: 140},
+                {title:"地址",key:"address", width: 250},
                 {title:"状态", width: 200, render:(h,p)=>h('span',{},receiptStatus[self.d[p.index].status])}, //status
                 {title:"驳回原因",key:"reason", width: 210},
                 {title:"提交时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmSubmit)))},

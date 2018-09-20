@@ -21,6 +21,7 @@ public class ResourceController extends BaseController {
         }
         file = path + file;
         response.setHeader("X-Resource-Mapped-By", "ResourceController");
+        //response.setHeader("X-Actual-Path", distDir + "/" + path + file);
         try {
             byte[] bytes = IOUtil.read(file);
             response.getOutputStream().write(bytes);
@@ -41,6 +42,7 @@ public class ResourceController extends BaseController {
 
     @GetMapping("/dist/{file:[\\w\\d\\.]+}")
     public void staticDistriutebDirectory(@PathVariable String file, HttpServletResponse response) {
+        response.setHeader("Cache-Control", "max-age=31536000");
         responseBinary(distDir, file, response);
     }
 }

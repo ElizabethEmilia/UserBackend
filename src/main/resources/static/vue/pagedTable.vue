@@ -96,6 +96,7 @@ export default (function(){
                     }
                     result.data = util.Objects.convUnderlineToHampObjectArray(result.data);
                     this.tableData = result.data;
+                    this.getCount();
                     this.$emit("onrecvdata", result.data);
                     console.log(`[PagedTable] 获取数据成功: `, url);
                     this.loading = false;

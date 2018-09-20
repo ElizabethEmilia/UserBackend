@@ -100,7 +100,7 @@ export default {
         },
         SetupProgress: {
             add: (cid, data) => POST(`/api/customer/_/company/${cid}/setup/new`, data)(),
-            remove: (cid, sid) => POST(`/api/customer/_/company/${cid}/setup/${sid}/delete`)(),
+            remove: (cid, sid) => POST(`/api/customer/_/company/${cid}/setup/${sid}/delete`, {r:1})(),
         }
     },
     Setting: {

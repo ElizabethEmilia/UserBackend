@@ -42,7 +42,7 @@
             <ConfirmOrders
                     @on-start-pay="val => {confirmDialogVisible = false; confirmResultDialog=true; payMethod = val;}"
                     @on-cancel="confirmDialogVisible = false;"
-                    :param="{ itemid: itemid }" />
+                    :param="{ amount: iteminfo ? iteminfo.price : 0 }" />
 
         </Modal>
 
@@ -110,7 +110,7 @@
                 }
             },
             buyNow() {
-                this.confirmDialogVisible = true; /// TODO: 业务在其他地方做
+                this.confirmDialogVisible = true;
                 this.$emit("on-buy", this.itemid);
             }
         },

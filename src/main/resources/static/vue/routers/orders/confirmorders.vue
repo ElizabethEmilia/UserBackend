@@ -11,8 +11,8 @@
 
             <h2>付款方式</h2>
 
-            <img @click="onlinePayMethod=0" :class="['payment',onlinePayMethod==0?'selected':'']" :src="'../../../images/wechat_pay.png'" />
-            <img @click="onlinePayMethod=1" :class="['payment',onlinePayMethod==1?'selected':'']" :src="'../../../images/alipay.png'" />
+            <img @click="onlinePayMethod=0" :class="['payment',onlinePayMethod==0?'selected':'']" :src="'../../../images/alipay.png'" />
+            <img @click="onlinePayMethod=1" :class="['payment',onlinePayMethod==1?'selected':'']" :src="'../../../images/wechat_pay.png'" />
             <!--p style="color: gray" v-if="false">
                 若账户中的余额足够完成此次交易，将优先扣除账户中的余额。
             </p-->

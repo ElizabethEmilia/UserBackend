@@ -53,6 +53,7 @@ export default {
                     title: '操作', 
                     key: 'action', 
                     render: (h, params) => {
+                        let self = this;
                         return h('div', [
                             h('a', {
                                 props: {
@@ -67,10 +68,10 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
-                                                util.MessageBox.Success(this, '操作失败');
+                                                util.MessageBox.Success(self, '操作失败');
                                             }
                                             else {
-                                                util.MessageBox.Success(this, '操作成功');
+                                                util.MessageBox.Success(self, '操作成功');
                                             }
                                         }
                                         catch(err) {
@@ -95,15 +96,15 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
-                                                util.MessageBox.Success(this, '操作失败');
+                                                util.MessageBox.Success(self, '操作失败');
                                             }
                                             else {
-                                                util.MessageBox.Success(this, '操作成功');
+                                                util.MessageBox.Success(self, '操作成功');
                                             }
                                         }
                                         catch(err) {
                                             console.log(err);
-                                            util.MessageBox.Success(this, '操作失败');
+                                            util.MessageBox.Success(self, '操作失败');
                                         }
                                     }
                                 }
@@ -116,11 +117,10 @@ export default {
                                 },
                                 on: {
                                     async click() {
-                                        let info = self.tableData[params.index];
-                                        /// 弹出对话框
+                                        window.open('/res/avatar/'+params.row.credit);
                                     }
                                 }
-                            }, '查看详情')
+                            }, '查看支付凭据')
                         ]);
                     }
                 }

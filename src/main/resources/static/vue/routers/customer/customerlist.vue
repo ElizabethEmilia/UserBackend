@@ -115,7 +115,7 @@ export default {
         },
         additionalParams() {
             return util.forGetParams({
-                key: this.searchKeySubmit
+                search: this.searchKeySubmit
                         .replace(/什么/g, " ")
                         .replace(/\s{2,}/g, " ")
                         .replace(/\s$/, "")
