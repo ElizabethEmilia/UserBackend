@@ -200,9 +200,10 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         TExpectedIncome expectedIncome = new TExpectedIncome();
         expectedIncome.setCid(company.getId());
         expectedIncome.setUid(uid);
-        expectedIncome.setStatus(Constant.PreTaxStallsStatus.UNSELECTED);
+        expectedIncome.setYsaRange(Constant.PreTaxStallsStatus.UNSELECTED);
         expectedIncome.setTmActivate(new Date());
         expectedIncome.setTmInactivate(XunBinKit.getYearLastTime());
+        expectedIncome.setStatus(1);
         expectedIncome.setOper("系统");
         expectedIncome.setTmOp(new Date());
         expectedIncome.insert();

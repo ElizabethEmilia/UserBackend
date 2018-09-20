@@ -28,7 +28,7 @@ public class UserBackendInterceptor extends BaseController implements HandlerInt
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
         logger.info("自定义拦截器......");
 
-//        getSession().setAttribute("uid", 1);
+        getSession().setAttribute("uid", 1);
 
 //        判断cookie中是否有jsession
         Cookie cookie = CookieUtil.getCookie(request, "JSESSIONID");
