@@ -102,6 +102,6 @@ public class TComSetProgressServiceImpl extends ServiceImpl<TComSetProgressMappe
             company.updateById();
         }
 
-        return XunBinKit.returnResult(len == 1, -2, null, "删除成功", "删除失败");
+        return XunBinKit.returnResult(len > 0, -2, null, "Success", "Error");
     }
 }
