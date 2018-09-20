@@ -2,10 +2,7 @@ package org.ruoxue.backend.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TConfig;
-import org.ruoxue.backend.mapper.TAdminMapper;
-import org.ruoxue.backend.mapper.TConfigMapper;
-import org.ruoxue.backend.mapper.TCustomerMapper;
-import org.ruoxue.backend.mapper.TSigninMapper;
+import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITConfigService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
@@ -41,6 +38,9 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
     @Resource
     private TSigninMapper signinMapper;
 
+    @Resource
+    private TLogsMapper logsMapper;
+
     @Override
     public List<Map<String, Object>> getTConfig() {
         return configMapper.getConfig();
@@ -62,7 +62,6 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
         if (ToolUtil.isEmpty(key)) {
             return ResultUtil.error(-1, "参数错误");
         }
-
 
         String value = configMapper.getConfigByName(key);
         if(ToolUtil.isEmpty(value)){
@@ -87,12 +86,19 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
 //        修改配置
         Integer len = configMapper.updateValueByKey(key, value);
 
+//        获取管理员id
+        Integer uid = XunBinKit.getUid();
+
+        logsMapper.addLog(uid, "修改系统配置", 1);
+
         return XunBinKit.returnResult(len > 0, -3, null, "修改配置成功", "修改配置失败");
 
     }
 
     @Override
     public Object clearCache() {
+//        获取管理员id
+        Integer uid = XunBinKit.getUid();
 //        获取所有要删除的管理员
         List<Integer> admins = adminMapper.getRemoveAdminLids();
 
@@ -104,9 +110,11 @@ public class TConfigServiceImpl extends ServiceImpl<TConfigMapper, TConfig> impl
 
 //        删除所有的管理员
         adminMapper.removeAdmin();
+        logsMapper.addLog(uid, "删除所有状态异常的管理员", 1);
 
 //        删除所有的用户
         customerMapper.removeCustomer();
+        logsMapper.addLog(uid, "删除所有状态异常的客户", 1);
 
 //        删除所有status为3的sign的记录
         admins.forEach(new Consumer<Integer>() {

@@ -6,11 +6,15 @@ import org.json.CDL;
 import org.json.JSONArray;
 import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.bean.TReceipt;
+import org.ruoxue.backend.bean.TReceiptStat;
+import org.ruoxue.backend.bean.TTaxAccountDetail;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCompanyMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TReceiptMapper;
-import org.ruoxue.backend.service.ITDictProvincesService;
+import org.ruoxue.backend.mapper.TReceiptStatMapper;
 import org.ruoxue.backend.service.ITReceiptService;
+import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
@@ -39,7 +43,10 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     private TCompanyMapper companyMapper;
 
     @Resource
-    private ITDictProvincesService dictProvincesService;
+    private TReceiptStatMapper receiptStatMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end) {
@@ -58,6 +65,90 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
 //        查询list
         List<Map<String, Object>> list = receiptMapper.listReceipt(uid, cid, page, size, type, status, start, end);
+
+        return ResultUtil.success(list);
+    }
+
+    @Override
+    public Object listTaxStat(Integer cid, Integer page, Integer size, Integer status, Integer type, Date start, Date end) {
+
+//        获取uid
+        Integer uid = XunBinKit.getUid();
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+//        查询list
+        List<Map<String, Object>> list = receiptMapper.listTaxStat(uid, cid, page, size, type, status, start, end);
+
+        return ResultUtil.success(list);
+
+    }
+
+    @Override
+    public Object updateReceiptStat(Integer uid, Integer cid, JSONObject jsonObject) {
+
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+//        获取参数
+        Double income12 = jsonObject.getDouble("income12");
+        Double amountNormal = jsonObject.getDouble("amountNormal");
+        Integer timeNormal = jsonObject.getInteger("timeNormal");
+        Integer countNormal = jsonObject.getInteger("countNormal");
+        Double amountSpec = jsonObject.getDouble("amountSpec");
+        Integer timeSpec = jsonObject.getInteger("timeSpec");
+        Integer countSpec = jsonObject.getInteger("countSpec");
+        Double curPretax = jsonObject.getDouble("curPretax");
+
+        TReceiptStat receiptStat = new TReceiptStat();
+        receiptStat.setAid(uid);
+        receiptStat.setAmountNormal(amountNormal);
+        receiptStat.setAmountSpec(amountSpec);
+        receiptStat.setCid(cid);
+        receiptStat.setCountNormal(countNormal);
+        receiptStat.setCountSpec(countSpec);
+        receiptStat.setCurPretax(curPretax);
+        receiptStat.setIncome12(income12);
+        receiptStat.setTimeNormal(timeNormal);
+        receiptStat.setUid(uid);
+        receiptStat.setTimeSpec(timeSpec);
+        receiptStat.setTmModify(new Date());
+        receiptStat.insert();
+
+//        生成hash值
+        String hash = Md5Util.getMD5(receiptStat.toString());
+
+        receiptStatMapper.updateStatHash(receiptStat.getId(), hash);
+
+        logsMapper.addLog(-1, "修改统计hash值", 1);
+
+        return ResultUtil.success(receiptStat);
+    }
+
+    @Override
+    public Object listReceiptStatUpdate(Integer uid, Integer page, Integer size) {
+
+//        非空验证
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        if(ToolUtil.isEmpty(page)){
+            page = 1;
+        }
+        if(ToolUtil.isEmpty(size)){
+            size = 10;
+        }
+        page = (page - 1) * size;
+
+        List<Map<String, Object>> list = receiptStatMapper.listReceiptStatPage(uid, page, size);
 
         return ResultUtil.success(list);
     }
@@ -89,6 +180,14 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         receipt.setReason(reason);
 
         boolean b = receipt.updateById();
+
+//        开票审核通过后，加入税金明细表
+        if (statusCode == 2) {
+            TTaxAccountDetail taxAccountDetail = new TTaxAccountDetail();
+            taxAccountDetail.setTmOp(new Date());
+            taxAccountDetail.insert();
+        }
+
 
         return XunBinKit.returnResult(b, -3, null, "修改成功", "修改失败");
     }
@@ -262,6 +361,10 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         }
 
         Integer len = receiptMapper.updateStatusToSub(Constant.RECEIPT_STATUS.Submitted, rid);
+
+        Integer uid = XunBinKit.getUid();
+
+        logsMapper.addLog(uid, "修改开票状态", 1);
 
         return XunBinKit.returnResult(len > 0, -3, null, "Success", "Error");
     }

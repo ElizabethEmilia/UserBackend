@@ -43,6 +43,9 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     @Resource
     private TExchangeMapper exchangeMapper;
 
+    @Resource
+    private TLogsMapper logsMapper;
+
     @Override
     public Object CustomerRegister(JSONObject jsonObject, HttpSession session) {
 //        获取参数
@@ -98,6 +101,8 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         customer = new TCustomer();
 //        插入customer表
         boolean b = insertCustomer(name, phone, industry, type, customer, signin);
+
+        logsMapper.addLog(signin.getId(), "添加一个客户", 1);
 
         if(b){
             return ResultUtil.success(0, "添加用户成功");
@@ -179,6 +184,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         customer.setStatus(cus.getStatus());
         //boolean b = customer.updateById();
         boolean b = customerMapper.updateCustomer(customer);
+        logsMapper.addLog(uid, "修改客户信息", 1);
         if(b){
             return ResultUtil.success();
         } else {
@@ -205,6 +211,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 //            将新密码加密
         String newMd5Pwd = Md5Util.getMD5(new_pwd);
         Integer len = signinMapper.updatePassword(newMd5Pwd, signin.getId());
+        logsMapper.addLog(uid, "修改密码", 1);
         if(len == 1){
             return ResultUtil.success(0, "密码修改成功");
         } else {
@@ -220,6 +227,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 //        获取用户bean
         img = Base64Util.GenerateImageFromDataURI(img);
         boolean b = customerMapper.updateAvatar(img, uid);
+        logsMapper.addLog(uid, "修改头像", 1);
         if(b){
             return ResultUtil.success(0, "头像修改成功");
         } else {
@@ -253,6 +261,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 //        更新余额
         balance -= price;
         customerMapper.updateBalance(balance, userid);
+        logsMapper.addLog(-1, "修改余额", 1);
 
 //        获取公司
         TCompany company = companyMapper.getCompanyById(cid);
@@ -295,6 +304,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         order.insert();
 
         companyMapper.updateEndTime(cid, endDate);
+        logsMapper.addLog(-1, "修改公司到期时间", 1);
         if (c) {
             customerMapper.updatePaid(userid, 0);
             return ResultUtil.result(-4, sdf.format(endDate), "该公司缴费后仍欠费");

@@ -5,6 +5,7 @@ import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TPublicCharge;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TExchangeMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.service.ITExchangeService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
@@ -29,6 +30,9 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
 
     @Resource
     private TExchangeMapper exchangeMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object onlinecharge(Integer uid, Integer page, Integer size) {

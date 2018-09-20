@@ -9,6 +9,7 @@ import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TExchangeMapper;
 import org.ruoxue.backend.mapper.TExpectedIncomeMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.service.ITExpectedIncomeService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
@@ -16,7 +17,6 @@ import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +41,9 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
     @Resource
     private TExchangeMapper exchangeMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object exchangeByRecent() {
@@ -306,6 +309,8 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
 
         Integer len = expectedIncomeMapper.updateExpectById(map.get(action), expectedIncome.getId());
+
+        logsMapper.addLog(-1, "修改公司年销售额范围表", 1);
 
         return XunBinKit.returnResult(len > 0, -5, null, "状态变更成功", "状态变更失败");
     }

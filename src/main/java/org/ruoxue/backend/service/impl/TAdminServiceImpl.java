@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.mapper.TAdminMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITAdminService;
 import org.ruoxue.backend.util.Md5Util;
@@ -35,6 +36,9 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     @Resource
     private TSigninMapper signinMapper;
 
+    @Resource
+    private TLogsMapper logsMapper;
+
     @Override
     public Object basicGet(Integer uid) {
 //        获取admin实体
@@ -64,6 +68,8 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
         }
 
         Integer len = adminMapper.updateAdmin(name, adm.getId());
+
+        logsMapper.addLog(uid, "修改管理员", 1);
         if(len == 1){
             return ResultUtil.success();
         } else {
@@ -91,6 +97,8 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
 //            将新密码加密
         String newMd5Pwd = Md5Util.getMD5(new_pwd);
         Integer len = signinMapper.updatePassword(newMd5Pwd, admin.getLid());
+
+        logsMapper.addLog(uid, "修改密码", 1);
         if(len == 1){
             return ResultUtil.success(0, "密码修改成功");
         } else {
@@ -144,6 +152,8 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
         admin.setPhone(phone);
         admin.setGid(gid);
         admin.setRoleid(roleid);
+
+        logsMapper.addLog(admin.getId(), "添加管理员", 1);
         boolean b = admin.insert();
 
         return XunBinKit.returnResult(b, -3, null, "添加管理员成功", "添加管理员失败");
@@ -163,6 +173,8 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
         Integer len2 = signinMapper.deleteSign(admin.getLid());
 
         Integer len1 = adminMapper.deleteAdmin(aid);
+
+        logsMapper.addLog(aid, "删除管理员", 1);
 
         return XunBinKit.returnResult(((len1 + len2) == 2), -3, null, "删除成功", "删除失败");
     }
@@ -203,8 +215,12 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
 //        修改密码
         Integer len1 = signinMapper.updatePassword(password, admin.getLid());
 
+        logsMapper.addLog(aid, "修改密码", 1);
+
 //        修改账号信息
         Integer len2 = adminMapper.updateAdminByJson(aid, name, roleid, phone);
+
+        logsMapper.addLog(aid, "修改管理员信息", 1);
 
         return XunBinKit.returnResult((len1 + len2 == 2), -2, null, "修改成功", "修改失败");
     }
@@ -224,6 +240,8 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
         signin.setRole(2);
         signin.setMsgcode("");
         signin.insert();
+
+        logsMapper.addLog(signin.getId(), "添加登录信息", 1);
 
         return signin;
     }

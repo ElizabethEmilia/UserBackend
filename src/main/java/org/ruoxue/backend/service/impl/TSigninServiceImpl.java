@@ -6,6 +6,7 @@ import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.mapper.TAdminMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
+import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TSigninMapper;
 import org.ruoxue.backend.service.ITSigninService;
 import org.ruoxue.backend.util.Md5Util;
@@ -39,6 +40,9 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
 
     @Resource
     private TAdminMapper adminMapper;
+
+    @Resource
+    private TLogsMapper logsMapper;
 
     @Override
     public Object customerAdd(JSONObject jsonObject) {
@@ -178,6 +182,8 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
 //        获取sign实体
         TSignin signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
         boolean b = signin.deleteById();
+
+        logsMapper.addLog(uid, "删除用户", 1);
         if(b){
             return ResultUtil.success(0, "删除用户成功");
         } else {
@@ -221,6 +227,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
 //        获取加密后的md5密码
         String md5Pwd = Md5Util.getMD5(password);
         Integer len = signinMapper.updatePassword(md5Pwd, signin.getId());
+        logsMapper.addLog(uid, "修改密码", 1);
         if(len == 1){
             return ResultUtil.success(0, "修改密码成功");
         } else {

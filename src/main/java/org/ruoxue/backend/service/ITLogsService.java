@@ -21,4 +21,6 @@ public interface ITLogsService extends IService<TLogs> {
 
     Object listLog(Integer page, Integer size);
 
+
+
 }
