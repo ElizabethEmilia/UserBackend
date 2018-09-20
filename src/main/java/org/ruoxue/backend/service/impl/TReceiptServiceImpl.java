@@ -210,6 +210,8 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         for (Map<String, Object> map : list) {
 //            获取公司id
             Integer cid = (Integer) map.get("cid");
+//            获取公司名称
+            String cName = companyMapper.getCompanyById(cid).getName();
 //            获取公司税率
             Double pre_tax_ratio = companyMapper.getCompanyById(cid).getPreTaxRatio();
 //            统计12个月收入(含税)
@@ -232,6 +234,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
             System.out.println(pre_tax_ratio + ", " + sumAmount + ", " + countTimeMonthPTickets + ", " + countPTickets + ", " + countMonthPTicets + ", " + countTimeMonthZTickets + ", " + countZTickets + ", " + countMonthZTicets + ", " + countMonthTickets);
 
 //            将数据塞入map
+            map.put("cName", cName);
             map.put("income12", sumAmount);
             map.put("amountNormal", countTimeMonthPTickets);
             map.put("timeNormal", countPTickets);
