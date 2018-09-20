@@ -4,7 +4,9 @@
   "description": "Frontend",
   "main": "index.html",
   "scripts": {
-    "test": "echo Miyuki is so cute!!"
+    "test": "echo Miyuki is so cute!!",
+    "build-release": "webpack --config webpack.config.production.js",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -43,7 +45,8 @@
     "vue-loader": "^15.4.1",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.16.1"
+    "webpack": "^4.16.1",
+    "webpack-merge": "^4.1.4"
   },
   "devDependencies": {
     "webpack-cli": "^3.0.8"

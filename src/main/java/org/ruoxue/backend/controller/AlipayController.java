@@ -75,9 +75,11 @@ public class AlipayController {
     @PostMapping("notify")
     public void notifyQuery(@RequestParam HashMap<String, String> params, HttpServletResponse response) {
         Map<String, String> paramsMap = params;
+        System.err.println("[AlipayController] 接收到支付宝的异步通知");
         try {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap, Constant.AlipayConfig.ALIPAY_PUBLIC_KEY, CHARSET, Constant.AlipayConfig.SIGN_TYPE); //调用SDK验证签名
             if(signVerified){
+                System.err.println("[AlipayController] 延签成功");
                 // 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，
                 // 校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
                 Integer orderid = Integer.parseInt(params.get("out_trade_no"));
@@ -88,6 +90,7 @@ public class AlipayController {
             }else{
                 // 验签失败则记录异常日志，并在response中返回failure.
                 response.getWriter().println("failure");
+                System.err.println("[AlipayController] 延签失败");
 
                 response.getOutputStream().println("非法访问者你好，你的APP ID我们已经记下，我们将保存这个请求并向支付宝举报。");
                 logsService.actionLogNow(Constant.LogUsers.SYSTEM,
@@ -96,6 +99,7 @@ public class AlipayController {
             }
         }
         catch (Exception e) {
+            System.err.println("[AlipayController] 发生异常");
             e.printStackTrace();
         }
 
