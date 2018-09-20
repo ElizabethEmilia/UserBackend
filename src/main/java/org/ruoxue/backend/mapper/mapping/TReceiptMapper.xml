@@ -57,7 +57,7 @@
 
 	<select id="receiptList" resultType="java.util.Map">
 		select a.*, b.name from t_receipt a, t_company b
-		where 1 = 1 and a.cid = b.id
+		where 1 = 1 and a.cid = b.id and b.uid = #{uid}
 		<if test="status != null">
 			and a.status = #{status}
 		</if>

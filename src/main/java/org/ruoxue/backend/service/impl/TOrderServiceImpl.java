@@ -86,7 +86,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = orderMapper.listOrder(cid, type, page, size, map.get(status), start, end);
+        List<Map<String, Object>> list = orderMapper.listOrder(cid, type, page, size, map.get(status), start, end, XunBinKit.getUid());
 
         return ResultUtil.success(list);
     }

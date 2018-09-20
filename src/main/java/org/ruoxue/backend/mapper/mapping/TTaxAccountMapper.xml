@@ -14,7 +14,7 @@
 	<select id="listGroup" resultType="java.util.Map">
 		select year(a.tm_op) year, a.cid, b.name, sum(a.change_amount) sumAmount from t_tax_account_detail a
 		left join t_company b on a.cid = b.id
-		where 1 = 1
+		where b.uid = #{uid}
 		<if test="cid != null and cid != ''">
 			and a.cid = #{cid}
 		</if>
@@ -32,8 +32,8 @@
 	</select>
 
 	<select id="listTaxDetail" resultType="java.util.Map">
-		select * from t_tax_account_detail
-		where 1 = 1
+		select * from t_tax_account_detail a, t_company b where a.cid = b.id
+		and b.uid = #{uid}
 		<if test="cid != null and cid != ''">
 			and cid = #{cid}
 		</if>
@@ -47,7 +47,7 @@
 				and tm_op < #{mto}
 			]]>
 		</if>
-		order by id desc limit #{page}, #{size}
+		order by a.id desc limit #{page}, #{size}
 	</select>
 
 </mapper>

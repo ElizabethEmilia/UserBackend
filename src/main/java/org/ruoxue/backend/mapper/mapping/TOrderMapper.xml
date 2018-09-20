@@ -23,28 +23,28 @@
 	</select>
 
 	<select id="listOrder" resultType="java.util.Map">
-		select * from t_order
-		where 1 = 1
+		select * from t_order, t_company
+		where t_company.id = t_order.cid and t_company.uid = #{uid}
 		<if test="status != null">
-			and status = #{status}
+			and t_order.status = #{status}
 		</if>
 		<if test="type != null and type != ''">
-			and type = #{type}
+			and t_order.type = #{type}
 		</if>
 		<if test="cid != null and cid != ''">
-			and cid = #{cid}
+			and t_order.cid = #{cid}
 		</if>
 		<if test="start != null and start != ''">
 			<![CDATA[
-				and tm_create > #{start}
+				and t_order.tm_create > #{start}
 			]]>
 		</if>
 		<if test="end != null and end != ''">
 			<![CDATA[
-				and tm_create < #{end}
+				and t_order.tm_create < #{end}
 			]]>
 		</if>
-		order by id DESC limit #{page}, #{size}
+		order by t_order.id DESC limit #{page}, #{size}
 	</select>
 
 </mapper>

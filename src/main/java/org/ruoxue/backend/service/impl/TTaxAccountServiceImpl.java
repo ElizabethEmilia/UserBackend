@@ -46,9 +46,9 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
 
 //        根据年份，公司分组，获取所有组
 //        [{year=2017, name=中国联通, sumAmount=4.0, cid=1}, {year=2018, name=中国联通, sumAmount=7.0, cid=1}, {year=2017, name=中国移动, sumAmount=5.0, cid=2}, {year=2018, name=中国移动, sumAmount=2.0, cid=2}]
-        List<Map<String, Object>> listGroup = taxAccountMapper.listGroup(page, size, cid, yfrom, yto);
+        List<Map<String, Object>> listGroup = taxAccountMapper.listGroup(page, size, cid, yfrom, yto, XunBinKit.getUid());
         for (Map<String, Object> map : listGroup) {
-            Double dou = taxAccountMapper.getRatioByTimeAndCid((Integer) map.get("cid"), map.get("year") + "");
+            Double dou = taxAccountMapper.getRatioByTimeAndCid((Integer) map.get("cid"), map.get("year") + "", XunBinKit.getUid());
             map.put("preTaxRatio", dou);
         }
 
@@ -66,7 +66,7 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = taxAccountMapper.listTaxDetail(page, size, cid, mfrom, mto);
+        List<Map<String, Object>> list = taxAccountMapper.listTaxDetail(page, size, cid, mfrom, mto, XunBinKit.getUid());
 
         return ResultUtil.success(list);
     }
@@ -88,9 +88,9 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
         page = (page - 1) * size;
 
 //        根据年份，公司分组，获取所有组
-        List<Map<String, Object>> listGroup = taxAccountMapper.listGroup(page, size, cid, yfrom, yto);
+        List<Map<String, Object>> listGroup = taxAccountMapper.listGroup(page, size, cid, yfrom, yto, XunBinKit.getUid());
         for (Map<String, Object> map : listGroup) {
-            Double dou = taxAccountMapper.getRatioByTimeAndCid((Integer) map.get("cid"), map.get("year") + "");
+            Double dou = taxAccountMapper.getRatioByTimeAndCid((Integer) map.get("cid"), map.get("year") + "", XunBinKit.getUid());
             map.put("preTaxRatio", dou);
         }
 
@@ -112,7 +112,7 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = taxAccountMapper.listTaxDetail(page, size, cid, mfrom, mto);
+        List<Map<String, Object>> list = taxAccountMapper.listTaxDetail(page, size, cid, mfrom, mto, XunBinKit.getUid());
 
         return ResultUtil.success(list);
     }

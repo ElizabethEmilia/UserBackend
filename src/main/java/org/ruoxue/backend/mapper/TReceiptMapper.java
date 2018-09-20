@@ -27,7 +27,7 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
     TReceipt getReceipt(@Param("uid") Integer uid, @Param("id") Integer id);
 
 //    开票列表
-    List<Map<String, Object>> receiptList(@Param("cid") Integer cid, @Param("type") Integer type, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
+    List<Map<String, Object>> receiptList(@Param("cid") Integer cid, @Param("type") Integer type, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
 
     @Update("update t_receipt set status = #{status} where id = #{id}")
     Integer updateStatusToSub(@Param("status") Integer status, @Param("id") Integer id);
@@ -42,9 +42,12 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
     @Select("select * from t_receipt limit 1000")
     List<Map<String, Object>> listReceiptAll();
 
+    @Select("select * from t_receipt where uid=#{uid} limit 1000")
+    List<Map<String, Object>> listReceiptAllByUID(@Param("uid") Integer uid);
+
 //    查看开票统计(***)
-    @Select("select a.cid, b.name  from t_receipt a, t_company b where a.cid = b.id and b.tm_first_ec is not null group by a.cid order by a.cid desc limit #{page}, #{size}")
-    List<Map<String, Object>> statReceipt(@Param("page") Integer page, @Param("size") Integer size);
+    @Select("select a.cid, b.name  from t_receipt a, t_company b where b.uid=#{uid} and a.cid = b.id and b.tm_first_ec is not null group by a.cid order by a.cid desc limit #{page}, #{size}")
+    List<Map<String, Object>> statReceipt(@Param("page") Integer page, @Param("size") Integer size, @Param("uid") Integer uid);
 
 //    12个月收入之和
     @Select("select sum(rec_amount) amountSum from t_receipt where cid = #{cid} and tm_vallidate > #{start} and tm_vallidate < #{end}")

@@ -150,7 +150,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = receiptMapper.receiptList(cid, type, page, size, status, start, end);
+        List<Map<String, Object>> list = receiptMapper.receiptList(cid, type, page, size, status, start, end, XunBinKit.getUid());
 
         return ResultUtil.success(list);
     }
@@ -170,7 +170,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     @Override
     public Object exportReceipt() {
 
-        List<Map<String, Object>> list = receiptMapper.listReceiptAll();
+        List<Map<String, Object>> list = receiptMapper.listReceiptAllByUID(XunBinKit.getUid());
 
         JSONArray jsonArray = new JSONArray();
         for (Map<String, Object> map : list) {
@@ -205,7 +205,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = receiptMapper.statReceipt(page, size);
+        List<Map<String, Object>> list = receiptMapper.statReceipt(page, size, XunBinKit.getUid());
 
         for (Map<String, Object> map : list) {
 //            获取公司id

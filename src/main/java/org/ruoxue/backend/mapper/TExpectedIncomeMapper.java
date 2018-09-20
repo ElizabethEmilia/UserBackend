@@ -23,7 +23,7 @@ import java.util.Map;
 @Mapper
 public interface TExpectedIncomeMapper extends BaseMapper<TExpectedIncome> {
 
-    List<TExchange> listExchange(@Param("type") Integer type, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size, @Param("start") Date start, @Param("end") Date end);
+    List<TExchange> listExchange(@Param("type") Integer type, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
 
 //    客户
     List<Map<String, Object>> listExpectIncomeByYear(@Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
