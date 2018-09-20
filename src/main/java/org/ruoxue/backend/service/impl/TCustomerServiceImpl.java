@@ -2,10 +2,7 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.ruoxue.backend.bean.TCompany;
-import org.ruoxue.backend.bean.TCustomer;
-import org.ruoxue.backend.bean.TExchange;
-import org.ruoxue.backend.bean.TSignin;
+import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.ConfigNames;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITCustomerService;
@@ -281,6 +278,21 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 
 //        查看续费后是否扔欠费
         boolean c = endDate.getTime() < now.getTime() ? true : false;
+
+//        在交易表和订单表分别插入记录 note(增加服务期限X个月)
+        TExchange exchange = new TExchange();
+        exchange.setCid(cid);
+        exchange.setNote("增加服务期限" + months + "个月");
+        exchange.setAmount(price);
+        exchange.setTm(new Date());
+        exchange.setUid(userid);
+        exchange.insert();
+
+        TOrder order = new TOrder();
+        order.setAmount(price);
+        order.setCid(cid);
+        order.setTmCreate(new Date());
+        order.insert();
 
         companyMapper.updateEndTime(cid, endDate);
         if (c) {

@@ -59,10 +59,10 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         }
 
         Double balance = customer.getBalance();         //余额
-        BigDecimal income = exchangeMapper.countIncome(uid);    //总收入
-        BigDecimal outcome = exchangeMapper.countOutcome(uid);    //总收入
-        BigDecimal lastIncome = exchangeMapper.countLastIncome(uid);    //总收入
-        BigDecimal lastOutcome = exchangeMapper.countLastOutcome(uid);    //总收入
+        Double income = exchangeMapper.countIncome(uid);    //总收入
+        Double outcome = exchangeMapper.countOutcome(uid);    //总收入
+        Double lastIncome = exchangeMapper.countLastIncome(uid);    //总收入
+        Double lastOutcome = exchangeMapper.countLastOutcome(uid);    //总收入
 
         JSONObject json = new JSONObject();
         json.put("income", income);

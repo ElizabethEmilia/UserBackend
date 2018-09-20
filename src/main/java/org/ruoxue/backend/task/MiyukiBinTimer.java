@@ -1,7 +1,9 @@
 package org.ruoxue.backend.task;
 
 import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TExpectedIncome;
+import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCompanyMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
@@ -108,6 +110,22 @@ public class MiyukiBinTimer {
                             calendar.add(Calendar.YEAR, 1);
                             endDate = calendar.getTime();
                             companyMapper.updateEndTime(cid, endDate);
+
+ //        在交易表和订单表分别插入记录 note(增加服务期限X个月)
+                            TExchange exchange = new TExchange();
+                            exchange.setCid(cid);
+                            exchange.setNote("交易");
+                            exchange.setAmount(12000.0);
+                            exchange.setTm(new Date());
+                            exchange.setUid(uid);
+                            exchange.insert();
+
+                            TOrder order = new TOrder();
+                            order.setAmount(12000.0);
+                            order.setCid(cid);
+                            order.setTmCreate(new Date());
+                            order.insert();
+
                         }
 
                     }

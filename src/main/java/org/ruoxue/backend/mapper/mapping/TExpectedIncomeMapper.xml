@@ -17,8 +17,8 @@
 	</resultMap>
 
 	<select id="listExchange" resultType="org.ruoxue.backend.bean.TExchange">
-		select * from t_exchange
-		where uid = #{uid}
+		select a.*, b.name from t_exchange a, t_company b
+		where b.uid = #{uid} and a.cid = b.id
 		<if test="type != null">
 			and type = #{type}
 		</if>

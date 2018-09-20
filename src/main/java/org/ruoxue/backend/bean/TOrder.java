@@ -1,13 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.math.BigDecimal;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ public class TOrder extends Model<TOrder> {
 	private Integer id;
 	private Integer cid;
 	private String type;
-	private BigDecimal amount;
+	private Double amount;
 	private Integer status;
 	@TableField("tm_create")
 	private Date tmCreate;
@@ -59,11 +59,11 @@ public class TOrder extends Model<TOrder> {
 		this.type = type;
 	}
 
-	public BigDecimal getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

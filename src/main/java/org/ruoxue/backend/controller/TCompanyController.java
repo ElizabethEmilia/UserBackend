@@ -1,6 +1,7 @@
 package org.ruoxue.backend.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.feature.PermissionManager;
@@ -59,8 +60,8 @@ public class TCompanyController {
 
     @ApiOperation("为客户新增公司")
     @RequestMapping(value = "/customer/{uid}/company/new", method = RequestMethod.POST)
-    public @ResponseBody Object addCompony(@Valid TCompany company, @PathVariable String uid){
-        return companyService.addCompony(company, uid);
+    public @ResponseBody Object addCompony(@RequestBody JSONObject jsonObject, @PathVariable Integer uid){
+        return companyService.addCompony(jsonObject, uid);
     }
 
     @ApiOperation("删除设立进度")

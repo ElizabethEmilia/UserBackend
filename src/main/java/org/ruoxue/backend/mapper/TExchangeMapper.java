@@ -25,15 +25,15 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
     List<TPublicCharge> getPublicCharge(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status);
 
 //    总收入
-    BigDecimal countIncome(@Param("uid") Integer uid);
+    Double countIncome(@Param("uid") Integer uid);
 
 //    总支出
-    BigDecimal countOutcome(@Param("uid") Integer uid);
+    Double countOutcome(@Param("uid") Integer uid);
 
 //    上次收入
-    BigDecimal countLastIncome(@Param("uid") Integer uid);
+    Double countLastIncome(@Param("uid") Integer uid);
 
-    BigDecimal countLastOutcome(@Param("uid") Integer uid);
+    Double countLastOutcome(@Param("uid") Integer uid);
 
     @Insert("insert into t_exchange (uid, amount, paymethod, tm, type, note, state) " +
             "values(#{uid}, #{amount}, #{paymethod}, #{tm}, #{type}, #{note}, #{state})")
