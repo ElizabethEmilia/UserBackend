@@ -24,6 +24,9 @@ public interface TReceiptStatMapper extends BaseMapper<TReceiptStat> {
 //    获取客户各个公司的开票统计
     List<TReceiptStat> listReceiptStat(@Param("uid") Integer uid);
 
+    @Select("select sum(rec_amount) as amount, sum(rec_amount*pretax_ratio) as tax from t_receipt where uid = #{uid} and (status not in ( 0, 9, 10))")
+    List<Map<String, Object>> getStats(@Param("uid") Integer uid);
+
 //    获取用户开票统计修改记录
     @Select("select * from t_receipt_stat where uid = #{uid} order by id desc limit #{page}, #{size}")
     List<Map<String, Object>> listReceiptStatPage(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size);

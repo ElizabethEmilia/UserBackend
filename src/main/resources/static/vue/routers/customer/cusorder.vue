@@ -4,7 +4,7 @@
         <Divider orientation="left"><h3>产品订单</h3></Divider>
 
         <Alert type="success">
-            温馨提示： 没有。
+            温馨提示： {{ ordertips }}。
         </Alert>
 
          <Tabs :value="res_url" @on-click="tabclick" >
@@ -19,15 +19,16 @@
 
 <script>
     import PagedTable from '../../pagedTable.vue';
-
     import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
     import '../../../css/style.less';
+    import { ordertips } from '../../../data/tips.js';
 
     let _uid = -1;
 
     export default {
         props: ['uid'],
         data: () => ({
+            ordertips,
             res_url: 'all',
             columns: function() { 
                 let self = this;

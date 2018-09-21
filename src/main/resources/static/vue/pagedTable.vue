@@ -111,7 +111,11 @@ export default (function(){
                 console.log(`[PagedTable] get count`);
                 let url = this.requestUrl + `?count`;
                 try {
-                    this.count = await $.ajax(url);
+                    let r = await $.ajax(url);
+                    if (r.code) {
+                        console.error(`[PagedTable] 获取记录数量失败`);
+                    }
+                    this.count = r.data;
                     console.log(`[PagedTable] 获取记录数量: ${this.count}条记录`);
                 }
                 catch(err) {

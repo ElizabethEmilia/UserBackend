@@ -1,0 +1,1 @@
+export default "这是一个温馨提示";

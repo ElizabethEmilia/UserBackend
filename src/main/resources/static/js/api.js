@@ -201,5 +201,8 @@ export default {
 
     Receipt: {
         newApplication: (data) => POST(`/api/receipt/new`, data)(),
+
+        getStatDataUser: GET(`/api/receipt/stat-data`),
+        getStatDataAdmin: uid => GET(`/api/customer/${uid}/receipt/statv`)(),
     }
 }

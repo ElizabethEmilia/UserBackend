@@ -66,6 +66,9 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
     @Select("select * from t_company order by id desc")
     List<Map<String, Object>> listComAll();
 
+    @Select("select t_company.*, t_customer.name as user_name from t_company, t_customer where t_customer.uid = t_company.uid and t_customer.uid in (select uid from t_customer where aid=#{aid})")
+    List<Map<String, Object>> listCompanyAllByAid(@Param("aid") Integer aid);
+
 //    更新所有公司预选状态为0
     @Update("update t_company set ysa_status = 0")
     Integer updateStatus();

@@ -3,6 +3,7 @@ package org.ruoxue.backend.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
+import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
 import org.ruoxue.backend.feature.PermissionManager;
@@ -37,7 +38,6 @@ public class TCustomerController extends BaseController {
     @ApiOperation("修改账号信息")
     @RequestMapping(value = "/account/basic", method = RequestMethod.POST)
     public @ResponseBody Object basicPost(@RequestBody String json){
-        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerModify)) return null;
         return customerService.basicPost(JSONObject.parseObject(json, TCustomer.class));
     }
 
@@ -71,6 +71,8 @@ public class TCustomerController extends BaseController {
     @ApiOperation("获取客户即将到期的公司的信息")
     @RequestMapping(value = "/company/deadline", method = RequestMethod.GET)
     public @ResponseBody Object listDeadline(){
+        if (getSession().getAttribute("obj") instanceof TAdmin)
+            return customerService.listDeadlineAdmin();
         return customerService.listDeadline();
     }
 

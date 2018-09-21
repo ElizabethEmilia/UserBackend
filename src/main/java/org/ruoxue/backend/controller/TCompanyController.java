@@ -82,7 +82,6 @@ public class TCompanyController {
     @ApiOperation("获取某一个公司的信息")
     @RequestMapping(value = "/company/{cid}/info", method = RequestMethod.GET)
     public @ResponseBody Object getCompanyInfo(@PathVariable Integer cid) {
-        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCompanyAddAndModify)) return null;
         return companyService.getCompanyInfo(cid);
     }
 

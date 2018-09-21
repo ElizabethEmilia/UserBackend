@@ -36,6 +36,8 @@ public interface ITCustomerService extends IService<TCustomer> {
 
     Object listDeadline();
 
+    Object listDeadlineAdmin();
+
     Object listExchangeByUid(Integer page, Integer size);
 
 }

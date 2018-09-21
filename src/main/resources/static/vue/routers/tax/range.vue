@@ -87,11 +87,11 @@
                 return [
                     { title: '序号', type: 'index' },
                     { title: '公司', type: 'name' },
-                    { title: '预计年销售额范围', type: 'rsaRange' },
-                    { title: '税金预缴率', type: 'preTaxRatio' },
+                    { title: '预计年销售额范围', type: 'rsa_range' },
+                    { title: '税金预缴率', type: 'pre_tax_ratio' },
                     { title: '税金预交档次状态', type: 'status' },
-                    { title: '税金预交率生效时间', type: 'activateDate' },
-                    { title: '税金预交率失效时间', type: 'inactivateDate' },
+                    { title: '税金预交率生效时间', type: 'activate_date' },
+                    { title: '税金预交率失效时间', type: 'inactivate_date' },
                     { title: '操作人', type: 'oper' },
                     { title: '操作时间', type: 'tmOp' },
                 ];
@@ -222,7 +222,7 @@
             },
             tableDataSource() {
                 if (typeof this.selectedCompany === "undefined")
-                    return "no-data-set";
+                    return "company-not-selected";
                 return `company/${this.selectedCompany.id}/sales/list/${this.res_url}`;
             }
         },

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -37,5 +38,19 @@ public class TReceiptStatServiceImpl extends ServiceImpl<TReceiptStatMapper, TRe
         List<TReceiptStat> list = receiptStatMapper.listReceiptStat(userid);
 
         return ResultUtil.success(list);
+    }
+
+    @Override
+    public Object receiptStatV(String uid) {
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        Integer userid = XunBinKit.getUidByString(uid);
+
+        List<Map<String, Object>> list = receiptStatMapper.getStats(userid);
+
+        return ResultUtil.success(list);
+
     }
 }

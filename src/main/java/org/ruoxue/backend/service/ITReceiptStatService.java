@@ -15,4 +15,6 @@ public interface ITReceiptStatService extends IService<TReceiptStat> {
 
     Object receiptStat(String uid);
 
+    Object receiptStatV(String uid);
+
 }

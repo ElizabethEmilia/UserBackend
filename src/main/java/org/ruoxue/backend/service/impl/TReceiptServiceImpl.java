@@ -369,6 +369,20 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         return XunBinKit.returnResult(len > 0, -3, null, "Success", "Error");
     }
 
+    @Override
+    public Object statReceiptVuser() {
+
+        Integer uid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "未登录");
+        }
+
+        List<Map<String, Object>> list = receiptStatMapper.getStats(uid);
+
+        return ResultUtil.success(list);
+    }
+
     //    当月普票次数
     private Integer countTimeMonthPTickets(Integer cid) {
         List<Integer> list = receiptMapper.countTimePTickets(cid);

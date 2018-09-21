@@ -19,9 +19,9 @@
          <DatePicker v-model='selected.end' type="date" placeholder="截止日期" style="width: 130px; margin-left: 5px;"></DatePicker>
 
         <Row style="margin: 10px;">
-            <Col span="16">
+            <!--Col span="16">
                 当前查询 开票金额合计：{{ totalReceiptAmount }}, 预缴税合计： {{ preTaxTotal }}
-            </Col>
+            </Col-->
             <Col span="8">
                 <ButtonGroup>
                     <Button type="success" @click="newApplication">新增开票申请</Button>
@@ -29,7 +29,8 @@
             </Col>
         </Row>
 
-        <PagedTable v-if="selected != -1" 
+        <PagedTable v-if="selected != -1"
+                    ref="dt"
             :columns="columns" 
             data-source="receipt/list"
             :additional-params="searchParams"
@@ -146,6 +147,8 @@ export default {
         receiptStatus,
         receiptData: [],
 
+        statData: { amount: -1, tax: -1 },
+
         shouldOpenDialogNew: false,
         selectedNew: { cid: -1, ty: 0 },
         userInfo: null,
@@ -196,6 +199,15 @@ export default {
                 console.error(err);
             }
         },
+        async getStat() {
+            try {
+                let d = await API.Receipt.getStatDataUser();
+                this.statData = d[0];
+            }
+            catch(e) {
+                console.error(e);
+            }
+        },
         async submit() {
             try {
                 this.applicationData.cid = this.selectedNew.cid;
@@ -212,6 +224,7 @@ export default {
 
                 await API.Receipt.newApplication(d);
                 util.MessageBox.Show(this, "申请成功");
+                this.$refs.dt.refresh();
                 this.shouldOpenDialogEdit = false;
             }
             catch(e) {
@@ -222,26 +235,22 @@ export default {
     },
     computed: {
         totalReceiptAmount() {
-            if (this.receiptData.length == 0) {
-                return '0.00';
+            if (this.statData.amount === -1) {
+                return '--';
             }
-
-            return String(Number(this.receiptData
-                .map(e=>e.amount)
-                .reduce((a,b)=>a+b))
-                .toFixed(2));
+            return Number(this.statData.amount)
+                .toFixed(2);
         },
         preTaxTotal() {
-            if (this.receiptData.length == 0) {
-                return '0.00';
+            if (this.statData.tax === -1) {
+                return '--';
             }
 
-            return String(Number(this.receiptData
-                .map(e=>e.preTax)
-                .reduce((a,b)=>a+b))
-                .toFixed(2));
+            return Number(this.statData.tax)
+                .toFixed(2);
         },
         searchParams() {
+            setTimeout(() => this.getStat(), 0);
             return util.forGetParams(Object.assign({}, this.selected, {
                 start: util.Date.toDateString(this.selected.start),
                 end: util.Date.toDateString(this.selected.end),

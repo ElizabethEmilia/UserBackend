@@ -95,6 +95,12 @@ public class TReceiptController {
         return receiptService.statReceipt(page, size);
     }
 
+    @ApiOperation("开票情况统计,开票情况统计")
+    @RequestMapping(value = "/receipt/stat-data", method = RequestMethod.GET)
+    public @ResponseBody Object statReceiptVuser(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        return receiptService.statReceiptVuser();
+    }
+
     @ApiOperation("将开票状态设置为提交")
     @RequestMapping(value = "/receipt/{rid}/submit", method = RequestMethod.POST)
     public @ResponseBody Object updateStatusToSub(@PathVariable Integer rid) {

@@ -379,6 +379,48 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     }
 
     @Override
+    public Object listDeadlineAdmin() {
+        //        获取aid
+        Integer aid = XunBinKit.getUid();
+
+        if (ToolUtil.isEmpty(aid)) {
+            return ResultUtil.error(-1, "用户未登录");
+        }
+
+
+        Object obj = XunBinKit.getSession().getAttribute("obj");
+        if (!(obj instanceof TAdmin)) {
+            XunBinKit.getResponse().setStatus(403);
+            return null;
+        }
+        TAdmin admin = (TAdmin)obj;
+
+//        先获取管理员所属客户所有的公司,遍历公司列表,获取到期时间(endDate > now && endDate - 1 < now)的公司直接删除
+        List<Map<String, Object>> list = companyMapper.listCompanyAllByAid(aid);
+        if (list.size() > 0) {
+            Iterator<Map<String,Object>> it = list.iterator();
+            while (it.hasNext()) {
+                Map<String, Object> map = it.next();
+                Date endDate = (Date) map.get("tax_pack_end");
+                Date now = new Date();
+                Calendar calendar =Calendar.getInstance();
+                calendar.setTime(endDate);
+                calendar.add(Calendar.MONTH, -1);
+                Date end = calendar.getTime();
+                if (endDate.getTime() > now.getTime() && end.getTime() < now.getTime()) {
+//                  保留一个月内过期的公司
+//                  在返回值中put一个user_name
+                    map.put("user_name", map.get("user_name"));
+                } else {
+                    it.remove();
+                }
+            }
+        }
+
+        return ResultUtil.success(list);
+    }
+
+    @Override
     public Object listExchangeByUid(Integer page, Integer size) {
 
 //        获取uid

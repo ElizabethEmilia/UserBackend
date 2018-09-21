@@ -4,7 +4,7 @@
         <Divider orientation="left"><h3>产品订单</h3></Divider>
 
         <Alert type="success">
-            温馨提示： 没有。
+            温馨提示： <span v-html="ordertips"></span>。
         </Alert>
 
          <Tabs :value="res_url" @on-click="tabclick" >
@@ -22,10 +22,11 @@
 
     import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
     import '../../../css/style.less';
-
+    import { ordertips } from '../../../data/tips.js';
 
     export default {
         data: () => ({
+            ordertips,
             res_url: 'all',
             columns: function() { 
                 let self = this;

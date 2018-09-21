@@ -55,7 +55,7 @@ public class TSigninController {
     @ApiOperation("获取用户信息列表")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody Object listCustomer(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll)) return null;
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminUserListAll)) return null;
         return signinService.listCustomer(page, size);
     }
 

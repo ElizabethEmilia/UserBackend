@@ -89,15 +89,7 @@
 
                             <div style="margin-bottom: 5px;">
                                 <span class="title-before-input">地址 </span>
-                                <Select v-model="infoSave.province" style="width: 100px;">
-                                    <Option v-for="(e,i) in provinces" :value="e" :key="e">{{ e }}</Option>
-                                </Select>
-                                <Select v-model="infoSave.city" style="width: 100px;">
-                                    <Option v-for="(e,i) in cities" :value="e" :key="e">{{ e }}</Option>
-                                </Select>
-                                <Select v-model="infoSave.district" style="width: 100px;">
-                                    <Option v-for="(e,i) in district" :value="e" :key="e">{{ e }}</Option>
-                                </Select>
+                                <SelectArea v-model="area"></SelectArea>
                                 <p style="margin-top: 5px;">
                                     <span class="title-before-input"> </span>
                                     <Input v-model="infoSave.address" placeholder="" clearable style="width: 300px" />
@@ -215,7 +207,7 @@ export default {
 
             this.pendingSave = true;
             try {
-                let result = await $.ajax('/api/account/basic', this.infoSave);
+                let result = await $.ajax('/api/customer/' + this.infoSave.uid, this.infoSave);
                 if (result.code === 0) {
                     // 保存成功
                     this.pendingSave = false;

@@ -31,5 +31,11 @@ public class TReceiptStatController {
     public @ResponseBody Object receiptStat(@PathVariable String uid) {
         return receiptStatService.receiptStat(uid);
     }
+
+    @ApiOperation("查看客户各个公司的开票统计")
+    @RequestMapping(value = "/{uid}/receipt/statv", method = RequestMethod.GET)
+    public @ResponseBody Object receiptStatV(@PathVariable String uid) {
+        return receiptStatService.receiptStat(uid);
+    }
 	
 }

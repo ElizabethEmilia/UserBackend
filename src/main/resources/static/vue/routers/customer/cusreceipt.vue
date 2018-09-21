@@ -19,9 +19,9 @@
          <DatePicker v-model='selected.end' type="date" placeholder="截止日期" style="width: 130px; margin-left: 5px;"></DatePicker>
 
         <Row style="margin-top: 10px;">
-            <Col span="16">
+            <!--Col span="16">
                 当前查询 开票金额合计：{{ totalReceiptAmount }}, 预缴税合计： {{ preTaxTotal }}
-            </Col>
+            </Col-->
             <Col span="8">
                 
             </Col>
@@ -95,6 +95,9 @@ export default {
         receiptType,
         receiptStatus,
         receiptData: [],
+
+        statData: { amount: -1, tax: -1 },
+
     }),
     methods: {
         async getCompanies() {
@@ -105,29 +108,27 @@ export default {
     },
     computed: {
         totalReceiptAmount() {
-            if (this.receiptData.length == 0) {
-                return '0.00';
+            if (this.statData.amount === -1) {
+                return '--';
             }
 
-            return String(Number(this.receiptData
-                .map(e=>e.amount)
-                .reduce((a,b)=>a+b))
-                .toFixed(2));
+            return Number(this.statData.amount)
+                .toFixed(2);
         },
         preTaxTotal() {
-            if (this.receiptData.length == 0) {
-                return '0.00';
+            if (this.statData.tax === -1) {
+                return '--';
             }
 
-            return String(Number(this.receiptData
-                .map(e=>e.preTax)
-                .reduce((a,b)=>a+b))
-                .toFixed(2));
+            return Number(this.statData.tax)
+                .toFixed(2);
         },
         searchParams() {
+            setTimeout(() => this.getStat(), 0);
             return util.forGetParams(this.selected);
         },
         dataSource() {
+            setTimeout(() => this.getStat(), 0);
             return `customer/${this.uid}/receipt`
         }
     },

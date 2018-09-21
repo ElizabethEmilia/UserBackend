@@ -38,4 +38,6 @@ public interface ITReceiptService extends IService<TReceipt> {
 
     Object updateStatusToSub(Integer rid);
 
+    Object statReceiptVuser();
+
 }

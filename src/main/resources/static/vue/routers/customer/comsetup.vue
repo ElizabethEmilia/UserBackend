@@ -103,6 +103,7 @@
                         note: I.note,
                     });
                     util.MessageBox.Show(this, "添加成功");
+                    this.$refs.dt.refresh();
                 }
                 catch (e) {
                     console.error(e);

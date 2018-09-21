@@ -41,12 +41,19 @@ public class AlipayServiceImpl implements IAlipayService {
 //        获取用户
         Integer uid = XunBinKit.getUid();
 
+        if (uid == null) {
+            response.setStatus(403);
+            return;
+        }
+
         try{
 
     //        amount(充值)
             if (ToolUtil.isNotEmpty(amount)) {
     //          插入交易表  设置状态为未支付
+                Long orderID = new Date().getTime();
                 TExchange exchange = new TExchange();
+                //exchange.setId(Integer.valueOf(orderID.toString()));
                 exchange.setUid(uid);
                 exchange.setTm(new Date());
                 exchange.setPaymethod(Constant.PaymentMethod.ONLINE_ALIPAY);
@@ -56,7 +63,8 @@ public class AlipayServiceImpl implements IAlipayService {
                 exchange.setNote("增薪宝-在线充值" + amount + "元");
                 exchange.setType(Constant.ExchangeType.INCOME);
 
-                Integer orderID = exchangeMapper.insertReturnsID(exchange);
+                orderID = (long)exchangeMapper.insertReturnsID(exchange);
+                System.err.println("[Alipay New OrderID]" + orderID);
 
                 AlipayUtil.startPayment(orderID.toString(), "增薪宝-在线充值" + amount + "元", amount, request, response );
                 return;

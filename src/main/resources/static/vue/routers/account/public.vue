@@ -62,6 +62,7 @@ import $ from '../../../js/ajax.js';
 import util from '../../../js/util.js';
 import PublicChargeDialog from './dialogs/newpublic.vue';
 import { Integers } from '../../../constant';
+import publicBankAccount from '../../../data/bank_account.js';
 
 export default {
     components: {
@@ -70,20 +71,7 @@ export default {
     data: () => ({
         detailDialog: false,
         shouldNewChargeDialogOpen: false,
-        publicBankAccount: [ // 从配置文件获取
-            {
-                recommend: true,
-                accountName: 'xxxx公司',
-                bankName: 'xxxx银行',
-                accountNo: '10030010000'
-            },
-            {
-                recommend: false,
-                accountName: 'xxxx公司',
-                bankName: 'xxxxxx银行',
-                accountNo: '20030010000'
-            },
-        ],
+        publicBankAccount,
         publicTransferColumnName() {
             let self = this;
             return [
