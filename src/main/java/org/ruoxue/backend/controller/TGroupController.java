@@ -26,8 +26,8 @@ public class TGroupController {
 
     @ApiOperation("组列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return groupService.listGroup(page, size);
+    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return groupService.listGroup(page, size, count);
     }
 
     @ApiOperation("简化的组列表")
@@ -56,14 +56,14 @@ public class TGroupController {
 
     @ApiOperation("查看组内的管理员")
     @RequestMapping(value = "/{gid}/user", method = RequestMethod.GET)
-    public @ResponseBody Object listGroupAdmin(@PathVariable Integer gid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return groupService.listGroupAdmin(gid, page, size);
+    public @ResponseBody Object listGroupAdmin(@PathVariable Integer gid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return groupService.listGroupAdmin(gid, page, size, count);
     }
 
     @ApiOperation("查看组内管理员所属的客户")
     @RequestMapping(value = "/{gid}/customer", method = RequestMethod.GET)
-    public @ResponseBody Object listGroupConstomer(@PathVariable Integer gid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return groupService.listGroupCustomer(gid, page, size);
+    public @ResponseBody Object listGroupConstomer(@PathVariable Integer gid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return groupService.listGroupCustomer(gid, page, size, count);
     }
 	
 }

@@ -78,7 +78,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
     }
 
     @Override
-    public Object listExchangeByType(String type, Integer cid, Integer page, Integer size, Date start, Date end) {
+    public Object listExchangeByType(String type, Integer cid, Integer page, Integer size, Date start, Date end, Integer count) {
 
         if (ToolUtil.isEmpty(type)) {
             return ResultUtil.error(-1, "参数错误");
@@ -92,6 +92,10 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         if(!map.containsKey(type)){
             XunBinKit.returnCode(404, "Not Found");
             return null;
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(expectedIncomeMapper.countListExchange(map.get(type), cid, start, end, XunBinKit.getUid()));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -108,10 +112,14 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
     }
 
     @Override
-    public Object listExpectIncomeByYear(Integer cid, Integer page, Integer size) {
+    public Object listExpectIncomeByYear(Integer cid, Integer page, Integer size, Integer count) {
 
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(expectedIncomeMapper.countListExpectIncomeByYear(cid));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -128,10 +136,14 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
     }
 
     @Override
-    public Object listExpectIncome(Integer cid, Integer status, Date from, Date to, Integer page, Integer size) {
+    public Object listExpectIncome(Integer cid, Integer status, Date from, Date to, Integer page, Integer size, Integer count) {
 
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(expectedIncomeMapper.countListExpectIncome(cid, status, from, to));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -237,13 +249,17 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
     }
 
     @Override
-    public Object listAdminCurrentByYear(Integer cid, String uid, Integer page, Integer size) {
+    public Object listAdminCurrentByYear(Integer cid, String uid, Integer page, Integer size, Integer count) {
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "参数错误");
         }
 
 //          处理uid
         Integer userid = XunBinKit.getUidByString(uid);
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(expectedIncomeMapper.countListAdminCurrentByYear(cid, userid));
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;
@@ -259,13 +275,17 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
     }
 
     @Override
-    public Object listAdminCurrent(Integer cid, Integer status, Date from, Date to, Integer page, Integer size, String uid) {
+    public Object listAdminCurrent(Integer cid, Integer status, Date from, Date to, Integer page, Integer size, String uid, Integer count) {
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "参数错误");
         }
 
 //          处理uid
         Integer userid = XunBinKit.getUidByString(uid);
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(expectedIncomeMapper.countListAdminCurrent(cid, userid, status, from, to));
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;

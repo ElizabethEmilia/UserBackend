@@ -54,9 +54,9 @@ public class TSigninController {
 
     @ApiOperation("获取用户信息列表")
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public @ResponseBody Object listCustomer(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+    public @ResponseBody Object listCustomer(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
         if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminUserListAll)) return null;
-        return signinService.listCustomer(page, size);
+        return signinService.listCustomer(page, size, count);
     }
 
     @ApiOperation("修改密码")
@@ -72,12 +72,12 @@ public class TSigninController {
      */
     @ApiOperation("获取客户列表(self, group, all)")
     @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
-    public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) String search) {
-//        if (type.equals("group") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListOfCurrentGroup))
-//            return null;
-//        if (type.equals("all") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll))
-//            return null;
-        return signinService.listByType(type, page, size, search);
+    public @ResponseBody Object listByType(@PathVariable String type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) String search, @RequestParam(required = false) Integer count) {
+        if (type.equals("group") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListOfCurrentGroup))
+            return null;
+        if (type.equals("all") && XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerListAll))
+            return null;
+        return signinService.listByType(type, page, size, search, count);
     }
 
 

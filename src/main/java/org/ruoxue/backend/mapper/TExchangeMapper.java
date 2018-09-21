@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.*;
 import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TPublicCharge;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -22,7 +21,12 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
     @Select("select * from t_exchange where uid = #{uid} order by id DESC limit #{page}, #{size}")
     List<TExchange> getOnlinecharge(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_exchange where uid = #{uid}")
+    Integer countGetOnlinecharge(@Param("uid") Integer uid);
+
     List<TPublicCharge> getPublicCharge(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status);
+
+    Integer countGetPublicCharge(@Param("uid") Integer uid, @Param("status") Integer status);
 
 //    总收入
     Double countIncome(@Param("uid") Integer uid);

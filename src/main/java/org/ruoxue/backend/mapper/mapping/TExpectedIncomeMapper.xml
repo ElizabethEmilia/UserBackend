@@ -38,6 +38,27 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="countListExchange" resultType="java.lang.Integer">
+		select count(b.id) from t_exchange a, t_company b
+		where b.uid = #{uid} and a.cid = b.id
+		<if test="type != null">
+			and type = #{type}
+		</if>
+		<if test="cid != null and cid != ''">
+			and cid = #{cid}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and tm > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and tm < #{end}
+			]]>
+		</if>
+	</select>
+
 	<select id="listExpectIncomeByYear" resultType="java.util.Map">
 		select * from t_expected_income
 		where tm_inactivate like concat('%', year(curdate()), '%')
@@ -65,6 +86,25 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="countListExpectIncome" resultType="java.lang.Integer">
+		select count(1) from t_expected_income
+		where 1 = 1
+		and cid = #{cid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="from != null and from != ''">
+			<![CDATA[
+				and tm_inactivate > #{from}
+			]]>
+		</if>
+		<if test="to != null and to != ''">
+			<![CDATA[
+				and tm_inactivate < #{to}
+			]]>
+		</if>
+	</select>
+
 
 	<select id="listAdminCurrentByYear" resultType="java.util.Map">
 		select * from t_expected_income
@@ -74,6 +114,15 @@
 			and uid = #{uid}
 		</if>
 		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="countListAdminCurrentByYear" resultType="java.lang.Integer">
+		select count(1) from t_expected_income
+		where tm_inactivate like concat('%', year(curdate()), '%')
+		and cid = #{cid}
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
 	</select>
 
 	<select id="listAdminCurrent" resultType="java.util.Map">
@@ -97,6 +146,28 @@
 			]]>
 		</if>
 		order by id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="countListAdminCurrent" resultType="java.lang.Integer">
+		select count(1) from t_expected_income
+		where 1 = 1
+		and cid = #{cid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="uid != -1">
+			and uid = #{uid}
+		</if>
+		<if test="from != null and from != ''">
+			<![CDATA[
+				and tm_inactivate > #{from}
+			]]>
+		</if>
+		<if test="to != null and to != ''">
+			<![CDATA[
+				and tm_inactivate < #{to}
+			]]>
+		</if>
 	</select>
 
 	<select id="getExceptByUidAndCid" resultType="org.ruoxue.backend.bean.TExpectedIncome">

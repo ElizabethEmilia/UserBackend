@@ -192,7 +192,12 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
     }
 
     @Override
-    public Object listCustomer(Integer page, Integer size) {
+    public Object listCustomer(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(customerMapper.countListCustomerss());
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }
@@ -237,13 +242,17 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
     }
 
     @Override
-    public Object listByType(String type, Integer page, Integer size, String search) {
+    public Object listByType(String type, Integer page, Integer size, String search, Integer count) {
 
 //        session获取uid
         Integer uid = XunBinKit.getUid();
 
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "管理员不存在");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -258,6 +267,24 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         map.put("self", type.equals("self") ? signinMapper.listSelf(uid, page, size, search) : null);
         map.put("group", !type.equals("group") ? null : signinMapper.listGroup(uid, page, size, search));
         map.put("all", !type.equals("all") ? null : signinMapper.listAll(page, size, search));
+
+        if ("self".equals(type)) {
+            if (ToolUtil.isNotEmpty(count)) {
+                return ResultUtil.success(signinMapper.countListSelf(uid, search));
+            }
+        }
+
+        if ("group".equals(type)) {
+            if (ToolUtil.isNotEmpty(count)) {
+                return ResultUtil.success(signinMapper.countListGroup(uid, search));
+            }
+        }
+
+        if ("all".equals(type)) {
+            if (ToolUtil.isNotEmpty(count)) {
+                return ResultUtil.success(signinMapper.countListAll(search));
+            }
+        }
 
         List<Map<String, Object>> list = (List<Map<String, Object>>) map.get(type);
 

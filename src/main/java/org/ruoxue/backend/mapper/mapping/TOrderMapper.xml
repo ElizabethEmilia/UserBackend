@@ -22,6 +22,14 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="countListOrderByStatus" resultType="java.lang.Integer">
+		select count(1) from t_order
+		where cid in (select id from t_company where uid = #{uid})
+		<if test="status != null">
+			and status = #{status}
+		</if>
+	</select>
+
 	<select id="listOrder" resultType="java.util.Map">
 		select a.*, b.uid, b.name from t_order a, t_company b
 		where b.id = a.cid and b.uid = #{uid}
@@ -45,6 +53,30 @@
 			]]>
 		</if>
 		order by a.id DESC limit #{page}, #{size}
+	</select>
+
+	<select id="countListOrder" resultType="java.lang.Integer">
+		select count(1) from t_order a, t_company b
+		where b.id = a.cid and b.uid = #{uid}
+		<if test="status != null">
+			and a.status = #{status}
+		</if>
+		<if test="type != null and type != ''">
+			and a.type = #{type}
+		</if>
+		<if test="cid != null and cid != ''">
+			and a.cid = #{cid}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and a.tm_create > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and a.tm_create < #{end}
+			]]>
+		</if>
 	</select>
 
 </mapper>

@@ -31,6 +31,25 @@
 		group by a.cid, year(a.tm_op) limit #{page}, #{size}
 	</select>
 
+	<select id="countListGroup" resultType="java.lang.Integer">
+		select count(1) from t_tax_account_detail a
+		left join t_company b on a.cid = b.id
+		where b.uid = #{uid}
+		<if test="cid != null and cid != ''">
+			and a.cid = #{cid}
+		</if>
+		<if test="yfrom != null and yfrom != ''">
+			<![CDATA[
+				and a.tm_op > #{yfrom}
+			]]>
+		</if>
+		<if test="yto != null and yto != ''">
+			<![CDATA[
+				and a.tm_op < #{yto}
+			]]>
+		</if>
+	</select>
+
 	<select id="listTaxDetail" resultType="java.util.Map">
 		select * from t_tax_account_detail a, t_company b where a.cid = b.id
 		and b.uid = #{uid}
@@ -48,6 +67,24 @@
 			]]>
 		</if>
 		order by a.id desc limit #{page}, #{size}
+	</select>
+
+	<select id="countListTaxDetail" resultType="java.lang.Integer">
+		select count(1) from t_tax_account_detail a, t_company b where a.cid = b.id
+		and b.uid = #{uid}
+		<if test="cid != null and cid != ''">
+			and cid = #{cid}
+		</if>
+		<if test="mfrom != null and mfrom != ''">
+			<![CDATA[
+				and tm_op > #{mfrom}
+			]]>
+		</if>
+		<if test="mto != null and mto != ''">
+			<![CDATA[
+				and tm_op < #{mto}
+			]]>
+		</if>
 	</select>
 
 </mapper>

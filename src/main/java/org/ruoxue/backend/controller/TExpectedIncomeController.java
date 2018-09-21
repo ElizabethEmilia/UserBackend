@@ -32,8 +32,8 @@ public class TExpectedIncomeController {
 
     @ApiOperation("获取钱包记录")
     @RequestMapping(value = "/exchange/{type}", method = RequestMethod.GET)
-    public @ResponseBody Object listExchangeByType(@PathVariable String type, @RequestParam(required = false) Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Date start, @RequestParam(required = false) Date end) {
-        return expectedIncomeService.listExchangeByType(type, cid, page, size, start, end);
+    public @ResponseBody Object listExchangeByType(@PathVariable String type, @RequestParam(required = false) Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Date start, @RequestParam(required = false) Date end, @RequestParam(required = false) Integer count) {
+        return expectedIncomeService.listExchangeByType(type, cid, page, size, start, end, count);
     }
 
     /**
@@ -41,15 +41,15 @@ public class TExpectedIncomeController {
      */
     @ApiOperation("列出当年的税金选择操作历史记录表")
     @RequestMapping(value = "/company/{cid}/sales/list/current", method = RequestMethod.GET)
-    public @ResponseBody Object listExpectIncomeByYear(@PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return expectedIncomeService.listExpectIncomeByYear(cid, page, size);
+    public @ResponseBody Object listExpectIncomeByYear(@PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return expectedIncomeService.listExpectIncomeByYear(cid, page, size, count);
     }
 
     @ApiOperation("列出所有的税金操作记录表")
     @RequestMapping(value = "/company/{cid}/sales/list/all", method = RequestMethod.GET)
     public @ResponseBody Object listExpectIncome(@PathVariable Integer cid, @RequestParam(required = false) Integer status, @RequestParam(required = false) Date from,
-                                                       @RequestParam(required = false) Date to, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return expectedIncomeService.listExpectIncome(cid, status, from, to, page, size);
+                                                       @RequestParam(required = false) Date to, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return expectedIncomeService.listExpectIncome(cid, status, from, to, page, size, count);
     }
 
     @ApiOperation("获取最后预选一条记录")
@@ -82,15 +82,15 @@ public class TExpectedIncomeController {
     @ApiOperation("列出当年的税金选择操作历史记录表(管理员)")
     @RequestMapping(value = "/customer/{uid}/company/{cid}/sales/list/current", method = RequestMethod.GET)
     public @ResponseBody Object listAdminCurrentByYear(@PathVariable Integer cid, @PathVariable String uid,
-                                @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return expectedIncomeService.listAdminCurrentByYear(cid, uid, page, size);
+                                @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return expectedIncomeService.listAdminCurrentByYear(cid, uid, page, size, count);
     }
 
     @ApiOperation("列出所有的税金操作记录表(管理员)")
     @RequestMapping(value = "/customer/{uid}/company/{cid}/sales/list/all", method = RequestMethod.GET)
     public @ResponseBody Object listAdminCurrent(@PathVariable Integer cid, @RequestParam(required = false) Integer status, @RequestParam(required = false) Date from, @RequestParam(required = false) Date to,
-                                @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @PathVariable String uid) {
-        return expectedIncomeService.listAdminCurrent(cid, status, from, to, page, size, uid);
+                                @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @PathVariable String uid, @RequestParam(required = false) Integer count) {
+        return expectedIncomeService.listAdminCurrent(cid, status, from, to, page, size, uid, count);
     }
 
     @ApiOperation("手动更改税金状态")

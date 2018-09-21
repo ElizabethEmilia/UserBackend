@@ -14,7 +14,7 @@ import org.ruoxue.backend.bean.TCompany;
  */
 public interface ITCompanyService extends IService<TCompany> {
 
-    Object listCompany(String uid, Integer page, Integer size);
+    Object listCompany(String uid, Integer page, Integer size, Integer count);
 
     Object getCompany(String uid, Integer cid);
 
@@ -26,13 +26,13 @@ public interface ITCompanyService extends IService<TCompany> {
 
     Object addCompony(JSONObject jsonObject, Integer uid);
 
-    Object listCompanys(String search, Integer page, Integer size);
+    Object listCompanys(String search, Integer page, Integer size, Integer count);
 
     Object getCompanyInfo(Integer cid);
 
-    Object getCompanySetUp(Integer cid, Integer page, Integer size);
+    Object getCompanySetUp(Integer cid, Integer page, Integer size, Integer count);
 
-    Object getCompanyCert(Integer cid, Integer page, Integer size);
+    Object getCompanyCert(Integer cid, Integer page, Integer size, Integer count);
 
     Object countCompanyCertById(Integer cid, Integer id);
 

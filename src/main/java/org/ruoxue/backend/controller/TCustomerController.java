@@ -6,9 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.common.controller.BaseController;
-import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITCustomerService;
-import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,8 +62,8 @@ public class TCustomerController extends BaseController {
 
     @ApiOperation("查看客户的充值记录（exchange表）")
     @RequestMapping(value = "/customer/{uid}/charge-list", method = RequestMethod.GET)
-    public @ResponseBody Object listCharge(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size){
-        return customerService.listCharge(uid, page, size);
+    public @ResponseBody Object listCharge(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count){
+        return customerService.listCharge(uid, page, size, count);
     }
 
     @ApiOperation("获取客户即将到期的公司的信息")
@@ -78,8 +76,8 @@ public class TCustomerController extends BaseController {
 
     @ApiOperation("查看自己的充值记录（exchange表）")
     @RequestMapping(value = "/charge-list", method = RequestMethod.GET)
-    public @ResponseBody Object listExchangeByUid(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size){
-        return customerService.listExchangeByUid(page, size);
+    public @ResponseBody Object listExchangeByUid(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count){
+        return customerService.listExchangeByUid(page, size, count);
     }
 
 }

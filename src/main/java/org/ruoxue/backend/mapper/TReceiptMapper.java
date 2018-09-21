@@ -23,7 +23,10 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
     List<Map<String, Object>> listReceipt(@Param("uid") String uid, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size,
                                           @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
 
-//      开票情况统计的查看统计数据功能
+    Integer countListReceipt(@Param("uid") String uid, @Param("cid") Integer cid, @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
+
+
+    //      开票情况统计的查看统计数据功能
     List<Map<String, Object>> listTaxStat(@Param("uid") Integer uid, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size,
                                           @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
 
@@ -32,6 +35,8 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
 
 //    开票列表
     List<Map<String, Object>> receiptList(@Param("cid") Integer cid, @Param("type") Integer type, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
+
+    Integer countReceiptList(@Param("cid") Integer cid, @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
 
     @Update("update t_receipt set status = #{status} where id = #{id}")
     Integer updateStatusToSub(@Param("status") Integer status, @Param("id") Integer id);
@@ -53,7 +58,11 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
     @Select("select a.cid, b.name  from t_receipt a, t_company b where b.uid=#{uid} and a.cid = b.id and b.tm_first_ec is not null group by a.cid order by a.cid desc limit #{page}, #{size}")
     List<Map<String, Object>> statReceipt(@Param("page") Integer page, @Param("size") Integer size, @Param("uid") Integer uid);
 
-//    12个月收入之和
+    @Select("select ifnull(count(1), 0) from t_receipt a, t_company b where b.uid=#{uid} and a.cid = b.id and b.tm_first_ec is not null group by a.cid")
+    Integer countStatReceipt(@Param("uid") Integer uid);
+
+
+    //    12个月收入之和
     @Select("select sum(rec_amount) amountSum from t_receipt where cid = #{cid} and tm_vallidate > #{start} and tm_vallidate < #{end}")
     Double getYear(@Param("cid") Integer cid, @Param("start") Date start, @Param("end") Date end);
 

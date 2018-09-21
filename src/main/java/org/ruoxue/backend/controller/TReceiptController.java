@@ -29,8 +29,8 @@ public class TReceiptController {
     @RequestMapping(value = "/customer/{uid}/receipt", method = RequestMethod.GET)
     public @ResponseBody Object listReceipt(@PathVariable String uid, @RequestParam(required = false) Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size,
                                             @RequestParam(required = false) Integer status, @RequestParam(required = false) Integer type,
-                                            @RequestParam(required = false) Date start, @RequestParam(required = false) Date end){
-        return receiptService.listReceipt(uid, cid, page, size, type, status, start, end);
+                                            @RequestParam(required = false) Date start, @RequestParam(required = false) Date end, @RequestParam(required = false) Integer count){
+        return receiptService.listReceipt(uid, cid, page, size, type, status, start, end, count);
     }
 
     @ApiOperation("开票情况统计的查看统计数据功能")
@@ -49,8 +49,8 @@ public class TReceiptController {
 
     @ApiOperation("开票统计的修改记录")
     @RequestMapping(value = "/tax/stat/{uid}/qinding-log", method = RequestMethod.GET)
-    public @ResponseBody Object listReceiptStatUpdate(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return receiptService.listReceiptStatUpdate(uid, page, size);
+    public @ResponseBody Object listReceiptStatUpdate(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return receiptService.listReceiptStatUpdate(uid, page, size, count);
     }
 
     @ApiOperation("管理员对开票申请的 XXX")
@@ -73,8 +73,8 @@ public class TReceiptController {
     @RequestMapping(value = "/receipt/list", method = RequestMethod.GET)
     public @ResponseBody Object receiptList(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer cid,
                                             @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer status, @RequestParam(required = false) Date start,
-                                            @RequestParam(required = false) Date end) {
-        return receiptService.receiptList(page, size, cid, type, status, start, end);
+                                            @RequestParam(required = false) Date end, @RequestParam(required = false) Integer count) {
+        return receiptService.receiptList(page, size, cid, type, status, start, end, count);
     }
 
     @ApiOperation("删除开票申请")
@@ -91,13 +91,13 @@ public class TReceiptController {
 
     @ApiOperation("开票情况统计,开票情况统计")
     @RequestMapping(value = "/receipt/stat", method = RequestMethod.GET)
-    public @ResponseBody Object statReceipt(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return receiptService.statReceipt(page, size);
+    public @ResponseBody Object statReceipt(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return receiptService.statReceipt(page, size, count);
     }
 
     @ApiOperation("开票情况统计,开票情况统计")
     @RequestMapping(value = "/receipt/stat-data", method = RequestMethod.GET)
-    public @ResponseBody Object statReceiptVuser(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+    public @ResponseBody Object statReceiptVuser() {
         return receiptService.statReceiptVuser();
     }
 

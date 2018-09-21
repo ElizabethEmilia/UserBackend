@@ -20,7 +20,7 @@ public interface ITAdminService extends IService<TAdmin> {
 
     Object password(String old_pwd, String new_pwd);
 
-    Object list(Integer page, Integer size);
+    Object list(Integer page, Integer size, Integer count);
 
     Object adminAdd(JSONObject jsonObject);
 

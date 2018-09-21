@@ -26,8 +26,8 @@ public class TRoleController {
 
     @ApiOperation("角色列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return roleService.list(page, size);
+    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return roleService.list(page, size, count);
     }
 
     @ApiOperation("新增角色")

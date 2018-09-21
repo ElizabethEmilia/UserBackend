@@ -31,6 +31,13 @@
 		order by uid desc limit #{page}, #{size}
 	</select>
 
+	<select id="countListSelf" resultType="java.lang.Integer">
+		select count(1) from t_customer where aid = #{id}
+		<if test="search != null and search !=''">
+			and (uid = #{search} or name like concat('%', #{search}, '%'))
+		</if>
+	</select>
+
 	<select id="listGroup" resultType="java.util.Map">
 		select * from t_customer where aid in (
 			select id from t_admin where gid = (
@@ -43,12 +50,30 @@
 		order by uid desc limit #{page}, #{size}
 	</select>
 
+	<select id="countListGroup" resultType="java.lang.Integer">
+		select count(1) from t_customer where aid in (
+		select id from t_admin where gid = (
+		select gid from t_admin where id = #{id}
+		)
+		)
+		<if test="search != null and search !=''">
+			and (uid = #{search} or name like concat('%', #{search}, '%'))
+		</if>
+	</select>
+
 	<select id="listAll" resultType="java.util.Map">
 		select * from t_customer
 		<if test="search != null and search !=''">
 			where (uid = #{search} or name like concat('%', #{search}, '%'))
 		</if>
 		order by uid desc limit #{page}, #{size}
+	</select>
+
+	<select id="countListAll" resultType="java.lang.Integer">
+		select count(1) from t_customer
+		<if test="search != null and search !=''">
+			where (uid = #{search} or name like concat('%', #{search}, '%'))
+		</if>
 	</select>
 
 </mapper>

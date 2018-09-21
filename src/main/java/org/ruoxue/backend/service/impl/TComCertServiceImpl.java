@@ -35,12 +35,18 @@ public class TComCertServiceImpl extends ServiceImpl<TComCertMapper, TComCert> i
     private TLogsMapper logsMapper;
 
     @Override
-    public Object listCert(String uid, Integer cid, Integer page, Integer size) {
+    public Object listCert(String uid, Integer cid, Integer page, Integer size, Integer count) {
         if(ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid)){
             return ResultUtil.error(-1, "参数错误");
         }
+
 //        处理uid
         Integer userid = XunBinKit.getUidByString(uid);
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(comCertMapper.countListCert(userid, cid));
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }

@@ -38,12 +38,17 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
     private TLogsMapper logsMapper;
 
     @Override
-    public Object listCompany(String uid, Integer page, Integer size) {
+    public Object listCompany(String uid, Integer page, Integer size, Integer count) {
         if(ToolUtil.isEmpty(uid)){
             return ResultUtil.error(-1, "参数错误");
         }
 //        处理uid
         Integer userid = XunBinKit.getUidByString(uid);
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(companyMapper.countListCompanyAll(userid));
+        }
+
         /**
          *  uid为用户id,必须
          *  page, size二者均可不输入，page默认为1，size默认为10
@@ -231,7 +236,12 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
     }
 
     @Override
-    public Object listCompanys(String search, Integer page, Integer size) {
+    public Object listCompanys(String search, Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(companyMapper.countListCompanys(search, XunBinKit.getUid()));
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }
@@ -257,9 +267,13 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
     }
 
     @Override
-    public Object getCompanySetUp(Integer cid, Integer page, Integer size) {
+    public Object getCompanySetUp(Integer cid, Integer page, Integer size, Integer count) {
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(companyMapper.countListCompanySetUp(cid));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -276,9 +290,13 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
     }
 
     @Override
-    public Object getCompanyCert(Integer cid, Integer page, Integer size) {
+    public Object getCompanyCert(Integer cid, Integer page, Integer size, Integer count) {
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(companyMapper.countListComCertByCid(cid));
         }
 
         if(ToolUtil.isEmpty(page)){

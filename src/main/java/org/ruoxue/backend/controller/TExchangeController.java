@@ -29,14 +29,14 @@ public class TExchangeController {
 
     @ApiOperation("查看客户的充值记录")
     @RequestMapping(value = "/{uid}/onlinecharge", method = RequestMethod.GET)
-    public @ResponseBody Object onlinecharge(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return exchangeService.onlinecharge(uid, page, size);
+    public @ResponseBody Object onlinecharge(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return exchangeService.onlinecharge(uid, page, size, count);
     }
 
     @ApiOperation("查看客户的对公充值记录(分类)")
     @RequestMapping(value = "/{uid}/publiccharge/{status}", method = RequestMethod.GET)
-    public @ResponseBody Object publicchargeStatus(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @PathVariable String status) {
-        return exchangeService.publicchargeStatus(uid, page, size, status);
+    public @ResponseBody Object publicchargeStatus(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @PathVariable String status, @RequestParam(required = false) Integer count) {
+        return exchangeService.publicchargeStatus(uid, page, size, status, count);
     }
 
     @ApiOperation("修改客户的对公充值状态(确认/取消)")

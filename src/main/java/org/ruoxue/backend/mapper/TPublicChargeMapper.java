@@ -27,6 +27,8 @@ public interface TPublicChargeMapper extends BaseMapper<TPublicCharge> {
 
     List<TPublicCharge> listPublicCharge(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
 
+    Integer countListPublicCharge(@Param("uid") Integer uid, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
+
     @Select("select amount from t_public_charge where id=#{id}")
     Double getPublicChargeAmount(@Param("id") Integer id);
 }

@@ -14,7 +14,7 @@ import org.ruoxue.backend.bean.TRole;
  */
 public interface ITRoleService extends IService<TRole> {
 
-    Object list(Integer page, Integer size);
+    Object list(Integer page, Integer size, Integer count);
 
     Object roleAdd(JSONObject jsonObject);
 

@@ -316,10 +316,14 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     }
 
     @Override
-    public Object listCharge(Integer uid, Integer page, Integer size) {
+    public Object listCharge(Integer uid, Integer page, Integer size, Integer count) {
 
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "用户未登录");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(exchangeMapper.countGetOnlinecharge(uid));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -421,13 +425,17 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     }
 
     @Override
-    public Object listExchangeByUid(Integer page, Integer size) {
+    public Object listExchangeByUid(Integer page, Integer size, Integer count) {
 
 //        获取uid
         Integer uid = XunBinKit.getUid();
 
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "用户未登录");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(exchangeMapper.countGetOnlinecharge(uid));
         }
 
         if(ToolUtil.isEmpty(page)){

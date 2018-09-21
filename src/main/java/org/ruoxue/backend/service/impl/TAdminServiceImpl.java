@@ -108,7 +108,12 @@ public class TAdminServiceImpl extends ServiceImpl<TAdminMapper, TAdmin> impleme
     }
 
     @Override
-    public Object list(Integer page, Integer size) {
+    public Object list(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(adminMapper.countGetAdminList());
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }
