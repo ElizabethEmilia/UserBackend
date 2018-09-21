@@ -51,7 +51,7 @@ public class AlipayServiceImpl implements IAlipayService {
     //        amount(充值)
             if (ToolUtil.isNotEmpty(amount)) {
     //          插入交易表  设置状态为未支付
-                Long orderID = new Date().getTime();
+                Integer orderID;
                 TExchange exchange = new TExchange();
                 //exchange.setId(Integer.valueOf(orderID.toString()));
                 exchange.setUid(uid);
@@ -63,7 +63,8 @@ public class AlipayServiceImpl implements IAlipayService {
                 exchange.setNote("增薪宝-在线充值" + amount + "元");
                 exchange.setType(Constant.ExchangeType.INCOME);
 
-                orderID = (long)exchangeMapper.insertReturnsID(exchange);
+                exchangeMapper.insertReturnsID(exchange);
+                orderID = exchangeMapper.getLastID();
                 System.err.println("[Alipay New OrderID]" + orderID);
 
                 AlipayUtil.startPayment(orderID.toString(), "增薪宝-在线充值" + amount + "元", amount, request, response );
@@ -99,7 +100,8 @@ public class AlipayServiceImpl implements IAlipayService {
                     ()->exchangeMapper.updateStateByID(orderid, Constant.PaymentStatus.NOT_CONFIRMED),
                     "更新状态  订单号: " + exchange.getRunning() + "  ID: " + exchange.getId());
         // 写入支付宝订单号
-        exchangeMapper.updateRunningByID(orderid, request.getParameter("trade_no"));
+        // TODO running换成string
+        //exchangeMapper.updateRunningByID(orderid, request.getParameter("trade_no"));
     }
 
 
@@ -107,26 +109,31 @@ public class AlipayServiceImpl implements IAlipayService {
     public void notifyQuery(Integer orderid, HttpServletResponse response, Map<String, String> paramsMap) {
         if (ToolUtil.isEmpty(orderid)) {
             /// TODO: 添加log  前面有二次校验，应该不会出现这种情况
+            System.err.println("[AlipayService] ItemID is null");
             return;
         }
         // 确认是否有该订单, 该订单是否属于该用户
         TExchange exchange = exchangeMapper.getEntityByID(orderid);
         if (ToolUtil.isEmpty(exchange) || exchange.getUid() != XunBinKit.getUid()) {
             /// TODO: 添加log  应该不会出现这种情况
+            System.err.println("[AlipayService] exchange is null, no such exchange");
             return;
         }
         // 比较支付宝订单号, 如果不存在， 写入
         if (ToolUtil.isEmpty(exchange.getRunning())) {
             // 写入支付宝订单号
-            exchangeMapper.updateRunningByID(orderid, paramsMap.get("trade_no"));
+            // TODO: 同上
+            //exchangeMapper.updateRunningByID(orderid, paramsMap.get("trade_no"));
         }
 
         Double amount = Double.parseDouble(paramsMap.get("total_amount"));
 
+        System.err.println("[AlipayService] " + "更新状态  订单号: " + paramsMap.get("trade_no") + "  ID: " + exchange.getId() + "/已支付");
+
         // 将状态改为已支付
         LoopAction.tryUpToFiveTimes(
                 () -> exchangeMapper.updateStateByID(orderid, Constant.PaymentStatus.PAIED),
-                "更新状态  订单号: " + exchange.getRunning() + "  ID: " + exchange.getId());
+                "更新状态  订单号: " + paramsMap.get("trade_no") + "  ID: " + exchange.getId());
         // 增加余额到该用户账户
         LoopAction.tryUpToFiveTimes(
                 () -> customerMapper.updateBalanceRelative(amount, exchange.getUid()),

@@ -72,6 +72,7 @@ export default {
                                             }
                                             else {
                                                 util.MessageBox.Success(self, '操作成功');
+                                                self.refresh();
                                             }
                                         }
                                         catch(err) {
@@ -100,6 +101,7 @@ export default {
                                             }
                                             else {
                                                 util.MessageBox.Success(self, '操作成功');
+                                                self.refresh();
                                             }
                                         }
                                         catch(err) {

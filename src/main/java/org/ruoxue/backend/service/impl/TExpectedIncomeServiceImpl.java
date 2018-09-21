@@ -185,7 +185,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         TExpectedIncome expectedIncome = new TExpectedIncome();
         expectedIncome.setCid(cid);
-        expectedIncome.setStatus(0);
+        expectedIncome.setStatus(1);
         expectedIncome.setUid(uid);
         expectedIncome.setYsaRange(ysaRange);
         expectedIncome.setPreTaxRatio(preTaxRatio);
@@ -207,6 +207,8 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
 //        查出最后一条记录
         TExpectedIncome expectedIncome = expectedIncomeMapper.getExpectLast(cid);
+        expectedIncome.setOper(((TCustomer) XunBinKit.getSession().getAttribute("obj")).getName());
+        expectedIncome.setStatus(2);
 
         if ((expectedIncome.getYsaRange() & ysaRange) == 0) {
             ResultUtil.error(-2, "跨档选择");

@@ -90,7 +90,7 @@
         position: fixed;
         top: 0px;
         left: 0px;
-        z-index: 99999;
+        z-index: 9;
         padding-left: 45px;
         padding-top: 25px;
         cursor: pointer;

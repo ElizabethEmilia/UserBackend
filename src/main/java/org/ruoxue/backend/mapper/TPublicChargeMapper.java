@@ -2,6 +2,7 @@ package org.ruoxue.backend.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.ruoxue.backend.bean.TPublicCharge;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -26,4 +27,6 @@ public interface TPublicChargeMapper extends BaseMapper<TPublicCharge> {
 
     List<TPublicCharge> listPublicCharge(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end);
 
+    @Select("select amount from t_public_charge where id=#{id}")
+    Double getPublicChargeAmount(@Param("id") Integer id);
 }

@@ -222,8 +222,8 @@ public final class Constant {
         public static final String SIGN_TYPE = "RSA";
         public static final String PROVIDER_ID = "2088102175886961";
 
-        public static final String RETURN_URL = "http://47.106.196.8/api/pay/alipay/finish";
-        public static final String NOTOFY_URL = "http://47.106.196.8/api/pay/alipay/notify";
+        public static final String RETURN_URL = "http://ruoxue.s1.natapp.cc/api/pay/alipay/finish";
+        public static final String NOTOFY_URL = "http://ruoxue.s1.natapp.cc/api/pay/alipay/notify";
 
     }
 
@@ -233,7 +233,7 @@ public final class Constant {
         public static final String KEY = "<undefined>";
         public static final String CERT_PATH = "<undefined>";
         public static final boolean WX_CONFIGURED = false;
-        public static final String NOTIFY_URL = "http://47.106.196.8/api/pay/wepay/notify";
+        public static final String NOTIFY_URL = "http://ruoxue.org:8070/api/pay/wepay/notify";
     }
 
     public class LogUsers {

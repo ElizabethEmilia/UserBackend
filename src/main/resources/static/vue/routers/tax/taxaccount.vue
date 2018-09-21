@@ -3,7 +3,7 @@
         <Divider orientation="left"><h3>税金账户</h3></Divider>
 
         <Alert type="success">
-            温馨提示：
+            温馨提示： {{ taxaccounttips }}
         </Alert>
 
         <Tabs>
@@ -56,6 +56,7 @@
     import PagedTable from '../../pagedTable.vue';
     import API from '../../../js/api.js';
     import init from '../../../js/init.js';
+    import { taxaccounttips } from '../../../data/tips.js';
 
     export default {
         components: {
@@ -63,6 +64,7 @@
         },
         props: [ 'cid' ],
         data: () => ({
+            taxaccounttips,
             companies: [ ],
             params: {
                 cid: '',

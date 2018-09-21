@@ -47,6 +47,7 @@
             </div>
 
             <PagedTable
+                    ref="dt"
                     :data-source="tableDataSource"
                     :columns="columns"
                     :additional-params="searchParams"
@@ -74,7 +75,7 @@
     import $ from '../../../js/ajax.js';
     import util from '../../../js/util.js';
     import API from '../../../js/api.js';
-    import { Integers, expectedSalesStatus } from '../../../constant.js';
+    import { Integers, ysaRange, expectedSalesStatus } from '../../../constant.js';
 
     const Integer = Integers;
 
@@ -86,14 +87,13 @@
             columns() {
                 return [
                     { title: '序号', type: 'index' },
-                    { title: '公司', type: 'name' },
-                    { title: '预计年销售额范围', type: 'rsa_range' },
-                    { title: '税金预缴率', type: 'pre_tax_ratio' },
-                    { title: '税金预交档次状态', type: 'status' },
-                    { title: '税金预交率生效时间', type: 'activate_date' },
-                    { title: '税金预交率失效时间', type: 'inactivate_date' },
-                    { title: '操作人', type: 'oper' },
-                    { title: '操作时间', type: 'tmOp' },
+                    { title: '预计年销售额范围', render: (h,p)=>h('span', {}, ysaRange[p.row.ysaRange]) },
+                    { title: '税金预缴率', render: (h,p)=>h('span', {}, !isNaN(100 * p.row.preTaxRatio) ? 100 * p.row.preTaxRatio + '%':'') },
+                    { title: '税金预交档次状态', render: (h,p)=>h('span', {}, expectedSalesStatus[p.row.status]) },
+                    { title: '税金预交率生效时间', render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tmActivate)) },
+                    { title: '税金预交率失效时间', render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tmInactivate)) },
+                    { title: '操作人', key: 'oper' },
+                    { title: '操作时间', render: (h,p)=>h('div', {}, util.Date.toTimeStringFromTimestamp(p.row.tmOp)) },
                 ];
             },
             param: {
@@ -128,6 +128,8 @@
 
                 try {
                     await API.Tax.PreSelect.preSelect(this.selectedCompany.id, this.selectedCompany.ysaRange);
+                    util.MessageBox.Show(this, "操作成功");
+                    this.$refs.dt.refresh();
                 }
                 catch (err) {
                     console.error(err);
@@ -141,6 +143,8 @@
 
                 try {
                     await API.Tax.PreSelect.reselect(this.selectedCompany.id, this.selectedCompany.ysaRange);
+                    util.MessageBox.Show(this, "操作成功");
+                    this.$refs.dt.refresh();
                 }
                 catch (err) {
                     console.error(err);
@@ -159,6 +163,8 @@
 
                 try {
                     await API.Tax.PreSelect.withdraw(this.selectedCompany.id);
+                    util.MessageBox.Show(this, "操作成功");
+                    this.$refs.dt.refresh();
                 }
                 catch (e) {
                     console.error(e);
@@ -177,6 +183,8 @@
 
                 try {
                     await API.Tax.PreSelect.complement(this.selectedCompany.id);
+                    util.MessageBox.Show(this, "操作成功");
+                    this.$refs.dt.refresh();
                 }
                 catch (e) {
                     console.error(e);

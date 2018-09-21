@@ -15,7 +15,7 @@
                     </div>
                 </Row>
                 <Row >
-                    <Divider dashed orientation="right" ><a href="javascript:void(0)" :disabled="true">编辑</a></Divider>
+                    <Divider dashed orientation="right" ><!--a href="javascript:void(0)" :disabled="true">编辑</a--></Divider>
                     <!-- 用户信息显示开始 -->
 
                     <Row class="line-margin">

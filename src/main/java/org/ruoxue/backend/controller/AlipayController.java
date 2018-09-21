@@ -84,6 +84,7 @@ public class AlipayController {
                 // 校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
                 Integer orderid = Integer.parseInt(params.get("out_trade_no"));
 
+                System.err.println("[AlipayController] 参数内容： " + params.toString());
 //                调用service
                 alipayService.notifyQuery(orderid, response, params);
                 response.getWriter().println("success");

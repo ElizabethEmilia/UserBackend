@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TPublicCharge;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TExchangeMapper;
 import org.ruoxue.backend.mapper.TLogsMapper;
 import org.ruoxue.backend.mapper.TPublicChargeMapper;
@@ -40,6 +41,9 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
     @Resource
     private TLogsMapper logsMapper;
 
+    @Resource
+    private TCustomerMapper customerMapper;
+
     @Override
     public Object updatePublicchargeStatus(Integer uid, Integer pid, String status) {
 
@@ -57,6 +61,10 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         }
 
         Integer len = publicChargeMapper.updatePublicChangeStatus(pid, map.get(status));
+        if(status.equals("confirm")) {
+            // 增加余额
+            customerMapper.updateBalanceRelative(publicChargeMapper.getPublicChargeAmount(pid), uid);
+        }
 
         logsMapper.addLog(-1, "修改对公充值表", 1);
 

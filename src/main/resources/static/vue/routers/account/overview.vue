@@ -122,7 +122,7 @@
                                 <Col span="12" style="text-align: center; padding-top: 13px;">
                                     <Card :bordered="false" dis-hover>
                                         
-                                        余额：<span style="font-size: 25px; color: green">{{ Number(stats.balance).toFixed(2) }}</span>
+                                        余额：<span style="font-size: 25px; color: green">{{ loadingBanlance ? "--" : Number(info.balance).toFixed(2) }}</span>
                                         <Button type="success" style="font-size: 17px; width: 100%;  margin-top: 15px;">充值</Button>
                                     </Card>
                                 </Col>
@@ -182,28 +182,7 @@ export default {
         ModifyPassword, SelectArea,
     },
     data: () => ({
-        info: {
-            uid: 0,
-            lid: -1,
-            name: '',
-            type: 1,
-            industry: 1,
-            phone: '',
-            email: '',
-            wechat: '',
-            qq: '',
-            fax: '',
-            province: '',
-            city: '',
-            district: '',
-            address: '',
-            avatar: '#eee',
-            otherContact: '',
-            paid: true,
-            balance: 0,
-            rec_type: 0,
-            reg_date: ''
-        },
+        info: init.tCustomer,
         infoSave: {},
         companyCount: 0,
         editMode: false,
@@ -219,6 +198,7 @@ export default {
         memberType,
         pendingSave: false, //记录是否在保存
         pendingUpload: false, //是否正在上传头像
+        loadingBanlance: false,
     }),
     methods: {
          // 基础信息的编辑
@@ -288,6 +268,7 @@ export default {
         },
         // 获取用户基本信息
         async getBasicInfo(callback) {
+            this.loadingBanlance = true;
             try {
                 let result = await $.ajax('/api/account/basic');
                 if (result.code) {
@@ -296,6 +277,7 @@ export default {
                 this.info = result.data;
                 this.avatar = result.data.avatar;
                 typeof callback === "function" && callback(result);
+                this.loadingBanlance = false;
             }
             catch(err) {
                  util.Debug.ralert('获取基本信息失败');

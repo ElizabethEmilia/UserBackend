@@ -28,10 +28,12 @@ const adminTypes = [ "无权限",  "操作员", "超级管理员", ];
 const enterpriseOrgizationTypes = [ "个人独资企业" ];
 
 // 企业投资类型
-const enterpriseInvestType = [ "个人独资" ]
+const enterpriseInvestType = [ "个人独资" ];
 
 // 预设销售额状态
 const expectedSalesStatus = [ "未设置", "已设置", "已修改", "撤回", "需要补交" ];
+
+const ysaRange = [ '未选择', '未选择', '一档', undefined, '二档' ];
 
 const Integers = (function() {
     let int = {
@@ -66,6 +68,6 @@ export {
     adminTypes,
     enterpriseOrgizationTypes,
     expectedSalesStatus,
-
+    ysaRange,
     Integers,
 };

@@ -76,11 +76,18 @@
                     ]
                 },
                 {
+                    group: "订单",
+                    mask: 0,
+                    submodules: [
+                        { name: "修改客户订单价格", value: 21 },
+                    ]
+                },
+                {
                     group: "日志管理",
                     mask: 0,
                     submodules: [
-                        { name: "查看和导出日志", value: 16 },
-                        { name: "删除日志", value: 17 },
+                        { name: "查看日志", value: 16 },
+                        //{ name: "删除日志", value: 17 },
                     ]
                 },
                 {
@@ -88,15 +95,8 @@
                     mask: 0,
                     submodules: [
                         { name: "权限管理", value: 18 },
-                        { name: "普通系统配置", value: 19 },
-                        { name: "敏感系统配置", value: 20 },
-                    ]
-                },
-                {
-                    group: "订单",
-                    mask: 0,
-                    submodules: [
-                        { name: "修改客户订单价格", value: 21 },
+                        //{ name: "普通系统配置", value: 19 },
+                        { name: "修改系统配置", value: 20 },
                     ]
                 },
             ]
