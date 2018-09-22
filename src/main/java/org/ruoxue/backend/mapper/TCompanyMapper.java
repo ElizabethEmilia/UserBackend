@@ -87,4 +87,7 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
     @Delete("delete from t_com_set_progress where id=#{id}")
     Boolean removeSetupState(@Param("cid") Integer cid, @Param("id") Integer id);
 
+    @Update("update t_company set checked = #{checked} where id = #{id}")
+    Integer updateCompanyCheck(@Param("id") Integer id, @Param("checked") Integer checked);
+
 }

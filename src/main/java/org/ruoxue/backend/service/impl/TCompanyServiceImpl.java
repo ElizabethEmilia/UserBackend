@@ -15,10 +15,7 @@ import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -355,6 +352,31 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
                 null, "删除失败"
         );
 
+    }
+
+    @Override
+    public Object dealCompany(Integer cid, String action) {
+
+        if (ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        TCompany company = companyMapper.getCompanyById(cid);
+        if (ToolUtil.isEmpty(company)) {
+            return ResultUtil.error(-2, "该公司不存在");
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("accept", 1);
+        map.put("reject", 2);
+
+        if (!map.containsKey(action)) {
+            return ResultUtil.error(-3, "请求错误");
+        }
+
+        Integer len = companyMapper.updateCompanyCheck(cid, map.get(action));
+
+        return XunBinKit.returnResult(len > 0, -4, null, "Success", "Error");
     }
 
 

@@ -14,7 +14,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-22
+ * @since 2018-09-23
  */
 @TableName("t_pending")
 public class TPending extends Model<TPending> {
@@ -29,6 +29,10 @@ public class TPending extends Model<TPending> {
 	private Integer description;
 	private Date tm;
 	private Integer processed;
+    /**
+     * 表示是用户还是管理员
+     */
+	private Integer receiver;
 
 
 	public Integer getId() {
@@ -87,6 +91,14 @@ public class TPending extends Model<TPending> {
 		this.processed = processed;
 	}
 
+	public Integer getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(Integer receiver) {
+		this.receiver = receiver;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -102,6 +114,7 @@ public class TPending extends Model<TPending> {
 			", description=" + description +
 			", tm=" + tm +
 			", processed=" + processed +
+			", receiver=" + receiver +
 			"}";
 	}
 }
