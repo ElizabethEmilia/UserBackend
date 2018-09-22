@@ -22,6 +22,8 @@
         <div v-else>
             <RequirePayment />
         </div>
+
+        <Notification />
     </div>
 
 </template>
@@ -30,6 +32,7 @@
     import Navigator from './navigator.vue';
     import RequirePayment from './components/modal/requirepayment.vue';
     import ModuleConfig from '../module_config.json';
+    import Notification from './components/notification.vue';
     import util from '../js/util.js';
     import API from '../js/api.js';
 
@@ -37,7 +40,7 @@
 
     export default {
         components: {
-            Navigator, RequirePayment,
+            Navigator, RequirePayment, Notification,
         },
         data: () => ({
             moduleName: defaultModuleName,
