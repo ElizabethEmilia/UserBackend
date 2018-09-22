@@ -55,12 +55,13 @@
             }
         },
         mounted() {
-            setTimeout(async () => {
+            let s = setInterval(async () => {
                 try {
                     await API.Login.heartbeat();
                 }
                 catch(e) {
                     console.error(e);
+                    clearInterval(s);
                     await util.MessageBox.ShowAsync(this, "您已与服务器断开连接，请重新登录");
                     location.href = "/login";
                 }

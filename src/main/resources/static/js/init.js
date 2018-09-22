@@ -259,6 +259,16 @@ const tItem = {
     addyear    : 0,
 };
 
+const tNotifocation = {
+    id: 0,
+    uid: 0,
+    aid: 0,
+    gid: 0,
+    description: "",
+    tm: 0,
+    processed: 0
+};
+
 export default {
     tAdmin,
     tComCert,
@@ -282,4 +292,5 @@ export default {
     tRole,
     tGroup,
     tItem,
+    tNotifocation,
 };
