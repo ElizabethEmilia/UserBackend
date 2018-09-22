@@ -36,7 +36,12 @@ public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements
     }
 
     @Override
-    public Object listLog(Integer page, Integer size) {
+    public Object listLog(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(mapper.countListLogs().size());
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }

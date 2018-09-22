@@ -15,8 +15,8 @@ import java.util.Date;
  */
 public interface ITOrderService extends IService<TOrder> {
 
-    Object ordersStatus(Integer uid, Integer page, Integer size, String status);
+    Object ordersStatus(Integer uid, Integer page, Integer size, String status, Integer count);
 
-    Object listOrder(Integer cid, Integer type, Integer page, Integer size, String status, Date start, Date end);
+    Object listOrder(Integer cid, Integer type, Integer page, Integer size, String status, Date start, Date end, Integer count);
 	
 }

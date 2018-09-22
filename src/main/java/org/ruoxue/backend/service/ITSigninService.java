@@ -25,10 +25,10 @@ public interface ITSigninService extends IService<TSignin> {
 
     Object deleteCustomer(Integer uid);
 
-    Object listCustomer(Integer page, Integer size);
+    Object listCustomer(Integer page, Integer size, Integer count);
 
     Object updatePwssword(String password, Integer uid);
 
-    Object listByType(String type, Integer page, Integer size, String search);
+    Object listByType(String type, Integer page, Integer size, String search, Integer count);
 	
 }

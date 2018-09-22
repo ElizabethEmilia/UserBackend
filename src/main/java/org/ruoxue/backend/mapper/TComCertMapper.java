@@ -22,6 +22,8 @@ public interface TComCertMapper extends BaseMapper<TComCert> {
 //    客户公司的证件列表
     List<Map<String, Object>> listCert(@Param("uid") Integer uid, @Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
 
+    Integer countListCert(@Param("uid") Integer uid, @Param("cid") Integer cid);
+
 //    客户公司的某一个证件
     TComCert getCert(@Param("uid") Integer uid, @Param("id") Integer id);
 

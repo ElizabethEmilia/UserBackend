@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ITComCertService extends IService<TComCert> {
 
-    Object listCert(String uid, Integer cid, Integer page, Integer size);
+    Object listCert(String uid, Integer cid, Integer page, Integer size, Integer count);
 
     Object getCert(String uid, Integer certid);
 

@@ -29,7 +29,12 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
     private TGroupMapper groupMapper;
 
     @Override
-    public Object listGroup(Integer page, Integer size) {
+    public Object listGroup(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(groupMapper.countListGroup());
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }
@@ -95,10 +100,14 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
     }
 
     @Override
-    public Object listGroupAdmin(Integer gid, Integer page, Integer size) {
+    public Object listGroupAdmin(Integer gid, Integer page, Integer size, Integer count) {
 
         if ( ToolUtil.isEmpty(gid) ) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(groupMapper.countListGroupAdmin(gid));
         }
 
         if ( ToolUtil.isEmpty(page) ) {
@@ -115,9 +124,13 @@ public class TGroupServiceImpl extends ServiceImpl<TGroupMapper, TGroup> impleme
     }
 
     @Override
-    public Object listGroupCustomer(Integer gid, Integer page, Integer size) {
+    public Object listGroupCustomer(Integer gid, Integer page, Integer size, Integer count) {
         if (ToolUtil.isEmpty(gid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(groupMapper.countistGroupCustomer(gid));
         }
 
         if(ToolUtil.isEmpty(page)){

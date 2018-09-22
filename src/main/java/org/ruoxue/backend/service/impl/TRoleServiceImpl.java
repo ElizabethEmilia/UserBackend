@@ -33,7 +33,12 @@ public class TRoleServiceImpl extends ServiceImpl<TRoleMapper, TRole> implements
     private TLogsMapper logsMapper;
 
     @Override
-    public Object list(Integer page, Integer size) {
+    public Object list(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(roleMapper.countList());
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }

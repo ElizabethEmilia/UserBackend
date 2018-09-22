@@ -34,7 +34,11 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
     private TCompanyMapper companyMapper;
 
     @Override
-    public Object listTaxStat(Integer cid, Date yfrom, Date yto, Integer page, Integer size) {
+    public Object listTaxStat(Integer cid, Date yfrom, Date yto, Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(taxAccountMapper.countListGroup(cid, yfrom, yto, XunBinKit.getUid()));
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;
@@ -56,7 +60,11 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
     }
 
     @Override
-    public Object listTaxDetail(Integer cid, Date mfrom, Date mto, Integer page, Integer size) {
+    public Object listTaxDetail(Integer cid, Date mfrom, Date mto, Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(taxAccountMapper.countListTaxDetail(cid, mfrom, mto, XunBinKit.getUid()));
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;
@@ -73,10 +81,14 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
 
 
     @Override
-    public Object listTaxStatAdmin(Integer cid, Date yfrom, Date yto, Integer page, Integer size) {
+    public Object listTaxStatAdmin(Integer cid, Date yfrom, Date yto, Integer page, Integer size, Integer count) {
 
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "查询不到该公司");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(taxAccountMapper.countListGroup(cid, yfrom, yto, XunBinKit.getUid()));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -98,10 +110,14 @@ public class TTaxAccountServiceImpl extends ServiceImpl<TTaxAccountMapper, TTaxA
     }
 
     @Override
-    public Object listTaxDetailAdmin(Integer cid, Date mfrom, Date mto, Integer page, Integer size) {
+    public Object listTaxDetailAdmin(Integer cid, Date mfrom, Date mto, Integer page, Integer size, Integer count) {
 
         if (ToolUtil.isEmpty(cid)) {
             return ResultUtil.error(-1, "该公司不存在");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(taxAccountMapper.countListTaxDetail(cid, mfrom, mto, XunBinKit.getUid()));
         }
 
         if(ToolUtil.isEmpty(page)){

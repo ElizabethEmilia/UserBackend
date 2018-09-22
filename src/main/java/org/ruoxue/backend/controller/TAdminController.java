@@ -55,8 +55,8 @@ public class TAdminController extends BaseController {
      */
     @ApiOperation("获取管理员列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size){
-        return adminService.list(page, size);
+    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count){
+        return adminService.list(page, size, count);
     }
 
     @ApiOperation("新增管理员")

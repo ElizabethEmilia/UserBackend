@@ -30,9 +30,9 @@ public class TLogsController {
 
     @ApiOperation("日志列表")
     @RequestMapping(value = "/log", method = RequestMethod.GET)
-    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+    public @ResponseBody Object list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
         if (XunBinKit.shouldReject(PermissionManager.Moudles.LogViewAndExport)) return null;
-        return logsService.listLog(page, size);
+        return logsService.listLog(page, size, count);
     }
 
 	

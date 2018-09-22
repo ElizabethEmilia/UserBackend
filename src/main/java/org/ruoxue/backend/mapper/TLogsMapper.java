@@ -29,6 +29,9 @@ public interface TLogsMapper extends BaseMapper<TLogs> {
     @Select("(select t_logs.*, t_admin.name from t_logs ,t_admin where t_logs.aid=t_admin.id ) union (select t_logs.*, '系统' as name from t_logs where t_logs.aid=-1 ) order by id DESC limit #{page}, #{size}")
     List<Map<String, Object>> listLogs(@Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("(select t_logs.*, t_admin.name from t_logs ,t_admin where t_logs.aid=t_admin.id ) union (select t_logs.*, '系统' as name from t_logs where t_logs.aid=-1 )")
+    List<Map<String, Object>> countListLogs();
+
 //    描述 + 类名
     @Insert("insert into t_logs value(null, #{aid}, now(), #{desc}, #{cls})")
     Integer addLog(@Param("aid") Integer aid, @Param("desc") String desc, @Param("cls") Integer cls);

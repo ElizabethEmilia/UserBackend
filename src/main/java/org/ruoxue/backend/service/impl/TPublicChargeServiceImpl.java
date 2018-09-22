@@ -120,7 +120,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
     }
 
     @Override
-    public Object listPublChargeStatus(Integer page, Integer size, String status, Date start, Date end) {
+    public Object listPublChargeStatus(Integer page, Integer size, String status, Date start, Date end, Integer count) {
 
 //        获取uid
         Integer uid = XunBinKit.getUid();
@@ -138,6 +138,10 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         if(!map.containsKey(status)){
             XunBinKit.returnCode(404, "Not Found");
             return null;
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(publicChargeMapper.countListPublicCharge(uid, map.get(status), start, end));
         }
 
         if(ToolUtil.isEmpty(page)){

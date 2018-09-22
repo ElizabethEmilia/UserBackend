@@ -39,8 +39,8 @@ public class TPublicChargeController {
 
     @ApiOperation("获取转账记录")
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)
-    public @ResponseBody Object listPublChargeStatus(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Date start, @RequestParam(required = false) Date end, @PathVariable String status) {
-        return publicChargeService.listPublChargeStatus(page, size, status, start, end);
+    public @ResponseBody Object listPublChargeStatus(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Date start, @RequestParam(required = false) Date end, @PathVariable String status, @RequestParam(required = false) Integer count) {
+        return publicChargeService.listPublChargeStatus(page, size, status, start, end, count);
     }
 
 

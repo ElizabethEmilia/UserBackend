@@ -35,7 +35,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     private TLogsMapper logsMapper;
 
     @Override
-    public Object ordersStatus(Integer uid, Integer page, Integer size, String status) {
+    public Object ordersStatus(Integer uid, Integer page, Integer size, String status, Integer count) {
 
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(status)) {
             return ResultUtil.error(-1, "参数错误");
@@ -52,6 +52,10 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
             return null;
         }
 
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(orderMapper.countListOrderByStatus(uid, map.get(status)));
+        }
+
         if(ToolUtil.isEmpty(page)){
             page = 1;
         }
@@ -66,7 +70,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     }
 
     @Override
-    public Object listOrder(Integer cid, Integer type, Integer page, Integer size, String status, Date start, Date end) {
+    public Object listOrder(Integer cid, Integer type, Integer page, Integer size, String status, Date start, Date end, Integer count) {
 
         if (ToolUtil.isEmpty(status)) {
             return ResultUtil.error(-1, "参数错误");
@@ -81,6 +85,10 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         if(!map.containsKey(status)){
             XunBinKit.returnCode(404, "Not Found");
             return null;
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(orderMapper.countListOrder(cid, type, map.get(status), start, end, XunBinKit.getUid()));
         }
 
         if(ToolUtil.isEmpty(page)){

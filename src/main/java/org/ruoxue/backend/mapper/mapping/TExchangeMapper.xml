@@ -25,6 +25,14 @@
 		order by id DESC limit #{page}, #{size}
 	</select>
 
+	<select id="countGetPublicCharge" resultType="java.lang.Integer">
+		select count(1) from t_public_charge
+		where uid = #{uid}
+		<if test="status != null">
+			and status = #{status}
+		</if>
+	</select>
+
 	<select id="countIncome" resultType="java.lang.Double">
 		select sum(amount) from t_exchange where uid = #{uid} and type = 1
 	</select>

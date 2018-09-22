@@ -24,7 +24,11 @@ public interface TOrderMapper extends BaseMapper<TOrder> {
 
     List<TOrder> listOrderByStatus(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status);
 
+    Integer countListOrderByStatus(@Param("uid") Integer uid, @Param("status") Integer status);
+
     List<Map<String, Object>> listOrder(@Param("cid") Integer cid, @Param("type") Integer type, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
+
+    Integer countListOrder(@Param("cid") Integer cid, @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
 
 //    通过running查询订单
     @Select("select * from t_order where running = #{running}")
