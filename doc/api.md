@@ -1220,5 +1220,3 @@ action取值：
    accept   审核同意，将checked改为1
    reject   拒绝，将checked改为2
 ```
-
-### 5.3
