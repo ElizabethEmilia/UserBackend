@@ -40,4 +40,6 @@ public interface ITCompanyService extends IService<TCompany> {
 
     Object removeSetupState(Integer cid,  Integer setupid);
 
+    Object dealCompany(Integer cid, String action);
+
 }

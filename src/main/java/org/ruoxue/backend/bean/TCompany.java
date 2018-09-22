@@ -1,12 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-22
+ * @since 2018-09-23
  */
 @TableName("t_company")
 public class TCompany extends Model<TCompany> {
@@ -66,6 +67,7 @@ public class TCompany extends Model<TCompany> {
 	private String name;
 	@TableField("ysa_status")
 	private Integer ysaStatus;
+	private Integer checked;
 
 
 	public Integer getId() {
@@ -268,6 +270,14 @@ public class TCompany extends Model<TCompany> {
 		this.ysaStatus = ysaStatus;
 	}
 
+	public Integer getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Integer checked) {
+		this.checked = checked;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -301,6 +311,7 @@ public class TCompany extends Model<TCompany> {
 			", status=" + status +
 			", name=" + name +
 			", ysaStatus=" + ysaStatus +
+			", checked=" + checked +
 			"}";
 	}
 }

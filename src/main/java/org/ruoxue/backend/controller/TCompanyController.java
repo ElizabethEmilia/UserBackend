@@ -107,5 +107,11 @@ public class TCompanyController {
         return companyService.countCompany();
     }
 
+    @ApiOperation("审核公司")
+    @RequestMapping(value = "/customer/_/company/{cid}/{action}", method = RequestMethod.POST)
+    public @ResponseBody Object dealCompany(@PathVariable Integer cid, @PathVariable String action) {
+        return companyService.dealCompany(cid, action);
+    }
+
 
 }

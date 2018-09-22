@@ -1217,7 +1217,7 @@ dst取值：
 
 2. 添加的接口
 
-* 审核公司  `POST /api/customer/_/company/{action}`
+* 审核公司  `POST /api/customer/_/company/{cid}/{action}`
 
 ```
 action取值：

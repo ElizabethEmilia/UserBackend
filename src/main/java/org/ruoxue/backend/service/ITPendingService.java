@@ -12,5 +12,15 @@ import org.ruoxue.backend.bean.TPending;
  * @since 2018-09-22
  */
 public interface ITPendingService extends IService<TPending> {
-	
+
+    Object getNotificationByUid();
+
+    Object getNotification();
+
+    Object getNotificationByGid();
+
+    Object getNotificationByAid();
+
+    Object removeNoto(Integer nid);
+
 }
