@@ -1,14 +1,17 @@
 <template>
     <div class="notif">
-        <Badge dot  :count="count">
-            <a href="#" class="demo-badge">
+        <Badge number  :count="count">
+            <a href="#" class="demo-badge" @click="panelVisible = true">
                 <Icon type="ios-notifications-outline" size="26"></Icon>
             </a>
         </Badge>
 
-        <div class="panel">
+        <div class="panel" v-if="panelVisible">
             <div style="height: 100%">
-                <h3 style="padding: 10px;">待处理的通知</h3>
+                <div style="height: 60px;">
+                    <h3 style="padding: 10px; float: left; padding-top: 15px;" >待处理的通知</h3>
+                        <span class="close-btn" @click="panelVisible = false">&times;</span>
+                </div>
                 <div class="it" v-for="(e, i) in list" :key="i">
                     {{ e.uid !== -1 ? '用户':'管理员' }} {{ e.user_name }} {{ e.description }}
                     <p>
@@ -17,7 +20,7 @@
                 </div>
 
                 <div class="it" style="text-align: center">
-                    <a href="javascript:void(0)" @click="updateMessage">加载更多</a>
+                    <a href="javascript:void(0)" @click="updateMessage" :disabled="loading">{{ !loading ? '加载更多':'正在加载' }}</a>
                 </div>
             </div>
 
@@ -42,30 +45,49 @@
 
     export default {
         data: () => ({
-            count: 1,
             list: [
-                Bean,Bean,Bean,Bean
-            ],
+                Bean,Bean,Bean,Bean,
+                Bean,Bean,Bean,Bean,
+                Bean,Bean,Bean,Bean,
 
+            ],
+            loading: false,
             currentPage: 1,
+
+            panelVisible: false,
         }),
         methods: {
             async processNotification(i, id) {
+                //this.loading = true;
                 try {
                     await API.Notification.process(id);
                     //this.list[i].processed = 1;
                     this.list.splice(i, 1);
+                    //this.loading = false;
                 }
                 catch (e) {
-                    console.error(e)
+                    console.error(e);
+                    //this.loading = false;
                 }
             },
             async updateMessage() {
-                let r = await API.Notification.getList(this.currentPage++);
-                this.list = this.list.concat(r);
+                this.loading = true;
+                try {
+                    let r = await API.Notification.getList(this.currentPage++);
+                    this.list = this.list.concat(r);
+                }
+                catch (e) {
+                    console.error(e);
+                    this.loading = false;
+                }
+
             }
         },
-         mounted() {this.updateMessage();
+        computed: {
+            count() { return this.list.length; }
+        },
+         mounted() {
+            this.updateMessage();
         }
     }
 </script>
@@ -75,6 +97,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
+    z-index: 99999;
 }
 
 .demo-badge{
@@ -83,6 +106,7 @@
     background: #eee;
     border-radius: 6px;
     display: inline-block;
+    padding: 8px;
 }
 
     .panel {
@@ -92,7 +116,10 @@
         top: 0px;
         height: 100%;
         width: 250px;
-        border-left: 1px solid #888;
+        border-left: 1px solid #eee;
+        z-index: 99999;
+        overflow-y: auto;
+        box-shadow: 3px 4px 5px 3px #aaa;
     }
 
     .inside {
@@ -107,5 +134,28 @@
 
     .it:hover {
         background: #eee;
+    }
+
+    .close-btn {
+        float: right;
+        font-size: 26px;
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        line-height: 30px;
+        margin: 10px;
+        border: 1px solid transparent;
+    }
+
+    .close-btn:hover {
+        border: 1px solid blue;
+        background: lightblue;
+    }
+
+    .close-btn:active {
+        border: 1px solid purple;
+        background: darkblue;
+        color: white;
     }
 </style>

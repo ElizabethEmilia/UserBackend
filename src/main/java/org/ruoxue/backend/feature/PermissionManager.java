@@ -77,6 +77,24 @@ public class PermissionManager {
 
         // 为客户设置打折价
         public static final int SetDiscount = 21;
+
+        /// 其它权限
+
+        // 审核公司
+        public static final int CheckCompany = 22;
+
+        // 为客户充值
+        public static final int ChargeForCustomer = 23;
+
+        // 开票
+        public static final int ReceiptForCustomer = 24;
+
+        // 获取通知
+        public static final int ReceiveNotification = 25;
+
+        // 标记通知状态
+        public static final int ProcessNotification = 26;
+
     }
 
     public static boolean canAccess(int moudleID, int userPermission) {

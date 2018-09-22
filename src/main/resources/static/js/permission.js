@@ -70,6 +70,22 @@ const Modules = {
 
     // 为客户设置打折价
     SetDiscount: 21,
+
+    /// 其它权限
+    // 审核公司
+    CheckCompany: 22,
+
+    //为客户充值
+    ChargeForCustomer: 23,
+
+    // 开票
+    ReceiptForCustomer:24,
+
+    // 获取通知
+    ReceiveNotification: 25,
+
+    // 标记通知状态
+    ProcessNotification: 26,
 };
 
 function canAccess(moudleID, userPermission) {

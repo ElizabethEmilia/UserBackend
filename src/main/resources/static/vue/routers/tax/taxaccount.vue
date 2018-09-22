@@ -117,8 +117,7 @@
             async getCompanies() {
                 try {
                     let result = await API.Company.getList();
-                    if (result.code === 0)
-                        this.companies = result.data;
+                    this.companies = result;
                 }
                 catch (e) {
                     console.error(e);

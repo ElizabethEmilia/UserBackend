@@ -108,8 +108,7 @@ export default (function(){
                 }
             },
             async getCount() {
-                console.log(`[PagedTable] get count`);
-                let url = this.requestUrl + `?count`;
+                let url = this.requestUrl + `?count=0`;
                 try {
                     let r = await $.ajax(url);
                     if (r.code) {
