@@ -21,6 +21,9 @@ public interface TAdminMapper extends BaseMapper<TAdmin> {
 
     List<Map<String, Object>> getAdminList(@Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_admin a, t_role b where a.roleid = b.id and a.status = 1")
+    Integer countGetAdminList();
+
 //    获取所有status为3的管理员的lid的数组
     List<Integer> getRemoveAdminLids();
 

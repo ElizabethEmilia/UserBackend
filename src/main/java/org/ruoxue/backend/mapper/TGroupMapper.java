@@ -22,6 +22,9 @@ public interface TGroupMapper extends BaseMapper<TGroup> {
     @Select("select * from t_group order by id DESC limit #{page}, #{size}")
     List<Map<String, Object>> listGroup(@Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_group")
+    Integer countListGroup();
+
     @Select("select id, name from t_group order by id desc")
     List<Map<String, Object>> listSimple();
 
@@ -34,9 +37,13 @@ public interface TGroupMapper extends BaseMapper<TGroup> {
     @Select("select * from t_admin where gid = #{gid} order by id desc limit #{page}, #{size}")
     List<Map<String, Object>> listGroupAdmin(@Param("gid") Integer gid, @Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_admin where gid = #{gid}")
+    Integer countListGroupAdmin(@Param("gid") Integer gid);
+
     @Select("select * from t_customer where aid in (select * from (select id from t_admin where gid = #{gid}) c) order by uid desc limit #{page}, #{size}")
     List<Map<String, Object>> listGroupCustomer(@Param("gid") Integer gid, @Param("page") Integer page, @Param("size") Integer size);
 
-
+    @Select("select count(1) from t_customer where aid in (select * from (select id from t_admin where gid = #{gid}) c)")
+    Integer countistGroupCustomer(@Param("gid") Integer gid);
 
 }

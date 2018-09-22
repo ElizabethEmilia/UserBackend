@@ -49,10 +49,14 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     private TLogsMapper logsMapper;
 
     @Override
-    public Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end) {
+    public Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end, Integer count) {
 //        非空验证
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(receiptMapper.countListReceipt(uid, cid, type, status, start, end));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -133,11 +137,15 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     }
 
     @Override
-    public Object listReceiptStatUpdate(Integer uid, Integer page, Integer size) {
+    public Object listReceiptStatUpdate(Integer uid, Integer page, Integer size, Integer count) {
 
 //        非空验证
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(receiptStatMapper.countListReceiptStatPage(uid));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -239,7 +247,11 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     }
 
     @Override
-    public Object receiptList(Integer page, Integer size, Integer cid, Integer type, Integer status, Date start, Date end) {
+    public Object receiptList(Integer page, Integer size, Integer cid, Integer type, Integer status, Date start, Date end, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(receiptMapper.countReceiptList(cid, type, status, start, end, XunBinKit.getUid()));
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;
@@ -294,7 +306,11 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     }
 
     @Override
-    public Object statReceipt(Integer page, Integer size) {
+    public Object statReceipt(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(receiptMapper.countStatReceipt(XunBinKit.getUid()));
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;

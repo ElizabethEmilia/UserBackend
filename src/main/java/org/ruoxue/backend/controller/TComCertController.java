@@ -26,8 +26,8 @@ public class TComCertController {
 
     @ApiOperation("查看客户公司的证件列表")
     @RequestMapping(value = "/{uid}/company/{cid}/cert", method = RequestMethod.GET)
-    public @ResponseBody Object listCert(@PathVariable String uid, @PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size){
-        return comCertService.listCert(uid, cid, page, size);
+    public @ResponseBody Object listCert(@PathVariable String uid, @PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count){
+        return comCertService.listCert(uid, cid, page, size, count);
     }
 
     @ApiOperation("查看客户公司的某个证件")

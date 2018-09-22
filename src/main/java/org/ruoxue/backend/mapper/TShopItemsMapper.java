@@ -24,6 +24,9 @@ public interface TShopItemsMapper extends BaseMapper<TShopItems> {
     @Select("select * from t_shop_items order by id DESC limit #{page}, #{size}")
     List<Map<String, Object>> list(@Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_shop_items")
+    Integer countList();
+
 //    通过商品id获取商品
     @Select("select * from t_shop_items where id = #{id}")
     TShopItems getItemById(@Param("id") Integer id);

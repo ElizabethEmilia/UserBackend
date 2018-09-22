@@ -14,7 +14,7 @@ import org.ruoxue.backend.bean.TShopItems;
  */
 public interface ITShopItemsService extends IService<TShopItems> {
 
-    Object listItems(Integer page, Integer size);
+    Object listItems(Integer page, Integer size, Integer count);
 
     Object addItems(JSONObject jsonObject);
 

@@ -37,5 +37,11 @@ public interface TSigninMapper extends BaseMapper<TSignin> {
 
     List<Map<String, Object>> listAll(@Param("page") Integer page, @Param("size") Integer size, @Param("search") String search);
 
+    Integer countListSelf(@Param("id") Integer id, @Param("search") String search);
+
+    Integer countListGroup(@Param("id") Integer id, @Param("search") String search);
+
+    Integer countListAll(@Param("search") String search);
+
 
 }

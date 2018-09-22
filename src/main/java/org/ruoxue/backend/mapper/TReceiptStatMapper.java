@@ -31,7 +31,10 @@ public interface TReceiptStatMapper extends BaseMapper<TReceiptStat> {
     @Select("select * from t_receipt_stat where uid = #{uid} order by id desc limit #{page}, #{size}")
     List<Map<String, Object>> listReceiptStatPage(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size);
 
-//    通过id更改hash值
+    @Select("select count(1) from t_receipt_stat where uid = #{uid}")
+    Integer countListReceiptStatPage(@Param("uid") Integer uid);
+
+    //    通过id更改hash值
     @Update("update t_receipt_stat set hash_original = #{hash} where id = #{id}")
     Integer updateStatHash(@Param("id") Integer id, @Param("hash") String hash);
 

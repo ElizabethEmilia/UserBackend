@@ -26,8 +26,8 @@ public class TShopItemsController {
 
     @ApiOperation("信息的商品列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Object listItems(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return shopItemsService.listItems(page, size);
+    public @ResponseBody Object listItems(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return shopItemsService.listItems(page, size, count);
     }
 
     @ApiOperation("商品的添加")

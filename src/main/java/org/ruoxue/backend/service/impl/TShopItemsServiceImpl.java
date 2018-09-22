@@ -30,7 +30,11 @@ public class TShopItemsServiceImpl extends ServiceImpl<TShopItemsMapper, TShopIt
     private TShopItemsMapper shopItemsMapper;
 
     @Override
-    public Object listItems(Integer page, Integer size) {
+    public Object listItems(Integer page, Integer size, Integer count) {
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(shopItemsMapper.countList());
+        }
 
         if(ToolUtil.isEmpty(page)){
             page = 1;

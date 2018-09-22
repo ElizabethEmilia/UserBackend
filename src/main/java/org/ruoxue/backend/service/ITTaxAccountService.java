@@ -15,14 +15,14 @@ import java.util.Date;
  */
 public interface ITTaxAccountService extends IService<TTaxAccount> {
 
-    Object listTaxStat(Integer cid, Date yfrom, Date yto, Integer page, Integer size);
+    Object listTaxStat(Integer cid, Date yfrom, Date yto, Integer page, Integer size, Integer count);
 
-    Object listTaxDetail(Integer cid, Date mfrom, Date mto, Integer page, Integer size);
+    Object listTaxDetail(Integer cid, Date mfrom, Date mto, Integer page, Integer size, Integer count);
 
 
-    Object listTaxStatAdmin(Integer cid, Date yfrom, Date yto, Integer page, Integer size);
+    Object listTaxStatAdmin(Integer cid, Date yfrom, Date yto, Integer page, Integer size, Integer count);
 
-    Object listTaxDetailAdmin(Integer cid, Date mfrom, Date mto, Integer page, Integer size);
+    Object listTaxDetailAdmin(Integer cid, Date mfrom, Date mto, Integer page, Integer size, Integer count);
 
     Object updateTax(Integer cid, Integer uid, Double tax);
 

@@ -16,25 +16,25 @@ import java.util.Date;
  */
 public interface ITReceiptService extends IService<TReceipt> {
 
-    Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end);
+    Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end, Integer count);
 
     Object listTaxStat(Integer cid, Integer page, Integer size, Integer status, Integer type, Date start, Date end);
 
     Object updateReceiptStat(Integer uid, Integer cid, JSONObject jsonObject);
 
-    Object listReceiptStatUpdate(Integer uid, Integer page, Integer size);
+    Object listReceiptStatUpdate(Integer uid, Integer page, Integer size, Integer count);
 
     Object receiptRequest(String uid, Integer rid, String action, String reason);
 
     Object receiptAdd(JSONObject jsonObject);
 
-    Object receiptList(Integer page, Integer size, Integer cid, Integer type, Integer status, Date start, Date end);
+    Object receiptList(Integer page, Integer size, Integer cid, Integer type, Integer status, Date start, Date end, Integer count);
 
     Object removeReceipt(Integer rid);
 
     Object exportReceipt();
 
-    Object statReceipt(Integer page, Integer size);
+    Object statReceipt(Integer page, Integer size, Integer count);
 
     Object updateStatusToSub(Integer rid);
 

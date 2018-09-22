@@ -22,6 +22,6 @@ public interface ITPublicChargeService extends IService<TPublicCharge> {
 
     Object publChargeCancel(Integer id);
 
-    Object listPublChargeStatus(Integer page, Integer size, String status, Date start, Date end);
+    Object listPublChargeStatus(Integer page, Integer size, String status, Date start, Date end, Integer count);
 	
 }

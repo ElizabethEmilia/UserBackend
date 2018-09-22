@@ -32,12 +32,12 @@ public interface ITCustomerService extends IService<TCustomer> {
      */
     Object adminAddtime(String uid, Integer cid, Integer months, Double price);
 
-    Object listCharge(Integer uid, Integer page, Integer size);
+    Object listCharge(Integer uid, Integer page, Integer size, Integer count);
 
     Object listDeadline();
 
     Object listDeadlineAdmin();
 
-    Object listExchangeByUid(Integer page, Integer size);
+    Object listExchangeByUid(Integer page, Integer size, Integer count);
 
 }

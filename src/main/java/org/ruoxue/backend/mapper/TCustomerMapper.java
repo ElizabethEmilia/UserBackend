@@ -3,6 +3,7 @@ package org.ruoxue.backend.mapper;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.ruoxue.backend.bean.TCustomer;
 
@@ -29,6 +30,9 @@ public interface TCustomerMapper extends BaseMapper<TCustomer> {
     TCustomer getTCustomerByUid(@Param("uid") Integer uid);
 
     List<Map<String, Object>> listCustomerss(@Param("page") Integer page, @Param("size") Integer size);
+
+    @Select("select count(1) from t_customer where status = 1")
+    Integer countListCustomerss();
 
     @Update("update t_customer " +
             "set name=#{name}, type=#{type}, industry=#{industry}, email=#{email}, " +

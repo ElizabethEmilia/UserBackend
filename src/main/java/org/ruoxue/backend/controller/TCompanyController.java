@@ -4,9 +4,7 @@ package org.ruoxue.backend.controller;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TCompany;
-import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITCompanyService;
-import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +28,8 @@ public class TCompanyController {
 
     @ApiOperation("客户的公司列表")
     @RequestMapping(value = "/customer/{uid}/company/list", method = RequestMethod.GET)
-    public @ResponseBody Object listCompany(@PathVariable String uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size){
-        return companyService.listCompany(uid, page, size);
+    public @ResponseBody Object listCompany(@PathVariable String uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count){
+        return companyService.listCompany(uid, page, size, count);
     }
 
     @ApiOperation("客户的某个公司信息")
@@ -75,8 +73,8 @@ public class TCompanyController {
      */
     @ApiOperation("获取公司列表")
     @RequestMapping(value = "/company/list", method = RequestMethod.GET)
-    public @ResponseBody Object listCompanys(@RequestParam(required = false) String search, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return companyService.listCompanys(search, page, size);
+    public @ResponseBody Object listCompanys(@RequestParam(required = false) String search, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return companyService.listCompanys(search, page, size, count);
     }
 
     @ApiOperation("获取某一个公司的信息")
@@ -87,14 +85,14 @@ public class TCompanyController {
 
     @ApiOperation("获取某一个公司设立进度，并按照时间排序")
     @RequestMapping(value = "/company/{cid}/setup", method = RequestMethod.GET)
-    public @ResponseBody Object getCompanySetUp(@PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return companyService.getCompanySetUp(cid, page, size);
+    public @ResponseBody Object getCompanySetUp(@PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return companyService.getCompanySetUp(cid, page, size, count);
     }
 
     @ApiOperation("获取某一个公司证件照")
     @RequestMapping(value = "/company/{cid}/cert", method = RequestMethod.GET)
-    public @ResponseBody Object getCompanyCert(@PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return companyService.getCompanyCert(cid, page, size);
+    public @ResponseBody Object getCompanyCert(@PathVariable Integer cid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return companyService.getCompanyCert(cid, page, size, count);
     }
 
     @ApiOperation("获取某一个公司的证件照信息")

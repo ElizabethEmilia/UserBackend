@@ -35,10 +35,14 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
     private TLogsMapper logsMapper;
 
     @Override
-    public Object onlinecharge(Integer uid, Integer page, Integer size) {
+    public Object onlinecharge(Integer uid, Integer page, Integer size, Integer count) {
 
         if (ToolUtil.isEmpty(uid)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(exchangeMapper.countGetOnlinecharge(uid));
         }
 
         if(ToolUtil.isEmpty(page)){
@@ -55,7 +59,7 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
     }
 
     @Override
-    public Object publicchargeStatus(Integer uid, Integer page, Integer size, String status) {
+    public Object publicchargeStatus(Integer uid, Integer page, Integer size, String status, Integer count) {
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(status)) {
             return ResultUtil.error(-1, "参数错误");
         }
@@ -69,6 +73,10 @@ public class TExchangeServiceImpl extends ServiceImpl<TExchangeMapper, TExchange
         if(!map.containsKey(status)){
             XunBinKit.returnCode(404, "Not Found");
             return null;
+        }
+
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(exchangeMapper.countGetPublicCharge(uid, map.get(status)));
         }
 
         if(ToolUtil.isEmpty(page)){

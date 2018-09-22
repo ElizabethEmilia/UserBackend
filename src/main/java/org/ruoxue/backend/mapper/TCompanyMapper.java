@@ -26,6 +26,8 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
 //    不分页公司列表
     List<Map<String, Object>> listCompanyAll(@Param("uid") Integer uid);
 
+    Integer countListCompanyAll(@Param("uid") Integer uid);
+
 //    客户的某个公司的信息
     TCompany getCompany(@Param("uid") Integer uid, @Param("cid") Integer cid);
 
@@ -38,6 +40,8 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
     //    获取公司列表
     List<Map<String, Object>> listCompanys(@Param("search") String search, @Param("page") Integer page, @Param("size") Integer size, @Param("uid") Integer uid);
 
+    Integer countListCompanys(@Param("search") String search, @Param("uid") Integer uid);
+
     //    获取一个公司的信息
     @Select("select * from t_company where id = #{id}")
     TCompany getCompanyById(@Param("id") Integer id);
@@ -46,9 +50,15 @@ public interface TCompanyMapper extends BaseMapper<TCompany> {
     @Select("select * from t_com_set_progress where cid = #{cid} order by tm desc limit #{page},#{size}")
     List<Map<String, Object>> listCompanySetUp(@Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_com_set_progress where cid = #{cid}")
+    Integer countListCompanySetUp(@Param("cid") Integer cid);
+
     //    获取一个公司的证件照
     @Select("select * from t_com_cert where cid = #{cid} limit #{page},#{size}")
     List<Map<String, Object>> listComCertByCid(@Param("cid") Integer cid, @Param("page") Integer page, @Param("size") Integer size);
+
+    @Select("select count(1) from t_com_cert where cid = #{cid}")
+    Integer countListComCertByCid(@Param("cid") Integer cid);
 
     //    获取一个公司的证件照信息
     @Select("select * from t_com_cert where cid = #{cid} and id = #{id}")

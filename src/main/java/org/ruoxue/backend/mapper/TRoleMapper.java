@@ -21,6 +21,9 @@ public interface TRoleMapper extends BaseMapper<TRole> {
     @Select("select * from t_role order by id DESC limit #{page}, #{size}")
     List<Map<String, Object>> list(@Param("page") Integer page, @Param("size") Integer size);
 
+    @Select("select count(1) from t_role")
+    Integer countList();
+
     @Select("select * from t_role where id = #{id}")
     TRole getRoleById(@Param("id") Integer id);
 

@@ -14,7 +14,7 @@ import org.ruoxue.backend.bean.TGroup;
  */
 public interface ITGroupService extends IService<TGroup> {
 
-    Object listGroup(Integer page, Integer size);
+    Object listGroup(Integer page, Integer size, Integer count);
 
     Object listSimple();
 
@@ -24,8 +24,8 @@ public interface ITGroupService extends IService<TGroup> {
 
     Object groupUpdate(Integer gid, String name, String remark);
 
-    Object listGroupAdmin(Integer gid, Integer page, Integer size);
+    Object listGroupAdmin(Integer gid, Integer page, Integer size, Integer count);
 
-    Object listGroupCustomer(Integer gid, Integer page, Integer size);
+    Object listGroupCustomer(Integer gid, Integer page, Integer size, Integer count);
 
 }
