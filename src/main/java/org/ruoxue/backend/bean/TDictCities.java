@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-19
+ * @since 2018-09-22
  */
 @TableName("t_dict_cities")
 public class TDictCities extends Model<TDictCities> {

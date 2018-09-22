@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-19
+ * @since 2018-09-22
  */
 @TableName("t_tax_account_detail")
 public class TTaxAccountDetail extends Model<TTaxAccountDetail> {
@@ -40,6 +40,7 @@ public class TTaxAccountDetail extends Model<TTaxAccountDetail> {
 	private String bankAccount;
 	@TableField("tm_op")
 	private Date tmOp;
+	private String credit;
 
 
 	public Integer getId() {
@@ -130,6 +131,14 @@ public class TTaxAccountDetail extends Model<TTaxAccountDetail> {
 		this.tmOp = tmOp;
 	}
 
+	public String getCredit() {
+		return credit;
+	}
+
+	public void setCredit(String credit) {
+		this.credit = credit;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -149,6 +158,7 @@ public class TTaxAccountDetail extends Model<TTaxAccountDetail> {
 			", accountType=" + accountType +
 			", bankAccount=" + bankAccount +
 			", tmOp=" + tmOp +
+			", credit=" + credit +
 			"}";
 	}
 }

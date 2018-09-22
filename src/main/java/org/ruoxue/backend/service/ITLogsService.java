@@ -19,7 +19,7 @@ public interface ITLogsService extends IService<TLogs> {
 
     Boolean actionLogNow(Integer aid, String description, Integer cls);
 
-    Object listLog(Integer page, Integer size, Integer count);
+    Object listLog(Integer page, Integer size, Integer count, String search);
 
 
 

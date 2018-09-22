@@ -16,17 +16,19 @@ import java.util.Date;
  * @author fengjb
  * @since 2018-09-22
  */
-@TableName("t_logs")
-public class TLogs extends Model<TLogs> {
+@TableName("t_pending")
+public class TPending extends Model<TPending> {
 
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
+	private Integer uid;
 	private Integer aid;
+	private Integer gid;
+	private Integer description;
 	private Date tm;
-	private String description;
-	private Integer cls;
+	private Integer processed;
 
 
 	public Integer getId() {
@@ -37,12 +39,36 @@ public class TLogs extends Model<TLogs> {
 		this.id = id;
 	}
 
+	public Integer getUid() {
+		return uid;
+	}
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+
 	public Integer getAid() {
 		return aid;
 	}
 
 	public void setAid(Integer aid) {
 		this.aid = aid;
+	}
+
+	public Integer getGid() {
+		return gid;
+	}
+
+	public void setGid(Integer gid) {
+		this.gid = gid;
+	}
+
+	public Integer getDescription() {
+		return description;
+	}
+
+	public void setDescription(Integer description) {
+		this.description = description;
 	}
 
 	public Date getTm() {
@@ -53,20 +79,12 @@ public class TLogs extends Model<TLogs> {
 		this.tm = tm;
 	}
 
-	public String getDescription() {
-		return description;
+	public Integer getProcessed() {
+		return processed;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getCls() {
-		return cls;
-	}
-
-	public void setCls(Integer cls) {
-		this.cls = cls;
+	public void setProcessed(Integer processed) {
+		this.processed = processed;
 	}
 
 	@Override
@@ -76,12 +94,14 @@ public class TLogs extends Model<TLogs> {
 
 	@Override
 	public String toString() {
-		return "TLogs{" +
+		return "TPending{" +
 			"id=" + id +
+			", uid=" + uid +
 			", aid=" + aid +
-			", tm=" + tm +
+			", gid=" + gid +
 			", description=" + description +
-			", cls=" + cls +
+			", tm=" + tm +
+			", processed=" + processed +
 			"}";
 	}
 }

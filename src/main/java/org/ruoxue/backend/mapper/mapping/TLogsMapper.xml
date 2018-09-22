@@ -11,4 +11,17 @@
 		<result column="cls" property="cls" />
 	</resultMap>
 
+	<select id="listLogs" resultType="java.util.Map">
+		(select a.*, b.name from t_logs a ,t_admin b where a.aid=b.id and (a.description like concat('%', #{search}, '%')  or b.name like concat('%', #{search}, '%')))
+		union
+		(select a.*, '系统' as name from t_logs a where a.aid=-1 and  a.description like concat('%', #{search}, '%') )
+		order by id desc limit #{page}, #{size}
+	</select>
+
+	<select id="countListLogs" resultType="java.util.Map">
+		(select a.*, b.name from t_logs a ,t_admin b where a.aid=b.id and (a.description like concat('%', #{search}, '%')  or b.name like concat('%', #{search}, '%')))
+		union
+		(select a.*, '系统' as name from t_logs a where a.aid=-1 and  a.description like concat('%', #{search}, '%') )
+	</select>
+
 </mapper>

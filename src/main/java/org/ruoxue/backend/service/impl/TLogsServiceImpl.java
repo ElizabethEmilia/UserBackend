@@ -36,11 +36,7 @@ public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements
     }
 
     @Override
-    public Object listLog(Integer page, Integer size, Integer count) {
-
-        if (ToolUtil.isNotEmpty(count)) {
-            return ResultUtil.success(mapper.countListLogs().size());
-        }
+    public Object listLog(Integer page, Integer size, Integer count, String search) {
 
         if(ToolUtil.isEmpty(page)){
             page = 1;
@@ -50,7 +46,11 @@ public class TLogsServiceImpl extends ServiceImpl<TLogsMapper, TLogs> implements
         }
         page = (page - 1) * size;
 
-        List<Map<String, Object>> list = mapper.listLogs(page, size);
+        if (ToolUtil.isNotEmpty(count)) {
+            return ResultUtil.success(mapper.countListLogs(search).size());
+        }
+
+        List<Map<String, Object>> list = mapper.listLogs(page, size, search);
 
         return ResultUtil.success(list);
     }
