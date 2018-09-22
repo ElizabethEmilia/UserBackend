@@ -1,6 +1,7 @@
 package org.ruoxue.backend.bean;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -14,7 +15,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-19
+ * @since 2018-09-22
  */
 @TableName("t_exchange")
 public class TExchange extends Model<TExchange> {
@@ -32,6 +33,8 @@ public class TExchange extends Model<TExchange> {
 	private Date tm;
 	private Integer state;
 	private Integer type;
+	@TableField("dst_balance")
+	private Integer dstBalance;
 
 
 	public Integer getId() {
@@ -114,6 +117,14 @@ public class TExchange extends Model<TExchange> {
 		this.type = type;
 	}
 
+	public Integer getDstBalance() {
+		return dstBalance;
+	}
+
+	public void setDstBalance(Integer dstBalance) {
+		this.dstBalance = dstBalance;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -132,6 +143,7 @@ public class TExchange extends Model<TExchange> {
 			", tm=" + tm +
 			", state=" + state +
 			", type=" + type +
+			", dstBalance=" + dstBalance +
 			"}";
 	}
 }

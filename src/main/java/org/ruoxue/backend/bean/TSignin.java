@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-19
+ * @since 2018-09-22
  */
 @TableName("t_signin")
 public class TSignin extends Model<TSignin> {
