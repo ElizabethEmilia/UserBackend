@@ -204,5 +204,10 @@ export default {
 
         getStatDataUser: GET(`/api/receipt/stat-data`),
         getStatDataAdmin: uid => GET(`/api/customer/${uid}/receipt/statv`)(),
-    }
+    },
+
+    Notification: {
+        getList: (page) => GET('/api/notification')(),
+        process: (id) => POST(`/api/notofication/${id}`, {r: 1})(),
+    },
 }
