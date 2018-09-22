@@ -34,8 +34,9 @@ public class UIController extends BaseController {
     @ResponseBody
     public void showHomePage(HttpServletResponse response) {
         if (getSession().getAttribute("uid") == null) {
-            response.setStatus(301);
-            response.setHeader("Location", "/login");
+            //response.setStatus(301);
+            //response.setHeader("Location", "/login");
+            responseBinary("login2.html", response);
             return;
         }
         responseBinary("index.html", response);
@@ -45,12 +46,14 @@ public class UIController extends BaseController {
     @GetMapping("/login")
     @ResponseBody
     public void showLoginPage(HttpServletResponse response) {
-        if (getSession().getAttribute("uid") != null) {
+        response.setStatus(301);
+        response.setHeader("Location", "/");
+        /*if (getSession().getAttribute("uid") != null) {
             response.setStatus(301);
             response.setHeader("Location", "/");
             return;
         }
-        responseBinary("login2.html", response);
+        responseBinary("login2.html", response);*/
     }
 
     @GetMapping("/reset")
