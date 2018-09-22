@@ -350,7 +350,7 @@ function toTimeString(date) {
     let minute = date.getMinutes();  // 获取分钟数(0-59)
     let second = date.getSeconds();  // 获取秒数(0-59)
 
-    return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+    return year + '-' + month + '-' + day + ' ' + hour + ':' + String(minute).padStart(2, '0') + ':' + String(second).padStart(2, '0');
 }
 
 function toTimeStringFromTimestamp(timestamp) {

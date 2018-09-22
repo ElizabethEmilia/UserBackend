@@ -13,6 +13,7 @@
                         <span class="close-btn" @click="panelVisible = false">&times;</span>
                 </div>
                 <div class="it" v-for="(e, i) in list" :key="i">
+                    <p style="font-size: 12px; color: gray">{{ toDateString(e.tm) }}</p>
                     {{ e.uid !== -1 ? '用户':'管理员' }} {{ e.user_name }} {{ e.description }}
                     <p>
                         <a href="javascript:void(0)" @click="processNotification(i, e.id)">标记为“已处理”</a>
@@ -30,6 +31,7 @@
 
 <script>
     import init from '../../js/init.js';
+    import util from '../../js/util.js';
     import API from '../../js/api.js';
 
     const Bean = {
@@ -81,6 +83,9 @@
                     this.loading = false;
                 }
 
+            },
+            toDateString(ts) {
+                return util.Date.toTimeStringFromTimestamp(ts);
             }
         },
         computed: {

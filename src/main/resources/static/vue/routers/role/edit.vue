@@ -62,6 +62,9 @@
                         { name: "删除客户信息", value: 8 },
                         { name: "增加或修改客户的公司信息", value: 9 },
                         { name: "删除客户的公司", value: 10 },
+                        { name: "审核新增的公司", value: 26 },
+                        { name: "为客户充值", value: 23 },
+                        { name: "为客户开票", value: 24 },
                     ]
                 },
                 {
@@ -88,6 +91,14 @@
                     submodules: [
                         { name: "查看日志", value: 16 },
                         //{ name: "删除日志", value: 17 },
+                    ]
+                },
+                {
+                    group: "通知",
+                    mask: 0,
+                    submodules: [
+                        { name: "获取通知", value: 25 },
+                        { name: "标记通知状态", value: 26 },
                     ]
                 },
                 {
