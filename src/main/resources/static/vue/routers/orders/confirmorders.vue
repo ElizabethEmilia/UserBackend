@@ -40,11 +40,12 @@
 <script>
     import util from '../../../js/util.js';
     import API from '../../../js/api.js';
+    import { dstString } from '../../../constant.js';
 
     let payment = ['alipay', 'wepay']
 
     export default {
-        props: [ 'param' ],
+        props: [ 'param', 'dst' ],
         data: () => ({
             onlinePayMethod: -1,
             onlinePayAmount: 0,
@@ -98,7 +99,7 @@
                     }
                     else {
                         /// 充值
-                        this.productName = "在线充值";
+                        this.productName = "在线充值 - " + dstString[this.dst];
                         this.totalAmount = this.param.amount;
                         this.isNotCharge = false;
                     }

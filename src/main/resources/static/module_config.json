@@ -12,7 +12,7 @@
         "orders": "我的订单",
         "role": "权限管理",
         "group": "组管理",
-        "srvpack": "服务包管理"
+        "srvpack": "年费管理"
     },
 
     "defaultModule": "欢迎使用后台管理系统"

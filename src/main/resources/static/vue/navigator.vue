@@ -33,7 +33,7 @@
             </MenuItem>
             <MenuItem name="srvpack">
                 <Icon type="md-heart" />
-                服务包管理
+                年费管理
             </MenuItem>
             <MenuItem name="user" v-if="P.AdminUserListOfCurrentGroup">
                 <Icon type="md-leaf" />

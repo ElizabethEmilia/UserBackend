@@ -82,6 +82,12 @@ export default {
             deleteCompany: (cid, uid='_') => POST(`/api/customer/${uid}/company/${cid}/delete`, __rd_post_body)(),
             renew: (uid, cid, params) => POST(`/api/customer/${uid}/company/${cid}/addtime`, params)(),
         },
+
+        check: (uid, action) => POST(`/api/customer/${uid}/${action}`, {r:1})(),
+
+        charge: (uid, dst, data) => POST(`/customer/${uid}/charge/${dst}`, data)(),
+        deduction: (uid, dst, data) => POST(`/customer/${uid}/deduction/${dst}`, data)(),
+
     },
     Account: {
         getBasicInfo: GET("/api/account/basic"),

@@ -93,6 +93,7 @@ const tCustomer = {
     regDate: "",
     status: 0,
     aid: 0,
+    checked: 0,
 };
 
 const tDictAreas = {

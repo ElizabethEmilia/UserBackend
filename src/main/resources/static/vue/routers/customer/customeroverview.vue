@@ -1,6 +1,22 @@
 <template>
     <!-- 账号总览 -->
     <div>
+
+            <Alert type="warning" v-if="info.checked === 0">
+                该客户信息待审核。
+                <span v-if="P.CheckCompany">
+                                    <a href="javascript:void(0)" @click="requestCheck('accept')">通过</a>
+                                    <a href="javascript:void(0)" @click="requestCheck('reject')">拒绝</a>
+                </span>
+            </Alert>
+
+            <Alert type="error" v-if="info.checked === 2">
+                该客户信息已被拒绝。
+                <span v-if="P.CheckCompany">
+                                    <a href="javascript:void(0)" @click="requestCheck('resubmit')">重新提交审核</a>
+                </span>
+            </Alert>
+
             <Row>
                 <Col span="12">
                     <Row>
@@ -118,7 +134,9 @@
                             <p slot="title">客户管理</p>
                             
                             <CellGroup @on-click="cellGroupClick">
-                                <Cell v-if="P.AdminCustomerModify" name="edit" title="编辑资料" />
+                                <Cell v-if="P.ChargeForCustomer" name="charge" title="余额充值" />
+                                <Cell v-if="P.ReceiptForCustomer" name="deduction" title="扣除余额" />
+                                <!--Cell v-if="P.AdminCustomerModify" name="edit" title="编辑资料" /-->
                                 <Cell v-if="P.AdminCompanyAddAndModify" name="newcompany" title="新增公司" />
                                 <Cell v-if="P.AdminCustomerRemoval" name="remove" title="删除客户" style="color: red"/>
                             </CellGroup>
@@ -131,6 +149,85 @@
             <CustomerOverviewDialog v-model="sholdNewCompanyDialogOpen">
 
             </CustomerOverviewDialog>
+
+            <Modal v-model="chargeDialogShouldShow" title="余额充值">
+                <div style="margin-top: 5px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        充值类型
+                    </span>
+                    <Select v-model="chargeInfo.type" style="width: 100px;">
+                        <Option label="年费" :value="0"></Option>
+                        <Option label="税金" :value="1"></Option>
+                        <Option label="其他" :value="2"></Option>
+                    </Select>
+                </div>
+
+                <div style="margin-top: 20px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        充值金额
+                    </span>
+                    <Poptip trigger="focus">
+                        <InputNumber :step="100" placeholder="" v-model="chargeInfo.amount" style="width: 200px; font-size: 14px" />
+                        <div slot="content"><span style="font-size: 20px; color: green;">￥{{ formatNumber }}</span></div>
+                    </Poptip>
+
+                </div>
+
+                <div style="text-align: right " slot="footer">
+                    <Button @click="manualCharge" type="success">充值余额</Button>
+                    <Button @click="chargeDialogShouldShow = false">取消</Button>
+                </div>
+
+            </Modal>
+
+            <Modal v-model="shouldDeductionDialodOpen" title="扣除余额">
+                <div style="margin-top: 5px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        扣费类型
+                    </span>
+                    <Select v-model="deduceInfo.type" style="width: 100px;">
+                        <Option label="年费" :value="0"></Option>
+                        <Option label="税金" :value="1"></Option>
+                        <Option label="其他" :value="2"></Option>
+                    </Select>
+                </div>
+
+                <div  v-show="deduceInfo.type === 1"  style="margin-top: 5px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        公司
+                    </span>
+                    <Select v-model="deduceInfo.cid" style="width: 200px;">
+                        <Option v-for="(e,i) in companyList" :label="e.name" :value="e.id" :key="i"></Option>
+
+                    </Select>
+                </div>
+
+                <div style="margin-top: 20px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        扣除金额
+                    </span>
+                    <Poptip trigger="focus">
+                        <InputNumber :step="100" placeholder="" v-model="deduceInfo.amount" style="width: 200px; font-size: 14px" />
+                        <div slot="content"><span style="font-size: 20px; color: green;">￥{{ formatNumber1 }}</span></div>
+                    </Poptip>
+
+                </div>
+
+                <div  v-show="deduceInfo.type === 1"  style="margin-top: 20px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        凭证
+                    </span>
+
+                    <div style="position: relative">
+                        <UploadFile v-model="deduceInfo.credit" title="上传支付凭证"/>
+                    </div>
+                </div>
+
+                <div style="text-align: right " slot="footer">
+                    <Button @click="manualDeduce" type="success">扣除余额</Button>
+                    <Button @click="shouldDeductionDialodOpen = false">取消</Button>
+                </div>
+            </Modal>
         </div>
 </template>
 
@@ -144,6 +241,7 @@ import md5 from 'js-md5';
 import API from '../../../js/api.js';
 import CustomerOverviewDialog from './dialog/newcompany.vue';
 import SelectArea from '../../components/areaselect.vue';
+import UploadFile from '../../components/uploadfile.vue';
 
 /**
  * 事件
@@ -154,7 +252,7 @@ import SelectArea from '../../components/areaselect.vue';
 
 export default {
     components: {
-        CustomerOverviewDialog, SelectArea,
+        CustomerOverviewDialog, SelectArea, UploadFile,
     },
     props: [ 'cusData' ],
     data: () => ({
@@ -181,9 +279,23 @@ export default {
         pendingUpload: false, //是否正在上传头像
         loading: true,
 
+        chargeDialogShouldShow: false,
+
         sholdNewCompanyDialogOpen: false,
+        shouldDeductionDialodOpen: false,
 
         P: window.config.P,
+
+        chargeInfo: {
+            type: 0,
+            amount: 0,
+        },
+        deduceInfo: {
+            type: 0,
+            amount: 0,
+            credit: '',
+            cid: -1,
+        }
     }),
     methods: {
          // 基础信息的编辑
@@ -326,9 +438,83 @@ export default {
                         console.log(err);
                         util.MessageBox.Show(this, "删除失败");
                     }
-                }
+                },
+                charge: () => {
+                    if (!window.config.P.ChargeForCustomer) {
+                        return util.MessageBox.Show(this, "该管理员没有权限为客户充值");
+                    }
+                    this.chargeDialogShouldShow = true;
+
+                },
+                deduction: () => {
+                    if (!window.config.P.ReceiptForCustomer) {
+                        return util.MessageBox.Show(this, "该管理员没有权限为客户扣除余额");
+                    }
+                    this.shouldDeductionDialodOpen = true;
+                },
             };
             handlers[name]();
+        },
+
+
+        async requestCheck(action) {
+            try {
+                await API.Customer.check(this.info.uid, action);
+                util.MessageBox.Show(this, "操作成功");
+                this.info.checked = this.infoSave.checked = ({
+                    accept: 1, reject: 2, resubmit: 0
+                })[action];
+            }
+            catch (e) {
+                console.error(e);no
+                util.MessageBox.Show(this, "操作失败");
+            }
+        },
+
+        async manualCharge() {
+            if (!window.config.P.ChargeForCustomer) {
+                this.chargeDialogShouldShow = !true;
+                return util.MessageBox.Show(this, "该管理员没有权限为客户充值");
+            }
+            let I = this.chargeInfo;
+            if (isNaN(Number(I.amount)) || I.amount <= 0) {
+                return util.MessageBox.Show(this,'请输入金额');
+            }
+            try {
+                let dst = ['pack-balance','tax-balance','other-balance'][this.chargeInfo.type];
+                await API.Customer.charge(this.cusData.uid, dst, { amount: this.chargeInfo.amount });
+                util.MessageBox.Show(this,'操作成功');
+                this.chargeDialogShouldShow = false;
+            }
+            catch(e) {
+                console.error(e);
+                util.MessageBox.Show(this,'操作失败');
+            }
+        },
+
+        async manualDeduce() {
+            if (!window.config.P.ReceiptForCustomer) {
+                this.shouldDeductionDialodOpen = !true;
+                return util.MessageBox.Show(this, "该管理员没有权限为客户扣除余额");
+            }
+            let I = this.deduceInfo;
+            if (I.cid === -1) {
+                return util.MessageBox.Show(this,'请选择公司');
+            }
+            if (isNaN(Number(I.amount)) || I.amount <= 0) {
+                return util.MessageBox.Show(this,'请输入金额');
+            }
+            try {
+                I.credit = I.data;
+                let dst = ['pack-balance','tax-balance','other-balance'][this.deduceInfo.type];
+                await API.Customer.deduction(this.cusData.uid, dst, I );
+                util.MessageBox.Show(this,'操作成功');
+                this.shouldDeductionDialodOpen = !true;
+            }
+            catch(e) {
+                console.error(e);
+                util.MessageBox.Show(this,'操作失败');
+            }
         }
     },
     watch: {
@@ -357,6 +543,22 @@ export default {
                 set(val) {
                     [ this.infoSave.province, this.infoSave.city, this.infoSave.district ] = val;
                 }
+            },
+            formatNumber () {
+                if (this.chargeInfo.amount === '') return '0';
+                function parseNumber(str) {
+                    return str.split(/(?=(\d{3})+$)/g).filter((e,i)=>i%2==0).join(',');
+                }
+                let [str, prec] = (''+this.chargeInfo.amount).split('.');
+                return parseNumber(str) + (prec ? '.'+prec : '');
+            },
+            formatNumber1 () {
+                if (this.deduceInfo.amount === '') return '0';
+                function parseNumber(str) {
+                    return str.split(/(?=(\d{3})+$)/g).filter((e,i)=>i%2==0).join(',');
+                }
+                let [str, prec] = (''+this.deduceInfo.amount).split('.');
+                return parseNumber(str) + (prec ? '.'+prec : '');
             },
         },
     created() {

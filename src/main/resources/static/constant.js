@@ -35,6 +35,8 @@ const expectedSalesStatus = [ "未设置", "已设置", "已修改", "撤回", "
 
 const ysaRange = [ '未选择', '未选择', '一档', undefined, '二档' ];
 
+const dstString = [ '年费', '税金', '其他' ];
+
 const Integers = (function() {
     let int = {
         CustomerType: { PERSONAL:0, ENTERPRISE:1},
@@ -70,4 +72,5 @@ export {
     expectedSalesStatus,
     ysaRange,
     Integers,
+    dstString,
 };

@@ -32,6 +32,18 @@
             </div-->
 
             <div style="margin-top: 5px; margin-left: 30px;">
+                <span style="font-size: 14px; width: 100px; display:inline-block">
+                    充值类型
+                </span>
+                <Select v-model="dst" style="width: 100px;">
+                    <Option label="年费" :value="0"></Option>
+                    <Option label="税金" :value="1"></Option>
+                    <Option label="其他" :value="2"></Option>
+                </Select>
+
+            </div>
+
+            <div style="margin-top: 5px; margin-left: 30px;">
                 <Checkbox v-model="onlinePayReadTerms">我已阅读<a href="javascript:void(0)" @click="readTerms()">《服务条款》</a></Checkbox>。
                 
             </div>
@@ -47,6 +59,7 @@
                 <ConfirmOrders
                         @on-start-pay="val => {confirmDialogVisible = false; confirmResultDialog=true; payMethod = val;}"
                         @on-cancel="confirmDialogVisible = false;"
+                        :dst="dst"
                         :param="{ amount: chargeAmount }" />
 
             </Modal>
@@ -90,6 +103,8 @@ export default {
         confirmDialogVisible: false,
         confirmResultDialog: false,
         payMethod: '',
+
+        dst: 0,
 
         chargeAmount: 0,
     }),

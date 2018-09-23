@@ -42,7 +42,8 @@
             <ConfirmOrders
                     @on-start-pay="val => {confirmDialogVisible = false; confirmResultDialog=true; payMethod = val;}"
                     @on-cancel="confirmDialogVisible = false;"
-                    :param="{ amount: iteminfo ? iteminfo.price : 0 }" />
+                    :param="{ amount: iteminfo ? iteminfo.price : 0 }"
+                    :dst="0" />
 
         </Modal>
 

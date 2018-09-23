@@ -1047,12 +1047,16 @@ uid 必须   cid  必须
 | description | int(11) | NO   |     | NULL    | 显示在网页上的描述 |
 | tm          | time    | NO   |     | NULL    | 时间           |
 | processed   | int(11) | NO   |     | 0       | 是否已经处理     |
+| receiver    | int(11) | NO   |     | NULL    | 消息接受者（0客户 1管理员）
+| senderaid   | int(11) | YES  |     | NULL    | 发送消息通知的管理员id, 若为客户发送=NULL
 +-------------+---------+------+-----+---------+----------------+
 ```
 
 * 【L】获取通知  `GET /api/notification`
 
 首先根据用户权限，判断管理员获取通知的范围
+
+**管理员不能获取自己发送的通知**
 
 【该接口需要返回除了数据库中字段以外的 user_name】
 通常情况下  这个user_name 对应的是uid也就是用户表下的用户名
@@ -1205,7 +1209,7 @@ dst取值：
 ```
 【权限管理】该模块需要纳入权限管理
 
-### 5.2 公司添加的审核
+### 5.2 公司添加的审核(没有这个忽略 QAQ)
 
 公司表添加一个 字段 表示是否已审核（checked）
 
@@ -1243,9 +1247,9 @@ action取值：
 
 ```
 action取值：
-   accept   审核同意，将checked改为1 【审核权限】
-   reject   拒绝，将checked改为2 【审核权限】
-   resubmit重新提交，将checked改为0 【非审核权限】
+   accept   审核同意，将checked改为1 【审核权限】 
+   reject   拒绝，将checked改为2 【审核权限】 
+   resubmit重新提交，将checked改为0 【非审核权限】  
 ```
 
 ### 5.3 手动增加订单

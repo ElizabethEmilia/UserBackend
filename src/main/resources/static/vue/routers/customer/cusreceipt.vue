@@ -77,6 +77,10 @@ export default {
                         function(action, params) {
                             if (action === receiptSM.receiptAction.RefuseSubmit) {
                                 params.reason = prompt('输入拒绝原因：');
+                                if (util.String.isNullOrEmpty(params.reason)) {
+                                    alert('没有输入拒绝原因，无法拒绝');
+                                    return false;
+                                }
                                 return true;
                             }
                             return true;

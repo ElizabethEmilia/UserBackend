@@ -238,7 +238,7 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         receipt.setRecAmount(recAmount);
         receipt.setRecType(receType);
         receipt.setUid(uid);
-        receipt.setAddress("");
+        receipt.setAddress(address);
         receipt.setTmSubmit(new Date());
         receipt.setTmVallidate(new Date());
         boolean b = receipt.insert();

@@ -1,7 +1,7 @@
 <template>
     <div class="notif">
         <Badge number  :count="count">
-            <a href="#" class="demo-badge" @click="panelVisible = true">
+            <a href="#" class="demo-badge" @click="panelVisible = true" :title="count ? '有' + count + '条待处理的通知':'没有新通知'">
                 <Icon type="ios-notifications-outline" size="26"></Icon>
             </a>
         </Badge>
@@ -11,6 +11,9 @@
                 <div style="height: 60px;">
                     <h3 style="padding: 10px; float: left; padding-top: 15px;" >待处理的通知</h3>
                         <span class="close-btn" @click="panelVisible = false">&times;</span>
+                </div>
+                <div v-if="count === 0" style="padding: 15px; text-align: center; color: gray">
+                    没有新通知
                 </div>
                 <div class="it" v-for="(e, i) in list" :key="i">
                     <p style="font-size: 12px; color: gray">{{ toDateString(e.tm) }}</p>
