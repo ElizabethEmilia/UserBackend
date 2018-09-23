@@ -1,6 +1,7 @@
 package org.ruoxue.backend.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.service.ITOrderService;
 import org.springframework.stereotype.Controller;
@@ -36,5 +37,13 @@ public class TOrderController {
     public @ResponseBody Object listOrder(@RequestParam(required = false) Integer cid, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @PathVariable String status, @RequestParam(required = false) Date start, @RequestParam(required = false) Date end, @RequestParam(required = false) Integer count) {
         return orderService.listOrder(cid, type, page, size, status, start, end, count);
     }
+
+    @ApiOperation("手动为客户增加订单")
+    @RequestMapping(value = "/customer/_/company/{cid}/order/new", method = RequestMethod.POST)
+    public @ResponseBody Object addCustomerOrder(@PathVariable Integer cid, @RequestBody JSONObject jsonObject) {
+        return orderService.addCustomerOrder(cid, jsonObject);
+    }
+
+
 	
 }

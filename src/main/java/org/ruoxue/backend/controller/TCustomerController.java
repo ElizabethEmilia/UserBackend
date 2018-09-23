@@ -80,4 +80,10 @@ public class TCustomerController extends BaseController {
         return customerService.listExchangeByUid(page, size, count);
     }
 
+    @ApiOperation("审核客户")
+    @RequestMapping(value = "/customer/{uid}/{action}", method = RequestMethod.POST)
+    public @ResponseBody Object dealCustomer(@PathVariable Integer uid, @PathVariable String action) {
+        return customerService.dealCustomer(uid, action);
+    }
+
 }

@@ -26,13 +26,14 @@ public class TPending extends Model<TPending> {
 	private Integer uid;
 	private Integer aid;
 	private Integer gid;
-	private Integer description;
+	private String description;
 	private Date tm;
 	private Integer processed;
     /**
      * 表示是用户还是管理员
      */
 	private Integer receiver;
+	private Integer senderaid;
 
 
 	public Integer getId() {
@@ -67,11 +68,11 @@ public class TPending extends Model<TPending> {
 		this.gid = gid;
 	}
 
-	public Integer getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(Integer description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -99,6 +100,14 @@ public class TPending extends Model<TPending> {
 		this.receiver = receiver;
 	}
 
+	public Integer getSenderaid() {
+		return senderaid;
+	}
+
+	public void setSenderaid(Integer senderaid) {
+		this.senderaid = senderaid;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -115,6 +124,7 @@ public class TPending extends Model<TPending> {
 			", tm=" + tm +
 			", processed=" + processed +
 			", receiver=" + receiver +
+			", senderaid=" + senderaid +
 			"}";
 	}
 }

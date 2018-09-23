@@ -99,7 +99,7 @@ public class MiyukiBinTimer {
                     TCustomer customer = customerMapper.getTCustomerByUid(uid);
                     if (ToolUtil.isNotEmpty(customer)) {
 //                        用户余额足够的，直接扣款
-                        Double balance = customer.getBalance();
+                        Double balance = customer.getPackBalance();
                         if (ToolUtil.isNotEmpty(balance) && balance >= 1200) {
                             balance = balance - 12000;
                             customerMapper.updateBalance(balance, uid);

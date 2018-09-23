@@ -15,7 +15,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-22
+ * @since 2018-09-23
  */
 @TableName("t_customer")
 public class TCustomer extends Model<TCustomer> {
@@ -41,7 +41,6 @@ public class TCustomer extends Model<TCustomer> {
 	@TableField("other_contact")
 	private String otherContact;
 	private Integer paid;
-	private Double balance;
 	@TableField("rec_type")
 	private Integer recType;
 	@TableField("reg_date")
@@ -51,6 +50,22 @@ public class TCustomer extends Model<TCustomer> {
      */
 	private Integer status;
 	private Integer aid;
+	private Integer checked;
+    /**
+     * 年费余额
+     */
+	@TableField("pack_balance")
+	private Double packBalance;
+    /**
+     * 税金余额
+     */
+	@TableField("tax_balance")
+	private Double taxBalance;
+    /**
+     * 其他余额
+     */
+	@TableField("other_balance")
+	private Double otherBalance;
 
 
 	public Integer getUid() {
@@ -189,14 +204,6 @@ public class TCustomer extends Model<TCustomer> {
 		this.paid = paid;
 	}
 
-	public Double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(Double balance) {
-		this.balance = balance;
-	}
-
 	public Integer getRecType() {
 		return recType;
 	}
@@ -229,6 +236,38 @@ public class TCustomer extends Model<TCustomer> {
 		this.aid = aid;
 	}
 
+	public Integer getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Integer checked) {
+		this.checked = checked;
+	}
+
+	public Double getPackBalance() {
+		return packBalance;
+	}
+
+	public void setPackBalance(Double packBalance) {
+		this.packBalance = packBalance;
+	}
+
+	public Double getTaxBalance() {
+		return taxBalance;
+	}
+
+	public void setTaxBalance(Double taxBalance) {
+		this.taxBalance = taxBalance;
+	}
+
+	public Double getOtherBalance() {
+		return otherBalance;
+	}
+
+	public void setOtherBalance(Double otherBalance) {
+		this.otherBalance = otherBalance;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.uid;
@@ -254,11 +293,14 @@ public class TCustomer extends Model<TCustomer> {
 			", avatar=" + avatar +
 			", otherContact=" + otherContact +
 			", paid=" + paid +
-			", balance=" + balance +
 			", recType=" + recType +
 			", regDate=" + regDate +
 			", status=" + status +
 			", aid=" + aid +
+			", checked=" + checked +
+			", packBalance=" + packBalance +
+			", taxBalance=" + taxBalance +
+			", otherBalance=" + otherBalance +
 			"}";
 	}
 }

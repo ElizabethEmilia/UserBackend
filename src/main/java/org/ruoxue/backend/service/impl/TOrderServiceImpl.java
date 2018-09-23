@@ -1,5 +1,6 @@
 package org.ruoxue.backend.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.constant.Constant;
@@ -102,5 +103,29 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         List<Map<String, Object>> list = orderMapper.listOrder(cid, type, page, size, map.get(status), start, end, XunBinKit.getUid());
 
         return ResultUtil.success(list);
+    }
+
+    @Override
+    public Object addCustomerOrder(Integer cid, JSONObject jsonObject) {
+
+        if (ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+//        获取参数
+        String type = jsonObject.getString("type");
+        Double amount = jsonObject.getDouble("amount");
+
+        TOrder order = new TOrder();
+        order.setTmCreate(new Date());
+        order.setCid(cid);
+        order.setAmount(amount);
+        order.setRunning("");
+        order.setTmPaid(new Date());
+        order.setType(type);
+        order.setStatus(Constant.PaymentStatus.PAIED);
+        order.insert();
+
+        return ResultUtil.success();
     }
 }
