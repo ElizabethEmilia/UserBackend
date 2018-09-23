@@ -20,7 +20,7 @@ import java.util.Date;
 @TableName("t_order")
 public class TOrder extends Model<TOrder> {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
@@ -32,7 +32,7 @@ public class TOrder extends Model<TOrder> {
 	private Date tmCreate;
 	@TableField("tm_paid")
 	private Date tmPaid;
-	private Long running;
+	private String running;
 
 
 	public Integer getId() {
@@ -91,11 +91,11 @@ public class TOrder extends Model<TOrder> {
 		this.tmPaid = tmPaid;
 	}
 
-	public Long getRunning() {
+	public String getRunning() {
 		return running;
 	}
 
-	public void setRunning(Long running) {
+	public void setRunning(String running) {
 		this.running = running;
 	}
 

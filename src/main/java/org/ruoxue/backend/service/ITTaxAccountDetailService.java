@@ -12,5 +12,9 @@ import org.ruoxue.backend.bean.TTaxAccountDetail;
  * @since 2018-09-14
  */
 public interface ITTaxAccountDetailService extends IService<TTaxAccountDetail> {
-	
+
+    Object RechargeMoney(Integer uid, String dst, Double amount);
+
+    Object deductionDst(Integer uid, String dst, Double amount, Integer cid, String credit);
+
 }

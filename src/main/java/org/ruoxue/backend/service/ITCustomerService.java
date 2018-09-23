@@ -40,4 +40,6 @@ public interface ITCustomerService extends IService<TCustomer> {
 
     Object listExchangeByUid(Integer page, Integer size, Integer count);
 
+    Object dealCustomer(Integer uid, String action);
+
 }

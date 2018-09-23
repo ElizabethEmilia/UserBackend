@@ -2,7 +2,9 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.bean.TPending;
 import org.ruoxue.backend.bean.TSignin;
 import org.ruoxue.backend.mapper.TAdminMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
@@ -100,6 +102,23 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         customer.setAvatar("");
         boolean b = customer.insert();
 
+
+        TAdmin admin = adminMapper.getTAdminByUid(aid);
+
+        TAdmin sessAdmin = (TAdmin) XunBinKit.getSession().getAttribute("obj");
+
+//        加入通知表
+        TPending pending = new TPending();
+        pending.setAid(aid);
+        pending.setDescription("新增客户申请 (客户姓名: " + customer.getName() + ")");
+        pending.setUid(customer.getUid());
+        pending.setGid(admin.getGid());
+        pending.setProcessed(0);
+        pending.setReceiver(1);
+        pending.setTm(new Date());
+        pending.setSenderaid(sessAdmin.getId());
+        pending.insert();
+
         return XunBinKit.returnResult(b, -3, null, "Success", "Error");
     }
 
@@ -159,7 +178,9 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         customer.setLid(cus.getLid());
         customer.setPhone(cus.getPhone());
         customer.setPaid(cus.getPaid());
-        customer.setBalance(cus.getBalance());
+        customer.setPackBalance(cus.getPackBalance());
+        customer.setTaxBalance(cus.getTaxBalance());
+        customer.setOtherBalance(cus.getOtherBalance());
         customer.setRecType(cus.getRecType());
         customer.setRegDate(cus.getRegDate());
         customer.setStatus(cus.getStatus());

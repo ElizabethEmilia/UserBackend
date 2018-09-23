@@ -19,17 +19,17 @@ import java.util.Map;
  */
 public interface TPendingMapper extends BaseMapper<TPending> {
 
-    @Select("select * from t_pending where uid = #{uid} and receiver = #{rece} and processed = #{proce}")
-    List<Map<String, Object>> getNotificationByUid(@Param("uid") Integer uid, @Param("rece") Integer rece, @Param("proce") Integer proce);
+    @Select("select * from t_pending where uid = #{uid} and receiver = #{rece} and processed = #{proce} and senderaid <> #{senderaid}")
+    List<Map<String, Object>> getNotificationByUid(@Param("uid") Integer uid, @Param("rece") Integer rece, @Param("proce") Integer proce, @Param("senderaid") Integer senderaid);
 
-    @Select("select * from t_pending where gid = #{gid} and receiver = #{rece} and processed = #{proce}")
-    List<Map<String, Object>> getNotificationByGid(@Param("gid") Integer gid, @Param("rece") Integer rece, @Param("proce") Integer proce);
+    @Select("select * from t_pending where gid = #{gid} and receiver = #{rece} and processed = #{proce} and senderaid <> #{senderaid}")
+    List<Map<String, Object>> getNotificationByGid(@Param("gid") Integer gid, @Param("rece") Integer rece, @Param("proce") Integer proce, @Param("senderaid") Integer senderaid);
 
-    @Select("select * from t_pending where aid = #{aid} and receiver = #{rece} and processed = #{proce}")
-    List<Map<String, Object>> getNotificationByAid(@Param("aid") Integer aid, @Param("rece") Integer rece, @Param("proce") Integer proce);
+    @Select("select * from t_pending where aid = #{aid} and receiver = #{rece} and processed = #{proce} and senderaid <> #{senderaid}")
+    List<Map<String, Object>> getNotificationByAid(@Param("aid") Integer aid, @Param("rece") Integer rece, @Param("proce") Integer proce, @Param("senderaid") Integer senderaid);
 
-    @Select("select * from t_pending where receiver = #{rece} and processed = #{proce}")
-    List<Map<String, Object>> getNotification(@Param("rece") Integer rece, @Param("proce") Integer proce);
+    @Select("select * from t_pending where receiver = #{rece} and processed = #{proce} and senderaid <> #{senderaid}")
+    List<Map<String, Object>> getNotification(@Param("rece") Integer rece, @Param("proce") Integer proce, @Param("senderaid") Integer senderaid);
 
     @Delete("delete from t_pending where id = #{id}")
     Integer removeNoto(@Param("id") Integer id);

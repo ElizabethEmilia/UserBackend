@@ -46,13 +46,27 @@ public interface TCustomerMapper extends BaseMapper<TCustomer> {
             "where uid=#{uid}")
     boolean updateAvatar(@Param("avatar") String avatar, @Param("uid") Integer uid);
 
-    @Update("update t_customer set balance = #{balance} where uid = #{id}")
+    @Update("update t_customer set pack_balance = #{balance} where uid = #{id}")
     boolean updateBalance(@Param("balance") Double balance, @Param("id") Integer id);
 
-    @Update("update t_customer set balance = balance+#{balance} where uid = #{id}")
+    @Update("update t_customer set pack_balance = pack_balance+#{balance} where uid = #{id}")
     boolean updateBalanceRelative(@Param("balance") Double balance, @Param("id") Integer id);
 
 //    修改服务到期否
     Integer updatePaid(@Param("uid") Integer uid,@Param("paid") Integer paid);
+
+    @Update("update t_customer set checked = #{checked} where uid = #{uid}")
+    Integer updateCustomerCheck(@Param("uid") Integer uid, @Param("checked") Integer checked);
+
+
+//    修改余额(three)
+    @Update("update t_customer set pack_balance = #{balance} where uid = #{uid}")
+    Integer updatePackBalance(@Param("balance") Double balance, @Param("uid") Integer uid);
+
+    @Update("update t_customer set tax_balance = #{balance} where uid = #{uid}")
+    Integer updateTaxBalance(@Param("balance") Double balance, @Param("uid") Integer uid);
+
+    @Update("update t_customer set other_balance = #{balance} where uid = #{uid}")
+    Integer updateOtherBalance(@Param("balance") Double balance, @Param("uid") Integer uid);
 
 }

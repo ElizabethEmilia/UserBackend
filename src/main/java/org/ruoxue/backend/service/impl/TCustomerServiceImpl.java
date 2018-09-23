@@ -129,7 +129,9 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     private boolean insertCustomer(String name, String phone, Integer industry, Integer type, TCustomer customer, TSignin signin){
         customer.setAddress("");
         customer.setAvatar("");
-        customer.setBalance(0.0);
+        customer.setPackBalance(0.0);
+        customer.setTaxBalance(0.0);
+        customer.setOtherBalance(0.0);
         customer.setCity("");
         customer.setDistrict("");
         customer.setEmail("");
@@ -178,7 +180,9 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         customer.setLid(cus.getLid());
         customer.setPhone(cus.getPhone());
         customer.setPaid(cus.getPaid());
-        customer.setBalance(cus.getBalance());
+        customer.setPackBalance(cus.getPackBalance());
+        customer.setTaxBalance(cus.getTaxBalance());
+        customer.setOtherBalance(cus.getOtherBalance());
         customer.setRecType(cus.getRecType());
         customer.setRegDate(cus.getRegDate());
         customer.setStatus(cus.getStatus());
@@ -252,7 +256,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         }
 
 //        余额不足直接返回403
-        Double balance = customer.getBalance();
+        Double balance = customer.getPackBalance();
         if (balance < price) {
             XunBinKit.getResponse().setStatus(403);
             return ResultUtil.error(-5, "余额不足");
@@ -449,6 +453,33 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         List<TExchange> list = exchangeMapper.getOnlinecharge(uid, page, size);
 
         return ResultUtil.success(list);
+
+    }
+
+    @Override
+    public Object dealCustomer(Integer uid, String action) {
+
+        if (ToolUtil.isEmpty(uid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        TCustomer customer = customerMapper.getTCustomerByUid(uid);
+        if (ToolUtil.isEmpty(customer)) {
+            return ResultUtil.error(-2, "该客户不存在");
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("accept", 1);
+        map.put("reject", 2);
+        map.put("resubmit", 0);
+
+        if (!map.containsKey(action)) {
+            return ResultUtil.error(-3, "请求错误");
+        }
+
+        Integer len = customerMapper.updateCustomerCheck(uid, map.get(action));
+
+        return XunBinKit.returnResult(len > 0, -4, null, "Success", "Error");
 
     }
 

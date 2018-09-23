@@ -15,7 +15,7 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-22
+ * @since 2018-09-23
  */
 @TableName("t_exchange")
 public class TExchange extends Model<TExchange> {
@@ -35,6 +35,7 @@ public class TExchange extends Model<TExchange> {
 	private Integer type;
 	@TableField("dst_balance")
 	private Integer dstBalance;
+	private Integer dst;
 
 
 	public Integer getId() {
@@ -125,6 +126,14 @@ public class TExchange extends Model<TExchange> {
 		this.dstBalance = dstBalance;
 	}
 
+	public Integer getDst() {
+		return dst;
+	}
+
+	public void setDst(Integer dst) {
+		this.dst = dst;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -144,6 +153,7 @@ public class TExchange extends Model<TExchange> {
 			", state=" + state +
 			", type=" + type +
 			", dstBalance=" + dstBalance +
+			", dst=" + dst +
 			"}";
 	}
 }

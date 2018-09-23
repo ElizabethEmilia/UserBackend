@@ -1,5 +1,6 @@
 package org.ruoxue.backend.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.IService;
 import org.ruoxue.backend.bean.TOrder;
 
@@ -18,5 +19,7 @@ public interface ITOrderService extends IService<TOrder> {
     Object ordersStatus(Integer uid, Integer page, Integer size, String status, Integer count);
 
     Object listOrder(Integer cid, Integer type, Integer page, Integer size, String status, Date start, Date end, Integer count);
-	
+
+    Object addCustomerOrder(Integer cid, JSONObject jsonObject);
+
 }

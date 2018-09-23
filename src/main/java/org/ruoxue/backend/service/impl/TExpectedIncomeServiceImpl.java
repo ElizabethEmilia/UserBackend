@@ -61,7 +61,9 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-2, "用户不存在");
         }
 
-        Double balance = customer.getBalance();         //余额
+        Double packBalance = customer.getPackBalance();  //年费余额
+        Double taxBalance = customer.getTaxBalance();   //税金余额
+        Double otherBalance = customer.getOtherBalance(); //其他余额
         Double income = exchangeMapper.countIncome(uid);    //总收入
         Double outcome = exchangeMapper.countOutcome(uid);    //总收入
         Double lastIncome = exchangeMapper.countLastIncome(uid);    //总收入
@@ -72,7 +74,9 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         json.put("lastIncome", lastIncome);
         json.put("outcome", outcome);
         json.put("lastOutcome", lastOutcome);
-        json.put("balance", balance);
+        json.put("packBalance", packBalance);
+        json.put("taxBalance", taxBalance);
+        json.put("otherBalance", otherBalance);
 
         return ResultUtil.success(json);
     }
