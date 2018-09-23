@@ -1224,3 +1224,31 @@ action取值：
    accept   审核同意，将checked改为1
    reject   拒绝，将checked改为2
 ```
+
+### 5.3 客户添加的审核
+
+客户表添加一个 字段 表示是否已审核（checked）
+
+1. 更改的接口
+
+* 新增客户时，若用户具有审核权限，将该字段设为1（已审核），否则设为0
+
+* 登录接口，若未审核，无法登陆，显示用户未通过审核（checked=2）或待审核（checked=0）。
+
+* 【前端】未经过审核的客户仅可以通过后台查看，不能登录系统，并且提示需要审核。
+
+2. 添加的接口
+
+* 审核客户  `POST /api/customer/{uid}/{action}`
+
+```
+action取值：
+   accept   审核同意，将checked改为1
+   reject   拒绝，将checked改为2
+```
+
+### 5.3 手动增加订单
+
+* 手动为客户增加订单【A】： `POST /api/customer/_/company/{cid}/order/new`
+
+参数：订单表中的所有字段

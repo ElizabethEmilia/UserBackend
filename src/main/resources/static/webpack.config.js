@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const VueLoaderPlugin = require("./node_modules/vue-loader/lib/plugin")
+const VueLoaderPlugin = require("./node_modules/vue-loader/lib/plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
         entry: {
@@ -79,6 +80,21 @@ module.exports = {
             //new webpack.ProvidePlugin({
                 //Vue: '../node_modules/vue/dist/vue.js',
             //}),
-            new VueLoaderPlugin()
+            new VueLoaderPlugin(),
+
+            /*new BundleAnalyzerPlugin(
+                {
+                    analyzerMode: 'server',
+                    analyzerHost: '127.0.0.1',
+                    analyzerPort: 8888,
+                    reportFilename: 'report.html',
+                    defaultSizes: 'parsed',
+                    openAnalyzer: true,
+                    generateStatsFile: false,
+                    statsFilename: 'stats.json',
+                    statsOptions: null,
+                    logLevel: 'info'
+                }
+            ),*/
         ]
 };

@@ -48,9 +48,6 @@
     export default {
         data: () => ({
             list: [
-                Bean,Bean,Bean,Bean,
-                Bean,Bean,Bean,Bean,
-                Bean,Bean,Bean,Bean,
 
             ],
             loading: false,
@@ -77,6 +74,7 @@
                 try {
                     let r = await API.Notification.getList(this.currentPage++);
                     this.list = this.list.concat(r);
+                    this.loading = false;
                 }
                 catch (e) {
                     console.error(e);

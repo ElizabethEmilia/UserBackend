@@ -7,6 +7,10 @@
             温馨提示： {{ ordertips }}。
         </Alert>
 
+        <div style="margin: 10px">
+                <Button type="success">新增订单</Button>
+        </div>
+
          <Tabs :value="res_url" @on-click="tabclick" >
             <TabPane label="全部" name="all"></TabPane>
             <TabPane label="待支付" name="pending"></TabPane>
@@ -73,7 +77,11 @@
         methods: {
             tabclick(name) {
                 this.res_url = name;
-            }
+            },
+
+            newOrder() {
+
+            },
         },
         mounted() {
             _uid = this.uid;
