@@ -1243,8 +1243,9 @@ action取值：
 
 ```
 action取值：
-   accept   审核同意，将checked改为1
-   reject   拒绝，将checked改为2
+   accept   审核同意，将checked改为1 【审核权限】
+   reject   拒绝，将checked改为2 【审核权限】
+   resubmit重新提交，将checked改为0 【非审核权限】
 ```
 
 ### 5.3 手动增加订单
