@@ -71,6 +71,9 @@ public class AlipayController {
                                        HttpServletRequest request,
                                        HttpServletResponse response) throws IOException {
 
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         try {
             // 避免其他人来自非本站的请作为回调
             if (!seller_id.equals(Constant.AlipayConfig.PROVIDER_ID)) {
