@@ -61,6 +61,10 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
             return ResultUtil.error(-1, "参数错误");
         }
 
+        if (FormatUtil.isPhoneNumber(name) && !name.equals(phone)) {
+            return ResultUtil.error(-7, "不允许使用非本人手机号作为用户名");
+        }
+
         TCustomer customer = mainMapper.getTCustomerByName(name);
         if(ToolUtil.isNotEmpty(customer)){
             return ResultUtil.error(-2, "该用户已注册");
@@ -174,6 +178,9 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         if(ToolUtil.isEmpty(cus)){
             ResultUtil.error(-2, "该用户信息为空");
         }
+
+        if (FormatUtil.isPhoneNumber(customer.getName()) && !customer.getName().equals(cus.getPhone()))
+            return ResultUtil.error(-7, "不允许使用非本人手机号作为用户名");
 
 //        将传回来的bean充满
         customer.setUid(uid);
