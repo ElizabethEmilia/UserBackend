@@ -167,10 +167,14 @@ public class MainController extends BaseController {
 
     @RequestMapping(value = "/config.js", method = RequestMethod.GET)
     public void generateConfigJs() throws IOException {
+
+//        获取响应对象
+        HttpServletResponse response = XunBinKit.getResponse();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
         HttpSession session = getSession();
         Integer role = (Integer) session.getAttribute("role");
-//        获取相应对象
-        HttpServletResponse response = XunBinKit.getResponse();
 //        获取输出流
         PrintWriter pw = response.getWriter();
 //        获取配置表中内容
@@ -182,14 +186,11 @@ public class MainController extends BaseController {
         }
         System.out.println("------------json: " + json);
 
-
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-
         String data = "window.config = " + json + ";\n" +
                 "window.config.role = " + role + ";";
 
-        pw.write(data);
+        System.out.println("-------------------data: " + data);
+        pw.println(data);
         response.setStatus(200);
         pw.close();
     }
