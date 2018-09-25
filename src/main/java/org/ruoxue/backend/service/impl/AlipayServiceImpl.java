@@ -36,7 +36,7 @@ public class AlipayServiceImpl implements IAlipayService {
     private TExchangeMapper exchangeMapper;
 
     @Override
-    public void startPayment(HttpServletRequest request, HttpServletResponse response,  Double amount) {
+    public void startPayment(HttpServletRequest request, HttpServletResponse response,  Double amount, Integer dst) {
 
 //        获取用户
         Integer uid = XunBinKit.getUid();
@@ -45,6 +45,14 @@ public class AlipayServiceImpl implements IAlipayService {
             response.setStatus(403);
             return;
         }
+
+        if (dst < 0 || dst > 2) {
+            response.setStatus(400);
+            return;
+        }
+
+        String[] tyStrs = { "年费", "税金", "其他" };
+        String tyString = tyStrs[dst];
 
         try{
 
@@ -60,6 +68,7 @@ public class AlipayServiceImpl implements IAlipayService {
                 exchange.setCid(-1);
                 exchange.setState(Constant.ExchangeStatus.UNPAIED);
                 exchange.setAmount(amount);
+                exchange.setDst(dst);
                 exchange.setNote("增薪宝-在线充值" + amount + "元");
                 exchange.setType(Constant.ExchangeType.INCOME);
 
@@ -67,7 +76,7 @@ public class AlipayServiceImpl implements IAlipayService {
                 orderID = exchangeMapper.getLastID();
                 System.err.println("[Alipay New OrderID]" + orderID);
 
-                AlipayUtil.startPayment(orderID.toString(), "增薪宝-在线充值" + amount + "元", amount, request, response );
+                AlipayUtil.startPayment(orderID.toString(), "增薪宝-" + tyString +" -在线充值" + amount + "元", amount, request, response );
                 return;
             }
 

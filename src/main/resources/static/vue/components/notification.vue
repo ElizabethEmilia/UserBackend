@@ -7,11 +7,11 @@
         </Badge>
 
         <div class="panel" v-if="panelVisible">
-            <div style="height: 100%">
-                <div style="height: 60px;">
-                    <h3 style="padding: 10px; float: left; padding-top: 15px;" >待处理的通知</h3>
-                        <span class="close-btn" @click="panelVisible = false">&times;</span>
-                </div>
+            <div style="height: 60px;">
+                <h3 style="padding: 10px; float: left; padding-top: 15px;" >待处理的通知</h3>
+                <span class="close-btn" @click="panelVisible = false">&times;</span>
+            </div>
+            <div style="height: calc(100%-60px); overflow-y: auto">
                 <div v-if="count === 0" style="padding: 15px; text-align: center; color: gray">
                     没有新通知
                 </div>
@@ -76,7 +76,7 @@
                 this.loading = true;
                 try {
                     let r = await API.Notification.getList(this.currentPage++);
-                    this.list = this.list.concat(r);
+                    this.list = r;
                     this.loading = false;
                 }
                 catch (e) {
@@ -124,7 +124,6 @@
         width: 250px;
         border-left: 1px solid #eee;
         z-index: 99999;
-        overflow-y: auto;
         box-shadow: 3px 4px 5px 3px #aaa;
     }
 

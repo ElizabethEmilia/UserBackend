@@ -1,20 +1,26 @@
 <template>
     <Card>
-        <PagedTable :columns="columns" data-source="system/log" />
+        <div style="margin: 10px;">
+            <Input placeholder="搜索用户名或记录描述" v-model="search1" />
+        </div>
+
+        <PagedTable :columns="columns" data-source="system/log" :additional-params="sp" />
     </Card>
 </template>
 
 <script>
     import PagedTable from '../pagedTable.vue';
     import { adminTypes } from '../../constant.js';
-    import $ from '../../js/ajax.js';
     import util from '../../js/util.js';
+    import debounce from "lodash.debounce"
 
     export default {
         components: {
             PagedTable
         },
         data: () => ({
+            search: '',
+            search1: '',
             columns: function() {
                 //console.log('func', this);
                 let $this = this;
@@ -31,6 +37,18 @@
 
                 ]
             },
-        })
+        }),
+        computed: {
+            sp() {
+                return util.forGetParams({
+                    search: this.search,
+                });
+            },
+        },
+        watch: {
+            search1: debounce(function () {
+                this.search = this.search1;
+            }, 1000)
+        }
     }
 </script>

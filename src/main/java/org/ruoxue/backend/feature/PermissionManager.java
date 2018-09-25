@@ -95,6 +95,9 @@ public class PermissionManager {
         // 标记通知状态
         public static final int ProcessNotification = 26;
 
+        // 为客户新增订单
+        public static final int AddOrderForCustomer = 27;
+
     }
 
     public static boolean canAccess(int moudleID, int userPermission) {

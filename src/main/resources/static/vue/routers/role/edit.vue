@@ -63,8 +63,9 @@
                         { name: "增加或修改客户的公司信息", value: 9 },
                         { name: "删除客户的公司", value: 10 },
                         { name: "审核新增的客户", value: 26 },
-                        { name: "为客户充值", value: 23 },
+                        { name: "为客户充值，增加客户账号中显示的余额", value: 23 },
                         { name: "为客户开票", value: 24 },
+
                     ]
                 },
                 {
@@ -79,10 +80,11 @@
                     ]
                 },
                 {
-                    group: "订单",
+                    group: "订单和年费",
                     mask: 0,
                     submodules: [
-                        { name: "修改客户订单价格", value: 21 },
+                        { name: "为客户新增订单", value: 27 },
+                        { name: "年费订单中以高于或低于通常的价格为客户续期", value: 21 },
                     ]
                 },
                 {
@@ -97,8 +99,8 @@
                     group: "通知",
                     mask: 0,
                     submodules: [
-                        { name: "获取通知", value: 25 },
-                        { name: "标记通知状态", value: 26 },
+                        { name: "接收通知", value: 25 },
+                        { name: "标记通知状态为“已处理”", value: 26 },
                     ]
                 },
                 {

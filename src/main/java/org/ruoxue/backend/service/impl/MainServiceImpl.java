@@ -83,6 +83,13 @@ public class MainServiceImpl extends BaseController implements MainService {
 
         // 获取到了客户
         if (ToolUtil.isNotEmpty(customer)) {
+
+            // 检查客户是否经过了审核  若没有 拒绝登录
+            // 但用户自己注册的不影响
+            if (customer.getPaid() != 0 && customer.getChecked() != 1) {
+                return ResultUtil.error(-6, "该客户信息正在审核或审核未通过，无法登陆，请联系管理员。");
+            }
+
             signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
             session.setAttribute("username", customer.getName());
             session.setAttribute("obj", customer);

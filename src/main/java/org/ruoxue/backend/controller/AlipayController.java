@@ -32,9 +32,10 @@ public class AlipayController {
     @Transactional
     @RequestMapping("start")
     public void startPayment(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
+                             @RequestParam("dst") Integer dst,
                              @RequestParam(required = false) Integer itemid, @RequestParam(required = false) String name, @RequestParam(required = false) Double amount) {
 //        调用service层
-        alipayService.startPayment(httpRequest, httpResponse, amount);
+        alipayService.startPayment(httpRequest, httpResponse, amount, dst);
 
     }
 

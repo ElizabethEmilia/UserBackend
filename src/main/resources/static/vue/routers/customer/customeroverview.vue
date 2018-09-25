@@ -12,7 +12,7 @@
 
             <Alert type="error" v-if="info.checked === 2">
                 该客户信息已被拒绝。
-                <span v-if="P.CheckCompany">
+                <span v-if="!P.CheckCompany">
                                     <a href="javascript:void(0)" @click="requestCheck('resubmit')">重新提交审核</a>
                 </span>
             </Alert>
@@ -134,10 +134,10 @@
                             <p slot="title">客户管理</p>
                             
                             <CellGroup @on-click="cellGroupClick">
-                                <Cell v-if="P.ChargeForCustomer" name="charge" title="余额充值" />
-                                <Cell v-if="P.ReceiptForCustomer" name="deduction" title="扣除余额" />
+                                <Cell v-if="P.ChargeForCustomer && info.checked === 1" name="charge" title="余额充值" />
+                                <Cell v-if="P.ReceiptForCustomer && info.checked === 1" name="deduction" title="扣除余额" />
                                 <!--Cell v-if="P.AdminCustomerModify" name="edit" title="编辑资料" /-->
-                                <Cell v-if="P.AdminCompanyAddAndModify" name="newcompany" title="新增公司" />
+                                <Cell v-if="P.AdminCompanyAddAndModify && info.checked === 1" name="newcompany" title="新增公司" />
                                 <Cell v-if="P.AdminCustomerRemoval" name="remove" title="删除客户" style="color: red"/>
                             </CellGroup>
 
@@ -393,7 +393,7 @@ export default {
         // 获取公司
         async getCompany() {
             try {
-                let result = await $.ajax(`/api/customer/${ this.cusData.uid }/company/list`);
+                let result = await $.ajax(`/api/customer/${ this.cusData.uid }/company/list?size=1000`);
                 if (result.code) {
                     return alert('获取公司失败：' + result.msg);
                 }
@@ -507,7 +507,7 @@ export default {
             try {
                 I.credit = I.data;
                 let dst = ['pack-balance','tax-balance','other-balance'][this.deduceInfo.type];
-                await API.Customer.deduction(this.cusData.uid, dst, I );
+                await API.Customer.deduction(this.cusData.uid, dst, util.forGetParams(I) );
                 util.MessageBox.Show(this,'操作成功');
                 this.shouldDeductionDialodOpen = !true;
             }

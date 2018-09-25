@@ -122,12 +122,12 @@
                                 <Col span="12" style="text-align: center; padding-top: 13px;">
                                     <Card :bordered="false" dis-hover>
                                         
-                                        余额：<span style="font-size: 25px; color: green">{{ loadingBanlance ? "--" : Number(info.balance).toFixed(2) }}</span>
+                                        余额：<span style="font-size: 25px; color: green">{{ loadingBanlance ? "--" : Number((info.packBalance) + (info.taxBalance) + (stats.otherBalance)).toFixed(2) }}</span>
                                         <Button type="success" style="font-size: 17px; width: 100%;  margin-top: 15px;">充值</Button>
                                     </Card>
                                 </Col>
                                 <Col span="12">
-                                    <Card :bordered="false" dis-hover>
+                                    <!--Card :bordered="false" dis-hover>
                                         <Row>
                                             <Col span="12">收入金额总计</Col>
                                             <Col span="12" style="text-align: right">{{ Number(stats.income).toFixed(2) }}</Col>
@@ -144,6 +144,26 @@
                                         <Row>
                                             <Col span="12">最近一笔支出</Col>
                                             <Col span="12" style="text-align: right">{{ Number(stats.lastOutcome).toFixed(2)     }}</Col>
+                                        </Row>
+                                    </Card-->
+
+                                    <Card :bordered="false" dis-hover>
+                                        <Row>
+                                            <Col span="12">余额详情</Col>
+                                            <Col span="12" style="text-align: right"></Col>
+                                        </Row>
+                                        <Divider dashed ></Divider>
+                                        <Row>
+                                            <Col span="12">年费余额</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(info.packBalance).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span="12">税金余额</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(info.taxBalance).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span="12">其他余额</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(stats.otherBalance).toFixed(2) }}</Col>
                                         </Row>
                                     </Card>
                                 </Col>

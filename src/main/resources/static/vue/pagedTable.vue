@@ -108,7 +108,8 @@ export default (function(){
                 }
             },
             async getCount() {
-                let url = this.requestUrl + `?count=0`;
+                let add_param = util.isStringNullOrEmpty(this.additionalParams)?'':'&'+this.additionalParams;
+                let url = this.requestUrl + `?count=0` + add_param;
                 try {
                     let r = await $.ajax(url);
                     if (r.code) {

@@ -129,7 +129,10 @@ export default {
         },
         searchParams() {
             setTimeout(() => this.getStat(), 0);
-            return util.forGetParams(this.selected);
+            let I = this.selected;
+            I.start = util.Date.toDateString(I.start);
+            I.end = util.Date.toDateString(I.end);
+            return util.forGetParams(I);
         },
         dataSource() {
             setTimeout(() => this.getStat(), 0);

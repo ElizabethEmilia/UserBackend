@@ -83,6 +83,10 @@ export default {
             renew: (uid, cid, params) => POST(`/api/customer/${uid}/company/${cid}/addtime`, params)(),
         },
 
+        Orders: {
+            newOrder: (cid, data) => POST(`/api/customer/_/company/${cid}/order/new`, data)(),
+        },
+
         check: (uid, action) => POST(`/api/customer/${uid}/${action}`, {r:1})(),
 
         charge: (uid, dst, data) => POST(`/customer/${uid}/charge/${dst}`, data)(),

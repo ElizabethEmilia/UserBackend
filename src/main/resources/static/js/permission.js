@@ -86,6 +86,9 @@ const Modules = {
 
     // 标记通知状态
     ProcessNotification: 26,
+
+    // 新增订单
+    AddOrderForCustomer: 27,
 };
 
 function canAccess(moudleID, userPermission) {

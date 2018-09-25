@@ -94,6 +94,9 @@ const tCustomer = {
     status: 0,
     aid: 0,
     checked: 0,
+    packBalance: 0,
+    otherBalance: 0,
+    taxBalance: 0,
 };
 
 const tDictAreas = {

@@ -70,7 +70,7 @@
                         render: (h, p) => {
                             return h('div', [
                                 render.link(h, p, '删除', async function() {
-                                    await util.MessageBox.ComfirmAsync(this, "确实要删除吗？");
+                                    await util.MessageBox.ComfirmAsync(self, "确实要删除吗？");
                                         try {
                                             let r = API.Company.Certificates.remove(p.row.id);
                                             util.MessageBox.Show(self, "删除成功");

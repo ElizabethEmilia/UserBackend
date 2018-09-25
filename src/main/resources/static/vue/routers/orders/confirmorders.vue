@@ -83,7 +83,7 @@
                 }
             },
             generateStartPrarms() {
-               return util.forGetParams(this.param);
+               return util.forGetParams(Object.assign({}, this.param, {dst: this.dst}));
             },
             async init() {
                 // 判断参数

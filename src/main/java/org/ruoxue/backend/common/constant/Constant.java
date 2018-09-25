@@ -249,4 +249,10 @@ public final class Constant {
 
     }
 
+    public class ChargeDestination {
+        public static final int PACK = 0;
+        public static final int TAX = 1;
+        public static final int OTHER = 2;
+    }
+
 }

@@ -6,6 +6,7 @@ import org.ruoxue.backend.bean.TAdmin;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TPending;
 import org.ruoxue.backend.bean.TSignin;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.mapper.TAdminMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TLogsMapper;
@@ -100,8 +101,8 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         customer.setProvince(province);
         customer.setAid(aid);
         customer.setAvatar("");
+        customer.setChecked(PermissionManager.canAccess(PermissionManager.Moudles.CheckCompany, XunBinKit.getPermission()) ? 1:0);
         boolean b = customer.insert();
-
 
         TAdmin admin = adminMapper.getTAdminByUid(aid);
 
@@ -110,7 +111,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
 //        加入通知表
         TPending pending = new TPending();
         pending.setAid(aid);
-        pending.setDescription("新增客户申请 (客户姓名: " + customer.getName() + ")");
+        pending.setDescription("待审核的新增客户申请(客户姓名: " + customer.getName() + ")");
         pending.setUid(customer.getUid());
         pending.setGid(admin.getGid());
         pending.setProcessed(0);

@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public interface IAlipayService {
 
-    void startPayment(HttpServletRequest request, HttpServletResponse response, Double amount);
+    void startPayment(HttpServletRequest request, HttpServletResponse response, Double amount, Integer dst);
 
     void finishPaymant(Integer orderid, HttpServletRequest request, HttpServletResponse response)  throws Exception;
 
