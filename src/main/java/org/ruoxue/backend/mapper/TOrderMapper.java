@@ -30,9 +30,13 @@ public interface TOrderMapper extends BaseMapper<TOrder> {
 
     Integer countListOrder(@Param("cid") Integer cid, @Param("type") Integer type, @Param("status") Integer status, @Param("start") Date start, @Param("end") Date end, @Param("uid") Integer uid);
 
-//    通过running查询订单
+    //    通过running查询订单
     @Select("select * from t_order where running = #{running}")
     TOrder getTOrderByRunning(@Param("running") Long running);
+
+    //    通过id查询订单
+    @Select("select * from t_order where id = #{id}")
+    TOrder getTOrderByID(@Param("id") Integer id);
 
 //    更改订单状态
     @Update("update t_order set status = #{status} where id = #{id}")

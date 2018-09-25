@@ -1,11 +1,23 @@
 package org.ruoxue.backend.controller;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import io.swagger.annotations.ApiOperation;
+import org.ruoxue.backend.bean.TExchange;
+import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.mapper.TCustomerMapper;
+import org.ruoxue.backend.mapper.TExchangeMapper;
+import org.ruoxue.backend.mapper.TOrderMapper;
 import org.ruoxue.backend.service.IAlipayService;
 import org.ruoxue.backend.service.ITLogsService;
+import org.ruoxue.backend.util.LoopAction;
 import org.ruoxue.backend.util.PaymentResultUtil;
+import org.ruoxue.backend.util.ResultUtil;
+import org.ruoxue.backend.util.ToolUtil;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +28,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.CHARSET;
+import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.*;
 
 @RestController
 @RequestMapping("/api/pay/alipay/")
@@ -27,6 +39,12 @@ public class AlipayController {
 
     @Resource
     private IAlipayService alipayService;
+
+    @Resource
+    private TExchangeMapper exchangeMapper;
+
+    @Resource
+    private TCustomerMapper customerMapper;
 
 //    添加事务管理(保证五性)
     @Transactional
@@ -109,8 +127,95 @@ public class AlipayController {
 
     @ApiOperation("付款信息查询")
     @RequestMapping("/query")
-    public @ResponseBody Object queryOrder(@RequestParam String running) {
-        return alipayService.queryOrder(running);
+    public @ResponseBody Object queryOrder(@RequestParam Integer orderID) {
+        //获得初始化的AlipayClient
+        AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
+
+        //设置请求参数
+        AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
+
+        try {
+            String out_trade_no = new String(orderID.toString().getBytes("ISO-8859-1"), "UTF-8");
+
+            //商户订单号，商户网站订单系统中唯一订单号
+            alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"}");
+
+            //请求
+            //String result = alipayClient.execute(alipayRequest).getBody();
+            //return alipayService.queryOrder(running);
+            AlipayTradeQueryResponse response = alipayClient.execute(alipayRequest);
+            if(response.isSuccess()){
+                System.out.println("[Alipay Query] 调用成功");
+
+                TExchange order = exchangeMapper.getEntityByID(orderID);
+
+                // 如果当前不存在，则报错
+                if (!ToolUtil.isNotEmpty(order)) {
+                    return ResultUtil.error(-1,
+                            "在支付宝中查询到了订单信息，但是该信息不存在在本地系统中，" +
+                                  "此问题可能是数据库发生未知错误没有正确处理而导致的。" +
+                                    "请联系管理员以解决此问题。");
+                }
+
+                String tradeStatus = response.getTradeStatus();
+                Double amount = Double.parseDouble(response.getTotalAmount());
+                int payStatus = (tradeStatus.equals("TRADE_SUCCESS") || tradeStatus.equals("TRADE_FINISHED")) ? Constant.PaymentStatus.PAIED :
+                        (tradeStatus.equals("TRADE_CLOSED") ? Constant.PaymentStatus.CANCELED : Constant.PaymentStatus.UNPAIED);
+
+                // 查到已经支付
+                if (payStatus == Constant.PaymentStatus.PAIED) {
+                    // 之前已支付
+                    if (order.getState() == Constant.PaymentStatus.PAIED) {
+                        System.out.println("[Alipay Query] 当前已经支付，且查询订单状况为已支付。");
+                        return ResultUtil.success(order);
+                    }
+
+                    // 之前未支付或待确认
+                    if (order.getState() == Constant.PaymentStatus.UNPAIED || order.getState() == Constant.PaymentStatus.NOT_CONFIRMED) {
+                        System.out.println("[Alipay Query] 当前未支付，或待确认，且查询订单状况为已支付。");
+                        order.setState(payStatus);
+                        order.setAmount(amount);
+                        order.updateById();
+
+                        // 增加余额到该用户账户
+                        LoopAction.tryUpToFiveTimes(
+                                () -> customerMapper.updateBalanceRelative(amount, order.getUid()),
+                                "更新账户余额：" + amount + "元");
+                        return ResultUtil.success(order);
+                    }
+                }
+                // 查到仍然未支付或已取消
+                if (payStatus == Constant.PaymentStatus.UNPAIED || payStatus == Constant.PaymentStatus.CANCELED) {
+                    // 之前未支付或已取消
+                    if (order.getState() == Constant.PaymentStatus.UNPAIED || order.getState() == Constant.PaymentStatus.CANCELED) {
+                        // 就当无事发生
+                        return ResultUtil.success(order);
+                    }
+                    // 之前已支付（退款）
+                    if (order.getState() == Constant.PaymentStatus.PAIED) {
+                        System.out.println("[Alipay Query] 当前已经支付，且查询订单状况为未支付。（发生了退款）");
+                        order.setState(payStatus);
+                        order.setAmount(amount);
+                        order.updateById();
+
+                        // 扣除余额到该用户账户
+                        LoopAction.tryUpToFiveTimes(
+                                () -> customerMapper.updateBalanceRelative(-amount, order.getUid()),
+                                "更新账户余额：" + (-amount) + "元");
+                        return ResultUtil.success(order);
+                    }
+                }
+
+                return ResultUtil.success();
+            } else {
+                System.out.println("[Alipay Query] 调用失败" + response.getMsg());
+                return ResultUtil.error(-2, "调用失败：" + response.getMsg());
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error(-1, e.getMessage());
+        }
     }
 
     @ApiOperation("查询最后一个订单状态")
