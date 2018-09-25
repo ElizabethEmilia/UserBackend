@@ -46,4 +46,8 @@ public interface TOrderMapper extends BaseMapper<TOrder> {
     @Select("select * from t_order order by tm_create desc limit 1")
     TOrder queryLastOrder();
 
+    @Select("select a.*, b.name companyname, c.name customername, c.uid uid from t_order a, t_company b, t_customer c\n" +
+            "where a.cid = b.id and b.uid = c.uid and a.id=#{id} limit 1")
+    Map<String, Object> getDetailedOrderInfo(@Param("id") Integer id);
+
 }

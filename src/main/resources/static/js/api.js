@@ -61,11 +61,11 @@ function DELETE(url) {
 }
 
 function Settings_Update(name, value) {
-    return (POST(`/api/settings/${ name }`, { value }))();
+    return (POST(`/api/system/settings/${ name }`, { value }))();
 }
 
 function Settings_Get(name) {
-    return (GET(`/api/settings/${ name }`))();
+    return (GET(`/api/system/settings/${ name }`))();
 }
 
 export default {

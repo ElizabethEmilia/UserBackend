@@ -11,6 +11,7 @@ import Orders from './routers/orders.vue';
 import Role from './routers/role.vue';
 import Group from './routers/group.vue';
 import ServicePack from './routers/srvpack.vue';
+import TemplateEditor from './routers/template.vue';
 import PM from '../js/permission.js';
 
 export default (function() {
@@ -45,6 +46,8 @@ export default (function() {
         { path: '/user', component: User });
     PM.filterArrayElements(PM.Modules.SystemConfigAdvanced, adminModules,
         { path: '/system', component: System });
+    PM.filterArrayElements(PM.Modules.SystemConfigAdvanced, adminModules,
+        { path: '/template', component: TemplateEditor });
     PM.filterArrayElements(PM.Modules.PermissionManger, adminModules,
         { path: '/role', component: Role });
     PM.filterArrayElements([PM.Modules.AdminUserListAll, PM.Modules.AdminUserModifyOthers], adminModules,

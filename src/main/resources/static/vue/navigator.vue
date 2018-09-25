@@ -55,6 +55,10 @@
                 <Icon type="md-leaf" />
                 系统配置
             </MenuItem>
+            <MenuItem name="template" v-if="P.SystemConfigAdvanced">
+                <Icon type="md-leaf" />
+                模板编辑
+            </MenuItem>
         </MenuGroup>
     </Menu>
 </template>

@@ -146,7 +146,7 @@ export default {
             this.$Modal.info({
                 title: '服务条款',
                 width: 800,
-                render: h => h(ServiceTermsDialog, { 
+                render: h => h(ServiceTermsDialog, {
                     props: {
                         content: 'terms'
                     }

@@ -1,21 +1,37 @@
 package org.ruoxue.backend.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
+import org.apache.ibatis.annotations.Param;
 import org.ruoxue.backend.bean.TAdmin;
+import org.ruoxue.backend.bean.TConfig;
 import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.controller.BaseController;
+import org.ruoxue.backend.mapper.TConfigMapper;
+import org.ruoxue.backend.mapper.TOrderMapper;
 import org.ruoxue.backend.util.IOUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UIController extends BaseController {
+
+    @Resource
+    TConfigMapper configMapper;
+
+    @Resource
+    TOrderMapper orderMapper;
 
     public void responseBinary(String file, HttpServletResponse response) {
         String path = System.getProperty("user.dir") + "/src/main/resources/static/";
@@ -124,6 +140,78 @@ public class UIController extends BaseController {
         session.removeAttribute("obj");
         session.removeAttribute("role");
         return "redirect:/";
+    }
+
+    // 服务条款
+    @GetMapping("/terms")
+    @ResponseBody
+    public String showTerms() {
+        String config = configMapper.getConfigByName("template_terms");
+        return config;
+    }
+
+    // 合同
+    @GetMapping("/order/agreement/{id}")
+    @ResponseBody
+    public String showAgreement(@PathVariable("id") Integer id) {
+        String template = configMapper.getConfigByName("template_license");
+
+        Map<String, Object> data = orderMapper.getDetailedOrderInfo(id);
+        if (data == null)
+            return "No such order ID="+id;
+        if (false && !data.get("uid").equals(XunBinKit.getUid())) {
+            return "This is not your order";
+        }
+
+        String json  = JSONObject.toJSON(data).toString();
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n" +
+                "    <title>查看合同</title>\n" +
+                "    <script src=\"http://localhost/libs/vue.js\"></script>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div id=\"app\">" + template + "</div>\n" +
+                "\n" +
+                "    <script>\n" +
+                "    let vue = new Vue({\n" +
+                "        el: '#app',\n" +
+                "        data: {\n" +
+                "            orderID: '',\n" +
+                "            companyName: '',\n" +
+                "            companyID: '',\n" +
+                "            customerName: '',\n" +
+                "            customerID: '',\n" +
+                "            amount: '',\n" +
+                "            year: '',\n" +
+                "            month:'',\n" +
+                "            day:'',\n" +
+                "            date:'',\n" +
+                "            name:'',\n" +
+                "            order:" + json + ",\n" +
+                "        },\n" +
+                "        mounted() {\n" +
+                "            this.orderID = this.order.id;\n" +
+                "            this.companyName = this.order.companyname;\n" +
+                "            this.companyID = this.order.cid;\n" +
+                "            this.customerName = this.order.customername;\n" +
+                "            this.customerID = this.order.uid;\n" +
+                "            this.amount = this.order.amount;\n" +
+                "            \n" +
+                "            var date = new Date(this.order.tm_create);\n" +
+                "            this.year = (date.getFullYear());\n" +
+                "            this.month = date.getMonth() + 1;\n" +
+                "            this.day = date.getDay() + 1;\n" +
+                "            this.date = this.year + '年' + this.month + '月' + this.day + '日';\n" +
+                "            this.name =  this.order.name;\n" +
+                "        }\n" +
+                "    });\n" +
+                "    </script>\n" +
+                "</body>\n" +
+                "</html>";
     }
 
 }

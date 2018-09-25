@@ -1,7 +1,7 @@
 import $ from './jquery';
 import util from './util.js';
 
-const ajax = function(url, data = undefined, contentType = undefined, progress = undefined) {
+const ajax = function(url, data = undefined, contentType = undefined, progress = undefined, dataType = "json") {
     if (typeof data === "object") {
         if (Object.keys(data).length >= 3)
             contentType='application/json';
@@ -12,7 +12,7 @@ const ajax = function(url, data = undefined, contentType = undefined, progress =
     return new Promise((resolve, reject) => {
         $.ajax({
             url: encodeURI(url),
-            dataType: 'json',
+            dataType: dataType,
             data: data,
             type: typeof data === "undefined" ? 'GET':'POST',
             contentType: contentType,
