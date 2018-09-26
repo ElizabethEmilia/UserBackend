@@ -123,9 +123,9 @@ public class AlipayServiceImpl implements IAlipayService {
         }
         // 确认是否有该订单, 该订单是否属于该用户
         TExchange exchange = exchangeMapper.getEntityByID(orderid);
-        if (ToolUtil.isEmpty(exchange) || exchange.getUid() != XunBinKit.getUid()) {
+        if (ToolUtil.isEmpty(exchange) || exchange.getUid().equals(XunBinKit.getUid())) {
             /// TODO: 添加log  应该不会出现这种情况
-            System.err.println("[AlipayService] exchange is null, no such exchange");
+            System.err.println("[AlipayService] 该交易不存在或不属于当前用户(id=" +orderid+",uid=" + XunBinKit.getUid() +")");
             return;
         }
         // 比较支付宝订单号, 如果不存在， 写入

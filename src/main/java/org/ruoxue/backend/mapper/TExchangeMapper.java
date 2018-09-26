@@ -39,8 +39,8 @@ public interface TExchangeMapper extends BaseMapper<TExchange> {
 
     Double countLastOutcome(@Param("uid") Integer uid);
 
-    @Insert("insert into t_exchange (uid, amount, paymethod, tm, type, note, state) " +
-            "values(#{uid}, #{amount}, #{paymethod}, #{tm}, #{type}, #{note}, #{state})")
+    @Insert("insert into t_exchange (uid, amount, paymethod, tm, type, note, state, dst) " +
+            "values(#{uid}, #{amount}, #{paymethod}, #{tm}, #{type}, #{note}, #{state}, #{dst})")
     @SelectKey(statement="select LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class)
     int insertReturnsID(TExchange entity);
 

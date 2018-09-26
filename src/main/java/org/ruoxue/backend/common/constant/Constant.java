@@ -222,8 +222,8 @@ public final class Constant {
         public static final String SIGN_TYPE = "RSA";
         public static final String PROVIDER_ID = "2088102175886961";
 
-        public static final String RETURN_URL = "http://ruoxue.natapp.cc/api/pay/alipay/finish";
-        public static final String NOTOFY_URL = "http://ruoxue.natapp.cc/api/pay/alipay/notify";
+        public static final String RETURN_URL = "http://ruoxue.natapp1.cc/api/pay/alipay/finish";
+        public static final String NOTOFY_URL = "http://ruoxue.natapp1.cc/api/pay/alipay/notify";
 
     }
 
