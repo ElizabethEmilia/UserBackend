@@ -1,5 +1,7 @@
 package org.ruoxue.backend.service;
 
+import com.alipay.api.response.AlipayTradeQueryResponse;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -18,5 +20,7 @@ public interface IAlipayService {
     Object queryOrder(String running);
 
     Object queryLastOrder();
+    public Object queryOrderFromAlipay(Integer orderID, AlipayTradeQueryResponse response);
+
 
 }

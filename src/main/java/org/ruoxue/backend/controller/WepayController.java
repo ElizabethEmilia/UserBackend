@@ -10,6 +10,7 @@ import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TExchangeMapper;
 import org.ruoxue.backend.service.IAlipayService;
 import org.ruoxue.backend.service.ITLogsService;
+import org.ruoxue.backend.util.LoopAction;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
@@ -126,7 +127,7 @@ public class WepayController {
                 exchangeMapper.updateStateByID(orderid, Constant.PaymentStatus.PAIED);
                 // 更新余额
                 //   订单总金额，单位为分,需要除以100
-                customerMapper.updateBalanceRelative(Double.parseDouble(notifyMap.get("total_fee")) / 100, XunBinKit.getUid());
+                updateBalanceRelative(Double.parseDouble(notifyMap.get("total_fee")) / 100, exchange.getDst(), exchange);
 
                 return true;
             }
@@ -209,6 +210,29 @@ public class WepayController {
                     "处理微信订单时发生错误: orderid=" + orderid,
                     Constant.LogClass.IMPORTANT);
             return ResultUtil.error(-4, e.getMessage());
+        }
+    }
+
+    private void updateBalanceRelative(Double amount, Integer dst, TExchange exchange) {
+        switch (dst) {
+            case Constant.ChargeDestination.PACK:
+                LoopAction.tryUpToFiveTimes(
+                        () -> customerMapper.updatePackBalanceRelative(amount, exchange.getUid()),
+                        "更新年费账户余额：" + amount + "元");
+                break;
+            case Constant.ChargeDestination.TAX:
+                LoopAction.tryUpToFiveTimes(
+                        () -> customerMapper.updateTaxBalanceRelative(amount, exchange.getUid()),
+                        "更新税金账户余额：" + amount + "元");
+                break;
+            case Constant.ChargeDestination.OTHER:
+                LoopAction.tryUpToFiveTimes(
+                        () -> customerMapper.updateTaxBalanceRelative(amount, exchange.getUid()),
+                        "更新其他账户余额：" + amount + "元");
+                break;
+            default:
+                System.out.println("[AlipayService] Invalid dst=" + dst);
+                break;
         }
     }
 

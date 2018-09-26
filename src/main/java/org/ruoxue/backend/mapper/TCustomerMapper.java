@@ -50,7 +50,13 @@ public interface TCustomerMapper extends BaseMapper<TCustomer> {
     boolean updateBalance(@Param("balance") Double balance, @Param("id") Integer id);
 
     @Update("update t_customer set pack_balance = pack_balance+#{balance} where uid = #{id}")
-    boolean updateBalanceRelative(@Param("balance") Double balance, @Param("id") Integer id);
+    boolean updatePackBalanceRelative(@Param("balance") Double balance, @Param("id") Integer id);
+
+    @Update("update t_customer set tax_balance = tax_balance+#{balance} where uid = #{id}")
+    boolean updateTaxBalanceRelative(@Param("balance") Double balance, @Param("id") Integer id);
+
+    @Update("update t_customer set other_balance = other_balance+#{balance} where uid = #{id}")
+    boolean updateOtherBalanceRelative(@Param("balance") Double balance, @Param("id") Integer id);
 
 //    修改服务到期否
     Integer updatePaid(@Param("uid") Integer uid,@Param("paid") Integer paid);

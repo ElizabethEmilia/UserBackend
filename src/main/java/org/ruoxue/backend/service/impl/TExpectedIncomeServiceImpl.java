@@ -110,7 +110,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         }
         page = (page - 1) * size;
 
-        List<TExchange> list = expectedIncomeMapper.listExchange(map.get(type), cid, page, size, start, end, XunBinKit.getUid());
+        List<Map<String, Object>> list = expectedIncomeMapper.listExchange(map.get(type), cid, page, size, start, end, XunBinKit.getUid());
 
         return ResultUtil.success(list);
     }

@@ -150,66 +150,7 @@ public class AlipayController {
             if(response.isSuccess()){
                 System.out.println("[Alipay Query] 调用成功");
 
-                TExchange order = exchangeMapper.getEntityByID(orderID);
-
-                // 如果当前不存在，则报错
-                if (!ToolUtil.isNotEmpty(order)) {
-                    return ResultUtil.error(-1,
-                            "在支付宝中查询到了订单信息，但是该信息不存在在本地系统中，" +
-                                  "此问题可能是数据库发生未知错误没有正确处理而导致的。" +
-                                    "请联系管理员以解决此问题。");
-                }
-
-                String tradeStatus = response.getTradeStatus();
-                Double amount = Double.parseDouble(response.getTotalAmount());
-                int payStatus = (tradeStatus.equals("TRADE_SUCCESS") || tradeStatus.equals("TRADE_FINISHED")) ? Constant.PaymentStatus.PAIED :
-                        (tradeStatus.equals("TRADE_CLOSED") ? Constant.PaymentStatus.CANCELED : Constant.PaymentStatus.UNPAIED);
-
-                // 查到已经支付
-                if (payStatus == Constant.PaymentStatus.PAIED) {
-                    // 之前已支付
-                    if (order.getState() == Constant.PaymentStatus.PAIED) {
-                        System.out.println("[Alipay Query] 当前已经支付，且查询订单状况为已支付。");
-                        return ResultUtil.success(order);
-                    }
-
-                    // 之前未支付或待确认
-                    if (order.getState() == Constant.PaymentStatus.UNPAIED || order.getState() == Constant.PaymentStatus.NOT_CONFIRMED) {
-                        System.out.println("[Alipay Query] 当前未支付，或待确认，且查询订单状况为已支付。");
-                        order.setState(payStatus);
-                        order.setAmount(amount);
-                        order.updateById();
-
-                        // 增加余额到该用户账户
-                        LoopAction.tryUpToFiveTimes(
-                                () -> customerMapper.updateBalanceRelative(amount, order.getUid()),
-                                "更新账户余额：" + amount + "元");
-                        return ResultUtil.success(order);
-                    }
-                }
-                // 查到仍然未支付或已取消
-                if (payStatus == Constant.PaymentStatus.UNPAIED || payStatus == Constant.PaymentStatus.CANCELED) {
-                    // 之前未支付或已取消
-                    if (order.getState() == Constant.PaymentStatus.UNPAIED || order.getState() == Constant.PaymentStatus.CANCELED) {
-                        // 就当无事发生
-                        return ResultUtil.success(order);
-                    }
-                    // 之前已支付（退款）
-                    if (order.getState() == Constant.PaymentStatus.PAIED) {
-                        System.out.println("[Alipay Query] 当前已经支付，且查询订单状况为未支付。（发生了退款）");
-                        order.setState(payStatus);
-                        order.setAmount(amount);
-                        order.updateById();
-
-                        // 扣除余额到该用户账户
-                        LoopAction.tryUpToFiveTimes(
-                                () -> customerMapper.updateBalanceRelative(-amount, order.getUid()),
-                                "更新账户余额：" + (-amount) + "元");
-                        return ResultUtil.success(order);
-                    }
-                }
-
-                return ResultUtil.success();
+                return alipayService.queryOrderFromAlipay(orderID, response);
             } else {
                 System.out.println("[Alipay Query] 调用失败" + response.getMsg());
                 return ResultUtil.error(-2, "调用失败：" + response.getMsg());

@@ -16,8 +16,10 @@
 		<result column="tm_op" property="tmOp" />
 	</resultMap>
 
-	<select id="listExchange" resultType="org.ruoxue.backend.bean.TExchange">
-		select a.*, b.name from t_exchange a, t_company b
+	<select id="listExchange" resultType="java.util.Map">
+		(select *, '' as cname from t_exchange where cid is NULL where uid=#{uid})
+		union
+		(select a.*, b.name cname from t_exchange a, t_company b
 		where b.uid = #{uid} and a.cid = b.id
 		<if test="type != null">
 			and type = #{type}
@@ -34,13 +36,13 @@
 			<![CDATA[
 				and tm < #{end}
 			]]>
-		</if>
+		</if>)
 		order by id DESC limit #{page}, #{size}
 	</select>
 
 	<select id="countListExchange" resultType="java.lang.Integer">
-		select count(b.id) from t_exchange a, t_company b
-		where b.uid = #{uid} and a.cid = b.id
+		select count(*) from t_exchange a
+		where a.uid = #{uid}
 		<if test="type != null">
 			and type = #{type}
 		</if>

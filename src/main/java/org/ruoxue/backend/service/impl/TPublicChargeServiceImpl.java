@@ -63,7 +63,7 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         Integer len = publicChargeMapper.updatePublicChangeStatus(pid, map.get(status));
         if(status.equals("confirm")) {
             // 增加余额
-            customerMapper.updateBalanceRelative(publicChargeMapper.getPublicChargeAmount(pid), uid);
+            customerMapper.updatePackBalanceRelative(publicChargeMapper.getPublicChargeAmount(pid), uid);
         }
 
         logsMapper.addLog(-1, "修改对公充值表", 1);
