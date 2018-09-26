@@ -22,7 +22,7 @@ import java.util.Map;
 @Mapper
 public interface TOrderMapper extends BaseMapper<TOrder> {
 
-    List<TOrder> listOrderByStatus(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status);
+    List<Map<String, Object>> listOrderByStatus(@Param("uid") Integer uid, @Param("page") Integer page, @Param("size") Integer size, @Param("status") Integer status);
 
     Integer countListOrderByStatus(@Param("uid") Integer uid, @Param("status") Integer status);
 

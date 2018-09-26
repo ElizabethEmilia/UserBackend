@@ -13,13 +13,13 @@
 		<result column="tm_paid" property="tmPaid" />
 	</resultMap>
 
-	<select id="listOrderByStatus" resultType="org.ruoxue.backend.bean.TOrder">
-		select * from t_order
-		where cid in (select id from t_company where uid = #{uid})
+	<select id="listOrderByStatus" resultType="java.util.Map">
+		select t_order.*, t_company.name cname from t_order, t_company
+		where t_order.cid = t_company.id and cid in (select id from t_company where uid = #{uid})
 		<if test="status != null">
 			and status = #{status}
 		</if>
-		order by id DESC limit #{page}, #{size}
+		order by t_order.id DESC limit #{page}, #{size}
 	</select>
 
 	<select id="countListOrderByStatus" resultType="java.lang.Integer">

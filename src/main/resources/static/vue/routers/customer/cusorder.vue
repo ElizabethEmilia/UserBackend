@@ -85,6 +85,7 @@
             orderNew: init.tOrder,
 
             paymentMethod,
+            companyList: [],
 
             ordertips,
             res_url: 'all',
@@ -96,9 +97,9 @@
                 { title: '公司ID', key: 'cid'  },
                 { title: '公司名称', key: 'cname'  },
                 { title: '订单金额', key: 'amount'  },
-                { title: '支付方式',width: 160, render: (h,p) => h('span', {}, paymentMethod[p.row.paymethod])  }, // key: paymethod
+                //{ title: '支付方式',width: 160, render: (h,p) => h('span', {}, paymentMethod[p.row.paymethod])  }, // key: paymethod
                 { title: '订单名称', key: 'note'  },
-                { title: '下单时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tm)))  },
+                { title: '下单时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmCreate)))  },
                 { title: '支付时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmPaid)))  },
                 { 
                 title: '操作', 
@@ -145,17 +146,11 @@
             // 获取公司
             async getCompany() {
                 try {
-                    let result = await $.ajax(`/api/customer/${ this.uid }/company/list?size=1000`);
-                    if (result.code) {
-                        return;// alert('获取公司失败：' + result.msg);
-                    }
-                    //this.loading = false;
-                    //this.companyCount = result.data.length;
-                    this.companyList = result.data;
+                    this.companyList = await API.Customer.Company.getList(this.uid);
                 }
                 catch(err) {
+                    console.error(err);
                     this.loading = false;
-                    //util.Debug.ralert('获取公司失败');
                 }
             },
 
