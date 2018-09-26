@@ -17,7 +17,7 @@
 	</resultMap>
 
 	<select id="listExchange" resultType="java.util.Map">
-		(select *, '' as cname from t_exchange where cid is NULL where uid=#{uid})
+		(select *, '' as cname from t_exchange where cid is NULL and uid=#{uid})
 		union
 		(select a.*, b.name cname from t_exchange a, t_company b
 		where b.uid = #{uid} and a.cid = b.id

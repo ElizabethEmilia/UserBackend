@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
@@ -152,6 +153,8 @@ public class MainServiceImpl extends BaseController implements MainService {
         return Md5Util.getMD5(password);
     }
 
+    // 验证码字体
+    Font fontVerifyCode = null;
     /**
      *  生成验证码
      * @param request
@@ -159,6 +162,15 @@ public class MainServiceImpl extends BaseController implements MainService {
      */
     @Override
     public void gerenateVerifycode(HttpServletRequest request, HttpServletResponse response) {
+        if (fontVerifyCode == null) {
+            try {
+                fontVerifyCode = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/src/main/resources/res/ww.ttf"))
+                        .deriveFont(Font.BOLD, 53);
+            }
+            catch (Exception e) {
+                fontVerifyCode = new Font(Font.SANS_SERIF,Font.BOLD,55);
+            }
+        }
         //1.画布
         BufferedImage image = new BufferedImage(200,100,BufferedImage.TYPE_INT_RGB);
         //2.画笔
@@ -168,14 +180,14 @@ public class MainServiceImpl extends BaseController implements MainService {
         //4.画验证码的背景
         g.fillRect(0, 0, 200, 100);
         //5.字体
-        g.setFont(new Font(Font.SANS_SERIF,Font.BOLD,55));
+        g.setFont(fontVerifyCode);
         //6.验证码
         Random rand = new Random();
         StringBuilder builder = new StringBuilder();
         for(int i=0;i<5;i++) {
             String code = generate(1);
             g.setColor(new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
-            int h = (int)(100 * 0.4 + 100 * 0.7 * rand.nextDouble());
+            int h = (int)(100 * 0.4 + 100 * 0.4 * rand.nextDouble());
             g.drawString(code, 200 / 5 * i, h);
             builder.append(code);
         }

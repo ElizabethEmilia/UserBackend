@@ -70,6 +70,7 @@ public class AlipayServiceImpl implements IAlipayService {
                 exchange.setState(Constant.ExchangeStatus.UNPAIED);
                 exchange.setAmount(amount);
                 exchange.setDst(dst);
+
                 exchange.setNote("增薪宝-在线充值" + amount + "元");
                 exchange.setType(Constant.ExchangeType.INCOME);
 
