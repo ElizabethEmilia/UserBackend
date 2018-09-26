@@ -185,7 +185,7 @@
                 }
                 catch(e) {
                     console.error(e);
-                    util.MessageBox.Show(this, "添加失败");
+                    util.MessageBox.Show(this, "添加失败: " + e.message);
                     this.newOrderSaving = false;
 
                 }

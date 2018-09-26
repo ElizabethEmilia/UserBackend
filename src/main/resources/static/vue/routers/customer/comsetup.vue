@@ -107,7 +107,7 @@
                 }
                 catch (e) {
                     console.error(e);
-                    util.MessageBox.Error(this, "添加失败");
+                    util.MessageBox.Error(this, "添加失败, " + e.message);
                 }
             }
         },
@@ -124,7 +124,7 @@
                     catch(err) {
                         console.log(err);
                         this.states = window.config.settings.setup_states.split(',');
-                        util.MessageBox.Show(this, "更新状态表失败");
+                        util.MessageBox.Show(this, "更新状态表失败, " + err.message);
                     }
                 }
             }

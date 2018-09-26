@@ -436,7 +436,7 @@ export default {
                     }
                     catch (err) {
                         console.log(err);
-                        util.MessageBox.Show(this, "删除失败");
+                        util.MessageBox.Show(this, "删除失败, " + err.message);
                     }
                 },
                 charge: () => {
@@ -466,8 +466,8 @@ export default {
                 })[action];
             }
             catch (e) {
-                console.error(e);no
-                util.MessageBox.Show(this, "操作失败");
+                console.error(e);
+                util.MessageBox.Show(this, "操作失败, " + e.message);
             }
         },
 

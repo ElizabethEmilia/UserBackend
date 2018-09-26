@@ -133,7 +133,7 @@
                 }
                 catch (err) {
                     console.error(err);
-                    util.MessageBox.Show(this, "操作失败");
+                    util.MessageBox.Show(this, "操作失败, " + err.message);
                 }
             },
             async processModify() {
@@ -148,7 +148,7 @@
                 }
                 catch (err) {
                     console.error(err);
-                    util.MessageBox.Show(this, "操作失败");
+                    util.MessageBox.Show(this, "操作失败, " + err.message);
                 }
             },
             // 撤回更改
@@ -168,7 +168,7 @@
                 }
                 catch (e) {
                     console.error(e);
-                    util.MessageBox.Show(this, "操作失败");
+                    util.MessageBox.Show(this, "操作失败, " + e.message);
                 }
             },
             // 补交税金预交差额
@@ -188,7 +188,7 @@
                 }
                 catch (e) {
                     console.error(e);
-                    util.MessageBox.Show(this, "操作失败");
+                    util.MessageBox.Show(this, "操作失败, " + e.message);
                 }
 
             },

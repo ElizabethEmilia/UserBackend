@@ -78,7 +78,7 @@
                                         }
                                         catch (e) {
                                             console.error(e);
-                                            return util.MessageBox.Show(self, "删除失败");
+                                            return util.MessageBox.Show(self, "删除失败, " + e.message);
                                         }
                                     }),
                                 render.link(h, p, '查看', function() {

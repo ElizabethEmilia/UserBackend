@@ -78,7 +78,7 @@
                 }
                 catch (e) {
                     console.error(e);
-                    await util.MessageBox.ShowAsync(this, "加载商品信息失败");
+                    await util.MessageBox.ShowAsync(this, "加载商品信息失败, " + e.message);
                     this.$emit("on-cancel");
                 }
             },

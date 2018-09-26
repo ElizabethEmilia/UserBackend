@@ -229,7 +229,7 @@ export default {
             }
             catch(e) {
                 console.error(e);
-                util.MessageBox.Show(this, "申请失败");
+                util.MessageBox.Show(this, "申请失败, " + e.message);
             }
         },
     },

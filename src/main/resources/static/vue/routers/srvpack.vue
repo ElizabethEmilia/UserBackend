@@ -123,7 +123,7 @@
                 }
                 catch (e) {
                     console.error(e);
-                    alert("操作失败" + (e.msg ? '' : e.msg));
+                    alert("操作失败, " + e.message);
                     this.selectedIndex = -1;
 
                 }

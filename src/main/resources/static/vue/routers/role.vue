@@ -65,7 +65,7 @@
                                         }
                                         catch(err) {
                                             console.error(err);
-                                            util.MessageBox.Show(this, "删除角色失败" + err.msg ? ":" + msg: "");
+                                            util.MessageBox.Show(this, "删除角色失败, " + err.message);
                                         }
                                     })
                                 ]);
@@ -104,7 +104,7 @@
                 }
                 catch(err) {
                     console.log(err);
-                    return util.MessageBox.Show(this, "修改角色失败");
+                    return util.MessageBox.Show(this, "修改角色失败, " + err.message);
                 }
             }
         },

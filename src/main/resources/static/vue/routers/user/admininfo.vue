@@ -101,7 +101,7 @@
                 }
                 catch (e) {
                     console.log(e);
-                    util.MessageBox.Show(this, "操作失败");
+                    util.MessageBox.Show(this, "操作失败, " + e.message);
                 }
             },
             async modify() {
@@ -116,7 +116,7 @@
                 }
                 catch (e) {
                     console.error(e);
-                    util.MessageBox.Show(this, "操作失败");
+                    util.MessageBox.Show(this, "操作失败, " + e.message);
                 }
             },
             checkInput() {
