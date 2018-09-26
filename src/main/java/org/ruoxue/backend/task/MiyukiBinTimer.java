@@ -8,12 +8,10 @@ import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.TCompanyMapper;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +20,7 @@ import java.util.Map;
 /**
  *  定时器,专门用来泡定时任务
  */
-@Component
+@Controller
 public class MiyukiBinTimer {
 
     @Resource
@@ -38,7 +36,7 @@ public class MiyukiBinTimer {
      * 说明: 在年收入预选的操作人设置为“系统”
      */
     @Scheduled(cron = "0 0 0 1 1 ?")              //定时任务,项目跑起来之后自动到时间执行
-//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    @RequestMapping(value = "/task1", method = RequestMethod.GET)
     public void toSystem() {
 
 //        更新所有用户所有公司 ysa_status = 0
@@ -46,6 +44,7 @@ public class MiyukiBinTimer {
 
 //        插入expected表
         List<Map<String, Object>> list = companyMapper.listComAll();
+//        System.out.println("--------------list: " + list);
         if (list.size() > 0) {
             for (Map<String, Object> map : list) {
 //                  获取公司表中的内容
@@ -62,6 +61,7 @@ public class MiyukiBinTimer {
                 expectedIncome.setPreTaxRatio(pre_tax_ratio);
                 expectedIncome.setOper("系统");
                 expectedIncome.setTmOp(new Date());
+//                System.out.println("--------------expectedIncome: " + expectedIncome);
                 expectedIncome.insert();
             }
         }
@@ -73,13 +73,12 @@ public class MiyukiBinTimer {
      *  触发时间：每年1月1日0点后
      */
     @Scheduled(cron = "0 0 0 * * ?")
-//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    @RequestMapping(value = "/task2", method = RequestMethod.GET)
     public void toSelect() {
-
-        HttpServletResponse response = XunBinKit.getResponse();
 
 //        获取所有的公司
         List<Map<String, Object>> list = companyMapper.listComAll();
+//        System.out.println("--------------list: " + list);
         for (Map<String, Object> map : list) {
 //            获取到期时间
             Date endDate = (Date) map.get("tax_pack_end");
@@ -100,7 +99,7 @@ public class MiyukiBinTimer {
                     if (ToolUtil.isNotEmpty(customer)) {
 //                        用户余额足够的，直接扣款
                         Double balance = customer.getPackBalance();
-                        if (ToolUtil.isNotEmpty(balance) && balance >= 1200) {
+                        if (ToolUtil.isNotEmpty(balance) && balance >= 12000) {
                             balance = balance - 12000;
                             customerMapper.updateBalance(balance, uid);
 
@@ -118,12 +117,14 @@ public class MiyukiBinTimer {
                             exchange.setAmount(12000.0);
                             exchange.setTm(new Date());
                             exchange.setUid(uid);
+//                            System.out.println("--------------exchange: " + exchange);
                             exchange.insert();
 
                             TOrder order = new TOrder();
                             order.setAmount(12000.0);
                             order.setCid(cid);
                             order.setTmCreate(new Date());
+//                            System.out.println("--------------order: " + order);
                             order.insert();
 
                         }
