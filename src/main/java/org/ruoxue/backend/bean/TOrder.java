@@ -15,12 +15,12 @@ import java.util.Date;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-22
+ * @since 2018-09-26
  */
 @TableName("t_order")
 public class TOrder extends Model<TOrder> {
 
-    private static final Long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
@@ -32,7 +32,8 @@ public class TOrder extends Model<TOrder> {
 	private Date tmCreate;
 	@TableField("tm_paid")
 	private Date tmPaid;
-	private String running;
+	private Long running;
+	private String note;
 
 
 	public Integer getId() {
@@ -91,12 +92,20 @@ public class TOrder extends Model<TOrder> {
 		this.tmPaid = tmPaid;
 	}
 
-	public String getRunning() {
+	public Long getRunning() {
 		return running;
 	}
 
-	public void setRunning(String running) {
+	public void setRunning(Long running) {
 		this.running = running;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	@Override
@@ -115,6 +124,7 @@ public class TOrder extends Model<TOrder> {
 			", tmCreate=" + tmCreate +
 			", tmPaid=" + tmPaid +
 			", running=" + running +
+			", note=" + note +
 			"}";
 	}
 }
