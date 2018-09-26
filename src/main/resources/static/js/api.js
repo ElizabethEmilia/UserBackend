@@ -16,7 +16,7 @@ async function __Miyuki_RequestGET(url) {
     }
 }
 
-async function __Miyuki_RequestPOST(url, data) {
+async function ote__Miyuki_RequestPOST(url, data) {
     try {
         let r = await $.ajax(url, data);
         if (r.code  === 0) {

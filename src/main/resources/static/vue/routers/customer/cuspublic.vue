@@ -68,7 +68,7 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
-                                                util.MessageBox.Success(self, '操作失败');
+                                                util.MessageBox.Success(self, '操作失败， ' + result.msg);
                                             }
                                             else {
                                                 util.MessageBox.Success(self, '操作成功');
@@ -77,7 +77,7 @@ export default {
                                         }
                                         catch(err) {
                                             console.log(err);
-                                            alert('操作失败');
+                                            alert('操作失败, 和服务器通讯发生错误');
                                         }
                                     }
                                 }
@@ -97,7 +97,7 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/customer/${_uid}/publiccharge/${self.d[params.index].id}/confirm`, { r: Math.random() });
                                             if (result.code) {
-                                                util.MessageBox.Success(self, '操作失败');
+                                                util.MessageBox.Success(self, '操作失败 ' + result.msg);
                                             }
                                             else {
                                                 util.MessageBox.Success(self, '操作成功');
@@ -106,7 +106,7 @@ export default {
                                         }
                                         catch(err) {
                                             console.log(err);
-                                            util.MessageBox.Success(self, '操作失败');
+                                            util.MessageBox.Success(self, '操作失败, 和服务器通讯发生错误');
                                         }
                                     }
                                 }

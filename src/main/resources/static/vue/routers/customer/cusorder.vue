@@ -17,7 +17,7 @@
             <TabPane label="已支付" name="paid"></TabPane>
             <TabPane label="已取消" name="cancelled"></TabPane>
         </Tabs>
-        <PagedTable :columns="columns" :data-source="dataSource" />
+        <PagedTable ref="dt" :columns="columns" :data-source="dataSource" />
 
         <Modal v-model="newOrderVisible" title="新增订单" :width="800">
             <div  style="margin-top: 5px; margin-left: 30px;">
@@ -181,6 +181,7 @@
                     util.MessageBox.Show(this, "添加成功");
                     this.newOrderVisible = false;
                     this.newOrderSaving = false;
+                    this.$refs.dt.refresh();
                 }
                 catch(e) {
                     console.error(e);

@@ -250,7 +250,7 @@
                 }
                 catch(err) {
                     console.error(err);
-                    alert('上传头像失败');
+                    alert('上传头像失败' + err.message);
                 }
                 this.pendingUpload = false;
             },

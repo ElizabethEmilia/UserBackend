@@ -223,7 +223,7 @@ export default {
             }
             catch(e) {
                 console.error(e);
-                util.MessageBox.Show(this, '操作失败');
+                util.MessageBox.Show(this, '操作失败,' + e.message);
             }
         },
         showDialog() {

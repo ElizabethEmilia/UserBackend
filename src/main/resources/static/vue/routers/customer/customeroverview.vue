@@ -331,7 +331,7 @@ export default {
                 alert('保存失败：' + result.msg);
             }
             catch(err) {
-                alert('保存失败');
+                alert('保存失败, 通讯错误');
             }
             this.pendingSave = false;
         },
@@ -359,7 +359,7 @@ export default {
             }
             catch(err) {
                 console.error(err);
-                alert('上传头像失败');
+                alert('上传头像失败， ' + err.message);
             }
             this.pendingUpload = false;
         },
@@ -488,7 +488,7 @@ export default {
             }
             catch(e) {
                 console.error(e);
-                util.MessageBox.Show(this,'操作失败');
+                util.MessageBox.Show(this,'操作失败,' + e.message);
             }
         },
 
@@ -513,7 +513,7 @@ export default {
             }
             catch(e) {
                 console.error(e);
-                util.MessageBox.Show(this,'操作失败');
+                util.MessageBox.Show(this,'操作失败,' + e.message);
             }
         }
     },

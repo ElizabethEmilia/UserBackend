@@ -101,7 +101,7 @@ export default {
                                         try {
                                             let result = await $.ajax(`/api/charge/public/${id}/cancel`, { r: Math.random() });
                                             if (result.code) {
-                                                util.MessageBox.Show(self, '操作失败');
+                                                util.MessageBox.Show(self, '操作失败 ' + result.msg);
                                             }
                                             else {
                                                 util.MessageBox.Success(self, '操作成功');
@@ -109,7 +109,7 @@ export default {
                                             }
                                         }
                                         catch(err) {
-                                            util.MessageBox.Success(self, '操作失败');
+                                            util.MessageBox.Success(self, '操作失败  和服务器的通讯发生错误' );
                                         }
                                     }
                                 }
