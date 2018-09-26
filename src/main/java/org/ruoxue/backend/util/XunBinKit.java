@@ -47,10 +47,36 @@ public class XunBinKit {
         getResponse().setHeader("X-Access-Control", "Permission OK, with permission=" + p + ", mask=" + (1 << moduleID));
         return true;
     }
+
     public static boolean shouldReject(int moduleID) {
         return !canAccessModule(moduleID);
     }
 
+    public static boolean isAdmin() {
+        Object obj = getSession().getAttribute("obj");
+        return obj != null && obj instanceof TAdmin;
+    }
+
+    public static boolean thisModuleRequiresAdminButThisUserIsNot() {
+        if (!isAdmin()) {
+            getResponse().setStatus(403);
+            getResponse().setHeader("X-Access-Control", "Permission denied (user is not admin)");
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean thisModuleRequiresLoginButDidNot() {
+        Object obj = getSession().getAttribute("obj");
+        if (obj == null) {
+            getResponse().setStatus(403);
+            getResponse().setHeader("X-Access-Control", "Permission denied (user is not admin)");
+            return true;
+        }
+
+        return false;
+    }
 
 
     /**
