@@ -192,7 +192,17 @@
                     </Select>
                 </div>
 
-                <div  v-show="deduceInfo.type === 1"  style="margin-top: 5px; margin-left: 30px;">
+                <div style="margin: 5px">
+                    <span v-if="deduceInfo.type === 0">
+                        扣除年费成功后，将自动为客户续期一年的服务包（若客户年费账户余额足以扣除年费）。
+                    </span>
+                    <span v-if="deduceInfo.type === 1">
+                        扣除税金后，若税金账户为负数，将通知客户需要补交税金。
+                    </span>
+
+                </div>
+
+                <div  v-show="deduceInfo.type !== 3"  style="margin-top: 5px; margin-left: 30px;">
                     <span style="font-size: 14px; width: 100px; display:inline-block">
                         公司
                     </span>
@@ -485,6 +495,10 @@ export default {
                 await API.Customer.charge(this.cusData.uid, dst, { amount: this.chargeInfo.amount });
                 util.MessageBox.Show(this,'操作成功');
                 this.chargeDialogShouldShow = false;
+                this.chargeInfo = {
+                    type: 0,
+                    amount: 0,
+                };
             }
             catch(e) {
                 console.error(e);
@@ -504,12 +518,22 @@ export default {
             if (isNaN(Number(I.amount)) || I.amount <= 0) {
                 return util.MessageBox.Show(this,'请输入金额');
             }
+            console.log(I.credit);
+            if (I.credit.data)
+                I.credit = I.credit.data;
+
+            //debugger;
             try {
-                I.credit = I.data;
                 let dst = ['pack-balance','tax-balance','other-balance'][this.deduceInfo.type];
                 await API.Customer.deduction(this.cusData.uid, dst, util.forGetParams(I) );
                 util.MessageBox.Show(this,'操作成功');
                 this.shouldDeductionDialodOpen = !true;
+                this.deduceInfo = {
+                    type: 0,
+                    amount: 0,
+                    credit: '',
+                    cid: -1,
+                };
             }
             catch(e) {
                 console.error(e);

@@ -197,18 +197,8 @@ public final class Constant {
     [4567] - 1M-4.5M
      */
     public class SallyRange {
-        public static final int LESS_THAN_30K = 1 << 0;
-        public static final int BETWEEN_30K_AND_90K = 1 << 1;
-        public static final int BETWEEN_90K_AND_360K = 1 << 2;
-        public static final int BETWEEN_360K_AND_1M = 1 << 3;
-        public static final int BETWEEN_1M_AND_2M = 1 << 4;
-        public static final int BETWEEN_2M_AND_3M = 1 << 5;
-        public static final int BETWEEN_3M_AND_4M = 1 << 6;
-        public static final int BETWEEN_4M_AND_4500K = 1 << 7;
-
-        public static final int LESS_THAN_90K = LESS_THAN_30K | BETWEEN_30K_AND_90K;
-        public static final int BETWEEN_90K_AND_1M = BETWEEN_90K_AND_360K | BETWEEN_360K_AND_1M;
-        public static final int BETWEEN_1M_AND_4500K = BETWEEN_1M_AND_2M | BETWEEN_2M_AND_3M | BETWEEN_3M_AND_4M | BETWEEN_4M_AND_4500K;
+        public static final int LESS_THAN_360K = 1 << 1;
+        public static final int BETWEEN_360K_AND_1M = 1 << 2;
     }
 
     /// Alipay
@@ -253,6 +243,14 @@ public final class Constant {
         public static final int PACK = 0;
         public static final int TAX = 1;
         public static final int OTHER = 2;
+    }
+
+    public class YearlySaleAmountStatus {
+        public static final int UNDELECTED = 0; // 系统初始化该状态
+        public static final int SELECTED = 1;   // 用户手动选择
+        public static final int MODIFIED = 2;   // 用户修改
+        public static final int SHOULD_WITHDRAW = 3; // 后台请求撤回
+        public static final int SHOULD_COMPLEMENT = 4; // 后台修改金额
     }
 
 }

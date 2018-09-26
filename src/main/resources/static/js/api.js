@@ -17,16 +17,11 @@ async function __Miyuki_RequestGET(url) {
 }
 
 async function __Miyuki_RequestPOST(url, data) {
-    try {
-        let r = await $.ajax(url, data);
-        if (r.code  === 0) {
-            return r.data;
-        }
-        throw new Error(r.msg);
+    let r = await $.ajax(url, data);
+    if (r.code  === 0) {
+        return r.data;
     }
-    catch(err) {
-        throw new Error("和服务器之间的通讯发现错误");
-    }
+    throw new Error(r.msg);
 }
 
 async function __Miyuki_RequestDELETE(url, data) {

@@ -55,6 +55,7 @@
     import util from '../../../js/util.js';
     import PagedTable from '../../pagedTable.vue';
     import API from '../../../js/api.js';
+    import render from '../../../js/render.js';
     import init from '../../../js/init.js';
     import { taxaccounttips } from '../../../data/tips.js';
 
@@ -92,24 +93,32 @@
                     { title: '公司ID', key: 'cid' },
                     { title: '公司名称', key: 'name' },
                     { title: '当年有效税金预交率', key: 'preTaxRatio' },
-                    { title: '税金余额', key: 'sumAmount' },
+                    { title: '缴纳的税金', key: 'sumAmount' },
                 ]
             },
             columnsDetail() {
+                let self = this;
                 return [
                     { title: '序号', type: 'index' },
-                    { title: '公司ID', key: 'cid' },
+                    //{ title: '公司ID', key: 'cid' },
                     { title: '公司名称', key: 'name' },
                     { title: '税金异动流水号', key: 'id' },
-                    { title: '申请编号', key: 'rangeid' }, //年销售额范围管理里面申请的ID
-                    { title: '开票金额', key: 'receiptAmount' },
-                    { title: '税金预交率', key: 'preTaxRetio' },
+                    //{ title: '申请编号', key: 'rangeid' }, //年销售额范围管理里面申请的ID
+                    //{ title: '开票金额', key: 'receiptAmount' },
+                    //{ title: '税金预交率', key: 'preTaxRetio' },
                     { title: '异动金额', key: 'changeAmount', },
-                    { title: '税金收支', key: 'type' }, // 类型
-                    { title: '变更类型', key: 'changeType' }, // 年销售额预选的变更类型
-                    { title: '账户类型', key: 'accountType' }, // 充值的方式
-                    { title: '银行账户', key: 'bankAccount' }, // 充值的银行账户（现在没有）
-                    { title: '操作日期', key: 'tmOp' },
+                    { title: '税金收支', render: (h,p) => h('span', {}, p.row.type ===1 ? '支出':'收入') }, // 类型
+                    //{ title: '变更类型', key: 'changeType' }, // 年销售额预选的变更类型
+                    //{ title: '账户类型', key: 'accountType' }, // 充值的方式
+                    //{ title: '银行账户', key: 'bankAccount' }, // 充值的银行账户（现在没有）
+                    { title: '操作日期', render: (h,p)=>h('span',{},util.Date.toTimeStringFromTimestamp(p.row.tmOp)) },
+                    { title: "凭证", render: (h,p)=>h('div', [
+                        render.link(h, p, '查看凭证', function() {
+                            if (util.String.isNullOrEmpty(p.row.credit))
+                                return util.MessageBox.Show(self, "没有上传凭证");
+                            window.open('/res/avatar/' + p.row.credit);
+                        }) ])
+                    },
                 ]
             }
         }),

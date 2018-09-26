@@ -1,7 +1,10 @@
 package org.ruoxue.backend.bean;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +20,7 @@ public class TConfig extends Model<TConfig> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="name", type= IdType.AUTO)
 	private String name;
 	private String value;
 	private String friendlyname;

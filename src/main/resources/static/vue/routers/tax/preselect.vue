@@ -16,7 +16,7 @@
         <Divider />
         请选择预交年销售额范围:
         <Select v-model="selected">
-            <Option v-for="(e, i) in range" :key="i" :value="i">{{ e }}</Option>
+            <Option v-for="(e, i) in range" :key="i" :value="1 << (1 + i)">{{ e }}</Option>
         </Select>
         <div v-if="note[selected]">
             <p>

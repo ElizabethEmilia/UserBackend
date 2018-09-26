@@ -16,8 +16,8 @@
                     没有新通知
                 </div>
                 <div class="it" v-for="(e, i) in list" :key="i">
-                    <p style="font-size: 12px; color: gray">{{ toDateString(e.tm) }}</p>
-                    {{ e.uid !== -1 ? '用户':'管理员' }} {{ e.user_name }} {{ e.description }}
+                    <p style="font-size: 12px; color: gray">{{ e.user_name }} {{ toDateString(e.tm) }}</p>
+                    {{ e.description }}
                     <p>
                         <a href="javascript:void(0)" @click="processNotification(i, e.id)">标记为“已处理”</a>
                     </p>

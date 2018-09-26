@@ -64,10 +64,16 @@ public class TExpectedIncomeController {
         return expectedIncomeService.preSelect(cid, ysaRange);
     }
 
-    @ApiOperation("变更年销售额范围（选择小范围）")
+    @ApiOperation("变更年销售额范围（选择小范围）<< 最新更改：都是大范围")
     @RequestMapping(value = "/company/{cid}/sales/reselect", method = RequestMethod.POST)
     public @ResponseBody Object reselect(@PathVariable Integer cid, @RequestParam Integer ysaRange) {
-        return expectedIncomeService.reselect(cid, ysaRange);
+        return expectedIncomeService.preSelect(cid, ysaRange);
+    }
+
+    @ApiOperation("变更年销售额范围（选择小范围）")
+    @RequestMapping(value = "/company/{cid}/sales/complement", method = RequestMethod.POST)
+    public @ResponseBody Object complement(@PathVariable Integer cid) {
+        return expectedIncomeService.complement(cid);
     }
 
     @ApiOperation("撤回变更")

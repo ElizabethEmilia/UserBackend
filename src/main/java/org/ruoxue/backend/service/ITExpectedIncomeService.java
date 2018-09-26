@@ -29,6 +29,8 @@ public interface ITExpectedIncomeService extends IService<TExpectedIncome> {
 
     Object reselect(Integer cid, Integer ysaRange);
 
+    Object complement(Integer cid);
+
     Object withdraw(Integer cid);
 
 

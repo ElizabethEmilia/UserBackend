@@ -2,10 +2,12 @@ package org.ruoxue.backend.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.ruoxue.backend.bean.TPending;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +35,8 @@ public interface TPendingMapper extends BaseMapper<TPending> {
 
     @Delete("delete from t_pending where id = #{id}")
     Integer removeNoto(@Param("id") Integer id);
+
+    @Insert("insert into t_pending (uid, description, receiver, senderaid, tm) values(#{uid}, #{desc}, 0, -1, #{tm})")
+    Boolean sendNotificationToCustomer(@Param("uid") Integer uid, @Param("desc") String desc, @Param("tm") Date time);
 
 }

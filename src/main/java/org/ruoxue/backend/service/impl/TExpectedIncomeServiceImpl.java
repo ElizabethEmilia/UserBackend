@@ -2,14 +2,12 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.ruoxue.backend.bean.TCompany;
 import org.ruoxue.backend.bean.TCustomer;
 import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TExpectedIncome;
 import org.ruoxue.backend.common.constant.Constant;
-import org.ruoxue.backend.mapper.TCustomerMapper;
-import org.ruoxue.backend.mapper.TExchangeMapper;
-import org.ruoxue.backend.mapper.TExpectedIncomeMapper;
-import org.ruoxue.backend.mapper.TLogsMapper;
+import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITExpectedIncomeService;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
@@ -41,6 +39,9 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
     @Resource
     private TExchangeMapper exchangeMapper;
+
+    @Resource
+    private TCompanyMapper companyMapper;
 
     @Resource
     private TLogsMapper logsMapper;
@@ -188,9 +189,9 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         }
 
         Map<Integer, Double> map = new HashMap<Integer, Double>();
-        map.put(1, 0.03);
-        map.put(2, 0.06);
-        map.put(4, 0.07);
+        map.put(Constant.SallyRange.LESS_THAN_360K, 0.03);
+        map.put(Constant.SallyRange.BETWEEN_360K_AND_1M, 0.06);
+        //map.put(4, 0.07);
 
         Double preTaxRatio = map.get(ysaRange);
         if (ToolUtil.isEmpty(preTaxRatio)) {
@@ -198,6 +199,12 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         }
 
         TCustomer customer = (TCustomer) XunBinKit.getSession().getAttribute("obj");
+        TCompany company = companyMapper.getCompanyById(cid);
+        if (company == null) {
+            return ResultUtil.error(-10, "No such company (INTERNAL_ERR)");
+        }
+        company.setYsaStatus(Constant.YearlySaleAmountStatus.SELECTED);
+        company.updateById();
 
         TExpectedIncome expectedIncome = new TExpectedIncome();
         expectedIncome.setCid(cid);
@@ -221,10 +228,17 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-1, "参数错误");
         }
 
+        TCompany company = companyMapper.getCompanyById(cid);
+        if (company == null) {
+            return ResultUtil.error(-10, "No such company (INTERNAL_ERR)");
+        }
+        company.setYsaStatus(Constant.YearlySaleAmountStatus.MODIFIED);
+        company.updateById();
+
 //        查出最后一条记录
         TExpectedIncome expectedIncome = expectedIncomeMapper.getExpectLast(cid);
         expectedIncome.setOper(((TCustomer) XunBinKit.getSession().getAttribute("obj")).getName());
-        expectedIncome.setStatus(2);
+        expectedIncome.setStatus(Constant.YearlySaleAmountStatus.MODIFIED);
 
         if ((expectedIncome.getYsaRange() & ysaRange) == 0) {
             ResultUtil.error(-2, "跨档选择");
@@ -233,6 +247,38 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         boolean b = expectedIncome.insert();
 
         return XunBinKit.returnResult(b, -2, null, "添加成功", "添加失败");
+    }
+
+    @Override
+    public Object complement(Integer cid) {
+        if(ToolUtil.isEmpty(cid)) {
+            return ResultUtil.error(-1, "参数错误");
+        }
+
+        //        查出最后一条记录
+        TExpectedIncome expectedIncome = expectedIncomeMapper.getExpectLast(cid);
+        TCustomer customer = customerMapper.getTCustomerByUid(XunBinKit.getUid());
+        TCompany company = companyMapper.getCompanyById(cid);
+
+        if (customer == null) {
+            return ResultUtil.error(-7, "内部错误：No such uid");
+        }
+
+        if (!company.getYsaStatus().equals(Constant.YearlySaleAmountStatus.SHOULD_COMPLEMENT))
+            return ResultUtil.error(-11, "此公司无需补交税金。");
+
+        if (customer.getTaxBalance() >= 0) {
+            // 如果税金账户余额大于0，说明已经补交，就改状态
+            expectedIncome.setStatus(Constant.YearlySaleAmountStatus.SELECTED);
+            expectedIncome.setId(null);
+            expectedIncome.insert();
+            return ResultUtil.success("系统已确认您的补交。");
+        }
+
+        return ResultUtil.error(-10,"您的税金账户余额小于0，" +
+                "需要补交税金" + (-customer.getTaxBalance()) + "元，" +
+                "请前往“账号信息->在线充值”，在税金账户中充入足够的余额。" +
+                "充值完成后，前往本页面再行操作。");
     }
 
     @Override

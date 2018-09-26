@@ -129,6 +129,7 @@
                 try {
                     await API.Tax.PreSelect.preSelect(this.selectedCompany.id, this.selectedCompany.ysaRange);
                     util.MessageBox.Show(this, "操作成功");
+                    this.company[this.selected].ysaStatus = Integer.ExpectedSalesStatus.Selected;
                     this.$refs.dt.refresh();
                 }
                 catch (err) {
@@ -144,6 +145,7 @@
                 try {
                     await API.Tax.PreSelect.reselect(this.selectedCompany.id, this.selectedCompany.ysaRange);
                     util.MessageBox.Show(this, "操作成功");
+                    this.company[this.selected].ysaStatus = Integer.ExpectedSalesStatus.Modified;
                     this.$refs.dt.refresh();
                 }
                 catch (err) {
@@ -177,18 +179,15 @@
                     return util.MessageBox.Show(this, "请选择公司");
                 }
 
-                if (this.selectedCompany.ysaStatus !== Integer.ExpectedSalesStatus.ShouldComplement) {
-                    return util.MessageBox.Show(this, "您的公司无需补交税金预交差额");
-                }
-
                 try {
-                    await API.Tax.PreSelect.complement(this.selectedCompany.id);
-                    util.MessageBox.Show(this, "操作成功");
+                    let msg = await API.Tax.PreSelect.complement(this.selectedCompany.id);
+                    util.MessageBox.Show(this, msg);
                     this.$refs.dt.refresh();
+                    this.company[this.selected].ysaStatus = Integer.ExpectedSalesStatus.Selected;
                 }
                 catch (e) {
                     console.error(e);
-                    util.MessageBox.Show(this, "操作失败, " + e.message);
+                    util.MessageBox.Show(this, "" + e.message);
                 }
 
             },

@@ -47,9 +47,14 @@ public class TPendingServiceImpl extends ServiceImpl<TPendingMapper, TPending> i
             return ResultUtil.error(-1, "用户未登录");
         }
 
-        List<Map<String, Object>> list = pendingMapper.getNotificationByUid(uid, 0, 0, null);
+        List<Map<String, Object>> list = pendingMapper.getNotificationByUid(uid, 0, 0, 0);
 
-        list = dealList(uid, list);
+        //System.out.println("[noti]" + list.size());
+
+        list.forEach(e -> {
+            e.put("user_name", "系统");
+            e.put("tm", ((Date)e.get("tm")).);
+        });
 
         return ResultUtil.success(list);
     }

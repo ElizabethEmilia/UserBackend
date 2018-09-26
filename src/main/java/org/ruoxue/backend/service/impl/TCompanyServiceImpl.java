@@ -204,6 +204,7 @@ public class TCompanyServiceImpl extends ServiceImpl<TCompanyMapper, TCompany> i
         company.setVaTaxRatio(va_tax_ratio);
         company.setVatType(vat_type);
         company.setYsaRange(0);
+        company.setYsaStatus(Constant.YearlySaleAmountStatus.UNDELECTED);
         company.setVatrFreq(vatr_freq);
         company.setEntOrgType(ent_org_type);
         company.setName(name);
