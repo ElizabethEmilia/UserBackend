@@ -76,7 +76,7 @@
         methods: {
             async loadTemplate(name) {
                 try {
-                    this.editHTML = this.initHTML = await API.Setting.get(name);
+                    this.editHTML = this.initHTML = decodeURIComponent( await API.Setting.get(name) );
                 }
                 catch(e) {
                     console.error(e);
@@ -85,7 +85,7 @@
             },
             async saveTemplate(name) {
                 try {
-                    await API.Setting.set(name, this.editHTML);
+                    await API.Setting.set(name, encodeURIComponent(this.editHTML));
                     this.initHTML = this.editHTML;
                     this.$Notice.open({
                         title: '已保存',

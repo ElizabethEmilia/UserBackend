@@ -114,6 +114,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
 //        获取参数
         String type = jsonObject.getString("type");
+        String name = jsonObject.getString("note");
         Double amount = jsonObject.getDouble("amount");
 
         /// TODO: 增加订单名称
@@ -123,6 +124,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         order.setCid(cid);
         order.setAmount(amount);
         order.setRunning("");
+        order.setNote(name);
         order.setTmPaid(new Date());
         order.setType(type);
         order.setStatus(Constant.PaymentStatus.PAIED);

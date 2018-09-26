@@ -146,8 +146,17 @@ public class UIController extends BaseController {
     @GetMapping("/terms")
     @ResponseBody
     public String showTerms() {
-        String config = configMapper.getConfigByName("template_terms");
-        return config;
+        String template = configMapper.getConfigByName("template_terms");
+
+        try {
+            template = java.net.URLDecoder.decode(template, "UTF-8");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " +  e.getMessage();
+        }
+
+        return template;
     }
 
     // 合同
@@ -156,9 +165,19 @@ public class UIController extends BaseController {
     public String showAgreement(@PathVariable("id") Integer id) {
         String template = configMapper.getConfigByName("template_license");
 
+        try {
+            template = java.net.URLDecoder.decode(template, "UTF-8");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " +  e.getMessage();
+        }
+
         Map<String, Object> data = orderMapper.getDetailedOrderInfo(id);
         if (data == null)
             return "No such order ID="+id;
+
+        /// TODO: 取消这里uid判断的注释
         if (false && !data.get("uid").equals(XunBinKit.getUid())) {
             return "This is not your order";
         }

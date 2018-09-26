@@ -32,7 +32,7 @@ public class TOrder extends Model<TOrder> {
 	private Date tmCreate;
 	@TableField("tm_paid")
 	private Date tmPaid;
-	private Long running;
+	private String running;
 	private String note;
 
 
@@ -92,11 +92,11 @@ public class TOrder extends Model<TOrder> {
 		this.tmPaid = tmPaid;
 	}
 
-	public Long getRunning() {
+	public String getRunning() {
 		return running;
 	}
 
-	public void setRunning(Long running) {
+	public void setRunning(String running) {
 		this.running = running;
 	}
 

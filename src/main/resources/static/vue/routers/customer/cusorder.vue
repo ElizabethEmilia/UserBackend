@@ -96,10 +96,10 @@
                 { title: '公司ID', key: 'cid'  },
                 { title: '公司名称', key: 'cname'  },
                 { title: '订单金额', key: 'amount'  },
-                { title: '支付方式', key: 'paymethod'  },
+                { title: '支付方式',width: 160, render: (h,p) => h('span', {}, paymentMethod[p.row.paymethod])  }, // key: paymethod
                 { title: '订单名称', key: 'note'  },
-                { title: '下单时间', key: 'tm'  }, 
-                { title: '支付时间', key: 'tmPaid'  },
+                { title: '下单时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tm)))  },
+                { title: '支付时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmPaid)))  },
                 { 
                 title: '操作', 
                 key: 'action', 
@@ -111,10 +111,10 @@
                             },
                             on: {
                                 click() {
-                                    console.log('打印合同 index: ' + params.index);
+                                    window.open('/order/agreement/' + params.row.id);
                                 }
                             }
-                        }, '打印合同'),
+                        }, '查看合同'),
                     ]);
                 }
             }
