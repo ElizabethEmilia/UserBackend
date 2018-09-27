@@ -1,12 +1,13 @@
 package org.ruoxue.backend.bean;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author fengjb
- * @since 2018-09-22
+ * @since 2018-09-28
  */
 @TableName("t_receipt")
 public class TReceipt extends Model<TReceipt> {
@@ -44,6 +45,10 @@ public class TReceipt extends Model<TReceipt> {
      * 寄发票的地址
      */
 	private String address;
+	private String credit;
+	private String agname;
+	private String agtaxno;
+	private Date agdate;
 
 
 	public Integer getId() {
@@ -150,6 +155,38 @@ public class TReceipt extends Model<TReceipt> {
 		this.address = address;
 	}
 
+	public String getCredit() {
+		return credit;
+	}
+
+	public void setCredit(String credit) {
+		this.credit = credit;
+	}
+
+	public String getAgname() {
+		return agname;
+	}
+
+	public void setAgname(String agname) {
+		this.agname = agname;
+	}
+
+	public String getAgtaxno() {
+		return agtaxno;
+	}
+
+	public void setAgtaxno(String agtaxno) {
+		this.agtaxno = agtaxno;
+	}
+
+	public Date getAgdate() {
+		return agdate;
+	}
+
+	public void setAgdate(Date agdate) {
+		this.agdate = agdate;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -171,6 +208,10 @@ public class TReceipt extends Model<TReceipt> {
 			", tmSubmit=" + tmSubmit +
 			", tmVallidate=" + tmVallidate +
 			", address=" + address +
+			", credit=" + credit +
+			", agname=" + agname +
+			", agtaxno=" + agtaxno +
+			", agdate=" + agdate +
 			"}";
 	}
 }
