@@ -62,6 +62,8 @@ export default {
                 //{title:"公司ID",key:"cid", width: 70},
                 {title:"申请公司",key:"cid", width: 250},
                 {title:"客户名称",key:"cusName", width: 250},
+                {title:"合同名称",key:"agname", width: 250},
+                {title:"纳税人识别号",key:"agtaxno", width: 250},
                 {title:"开票金额（含税）",key:"recAmount", width: 140},
                 {title:"税金预交率",width: 140,render:(h,p)=>h('span',{},""+(self.d[p.index].pretaxRatio*100)+"%")},
                 {title:"预交税金",key:"pretax", width: 140},
@@ -70,7 +72,10 @@ export default {
                 {title:"驳回原因",key:"reason", width: 210},
                 {title:"提交时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmSubmit)))},
                 {title:"确认时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmValidate)))},
-                { 
+                {title:"合同", width: 150, render:(h,p)=>h('span', {}, render.link(h,p,'查看合同', function() {
+                        window.open('/res/avatar/' + p.row.credit);
+                    }))},
+                {
                     title: '操作', 
                     width: 200,
                     render: (h, p) => h('div', receiptSM.render(self.d[p.index].status, h, p, self, "/api/customer/_/receipt",

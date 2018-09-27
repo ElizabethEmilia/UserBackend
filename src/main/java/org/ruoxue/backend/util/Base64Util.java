@@ -5,6 +5,7 @@ import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -56,7 +57,7 @@ public class Base64Util {
             return "";
         }
         try  {
-            Pattern P = Pattern.compile("^data:(\\w+)\\/(\\w+);(\\w+),");
+            Pattern P = Pattern.compile("^data:(\\w+)\\/([\\w\\.\\-]+);(\\w+),");
             Matcher M = P.matcher(imgStr);
 
             // Not a base64 URI
@@ -67,11 +68,23 @@ public class Base64Util {
             String fileType =  M.group(1);
             String extension = M.group(2);
 
-            if (!fileType.equals("image")) {
+            if (fileType.equals("application")) {
+                HashMap<String, String> exts = new HashMap<String, String>();
+                exts.put("x-zip-compressed", "zip");
+                exts.put("msword", "doc");
+                exts.put("pdf", "pdf");
+                exts.put("octet-stream", "rar");
+                exts.put("vnd.openxmlformats-officedocument.wordprocessingml.document", "docx");
+
+                extension = exts.get(extension);
+                if (extension == null)
+                    return "";
+            }
+            else if (!fileType.equals("image")) {
                 return "";
             }
 
-            imgStr = imgStr.replaceAll("^data:(\\w+)\\/(\\w+);(\\w+),", "").replaceAll(" ","+");
+            imgStr = imgStr.replaceAll("^data:(\\w+)\\/([\\w\\.\\-]+);(\\w+),", "").replaceAll(" ","+");
             //System.out.println(imgStr);
             //byte[] data = Base64.decodeBase64(imgStr);
             String imgFilePath = "" + (new Date().getTime()) + (int)(Math.random() * 1000) + "." + extension;//新生成的图片

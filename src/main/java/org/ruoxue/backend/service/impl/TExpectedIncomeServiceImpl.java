@@ -204,6 +204,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-10, "No such company (INTERNAL_ERR)");
         }
         company.setYsaStatus(Constant.YearlySaleAmountStatus.SELECTED);
+        company.setPreTaxRatio(preTaxRatio);
         company.updateById();
 
         TExpectedIncome expectedIncome = new TExpectedIncome();
@@ -223,7 +224,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
     @Override
     public Object reselect(Integer cid, Integer ysaRange) {
-
+        // 不再使用
         if(ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(ysaRange)) {
             return ResultUtil.error(-1, "参数错误");
         }
@@ -233,6 +234,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-10, "No such company (INTERNAL_ERR)");
         }
         company.setYsaStatus(Constant.YearlySaleAmountStatus.MODIFIED);
+        //company.setPreTaxRatio(preTaxRatio);
         company.updateById();
 
 //        查出最后一条记录

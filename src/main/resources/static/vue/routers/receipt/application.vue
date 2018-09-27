@@ -72,13 +72,33 @@
                 <span class="title-before-input"> <i class="required" />送达地址 </span>
                 <Input v-model="applicationData.address" placeholder="" clearable style="width: 200px" />
             </div>
+            <div style="margin-bottom: 5px;">
+                <span class="title-before-input"> <i class="required" />合同名称 </span>
+                <Input v-model="applicationData.agname" placeholder="" clearable style="width: 200px" />
+            </div>
+            <div style="margin-bottom: 5px;">
+                <span class="title-before-input"> <i class="required" />纳税人识别号 </span>
+                <Input v-model="applicationData.agtaxno" placeholder="" clearable style="width: 200px" />
+            </div>
             <p>若自取，请在送达地址栏<a href="javascript:void(0)" @click="applicationData.address='自取'">填入“自取”</a></p>
             <div style="margin-bottom: 5px;">
                 <span class="title-before-input"> 预交税金 </span>
                 ￥{{ applicationCompanyInfo.preTaxRatio*applicationData.recAmount }}
             </div>
+            <div  style="margin-top: 20px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+                        真实的合同
+                    </span>
+
+                <div style="position: relative">
+                    <UploadFile v-model="applicationData.credit" title="上传合同文件"/>
+                </div>
+                <p>
+                    多个文件请打包成zip或rar压缩包上传。
+                </p>
+            </div>
             <div slot="footer" style="text-align: right">
-                <Button type="primary" @click="submit">确定</Button>
+                <Button type="primary" @click="submit" :loading="uploading">确定</Button>
                 <Button type="default" @click="shouldOpenDialogEdit = false">取消</Button>
             </div>
         </Modal>
@@ -93,7 +113,9 @@ import companyVue from '../company.vue';
 import receiptstate from './receipt_s.js';
 import NewApplicationDialog from './dialog/new.vue';
 import API from '../../../js/api.js';
+import render from '../../../js/render.js';
 import MoneyInput from '../../components/moneyinput.vue';
+import UploadFile from '../../components/uploadfile.vue';
 
 let adinit = {
     "cid": -1,
@@ -101,11 +123,14 @@ let adinit = {
     "cusName": "",
     "recAmount": 0,
     "address": "",
+    "credit": '',
+    agname: '',
+    agtaxno: '',
 };
     
 export default {
     components: {
-        PagedTable, NewApplicationDialog, MoneyInput,
+        PagedTable, NewApplicationDialog, MoneyInput, UploadFile,
     },
     props: [ 'cid' ],
     data: () => ({
@@ -121,6 +146,8 @@ export default {
                 //{title:"公司ID",key:"cid", width: 70},
                 {title:"申请公司",key:"cid", width: 250},
                 {title:"客户名称",key:"cusName", width: 250},
+                {title:"合同名称",key:"agname", width: 250},
+                {title:"纳税人识别号",key:"agtaxno", width: 250},
                 {title:"开票金额（含税）",key:"recAmount", width: 140},
                 {title:"税金预交率",width: 140,render:(h,p)=>h('span',{},""+(self.d[p.index].pretaxRatio*100)+"%")},
                 {title:"预交税金",key:"pretax", width: 140},
@@ -129,7 +156,10 @@ export default {
                 {title:"驳回原因",key:"reason", width: 210},
                 {title:"提交时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmSubmit)))},
                 {title:"确认时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmValidate)))},
-                { 
+                {title:"合同", width: 150, render:(h,p)=>h('span', {}, render.link(h,p,'查看合同', function() {
+                    window.open('/res/avatar/' + p.row.credit);
+                    }))},
+                {
                     title: '操作',
                     width: 200,
                     render: (h, p) => h('div', util.State.render(self.d[p.index].status, h, p, self, "/api/receipt",receiptstate.receiptStateMap, receiptstate.receiptActionName)),
@@ -158,6 +188,8 @@ export default {
         receiptTyString: '',
         applicationCompanyInfo: {},
         applicationData: adinit,
+
+        uploading: false,
 
     }),
     methods: {
@@ -209,6 +241,7 @@ export default {
             }
         },
         async submit() {
+            this.uploading = true;
             try {
                 this.applicationData.cid = this.selectedNew.cid;
                 this.applicationData.ty = this.selectedNew.ty;
@@ -221,15 +254,26 @@ export default {
                     return util.MessageBox.Show(this, "请输入金额");
                 if (util.String.isNullOrEmpty(d.address))
                     return util.MessageBox.Show(this, "请输入送达地址，若自取，填写“自取”");
+                if (util.isNullOrUndefined(d.credit.data))
+                    return util.MessageBox.Show(this, "必须上传合同作为附件");
+                d.credit = d.credit.data;
+                if (util.String.isNullOrEmpty(d.agname))
+                    return util.MessageBox.Show(this, "请输入合同名称");
+                if (util.String.isNullOrEmpty(d.agtaxno))
+                    return util.MessageBox.Show(this, "请输入纳税人识别号");
 
                 await API.Receipt.newApplication(d);
                 util.MessageBox.Show(this, "申请成功");
                 this.$refs.dt.refresh();
                 this.shouldOpenDialogEdit = false;
+                this.uploading = !true;
+
             }
             catch(e) {
                 console.error(e);
                 util.MessageBox.Show(this, "申请失败, " + e.message);
+                this.uploading = !true;
+
             }
         },
     },
