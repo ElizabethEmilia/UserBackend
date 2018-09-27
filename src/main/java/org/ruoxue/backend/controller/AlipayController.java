@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.bean.TOrder;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.config.AlipayConfig;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TExchangeMapper;
 import org.ruoxue.backend.mapper.TOrderMapper;
@@ -18,6 +19,7 @@ import org.ruoxue.backend.util.LoopAction;
 import org.ruoxue.backend.util.PaymentResultUtil;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.*;
+import static org.ruoxue.backend.config.AlipayConfig.*;
 
 @RestController
 @RequestMapping("/api/pay/alipay/")
@@ -46,13 +47,59 @@ public class AlipayController {
     @Resource
     private TCustomerMapper customerMapper;
 
-//    添加事务管理(保证五性)
+    @Value("${alipay.appid}")
+    public String APP_ID;
+
+    @Value("${alipay.gateway}")
+    public String GATEWAY;
+
+    @Value("${alipay.app-private-key}")
+    public String APP_PRIVATE_KEY;
+
+    public String FORMAT = "json";
+
+    public String CHARSET = "UTF-8";
+
+    @Value("${alipay.app-public-key}")
+    public String ALIPAY_PUBLIC_KEY ;
+
+    @Value("${alipay.sign-type}")
+    public String SIGN_TYPE;
+
+    @Value("${alipay.provider-id}")
+    public String PROVIDER_ID;
+
+    @Value("${alipay.return-url}")
+    public String RETURN_URL;
+
+    @Value("${alipay.notify-url}")
+    public String NOTOFY_URL;
+
+    void assign() {
+        if (AlipayConfig.APP_ID != null)
+            return;
+        System.out.println("Assign APP_ID=" + APP_ID);
+        AlipayConfig.APP_ID = APP_ID;
+        AlipayConfig.GATEWAY = GATEWAY;
+        AlipayConfig.APP_PRIVATE_KEY = APP_PRIVATE_KEY;
+        AlipayConfig.FORMAT = FORMAT;
+        AlipayConfig.CHARSET = CHARSET;
+        AlipayConfig.ALIPAY_PUBLIC_KEY = ALIPAY_PUBLIC_KEY;
+        AlipayConfig.SIGN_TYPE = SIGN_TYPE;
+        AlipayConfig.PROVIDER_ID = PROVIDER_ID;
+        AlipayConfig.RETURN_URL = RETURN_URL;
+        AlipayConfig.NOTOFY_URL = NOTOFY_URL;
+    }
+
+
+    //    添加事务管理(保证五性)
     @Transactional
     @RequestMapping("start")
     public void startPayment(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
                              @RequestParam("dst") Integer dst,
                              @RequestParam(required = false) Integer itemid, @RequestParam(required = false) String name, @RequestParam(required = false) Double amount) {
-//        调用service层
+        assign();
+        //        调用service层
         alipayService.startPayment(httpRequest, httpResponse, amount, dst);
 
     }
@@ -71,12 +118,14 @@ public class AlipayController {
                                        HttpServletRequest request,
                                        HttpServletResponse response) throws IOException {
 
+        assign();
+
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         try {
             // 避免其他人来自非本站的请作为回调
-            if (!seller_id.equals(Constant.AlipayConfig.PROVIDER_ID)) {
+            if (!seller_id.equals(AlipayConfig.PROVIDER_ID)) {
                 response.setStatus(403);
                 return;
             }
@@ -96,10 +145,13 @@ public class AlipayController {
 
     @PostMapping("notify")
     public void notifyQuery(@RequestParam HashMap<String, String> params, HttpServletResponse response) {
+
+        assign();
+
         Map<String, String> paramsMap = params;
         System.err.println("[AlipayController] 接收到支付宝的异步通知");
         try {
-            boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap, Constant.AlipayConfig.ALIPAY_PUBLIC_KEY, CHARSET, Constant.AlipayConfig.SIGN_TYPE); //调用SDK验证签名
+            boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap, AlipayConfig.ALIPAY_PUBLIC_KEY, CHARSET, AlipayConfig.SIGN_TYPE); //调用SDK验证签名
             if(signVerified){
                 System.err.println("[AlipayController] 延签成功");
                 // 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，
@@ -131,6 +183,9 @@ public class AlipayController {
     @ApiOperation("付款信息查询")
     @RequestMapping("/query")
     public @ResponseBody Object queryOrder(@RequestParam Integer orderID) {
+
+        assign();
+
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
 

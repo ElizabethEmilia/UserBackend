@@ -17,7 +17,24 @@
 	</resultMap>
 
 	<select id="listExchange" resultType="java.util.Map">
-		(select *, '' as cname from t_exchange where cid is NULL and uid=#{uid})
+		(select *, '' as cname from t_exchange where cid is NULL and uid=#{uid}
+		<if test="type != null">
+			and type = #{type}
+		</if>
+		<if test="cid != null and cid != ''">
+			and cid = #{cid}
+		</if>
+		<if test="start != null and start != ''">
+			<![CDATA[
+				and tm > #{start}
+			]]>
+		</if>
+		<if test="end != null and end != ''">
+			<![CDATA[
+				and tm < #{end}
+			]]>
+		</if>
+		)
 		union
 		(select a.*, b.name cname from t_exchange a, t_company b
 		where b.uid = #{uid} and a.cid = b.id

@@ -5,6 +5,7 @@ import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import org.ruoxue.backend.bean.TExchange;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.config.WxPayConfig;
 import org.ruoxue.backend.config.wxpay.WePayConfig;
 import org.ruoxue.backend.mapper.TCustomerMapper;
 import org.ruoxue.backend.mapper.TExchangeMapper;
@@ -14,6 +15,7 @@ import org.ruoxue.backend.util.LoopAction;
 import org.ruoxue.backend.util.ResultUtil;
 import org.ruoxue.backend.util.ToolUtil;
 import org.ruoxue.backend.util.XunBinKit;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,9 +44,42 @@ public class WepayController {
     @Resource
     private TExchangeMapper exchangeMapper;
 
+    @Value("${wxpay.appid}")
+    public String APP_ID;
+
+    @Value("${wxpay.mchid}")
+    public String MCH_ID;
+
+    @Value("${wxpay.key}")
+    public String KEY;
+
+    @Value("${wxpay.cert-path}")
+    public String CERT_PATH;
+
+    @Value("${wxpay.configured}")
+    public Boolean WX_CONFIGURED;
+
+    @Value("${wxpay.notify-url}")
+    public String NOTIFY_URL;
+
+    void assign() {
+        if (WxPayConfig.APP_ID != null) {
+            return;
+        }
+
+        WxPayConfig.APP_ID = APP_ID;
+        WxPayConfig.MCH_ID = MCH_ID;
+        WxPayConfig.KEY = KEY;
+        WxPayConfig.CERT_PATH = CERT_PATH;
+        WxPayConfig.WX_CONFIGURED = WX_CONFIGURED;
+        WxPayConfig.NOTIFY_URL = NOTIFY_URL;
+    }
+
     @RequestMapping("start")
     public Object start(@RequestParam Integer amount, HttpServletRequest request, HttpServletResponse response) {
-        if (!Constant.WxPayConfig.WX_CONFIGURED) {
+        assign();
+
+        if (!WxPayConfig.WX_CONFIGURED) {
             return ResultUtil.error(-1, "服务器端未配置微信支付");
         }
 
@@ -55,7 +90,8 @@ public class WepayController {
             exchange.setPaymethod(Constant.PaymentMethod.ONLINE_WECHAT);
             exchange.setCid(-1);
             exchange.setState(Constant.ExchangeStatus.UNPAIED);
-            Integer orderID = exchangeMapper.insertReturnsID(exchange);
+            exchangeMapper.insertReturnsID(exchange);
+            Integer orderID = exchangeMapper.getLastID();
 
             WePayConfig config = new WePayConfig();
             WXPay wxpay = new WXPay(config, WXPayConstants.SignType.MD5, true);
@@ -65,9 +101,9 @@ public class WepayController {
             data.put("out_trade_no", orderID.toString());
             data.put("device_info", "");
             data.put("fee_type", "CNY");
-            data.put("total_fee", "1.00");
+            data.put("total_fee", "" + amount);
             data.put("spbill_create_ip", request.getRemoteAddr());
-            data.put("notify_url", Constant.WxPayConfig.NOTIFY_URL);
+            data.put("notify_url", WxPayConfig.NOTIFY_URL);
             data.put("trade_type", "NATIVE");  // 此处指定为扫码支付
             data.put("product_id", "0"+ amount);
 
@@ -101,6 +137,7 @@ public class WepayController {
     }
 
     public boolean processWxLogic(Map<String, String> notifyMap) {
+        assign();
         try {
             WePayConfig config = new WePayConfig();
             WXPay wxpay = new WXPay(config);
@@ -112,7 +149,7 @@ public class WepayController {
 
                 // 确认是否有该订单, 该订单是否属于该用户
                 TExchange exchange = exchangeMapper.getEntityByID(orderid);
-                if (ToolUtil.isEmpty(exchange) || exchange.getUid() != XunBinKit.getUid()) {
+                if (ToolUtil.isEmpty(exchange) || !exchange.getUid().equals( XunBinKit.getUid() )) {
                     /// TODO: 添加log  应该不会出现这种情况
                     return false;
                 }
@@ -150,6 +187,7 @@ public class WepayController {
 
     @RequestMapping("notify")
     public String notify(@RequestParam String notifyData) {
+        assign();
         try {
             WePayConfig config = new WePayConfig();
             WXPay wxpay = new WXPay(config);
@@ -165,6 +203,7 @@ public class WepayController {
 
     @RequestMapping("get-result")
     public Object getResult() {
+        assign();
         if (null == XunBinKit.getUid())
             return ResultUtil.error(-1, "用户未登录");
         TExchange exchange = exchangeMapper.getLastTransaction();
@@ -178,13 +217,14 @@ public class WepayController {
 
     @RequestMapping("query")
     public Object query(@RequestParam("eid") Integer orderid) {
+        assign();
         try {
             WePayConfig config = new WePayConfig();
             WXPay wxpay = new WXPay(config);
 
             // 确认是否有该订单, 该订单是否属于该用户
             TExchange exchange = exchangeMapper.getEntityByID(orderid);
-            if (ToolUtil.isEmpty(exchange) || exchange.getUid() != XunBinKit.getUid()) {
+            if (ToolUtil.isEmpty(exchange) || !exchange.getUid().equals( XunBinKit.getUid() )) {
                 /// TODO: 添加log  应该不会出现这种情况
                 return ResultUtil.error(-1, "该订单不存在");
             }

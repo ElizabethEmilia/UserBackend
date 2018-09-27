@@ -181,6 +181,7 @@
 
                 try {
                     let msg = await API.Tax.PreSelect.complement(this.selectedCompany.id);
+                    console.log(msg);
                     util.MessageBox.Show(this, msg);
                     this.$refs.dt.refresh();
                     this.company[this.selected].ysaStatus = Integer.ExpectedSalesStatus.Selected;

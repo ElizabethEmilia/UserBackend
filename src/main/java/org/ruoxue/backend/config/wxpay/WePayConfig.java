@@ -2,6 +2,7 @@ package org.ruoxue.backend.config.wxpay;
 
 import com.github.wxpay.sdk.WXPayConfig;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.config.WxPayConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -13,7 +14,7 @@ public class WePayConfig implements WXPayConfig {
     private byte[] certData;
 
     public WePayConfig() throws Exception {
-        String certPath = Constant.WxPayConfig.CERT_PATH;
+        String certPath = WxPayConfig.CERT_PATH;
         File file = new File(certPath);
         InputStream certStream = new FileInputStream(file);
         this.certData = new byte[(int) file.length()];
@@ -22,15 +23,15 @@ public class WePayConfig implements WXPayConfig {
     }
 
     public String getAppID() {
-        return Constant.WxPayConfig.APP_ID;
+        return WxPayConfig.APP_ID;
     }
 
     public String getMchID() {
-        return Constant.WxPayConfig.MCH_ID;
+        return WxPayConfig.MCH_ID;
     }
 
     public String getKey() {
-        return Constant.WxPayConfig.KEY;
+        return WxPayConfig.KEY;
     }
 
     public InputStream getCertStream() {

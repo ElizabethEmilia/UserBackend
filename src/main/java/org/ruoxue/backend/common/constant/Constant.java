@@ -201,31 +201,6 @@ public final class Constant {
         public static final int BETWEEN_360K_AND_1M = 1 << 2;
     }
 
-    /// Alipay
-    public class AlipayConfig {
-        public static final String APP_ID="2016091600524572";
-        public static final String GATEWAY = "https://openapi.alipaydev.com/gateway.do";
-        public static final String APP_PRIVATE_KEY="MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAKXFF9vYoKo421HyTo5Z1kJPv3cY65wWlyYgpCm4Jut1q12O2Q/snRgGnSEKkw20g8L3BJ1tWqFG4Dzl9SKAXCW8aQJy7TEPpr1Y3kz93paBak+Ey/uk5uVQD53cposE/aC5q+nW2NyYX/woUkl6mALK8np9QOlhiC3HI7/cZ287AgMBAAECgYBLzm/0t4HxlgKl3NsTuf2DYZi7TAgi3ynL481uzqntr2foZvTYlWnZnNyqSX2qHMzMkc3oeCOj8ReGgdqyJmT8lfAQB41vjsepxE2WPYJA3mqBK9pRRMMwhP+k/uXlAjpQnK06av/OJne94MdUrBMStKZ5zew5FaT1l3uEZsP7MQJBAPHRXiiruKEy7QuAJom1spvIYMMK1u8yeq/Q/I2SDOAxd4/vhdUUtOOhGGFztIBJSd6qqXIy2Ew2+3RCY1hhv/UCQQCvffK1MABZEfhqR2yXG96CiPoQMLmRgBhZWH61rW1iL2kDfJuPsjUUjWDKkPmj6sr3PPtJs2loSuYx3XNAc+RvAkAE04TpkuPQc8+/VwNt5C54ZXto6SJ5C6zfLXCc8rlHEDWurb0iD5O8p05xQ3nqxYuv4gAXw2QFwWMrYtfQv8KxAkAIyzLiSWl7DR95k+KpH8himiKNtSNXWyfdMkYHLI2SofWNKy1QYgmu4fa7r9ASmq1Y/kFJTCg4BajLTuF7lVMZAkBZe6pP9dXfu5aILAaQwql4GLL/sXxlYSXRiBzQrNuoNVKic3rqWXW4CI7T2fA6kBWfdtijjaep4WUBLKHvMLae";
-        public static final String FORMAT = "json";
-        public static final String CHARSET = "UTF-8";
-        public static final String ALIPAY_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6BFRJ0GqgS2Y3mn1wMQmyh9zEyWlz5p1zrahRahbXAfCfSqshSNfqOmAQzSHRVjCqjsAw1jyqrXaPdKBmr90DIpIxmIyKXv4GGAkPyJ/6FTFY99uhpiq0qadD/uSzQsefWo0aTvP/65zi3eof7TcZ32oWpwIDAQAB";
-        public static final String SIGN_TYPE = "RSA";
-        public static final String PROVIDER_ID = "2088102175886961";
-
-        public static final String RETURN_URL = "http://ruoxue.natapp1.cc/api/pay/alipay/finish";
-        public static final String NOTOFY_URL = "http://ruoxue.natapp1.cc/api/pay/alipay/notify";
-
-    }
-
-    public class WxPayConfig {
-        public static final String APP_ID = "<undefined>";
-        public static final String MCH_ID = "<undefined>";
-        public static final String KEY = "<undefined>";
-        public static final String CERT_PATH = "<undefined>";
-        public static final boolean WX_CONFIGURED = false;
-        public static final String NOTIFY_URL = "http://ruoxue.org:8070/api/pay/wepay/notify";
-    }
-
     public class LogUsers {
         public static final int SYSTEM = -1;
     }

@@ -53,7 +53,7 @@ public class TPendingServiceImpl extends ServiceImpl<TPendingMapper, TPending> i
 
         list.forEach(e -> {
             e.put("user_name", "系统");
-            e.put("tm", ((Date)e.get("tm")).);
+            e.put("tm", ((Date)e.get("tm")).getTime());
         });
 
         return ResultUtil.success(list);

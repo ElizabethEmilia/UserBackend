@@ -4,14 +4,15 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import org.ruoxue.backend.common.constant.Constant;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.net.URLEncoder;
 
-import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.*;
-import static org.ruoxue.backend.common.constant.Constant.AlipayConfig.CHARSET;
+import static org.ruoxue.backend.config.AlipayConfig.*;
+import static org.ruoxue.backend.config.AlipayConfig.CHARSET;
 
 public class AlipayUtil {
 

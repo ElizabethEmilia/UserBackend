@@ -122,8 +122,8 @@
                                 <Col span="12" style="text-align: center; padding-top: 13px;">
                                     <Card :bordered="false" dis-hover>
                                         
-                                        余额：<span style="font-size: 25px; color: green">{{ loadingBanlance ? "--" : Number((info.packBalance) + (info.taxBalance) + (stats.otherBalance)).toFixed(2) }}</span>
-                                        <Button type="success" style="font-size: 17px; width: 100%;  margin-top: 15px;">充值</Button>
+                                        余额：<span style="font-size: 25px; color: green">{{ loadingBanlance || String(Number((info.packBalance) + (info.taxBalance) + (stats.otherBalance))) === "NaN" ? "--" : Number((info.packBalance) + (info.taxBalance) + (stats.otherBalance)).toFixed(2) }}</span>
+                                        <Button type="success" style="font-size: 17px; width: 100%;  margin-top: 15px;" @click="charge">充值</Button>
                                     </Card>
                                 </Col>
                                 <Col span="12">
@@ -155,15 +155,15 @@
                                         <Divider dashed ></Divider>
                                         <Row>
                                             <Col span="12">年费余额</Col>
-                                            <Col span="12" style="text-align: right">{{ Number(info.packBalance).toFixed(2) }}</Col>
+                                            <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.packBalance).toFixed(2) }}</Col>
                                         </Row>
                                         <Row>
                                             <Col span="12">税金余额</Col>
-                                            <Col span="12" style="text-align: right">{{ Number(info.taxBalance).toFixed(2) }}</Col>
+                                            <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.taxBalance).toFixed(2) }}</Col>
                                         </Row>
                                         <Row>
                                             <Col span="12">其他余额</Col>
-                                            <Col span="12" style="text-align: right">{{ Number(stats.otherBalance).toFixed(2) }}</Col>
+                                            <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.otherBalance).toFixed(2) }}</Col>
                                         </Row>
                                     </Card>
                                 </Col>
@@ -218,7 +218,7 @@ export default {
         memberType,
         pendingSave: false, //记录是否在保存
         pendingUpload: false, //是否正在上传头像
-        loadingBanlance: false,
+        loadingBanlance: true,
     }),
     methods: {
          // 基础信息的编辑
@@ -333,6 +333,18 @@ export default {
         async discardChanges() {
             await util.MessageBox.ComfirmAsync(this, "确认放弃更改?");
             this.editMode=false;
+        },
+
+        charge() {
+            let Y =  500;
+            let y = 0;
+            let t = setInterval(function() {
+                y += 10;
+                if (y >= Y) {
+                    clearInterval(t);
+                }
+                document.documentElement.scrollTop = y;
+            }, 0.01);
         }
     },
     watch: {

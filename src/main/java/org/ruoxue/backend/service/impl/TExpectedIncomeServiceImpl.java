@@ -269,9 +269,11 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
 
         if (customer.getTaxBalance() >= 0) {
             // 如果税金账户余额大于0，说明已经补交，就改状态
-            expectedIncome.setStatus(Constant.YearlySaleAmountStatus.SELECTED);
-            expectedIncome.setId(null);
-            expectedIncome.insert();
+            //expectedIncome.setStatus(Constant.YearlySaleAmountStatus.SELECTED);
+            //expectedIncome.setId(null);
+            //expectedIncome.insert();
+            company.setYsaStatus(Constant.YearlySaleAmountStatus.SELECTED);
+            company.updateById();
             return ResultUtil.success("系统已确认您的补交。");
         }
 
