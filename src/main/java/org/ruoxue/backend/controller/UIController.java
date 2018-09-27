@@ -116,7 +116,7 @@ public class UIController extends BaseController {
             username = customer.getName();
             if (customer.getAvatar() != null)
                 avatar = customer.getAvatar().replaceAll("\"", "\\\"");
-            isCustomerPaid = customer.getPaid() == 1 ? "true" : "false";
+            isCustomerPaid = customer.getPaid() == 1 || customer.getPackBalance() > 0 ? "true" : "false";
         }
 
         String scripts = "/* This file is auto-generated in order to present basic user info. */\n" +

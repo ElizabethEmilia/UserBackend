@@ -1,8 +1,7 @@
 package org.ruoxue.backend.service.impl;
 
 import com.alipay.api.response.AlipayTradeQueryResponse;
-import org.ruoxue.backend.bean.TExchange;
-import org.ruoxue.backend.bean.TOrder;
+import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.IAlipayService;
@@ -32,6 +31,9 @@ public class AlipayServiceImpl implements IAlipayService {
 
     @Resource
     private TExchangeMapper exchangeMapper;
+
+    @Resource
+    private TAdminMapper adminMapper;
 
     @Override
     public void startPayment(HttpServletRequest request, HttpServletResponse response,  Double amount, Integer dst) {
@@ -122,7 +124,7 @@ public class AlipayServiceImpl implements IAlipayService {
         }
         // 确认是否有该订单, 该订单是否属于该用户
         TExchange exchange = exchangeMapper.getEntityByID(orderid);
-        if (ToolUtil.isEmpty(exchange) || exchange.getUid().equals(XunBinKit.getUid())) {
+        if (ToolUtil.isEmpty(exchange)) {
             /// TODO: 添加log  应该不会出现这种情况
             System.err.println("[AlipayService] 该交易不存在或不属于当前用户(id=" +orderid+",uid=" + XunBinKit.getUid() +")");
             return;
@@ -144,6 +146,30 @@ public class AlipayServiceImpl implements IAlipayService {
                 "更新状态  订单号: " + paramsMap.get("trade_no") + "  ID: " + exchange.getId());
         // 增加余额到该用户账户
         updateBalanceRelative(amount, exchange.getDst(), exchange);
+
+        // 通知管理员
+        TCustomer customer = customerMapper.getTCustomerByUid(exchange.getUid());
+        TAdmin admin = adminMapper.getAdminByAid(customer.getAid());
+
+        // 如果客户之前是unpaid，说明是在产品页进行的充值，改为paid=1
+        if (customer.getPaid() == 0) {
+            customer.setPaid(1);
+            customer.setChecked(1);
+            customer.updateById();
+            XunBinKit.getSession().setAttribute("obj", customer);
+        }
+
+        System.out.println("[通知管理员客户已经充值]");
+        TPending pending = new TPending();
+        pending.setAid(customer.getAid());
+        pending.setDescription("客户 " + customer.getName() + " 进行了充值，金额为" + exchange.getAmount());
+        pending.setUid(customer.getUid());
+        pending.setGid(admin != null ? admin.getGid() : -1);
+        pending.setProcessed(0);
+        pending.setReceiver(1);
+        pending.setTm(new Date());
+        pending.setSenderaid(-1);
+        pending.insert();
     }
 
     private void updateBalanceRelative(Double amount, Integer dst, TExchange exchange) {
@@ -160,7 +186,7 @@ public class AlipayServiceImpl implements IAlipayService {
                 break;
             case Constant.ChargeDestination.OTHER:
                 LoopAction.tryUpToFiveTimes(
-                        () -> customerMapper.updateTaxBalanceRelative(amount, exchange.getUid()),
+                        () -> customerMapper.updateOtherBalanceRelative(amount, exchange.getUid()),
                         "更新其他账户余额：" + amount + "元");
                 break;
             default:

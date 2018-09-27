@@ -71,6 +71,8 @@ export default {
         deleteUser: (uid) => POST(`/api/customer/${uid}/delete`, __rd_post_body)(),
         addNew: (data) => POST(`/api/customer/add`, data)(),
 
+        modifyAid: (uid, aid) => POST(`/api/customer/${uid}/modifyaid`, { aid })(),
+
         Company: {
             getList: (uid) => POST(`/api/customer/${ uid }/company/list?size=10000`)(),
             newCompany: (uid, data) => POST(`/api/customer/${uid}/company/new`, data)(),

@@ -4,15 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.json.CDL;
 import org.json.JSONArray;
-import org.ruoxue.backend.bean.TCompany;
-import org.ruoxue.backend.bean.TReceipt;
-import org.ruoxue.backend.bean.TReceiptStat;
-import org.ruoxue.backend.bean.TTaxAccountDetail;
+import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
-import org.ruoxue.backend.mapper.TCompanyMapper;
-import org.ruoxue.backend.mapper.TLogsMapper;
-import org.ruoxue.backend.mapper.TReceiptMapper;
-import org.ruoxue.backend.mapper.TReceiptStatMapper;
+import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITReceiptService;
 import org.ruoxue.backend.util.Md5Util;
 import org.ruoxue.backend.util.ResultUtil;
@@ -47,6 +41,9 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
     @Resource
     private TLogsMapper logsMapper;
+
+    @Resource
+    private TAdminMapper adminMapper;
 
     @Override
     public Object listReceipt(String uid, Integer cid, Integer page, Integer size, Integer type, Integer status, Date start, Date end, Integer count) {
@@ -381,6 +378,20 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         Integer uid = XunBinKit.getUid();
 
         logsMapper.addLog(uid, "修改开票状态", 1);
+
+        TCustomer customer = (TCustomer)XunBinKit.getSession().getAttribute("obj");
+        TAdmin admin = adminMapper.getAdminByAid(customer.getAid());
+
+        TPending pending = new TPending();
+        pending.setAid(customer.getAid());
+        pending.setDescription("客户 " + customer.getName() + " 提交了新的开票申请");
+        pending.setUid(customer.getUid());
+        pending.setGid(admin.getGid());
+        pending.setProcessed(0);
+        pending.setReceiver(1);
+        pending.setTm(new Date());
+        pending.setSenderaid(-1);
+        pending.insert();
 
         return XunBinKit.returnResult(len > 0, -3, null, "Success", "Error");
     }

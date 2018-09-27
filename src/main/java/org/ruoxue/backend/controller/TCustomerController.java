@@ -60,6 +60,12 @@ public class TCustomerController extends BaseController {
         return customerService.adminAddtime(uid, cid, months, price);
     }
 
+    @ApiOperation("更换客户所属管理员")
+    @PostMapping("/customer/{uid}/modifyaid")
+    public @ResponseBody Object modifyAID(@PathVariable Integer uid, @RequestParam Integer aid) {
+        return customerService.modifyAID(uid, aid);
+    }
+
     @ApiOperation("查看客户的充值记录（exchange表）")
     @RequestMapping(value = "/customer/{uid}/charge-list", method = RequestMethod.GET)
     public @ResponseBody Object listCharge(@PathVariable Integer uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count){

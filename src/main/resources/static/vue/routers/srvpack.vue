@@ -56,7 +56,7 @@
                         { title: '序号', type: 'index', width: 100 },
                         { title: '用户名', key: 'userName' },
                         { title: '公司名称', key: 'name', },
-                        { title: '服务包到期时间', key: 'oriTaxPackEnd' },
+                        { title: '服务包到期时间', key: 'taxPackEnd' },
                         window.config.isAdmin ? {
                             title: '操作',
                             width: 150,

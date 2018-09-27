@@ -42,4 +42,6 @@ public interface ITCustomerService extends IService<TCustomer> {
 
     Object dealCustomer(Integer uid, String action);
 
+    Object modifyAID(Integer uid, Integer aid);
+
 }

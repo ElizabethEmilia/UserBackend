@@ -46,6 +46,9 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     @Resource
     private TLogsMapper logsMapper;
 
+    @Resource
+    private TAdminMapper adminMapper;
+
     @Override
     public Object CustomerRegister(JSONObject jsonObject, HttpSession session) {
 //        获取参数
@@ -488,6 +491,21 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 
         return XunBinKit.returnResult(len > 0, -4, null, "Success", "Error");
 
+    }
+
+    @Override
+    public Object modifyAID(Integer uid, Integer aid) {
+        TCustomer customer = customerMapper.getTCustomerByUid(uid);
+        if (ToolUtil.isEmpty(customer)) {
+            return ResultUtil.error(-2, "该客户不存在");
+        }
+        TAdmin admin = adminMapper.getAdminByAid(aid);
+        if (ToolUtil.isEmpty(customer)) {
+            return ResultUtil.error(-2, "该管理员不存在");
+        }
+        customer.setAid(aid);
+        customer.updateById();
+        return ResultUtil.success();
     }
 
 }

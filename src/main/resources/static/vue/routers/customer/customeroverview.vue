@@ -136,6 +136,7 @@
                             <CellGroup @on-click="cellGroupClick">
                                 <Cell v-if="P.ChargeForCustomer && info.checked === 1" name="charge" title="余额充值" />
                                 <Cell v-if="P.ReceiptForCustomer && info.checked === 1" name="deduction" title="扣除余额" />
+                                <Cell v-if="P.AdminCompanyAddAndModify && P.AdminCustomerListAll" name="aid" title="更改客户所属管理员" />
                                 <!--Cell v-if="P.AdminCustomerModify" name="edit" title="编辑资料" /-->
                                 <Cell v-if="P.AdminCompanyAddAndModify && info.checked === 1" name="newcompany" title="新增公司" />
                                 <Cell v-if="P.AdminCustomerRemoval" name="remove" title="删除客户" style="color: red"/>
@@ -149,6 +150,21 @@
             <CustomerOverviewDialog v-model="sholdNewCompanyDialogOpen">
 
             </CustomerOverviewDialog>
+
+            <Modal  v-model="aidDialogShouldShow" @on-ok="modifyaid">
+                <div style="margin-bottom: 5px;">
+                    <span class="title-before-input"> <i class="required" />所属组 </span>
+                    <Select v-model="selectedGid" style="width:200px">
+                        <Option v-for="(e,i) in groups" :value="e.id" :key="e.id">{{ e.name }}</Option>
+                    </Select>
+                </div>
+                <div style="margin-bottom: 5px;">
+                    <span class="title-before-input"> <i class="required" />所属管理员 </span>
+                    <Select v-model="selectedAid" style="width:200px">
+                        <Option v-for="(e,i) in admins" :value="e.id" :key="e.id">{{ e.name }}</Option>
+                    </Select>
+                </div>
+            </Modal>
 
             <Modal v-model="chargeDialogShouldShow" title="余额充值">
                 <div style="margin-top: 5px; margin-left: 30px;">
@@ -292,6 +308,7 @@ export default {
         chargeDialogShouldShow: false,
 
         sholdNewCompanyDialogOpen: false,
+        aidDialogShouldShow: false,
         shouldDeductionDialodOpen: false,
 
         P: window.config.P,
@@ -305,7 +322,12 @@ export default {
             amount: 0,
             credit: '',
             cid: -1,
-        }
+        },
+
+        selectedGid: -1,
+        selectedAid: -1,
+        groups: [],
+        admins: [],
     }),
     methods: {
          // 基础信息的编辑
@@ -462,10 +484,30 @@ export default {
                     }
                     this.shouldDeductionDialodOpen = true;
                 },
+                aid: () => {
+                    this.loadGroups();
+                    this.aidDialogShouldShow = true;
+                    this.$emit('on-request-update-list', "genxin成功");
+                },
             };
             handlers[name]();
         },
 
+        async modifyaid() {
+            if (this.selectedAid === -1) {
+                return util.MessageBox.Show(this, "请选择一个管理员");
+            }
+
+            try {
+                await  API.Customer.modifyAid(this.cusData.uid, this.selectedAid)
+                alert('修改成功');
+            }
+            catch (e) {
+                console.error(e);
+                alert(e.message);
+            }
+
+        },
 
         async requestCheck(action) {
             try {
@@ -539,6 +581,12 @@ export default {
                 console.error(e);
                 util.MessageBox.Show(this,'操作失败,' + e.message);
             }
+        },
+        async loadGroups() {
+            this.groups = await API.Group.getSimplifiedList();
+        },
+        async loadAdmins() {
+            this.admins = await API.Group.getUserOfGroup(this.selectedGid);
         }
     },
     watch: {
@@ -548,6 +596,19 @@ export default {
         selectedCompany(val) {
             console.log('[on select-company]', 'ID='+this.companyList[val].id)
             this.$emit('on-select-company', this.companyList[val]);
+        },
+        selectedGid(val) {
+            if (val === -1) {
+                return this.admins = [];
+            }
+            else if (window.config.adminGroupID !== val) {
+                // 为别的组添加
+                if (window.config.P.AdminCustomerListAll);
+                else
+                    return util.MessageBox.Show(this, "该管理员没有权限为其他组用户添加用户");
+            }
+            this.loadAdmins();
+            this.selectedAid = -1;
         }
     },
     computed: {

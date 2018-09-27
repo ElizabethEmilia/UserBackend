@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WxPayConfig {
 
-    @Value("${wxpay.addid}")
+    //@Value("${wxpay.addid}")
     public static String APP_ID;
 
-    @Value("${wxpay.mchid}")
+    //@Value("${wxpay.mchid}")
     public static String MCH_ID;
 
-    @Value("${wxpay.key}")
+    //@Value("${wxpay.key}")
     public static String KEY;
 
-    @Value("${wxpay.cert-path}")
+    //@Value("${wxpay.cert-path}")
     public static String CERT_PATH;
 
-    @Value("${wxpay.configured}")
+    //@Value("${wxpay.configured}")
     public static Boolean WX_CONFIGURED;
 
-    @Value("${wxpay.wxpay.notify-url}")
+    //Value("${wxpay.wxpay.notify-url}")
     public static String NOTIFY_URL;
 }

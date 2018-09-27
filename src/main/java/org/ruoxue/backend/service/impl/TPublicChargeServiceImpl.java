@@ -2,12 +2,12 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.ruoxue.backend.bean.TAdmin;
+import org.ruoxue.backend.bean.TCustomer;
+import org.ruoxue.backend.bean.TPending;
 import org.ruoxue.backend.bean.TPublicCharge;
 import org.ruoxue.backend.common.constant.Constant;
-import org.ruoxue.backend.mapper.TCustomerMapper;
-import org.ruoxue.backend.mapper.TExchangeMapper;
-import org.ruoxue.backend.mapper.TLogsMapper;
-import org.ruoxue.backend.mapper.TPublicChargeMapper;
+import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITPublicChargeService;
 import org.ruoxue.backend.util.Base64Util;
 import org.ruoxue.backend.util.ResultUtil;
@@ -43,6 +43,9 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
 
     @Resource
     private TCustomerMapper customerMapper;
+
+    @Resource
+    private TAdminMapper adminMapper;
 
     @Override
     public Object updatePublicchargeStatus(Integer uid, Integer pid, String status) {
@@ -102,6 +105,20 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         publicCharge.setStatus(0);
         publicCharge.setTmCreate(new Date());
         boolean b = publicCharge.insert();
+
+        TCustomer customer = (TCustomer)XunBinKit.getSession().getAttribute("obj");
+        TAdmin admin = adminMapper.getAdminByAid(customer.getAid());
+
+        TPending pending = new TPending();
+        pending.setAid(customer.getAid());
+        pending.setDescription("客户 " + customer.getName() + " 提交了新的对公充值申请");
+        pending.setUid(customer.getUid());
+        pending.setGid(admin.getGid());
+        pending.setProcessed(0);
+        pending.setReceiver(1);
+        pending.setTm(new Date());
+        pending.setSenderaid(-1);
+        pending.insert();
 
         return XunBinKit.returnResult(b, -2, null, "添加成功", "添加失败");
     }
