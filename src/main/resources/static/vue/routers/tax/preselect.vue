@@ -20,7 +20,7 @@
         </Select>
         <div v-if="note[selected]">
             <p>
-                税金预交率：{{ ['一档', '二挡'][selected] }}({{ note[selected].ratio }}%)
+                税金预交率：{{ ['一档', '二挡', '三档'][selected] }}({{ note[selected].ratio }}%)
             </p>
             <p>
                 说明：适用于{{ note[selected].note }}
@@ -40,22 +40,48 @@
     export default {
         props: [ 'obj' ],
         data: () => ({
+            isAdmin: window.config.isAdmin,
+            P: window.config.P,
+
             ysaRange,
             companyInfo: init.tCompany,
             infoSave: null,
 
-            range: [ "(一档/3%)小于等于360,000", "(二档/6%)360,000~1,000,000" ],
-            selected: 0,
-            note: [
-                {
-                    note: "月销售额小于等于3万或季销售额小于等于9万，没有开具增值税专用发票需求的客户。",
-                    ratio: 3,
-                },
-                {
-                    note: "预计年销售额大于36万且小于等于100万，或预计年销售额小于等于36万但月销售额大于3万或季度销售额大于9万的客户。",
-                    ratio: 6
+            range: (function() {
+                if (window.config.isAdmin && window.config.P.CanGiveHigherRangeOfExpectedIncome) {
+                    return [ "(一档/3%)小于等于360,000", "(二档/6%)360,000~1,000,000", "(三档/6%)1,000,000-5,000,000" ];
                 }
-            ],
+                return [ "(一档/3%)小于等于360,000", "(二档/6%)360,000~1,000,000" ];
+            })(),
+            selected: 0,
+            note: (function() {
+                if (window.config.isAdmin && window.config.P.CanGiveHigherRangeOfExpectedIncome) {
+                    return [
+                        {
+                            note: "月销售额小于等于3万或季销售额小于等于9万，没有开具增值税专用发票需求的客户。",
+                            ratio: 3,
+                        },
+                        {
+                            note: "预计年销售额大于36万且小于等于100万，或预计年销售额小于等于36万但月销售额大于3万或季度销售额大于9万的客户。",
+                            ratio: 6
+                        }, {
+                            note: "预计年销售额大于100万且小于等于500万的客户。",
+                            ratio: 7
+                        },
+
+                    ];
+                }
+                return [
+                    {
+                        note: "月销售额小于等于3万或季销售额小于等于9万，没有开具增值税专用发票需求的客户。",
+                        ratio: 3,
+                    },
+                    {
+                        note: "预计年销售额大于36万且小于等于100万，或预计年销售额小于等于36万但月销售额大于3万或季度销售额大于9万的客户。",
+                        ratio: 6
+                    },
+                ];
+            })(),
             selectedValue: [ Integers.SallyRange.LESS_THAN_360K, Integers.SallyRange.BETWEEN_360K_AND_1M ],
         }),
         watch: {

@@ -217,6 +217,12 @@ export default {
                 this.receiptTyString = receiptType[this.selectedNew.ty];
                 // 获取报税频率
                 this.applicationCompanyInfo = this.companies.filter(e=>e.id===this.selectedNew.cid)[0];
+
+                let preTaxRatio = this.applicationCompanyInfo.preTaxRatio;
+                if (preTaxRatio === 0) {
+                    return util.MessageBox.Show(this, "你公司的未选择预计年收入档位，无法开具发票");
+                }
+
                 let vatr_freq = this.applicationCompanyInfo.vatrFreq;
                 if (vatr_freq === -1) {
                     return util.MessageBox.Show(this, "你公司的报税频率还未完善，无法开具发票");
@@ -264,7 +270,7 @@ export default {
 
                 this.uploading = true;
                 await API.Receipt.newApplication(d);
-                util.MessageBox.Show(this, "申请成功");
+                util.MessageBox.Show(this, "保存成功");
                 this.$refs.dt.refresh();
                 this.shouldOpenDialogEdit = false;
                 this.uploading = !true;
@@ -273,7 +279,7 @@ export default {
             }
             catch(e) {
                 console.error(e);
-                util.MessageBox.Show(this, "申请失败, " + e.message);
+                util.MessageBox.Show(this, "保存成功, " + e.message);
                 this.uploading = !true;
 
             }

@@ -89,7 +89,7 @@
                 return [
                     { title: '序号', type: 'index' },
                     { title: '预计年销售额范围', render: (h,p)=>h('span', {}, ysaRange[p.row.ysaRange]) },
-                    { title: '税金预缴率', render: (h,p)=>h('span', {}, !isNaN(100 * p.row.preTaxRatio) ? 100 * p.row.preTaxRatio + '%':'') },
+                    { title: '税金预缴率', render: (h,p)=>h('span', {}, !isNaN(100 * p.row.preTaxRatio) ? parseInt( 100 * p.row.preTaxRatio ) + '%':'') },
                     { title: '税金预交档次状态', render: (h,p)=>h('span', {}, expectedSalesStatus[p.row.status]) },
                     { title: '税金预交率生效时间', render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tmActivate)) },
                     { title: '税金预交率失效时间', render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tmInactivate)) },

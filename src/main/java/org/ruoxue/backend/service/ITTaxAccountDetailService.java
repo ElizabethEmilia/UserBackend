@@ -15,6 +15,6 @@ public interface ITTaxAccountDetailService extends IService<TTaxAccountDetail> {
 
     Object RechargeMoney(Integer uid, String dst, Double amount);
 
-    Object deductionDst(Integer uid, String dst, Double amount, Integer cid, String credit);
+    Object deductionDst(Integer uid, String dst, Double amount, Integer cid, String credit, Boolean deduced);
 
 }

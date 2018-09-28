@@ -108,7 +108,7 @@ public class TTaxAccountDetailServiceImpl extends ServiceImpl<TTaxAccountDetailM
     }
 
     @Override
-    public Object deductionDst(Integer uid, String dst, Double amount, Integer cid, String credit) {
+    public Object deductionDst(Integer uid, String dst, Double amount, Integer cid, String credit, Boolean deduced) {
 
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(amount) || ToolUtil.isEmpty(dst)) {
             return ResultUtil.error(-1, "参数错误");
@@ -155,24 +155,31 @@ public class TTaxAccountDetailServiceImpl extends ServiceImpl<TTaxAccountDetailM
             TCompany company = companyMapper.getCompanyById(cid);
 
             boolean shouldComplement = false;
-            if (taxBalance < amount) {
-                // 税金余额账户可以为负数余额
-                // 当为负数余额时设置需要补交
-                shouldComplement = true;
-                company.setYsaStatus(Constant.YearlySaleAmountStatus.SHOULD_COMPLEMENT);
-                company.updateById();
-                pendingMapper.sendNotificationToCustomer(company.getUid(), "您的公司" + company.getName() +"需要补交税金，请注意。", new Date());
-                logsMapper.addLog(XunBinKit.getUid(), "从" + customer.getName() + "的税金账户不足以支付税金，需要客户补交。", 1);
-            }
 
-            taxBalance -= amount;
-            customerMapper.updateTaxBalance(taxBalance, uid);
+            // deduced = true 由于已经先行扣款  此处不再扣款
+            if (!deduced) {
+                if (taxBalance < amount) {
+                    // 税金余额账户可以为负数余额
+                    // 当为负数余额时设置需要补交
+                    shouldComplement = true;
+                    company.setYsaStatus(Constant.YearlySaleAmountStatus.SHOULD_COMPLEMENT);
+                    company.updateById();
+                    pendingMapper.sendNotificationToCustomer(company.getUid(), "您的公司" + company.getName() +"需要补交税金，请注意。", new Date());
+                    logsMapper.addLog(XunBinKit.getUid(), "从" + customer.getName() + "的税金账户不足以支付税金，需要客户补交。", 1);
+                }
+
+                taxBalance -= amount;
+                customerMapper.updateTaxBalance(taxBalance, uid);
+            }
 
             if (ToolUtil.isEmpty(company)) {
                 return ResultUtil.error(-6, "company is null (INTERNAL_ERR)");
             }
 
             // credit是图片
+            if (credit == null)
+                credit = "";
+
             if (!credit.equals("")) {
                 credit = Base64Util.GenerateImageFromDataURI(credit);
             }

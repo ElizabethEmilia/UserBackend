@@ -28,8 +28,8 @@ public class BalanceController {
     @ApiOperation("后台手动填写扣费金额并扣费")
     @RequestMapping(value = "/{uid}/deduction/{dst}", method = RequestMethod.POST)
     public @ResponseBody Object deductionDst (@PathVariable Integer uid, @PathVariable String dst, @RequestParam Double amount,
-               @RequestParam(required = false) Integer cid, @RequestParam(required = false) String credit) {
-        return taxAccountDetailService.deductionDst(uid, dst, amount, cid, credit);
+               @RequestParam(required = false) Integer cid, @RequestParam(required = false) String credit, @RequestParam Boolean deduced) {
+        return taxAccountDetailService.deductionDst(uid, dst, amount, cid, credit, deduced);
     }
 
 

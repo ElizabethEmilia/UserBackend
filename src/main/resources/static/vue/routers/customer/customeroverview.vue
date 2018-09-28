@@ -239,6 +239,15 @@
 
                 </div>
 
+                <div style="margin-top: 20px; margin-left: 30px;">
+                    <span style="font-size: 14px; width: 100px; display:inline-block">
+
+                    </span>
+                    <Checkbox v-model="deduceInfo.deduced">已扣</Checkbox>
+
+                </div>
+
+
                 <div  v-show="deduceInfo.type === 1"  style="margin-top: 20px; margin-left: 30px;">
                     <span style="font-size: 14px; width: 100px; display:inline-block">
                         凭证
@@ -311,6 +320,8 @@ export default {
         aidDialogShouldShow: false,
         shouldDeductionDialodOpen: false,
 
+        deducted: false,
+
         P: window.config.P,
 
         chargeInfo: {
@@ -322,6 +333,7 @@ export default {
             amount: 0,
             credit: '',
             cid: -1,
+            deduced: false,
         },
 
         selectedGid: -1,
@@ -575,6 +587,7 @@ export default {
                     amount: 0,
                     credit: '',
                     cid: -1,
+                    deduced: false,
                 };
             }
             catch(e) {

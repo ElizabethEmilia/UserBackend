@@ -33,7 +33,7 @@ const enterpriseInvestType = [ "个人独资" ];
 // 预设销售额状态
 const expectedSalesStatus = [ "未设置", "已设置", "已修改", "撤回", "需要补交" ];
 
-const ysaRange = [ '未选择', '未选择', '一档', undefined, '二档' ];
+const ysaRange = [ '未选择', '未选择', '一档', undefined, '二档', undefined, undefined, undefined, '三档' ];
 
 const dstString = [ '年费', '税金', '其他' ];
 

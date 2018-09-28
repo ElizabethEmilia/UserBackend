@@ -199,6 +199,7 @@ public final class Constant {
     public class SallyRange {
         public static final int LESS_THAN_360K = 1 << 1;
         public static final int BETWEEN_360K_AND_1M = 1 << 2;
+        public static final int MORE_THAN_1M = 1 << 3;
     }
 
     public class LogUsers {

@@ -101,6 +101,9 @@ public class PermissionManager {
         // 为客户修改年销售额范围
         public static final int ModifyExpectedIncomeForCustomer = 28;
 
+        //可以给更高的档位
+        public static final int CanGiveHigherRangeOfExpectedIncome = 29;
+
     }
 
     public static boolean canAccess(int moudleID, int userPermission) {

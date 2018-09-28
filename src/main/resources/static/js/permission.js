@@ -92,6 +92,9 @@ const Modules = {
 
     // 为客户修改年销售额范围
     ModifyExpectedIncomeForCustomer: 28,
+
+    // 可以给更高的档位
+    CanGiveHigherRangeOfExpectedIncome: 29,
 };
 
 function canAccess(moudleID, userPermission) {

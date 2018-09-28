@@ -89,4 +89,12 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
 //    当月专票金额
     @Select("select sum(rec_amount) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )")
     Double countMonthZTicets(@Param("cid") Integer cid);
+
+    // 当月所有票应缴纳税金之和
+    @Select("SELECT sum(pretax) FROM t_receipt WHERE DATE_FORMAT( tm_submit, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and cid=#{cid} and not (status=0 or status=9)")
+    Double countPreTaxSummationMonthly(@Param("cid") Integer cid);
+
+    // 当年所有票应缴纳税金之和
+    @Select("SELECT sum(pretax) FROM t_receipt WHERE YEAR(tm_submit)=YEAR(NOW()) and cid=#{cid}  and not(status=0 or status=9)")
+    Double countPreTaxSummationYearly(@Param("cid") Integer cid);
 }

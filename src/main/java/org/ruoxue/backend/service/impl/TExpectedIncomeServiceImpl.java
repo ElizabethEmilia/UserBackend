@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITExpectedIncomeService;
 import org.ruoxue.backend.util.ResultUtil;
@@ -184,6 +185,7 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         Map<Integer, Double> map = new HashMap<Integer, Double>();
         map.put(Constant.SallyRange.LESS_THAN_360K, 0.03);
         map.put(Constant.SallyRange.BETWEEN_360K_AND_1M, 0.06);
+        map.put(Constant.SallyRange.MORE_THAN_1M, 0.07);
         //map.put(4, 0.07);
 
         Double preTaxRatio = map.get(ysaRange);
@@ -206,11 +208,19 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             username = "系统";
         }
 
+        // 第三档需要权限
+        if (ysaRange.equals(Constant.SallyRange.MORE_THAN_1M)) {
+            if (XunBinKit.thisModuleRequiresAdminButThisUserIsNot() ||
+                    XunBinKit.shouldReject(PermissionManager.Moudles.CanGiveHigherRangeOfExpectedIncome))
+                return null;
+        }
+
         TCompany company = companyMapper.getCompanyById(cid);
         if (company == null) {
             return ResultUtil.error(-10, "No such company (INTERNAL_ERR)");
         }
         company.setYsaStatus(Constant.YearlySaleAmountStatus.SELECTED);
+        company.setYsaRange(ysaRange);
         company.setPreTaxRatio(preTaxRatio);
         company.updateById();
 

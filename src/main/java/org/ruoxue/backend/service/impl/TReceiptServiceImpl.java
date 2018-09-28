@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.tools.Tool;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -161,6 +162,10 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
     @Override
     public Object receiptRequest(String uid, Integer rid, String action, String reason) {
 
+        if ("submit".equals(action)) {
+            return ResultUtil.error(-8, "需要客户自己提交。");
+        }
+
 //        非空验证
         if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(rid) || ToolUtil.isEmpty(action)) {
             return ResultUtil.error(-1, "参数错误");
@@ -193,6 +198,14 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
             taxAccountDetail.insert();
         }
 
+        // 拒绝提交的时候，加回余额
+        if (action.equals("refuse-submit")) {
+            TCustomer customer = customerMapper.getTCustomerByUid(receipt.getUid());
+            if (ToolUtil.isEmpty(customer)) {
+                return ResultUtil.error(-8, "客户不存在（InternalError）");
+            }
+            customerMapper.updateTaxBalanceRelative(receipt.getPretax(), receipt.getUid());
+        }
 
         return XunBinKit.returnResult(b, -3, null, "修改成功", "修改失败");
     }
@@ -394,10 +407,57 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
             return ResultUtil.error(-10, "INTERNAL_ERR no such company");
         }
 
-        if (realtimecus.getTaxBalance() < receipt.getRecAmount() * company.getPreTaxRatio()) {
-            System.out.println("[余额]" + receipt.getRecAmount());
-            return ResultUtil.error(-4, "开票金额大于余额");
+        // (1) 档位限制：
+
+        if (company.getYsaRange().equals(Constant.SallyRange.LESS_THAN_360K)) {
+            // 当月的已提交的开票税金之和加上当前开票的金额需要小于党委的最大值
+            Double PreTaxSummationThisMonth = receiptMapper.countPreTaxSummationMonthly(receipt.getCid());
+            Double maxAmountOfSelectedRange = 900.00;
+
+            if (PreTaxSummationThisMonth == null)
+                PreTaxSummationThisMonth = 0.00;
+            System.out.println(PreTaxSummationThisMonth + " ,, " + receipt.getPretax());
+
+            if (PreTaxSummationThisMonth + receipt.getPretax() > maxAmountOfSelectedRange) {
+                return ResultUtil.error(-4, "开票金额大于当月该档位最大的开票金额");
+            }
         }
+        else if (company.getYsaRange().equals(Constant.SallyRange.BETWEEN_360K_AND_1M)) {
+            // 当年的已提交的开票税金之和加上当前开票的金额需要小于党委的最大值
+            Double year =  receiptMapper.countPreTaxSummationYearly(receipt.getCid());
+
+            if (year == null)
+                year = 0.00;
+            Double maxAmountOfTheYear = 1000000.00;
+
+            if (year + receipt.getPretax() > maxAmountOfTheYear) {
+                return ResultUtil.error(-5, "开票金额大于当年该档位最大的开票金额");
+            }
+        }
+        else if (company.getYsaRange().equals(Constant.SallyRange.MORE_THAN_1M)) {
+            // 当年的已提交的开票税金之和加上当前开票的金额需要小于党委的最大值
+            Double year =  receiptMapper.countPreTaxSummationYearly(receipt.getCid());
+            Double maxAmountOfTheYear = 5000000.00;
+
+            if (year == null)
+                year = 0.00;
+
+            if (year + receipt.getPretax() > maxAmountOfTheYear) {
+                return ResultUtil.error(-5, "开票金额大于当年该档位最大的开票金额");
+            }
+        }
+        else {
+            return ResultUtil.error(-5, "档位不正确 （" + company.getYsaRange() + ")");
+        }
+
+        // (2) 余额限制：剩余税金账户余额需要大于缴纳的税金额
+        if (realtimecus.getTaxBalance() < receipt.getPretax()) {
+            System.out.println("[余额]" + receipt.getRecAmount());
+            return ResultUtil.error(-4, "开票金额大于余额，需要充值" + (receipt.getPretax() - realtimecus.getTaxBalance()) + "元到税金账户。");
+        }
+
+        // 扣除等于pretax的税金
+        customerMapper.updateTaxBalanceRelative(-receipt.getPretax(), realtimecus.getUid());
 
         Integer len = receiptMapper.updateStatusToSub(Constant.RECEIPT_STATUS.Submitted, rid);
 
