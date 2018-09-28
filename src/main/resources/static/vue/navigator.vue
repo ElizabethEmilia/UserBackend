@@ -1,6 +1,10 @@
 <template>
     <Menu :active-name="'account'" @on-select="select" theme="dark">
         <MenuGroup title="" v-if="!isAdmin">
+            <MenuItem name="home">
+                <Icon type="md-document" />
+                网站首页
+            </MenuItem>
             <MenuItem name="account">
                 <Icon type="md-document" />
                 账号信息
@@ -80,6 +84,10 @@
         },
         methods: {
             select(name) {
+                if (name === "home") {
+                    location.href = "http://www.zengxin8.com/";
+                    return;
+                }
                 console.log('Route to: /' + name);
                 this.$emit('menuselect', name);
             }
