@@ -8,7 +8,7 @@
         </Row>
         <Row>
             <Col span="4">年销售额范围</Col>
-            <Col span="8">{{ infoSave.ysaRange }}</Col>
+            <Col span="8">{{ ysaRange[infoSave.ysaRange] }}</Col>
             <Col span="4">当前税金预交率</Col>
             <Col span="8">{{ infoSave.preTaxRatio }}</Col>
         </Row>
@@ -16,7 +16,7 @@
         <Divider />
         请选择预交年销售额范围:
         <Select v-model="selected">
-            <Option v-for="(e, i) in range" :key="i" :value="1 << (1 + i)">{{ e }}</Option>
+            <Option v-for="(e, i) in range" :key="i" :value="i">{{ e }}</Option>
         </Select>
         <div v-if="note[selected]">
             <p>
@@ -35,11 +35,12 @@
 
 <script>
     import init from '../../../js/init.js';
-    import { Integers } from '../../../constant.js';
+    import { ysaRange, Integers } from '../../../constant.js';
 
     export default {
         props: [ 'obj' ],
         data: () => ({
+            ysaRange,
             companyInfo: init.tCompany,
             infoSave: null,
 
@@ -65,7 +66,7 @@
                 this.selected = val.preTaxRatio;
             },
             selected(val) {
-                this.$emit('on-change', val);
+                this.$emit('on-change', 1 << (1 + val));
             },
         },
         created() {

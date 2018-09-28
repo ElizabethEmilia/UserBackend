@@ -2,7 +2,9 @@ package org.ruoxue.backend.controller;
 
 
 import io.swagger.annotations.ApiOperation;
+import org.ruoxue.backend.feature.PermissionManager;
 import org.ruoxue.backend.service.ITExpectedIncomeService;
+import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,9 +66,10 @@ public class TExpectedIncomeController {
         return expectedIncomeService.preSelect(cid, ysaRange);
     }
 
-    @ApiOperation("变更年销售额范围（选择小范围）<< 最新更改：都是大范围")
-    @RequestMapping(value = "/company/{cid}/sales/reselect", method = RequestMethod.POST)
+    @ApiOperation("【管理员】变更年销售额范围 （大范围）")
+    @RequestMapping(value = "/customer/_/company/{cid}/sales/reselect", method = RequestMethod.POST)
     public @ResponseBody Object reselect(@PathVariable Integer cid, @RequestParam Integer ysaRange) {
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.ModifyExpectedIncomeForCustomer));
         return expectedIncomeService.preSelect(cid, ysaRange);
     }
 

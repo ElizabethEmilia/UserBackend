@@ -98,6 +98,9 @@ public class PermissionManager {
         // 为客户新增订单
         public static final int AddOrderForCustomer = 27;
 
+        // 为客户修改年销售额范围
+        public static final int ModifyExpectedIncomeForCustomer = 28;
+
     }
 
     public static boolean canAccess(int moudleID, int userPermission) {

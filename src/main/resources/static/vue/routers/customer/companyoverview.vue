@@ -136,6 +136,7 @@
 
                         <CellGroup @on-click="cellGroupClick">
                             <Cell v-if="P.AdminCompanyAddAndModify" name="edit" title="编辑公司资料" />
+                            <Cell v-if="P.ModifyExpectedIncomeForCustomer" name="rs" title="更改预计年销售额范围" />
                             <Cell v-if="P.AdminCompanyRemoval" name="remove" title="删除公司" style="color: red"/>
                         </CellGroup>
 
@@ -143,17 +144,30 @@
                 </Row>
             </Col>
         </Row>
+
+        <Modal
+                :title="dialogTitle"
+                @on-ok="processModify()"
+                v-model="dialogVisible"
+                :width="800"
+        >
+            <PreSelect
+                    v-if="dialogVisible"
+                    :obj="comData"
+                    @on-change="val => info && (info.ysaRange = val)" />
+        </Modal>
     </Card>
 </template>
 
 <script>
 
-    import { enterpriseOrgizationTypes, industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
+    import { enterpriseOrgizationTypes, industry, memberType, paymentMethod, publicOrderStatus, Integers } from '../../../constant.js';
     import '../../../css/style.less';
     import util from '../../../js/util.js';
     import $ from '../../../js/ajax.js';
     import API from '../../../js/api.js';
     import md5 from 'js-md5';
+    import PreSelect from '../tax/preselect.vue';
 
     /**
      * 事件
@@ -163,6 +177,9 @@
      */
 
     export default {
+        components: {
+            PreSelect,
+        },
         props: [ 'cusData', 'comData' ],
         data: () => ({
             infoSave: {},
@@ -187,6 +204,9 @@
             pendingSave: false, //记录是否在保存
             pendingUpload: false, //是否正在上传头像
             P: window.config.P,
+
+            dialogVisible: false,
+            dialogTitle: '',
         }),
         methods: {
             // 基础信息的编辑
@@ -323,10 +343,30 @@
                             console.log(err);
                             util.MessageBox.Show(this, "删除失败, " + err.message);
                         }
-                    }
+                    },
+                    rs: () => {
+                        this.openReselectDialog();
+                    },
                 };
                 handlers[name]();
-            }
+            },
+
+            openReselectDialog() {
+                this.dialogTitle = "年销售额范围选择";
+                this.dialogVisible = true;
+            },
+
+            async processModify() {
+                try {
+                    await API.Company.ExpectedIncome.select(this.comData.id, this.info.ysaRange);
+                    util.MessageBox.Show(this, "操作成功");
+                    this.info.ysaStatus = Integers.ExpectedSalesStatus.Modified;
+                }
+                catch (err) {
+                    console.error(err);
+                    util.MessageBox.Show(this, "操作失败, " + err.message);
+                }
+            },
         },
         watch: {
             editMode(val) {

@@ -89,6 +89,9 @@ const Modules = {
 
     // 新增订单
     AddOrderForCustomer: 27,
+
+    // 为客户修改年销售额范围
+    ModifyExpectedIncomeForCustomer: 28,
 };
 
 function canAccess(moudleID, userPermission) {

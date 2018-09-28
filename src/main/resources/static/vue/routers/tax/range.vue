@@ -11,7 +11,8 @@
 
             二档（6%）：适用于预计年销售额大于36万且小于等于100万，或预计年销售额小于等于36万但月销售额大于3万或季度销售额大于9万的客户。<br/>
 
-           <span style="color: red">注：请您根据实际情况选择适用档次，否则有可能影响发票开具和税金缴纳</span>
+           <span style="color: red">注：请您根据实际情况选择适用档次，否则有可能影响发票开具和税金缴纳。<br />
+               如开票金额与预选税金档位不等，需联系客服进行修改（注：一个服务年度只能申请一次调档）</span>
         </Alert>
 
         <div class="ft13">
@@ -26,7 +27,7 @@
 
             <div style="margin: 10px;">
                 <Button type="success" @click="openPreselectDialog">年销售额范围预选</Button>
-                <Button type="success" @click="openReselectDialog">年销售额范围变更</Button>
+                <!--Button type="success" @click="openReselectDialog">年销售额范围变更</Button-->
                 <Button type="success" @click="complement">税金预交差额补交</Button>
                 <Button type="success" @click="withdrawChanges">撤回变更</Button>
             </div>

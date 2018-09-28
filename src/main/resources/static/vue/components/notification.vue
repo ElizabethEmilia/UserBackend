@@ -125,6 +125,7 @@
         border-left: 1px solid #eee;
         z-index: 99999;
         box-shadow: 3px 4px 5px 3px #aaa;
+        overflow-y: auto;
     }
 
     .inside {

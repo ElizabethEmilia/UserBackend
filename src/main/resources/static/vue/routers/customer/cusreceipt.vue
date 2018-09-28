@@ -72,9 +72,9 @@ export default {
                 {title:"驳回原因",key:"reason", width: 210},
                 {title:"提交时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmSubmit)))},
                 {title:"确认时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmValidate)))},
-                {title:"合同", width: 150, render:(h,p)=>h('span', {}, render.link(h,p,'查看合同', function() {
+                {title:"合同", width: 150, render:(h,p)=>h('span',[ render.link(h,p,'查看合同', function() {
                         window.open('/res/avatar/' + p.row.credit);
-                    }))},
+                    }) ])},
                 {
                     title: '操作', 
                     width: 200,

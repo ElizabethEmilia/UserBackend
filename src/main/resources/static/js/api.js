@@ -98,6 +98,10 @@ export default {
         getCount: GET("/api/company/count"),
         getList: GET("/api/company/list?size=10000"),
 
+        ExpectedIncome: {
+            select: (cid, range) => POST(`/api/customer/_/company/${cid}/sales/reselect`, { ysaRange: range })(),
+        },
+
         SetupStates: {
             update: (stateArray) => Settings_Update('setup_states', stateArray.join(',')),
         },

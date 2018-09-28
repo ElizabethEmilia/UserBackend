@@ -2,10 +2,7 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.ruoxue.backend.bean.TCompany;
-import org.ruoxue.backend.bean.TCustomer;
-import org.ruoxue.backend.bean.TExchange;
-import org.ruoxue.backend.bean.TExpectedIncome;
+import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITExpectedIncomeService;
@@ -15,6 +12,7 @@ import org.ruoxue.backend.util.XunBinKit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.tools.Tool;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -183,11 +181,6 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-1, "参数错误");
         }
 
-        Integer uid = XunBinKit.getUid();
-        if (ToolUtil.isEmpty(uid)) {
-            return ResultUtil.error(-2, "该用户未登录");
-        }
-
         Map<Integer, Double> map = new HashMap<Integer, Double>();
         map.put(Constant.SallyRange.LESS_THAN_360K, 0.03);
         map.put(Constant.SallyRange.BETWEEN_360K_AND_1M, 0.06);
@@ -198,7 +191,21 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
             return ResultUtil.error(-3, "类型未找见");
         }
 
-        TCustomer customer = (TCustomer) XunBinKit.getSession().getAttribute("obj");
+        String username = "";
+
+        Object obj =  XunBinKit.getSession().getAttribute("obj");
+        if (obj instanceof  TCustomer) {
+            TCustomer customer1 = (TCustomer) obj;
+            username = "用户-" + customer1.getName();
+        }
+        else if (obj instanceof  TAdmin) {
+            TAdmin admin = (TAdmin) obj;
+            username = "管理员-" + admin.getName();
+        }
+        else {
+            username = "系统";
+        }
+
         TCompany company = companyMapper.getCompanyById(cid);
         if (company == null) {
             return ResultUtil.error(-10, "No such company (INTERNAL_ERR)");
@@ -210,13 +217,13 @@ public class TExpectedIncomeServiceImpl extends ServiceImpl<TExpectedIncomeMappe
         TExpectedIncome expectedIncome = new TExpectedIncome();
         expectedIncome.setCid(cid);
         expectedIncome.setStatus(1);
-        expectedIncome.setUid(uid);
+        expectedIncome.setUid(company.getUid());
         expectedIncome.setYsaRange(ysaRange);
         expectedIncome.setPreTaxRatio(preTaxRatio);
         expectedIncome.setTmActivate(new Date());
         expectedIncome.setTmOp(new Date());
         expectedIncome.setTmInactivate(XunBinKit.getYearLastTime());
-        expectedIncome.setOper("用户-" + customer.getName());
+        expectedIncome.setOper(username);
         boolean b =expectedIncome.insert();
 
         return XunBinKit.returnResult(b, -4, null, "添加成功", "添加失败");

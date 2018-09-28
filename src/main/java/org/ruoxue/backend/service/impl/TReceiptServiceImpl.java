@@ -389,7 +389,13 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
             return ResultUtil.error(-10, "INTERNAL_ERR no such customer");
         }
 
-        if (realtimecus.getTaxBalance() < receipt.getRecAmount()) {
+        TCompany company = companyMapper.getCompanyById(receipt.getCid());
+        if (ToolUtil.isEmpty(company)) {
+            return ResultUtil.error(-10, "INTERNAL_ERR no such company");
+        }
+
+        if (realtimecus.getTaxBalance() < receipt.getRecAmount() * company.getPreTaxRatio()) {
+            System.out.println("[余额]" + receipt.getRecAmount());
             return ResultUtil.error(-4, "开票金额大于余额");
         }
 
