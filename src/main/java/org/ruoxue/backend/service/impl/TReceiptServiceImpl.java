@@ -8,10 +8,7 @@ import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITReceiptService;
-import org.ruoxue.backend.util.Md5Util;
-import org.ruoxue.backend.util.ResultUtil;
-import org.ruoxue.backend.util.ToolUtil;
-import org.ruoxue.backend.util.XunBinKit;
+import org.ruoxue.backend.util.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +32,9 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
     @Resource
     private TCompanyMapper companyMapper;
+
+    @Resource
+    private TCustomerMapper customerMapper;
 
     @Resource
     private TReceiptStatMapper receiptStatMapper;
@@ -206,9 +206,17 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         String cusName = jsonObject.getString("cusName");
         Double recAmount = jsonObject.getDouble("recAmount");
         String address = jsonObject.getString("address");
+        String credit = jsonObject.getString("credit");
+        String agname = jsonObject.getString("agname");
+        String agtaxno = jsonObject.getString("agtaxno");
 
-        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(receType) || ToolUtil.isEmpty(cusName) || ToolUtil.isEmpty(recAmount) || ToolUtil.isEmpty(address)) {
+        if (ToolUtil.isEmpty(uid) || ToolUtil.isEmpty(cid) || ToolUtil.isEmpty(receType) || ToolUtil.isEmpty(cusName) || ToolUtil.isEmpty(recAmount) || ToolUtil.isEmpty(address) || ToolUtil.isEmpty(agname) || ToolUtil.isEmpty(credit) || ToolUtil.isEmpty(agtaxno)) {
             return ResultUtil.error(-1, "参数错误");
+        }
+
+        credit = Base64Util.GenerateImageFromDataURI(credit);
+        if (ToolUtil.isEmpty(credit)) {
+            return ResultUtil.error(-7, "合同附件格式错误");
         }
 
         TCompany company = companyMapper.getCompanyById(cid);
@@ -238,6 +246,9 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
         receipt.setAddress(address);
         receipt.setTmSubmit(new Date());
         receipt.setTmVallidate(new Date());
+        receipt.setAgname(agname);
+        receipt.setAgtaxno(agtaxno);
+        receipt.setCredit(credit);
         boolean b = receipt.insert();
 
         return XunBinKit.returnResult(b, -4, null, "开票成功", "开票失败");
@@ -371,6 +382,15 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
 
         if (ToolUtil.isEmpty(receipt)) {
             return ResultUtil.error(-2, "此开票不存在");
+        }
+
+        TCustomer realtimecus = customerMapper.getTCustomerByUid(XunBinKit.getUid());
+        if (ToolUtil.isEmpty(realtimecus)) {
+            return ResultUtil.error(-10, "INTERNAL_ERR no such customer");
+        }
+
+        if (realtimecus.getTaxBalance() < receipt.getRecAmount()) {
+            return ResultUtil.error(-4, "开票金额大于余额");
         }
 
         Integer len = receiptMapper.updateStatusToSub(Constant.RECEIPT_STATUS.Submitted, rid);

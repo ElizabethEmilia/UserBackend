@@ -156,9 +156,9 @@ export default {
                 {title:"驳回原因",key:"reason", width: 210},
                 {title:"提交时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmSubmit)))},
                 {title:"确认时间", width: 210, render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(self.d[p.index].tmValidate)))},
-                {title:"合同", width: 150, render:(h,p)=>h('span', {}, render.link(h,p,'查看合同', function() {
+                {title:"合同", width: 150, render:(h,p)=>h('span',[render.link(h,p,'查看合同', function() {
                     window.open('/res/avatar/' + p.row.credit);
-                    }))},
+                    })])},
                 {
                     title: '操作',
                     width: 200,
@@ -241,7 +241,7 @@ export default {
             }
         },
         async submit() {
-            this.uploading = true;
+
             try {
                 this.applicationData.cid = this.selectedNew.cid;
                 this.applicationData.ty = this.selectedNew.ty;
@@ -262,6 +262,7 @@ export default {
                 if (util.String.isNullOrEmpty(d.agtaxno))
                     return util.MessageBox.Show(this, "请输入纳税人识别号");
 
+                this.uploading = true;
                 await API.Receipt.newApplication(d);
                 util.MessageBox.Show(this, "申请成功");
                 this.$refs.dt.refresh();
