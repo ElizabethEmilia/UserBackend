@@ -268,6 +268,7 @@ export default {
                 this.$refs.dt.refresh();
                 this.shouldOpenDialogEdit = false;
                 this.uploading = !true;
+                this.applicationData = adinit;
 
             }
             catch(e) {
