@@ -2,10 +2,7 @@ package org.ruoxue.backend.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.ruoxue.backend.bean.TAdmin;
-import org.ruoxue.backend.bean.TCustomer;
-import org.ruoxue.backend.bean.TPending;
-import org.ruoxue.backend.bean.TPublicCharge;
+import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITPublicChargeService;
@@ -64,7 +61,21 @@ public class TPublicChargeServiceImpl extends ServiceImpl<TPublicChargeMapper, T
         }
 
         Integer len = publicChargeMapper.updatePublicChangeStatus(pid, map.get(status));
+
         if(status.equals("confirm")) {
+            Double amount = publicChargeMapper.getPublicChargeAmount(pid);
+
+            TExchange exchange = new TExchange();
+            //exchange.setUid(company.getUid());
+            exchange.setCid(null);
+            exchange.setNote("对公充值 - " + amount + "元");
+            exchange.setAmount(amount);
+            exchange.setTm(new Date());
+            //exchange.setUid(userid);
+            exchange.setPaymethod(Constant.PaymentMethod.OTHERS);
+            exchange.setDst(0);
+            exchange.setType(Constant.ExchangeType.INCOME);
+            exchange.insert();
             // 增加余额
             customerMapper.updatePackBalanceRelative(publicChargeMapper.getPublicChargeAmount(pid), uid);
         }

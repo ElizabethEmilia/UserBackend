@@ -1,10 +1,7 @@
 package org.ruoxue.backend.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.ruoxue.backend.bean.TAdmin;
-import org.ruoxue.backend.bean.TCompany;
-import org.ruoxue.backend.bean.TCustomer;
-import org.ruoxue.backend.bean.TTaxAccountDetail;
+import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITCustomerService;
@@ -59,6 +56,28 @@ public class TTaxAccountDetailServiceImpl extends ServiceImpl<TTaxAccountDetailM
         if (ToolUtil.isEmpty(customer)) {
             return ResultUtil.error(-2, "用户不存在");
         }
+
+        String dstString = "";
+        if (dstString.equals("pack-balance")) dstString="年费";
+        else if (dstString.equals("tax-balance")) dstString="税金";
+        else if (dstString.equals("other-balance")) dstString="其他";
+
+        Integer dstInt = 0;
+        if (dstString.equals("pack-balance")) dstInt=0;
+        else if (dstString.equals("tax-balance")) dstInt=1;
+        else if (dstString.equals("other-balance")) dstInt=2;
+
+        // 加入充值明细表
+        TExchange exchange = new TExchange();
+        exchange.setUid(uid);
+        exchange.setCid(null);
+        exchange.setAmount(amount);
+        exchange.setPaymethod(Constant.PaymentMethod.OTHERS);
+        exchange.setNote("后台充值 - " + dstString + " - " + amount + "元");
+        exchange.setDst(dstInt);
+        exchange.setTm(new Date());
+        exchange.setType(Constant.ExchangeType.INCOME);
+        exchange.insert();
 
 //        向年费余额充值
         if ("pack-balance".equals(dst)) {
@@ -216,8 +235,22 @@ public class TTaxAccountDetailServiceImpl extends ServiceImpl<TTaxAccountDetailM
                 return ResultUtil.error(-7, "该客户的其他余额账户余额不足");
             }
 
-            otherBalance -= amount;
-            customerMapper.updateOtherBalance(otherBalance, uid);
+            TExchange exchange = new TExchange();
+            exchange.setUid(customer.getUid());
+            exchange.setCid(null);
+            exchange.setNote("从其他金额中扣除");
+            exchange.setAmount(amount);
+            exchange.setTm(new Date());
+            exchange.setUid(customer.getUid());
+            exchange.setPaymethod(Constant.PaymentMethod.OTHERS);
+            exchange.setDst(2);
+            exchange.setType(Constant.ExchangeType.OUTCOME);
+            exchange.insert();
+
+            if (deduced) {
+                otherBalance -= amount;
+                customerMapper.updateOtherBalance(otherBalance, uid);
+            }
         }
 
         String cName = customer.getName();

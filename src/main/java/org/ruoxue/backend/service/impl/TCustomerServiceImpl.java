@@ -305,11 +305,15 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
 
 //        在交易表和订单表分别插入记录 note(增加服务期限X个月)
         TExchange exchange = new TExchange();
+        exchange.setUid(company.getUid());
         exchange.setCid(cid);
         exchange.setNote("增加服务期限" + months + "个月");
         exchange.setAmount(price);
         exchange.setTm(new Date());
         exchange.setUid(userid);
+        exchange.setPaymethod(Constant.PaymentMethod.OTHERS);
+        exchange.setDst(0);
+        exchange.setType(Constant.ExchangeType.OUTCOME);
         exchange.insert();
 
         TOrder order = new TOrder();

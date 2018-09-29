@@ -113,10 +113,13 @@ public class MiyukiBinTimer {
  //        在交易表和订单表分别插入记录 note(增加服务期限X个月)
                             TExchange exchange = new TExchange();
                             exchange.setCid(cid);
-                            exchange.setNote("交易");
+                            exchange.setNote("增加服务期限12个月");
                             exchange.setAmount(12000.0);
                             exchange.setTm(new Date());
                             exchange.setUid(uid);
+                            exchange.setDst(0);
+                            exchange.setPaymethod(Constant.PaymentMethod.OTHERS);
+                            exchange.setType(Constant.ExchangeType.OUTCOME);
 //                            System.out.println("--------------exchange: " + exchange);
                             exchange.insert();
 
