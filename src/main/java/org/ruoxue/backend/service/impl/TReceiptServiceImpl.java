@@ -207,6 +207,19 @@ public class TReceiptServiceImpl extends ServiceImpl<TReceiptMapper, TReceipt> i
             customerMapper.updateTaxBalanceRelative(receipt.getPretax(), receipt.getUid());
         }
 
+        // 审核的时候
+        if (action.equals("accept")) {
+            TCompany company = companyMapper.getCompanyById(receipt.getCid());
+            if (company == null) {
+                return ResultUtil.error(-10, "No such company");
+            }
+            // 如果没有设置 tm_first_ec 那么设置
+            if (company.getTmFirstEc() == null) {
+                company.setTmFirstEc(new Date());
+                company.updateById();
+            }
+        }
+
         return XunBinKit.returnResult(b, -3, null, "修改成功", "修改失败");
     }
 

@@ -80,8 +80,8 @@ public class JavaSmsApi {
                 TencentSMS.smsSign = configMapper.getConfigByName(ConfigNames.smsSign);
                 TencentSMS.templateId = Integer.parseInt(configMapper.getConfigByName(ConfigNames.templateID));
                 TencentSMS.template = configMapper.getConfigByName(ConfigNames.templateContent);
-                Logger.logMsg(Logger.DEBUG, "" + TencentSMS.appkey + "/" + TencentSMS.appid + "/"
-                        + TencentSMS.smsSign + "/" + TencentSMS.templateId);
+                /*Logger.logMsg(Logger.DEBUG, "" + TencentSMS.appkey + "/" + TencentSMS.appid + "/"
+                        + TencentSMS.smsSign + "/" + TencentSMS.templateId);*/
                 if (TencentSMS.appkey == null || TencentSMS.smsSign == null || TencentSMS.template == null)
                     throw new Exception("Not all required parameters are provided");
                 TencentSMS.initialized = true;
