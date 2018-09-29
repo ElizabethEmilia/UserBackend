@@ -43,7 +43,8 @@ import util from '../../../js/util.js';
 import { receiptType, receiptStatus } from '../../../constant.js';
 import PagedTable from '../../pagedTable.vue';
 import receiptSM from '../receipt/receiptstate.js';
-    
+import render from '../../../js/render.js';
+
 export default {
     components: {
         PagedTable

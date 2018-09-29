@@ -61,7 +61,7 @@
                                             await util.MessageBox.ComfirmAsync(self, "确定要删除该角色吗？");
                                             await API.Role.remove(self.d[p.index].id);
                                             util.MessageBox.Show(this, "删除角色成功");
-                                            this.$refs.datatable.refresh();
+                                            _this.$refs.datatable.refresh();
                                         }
                                         catch(err) {
                                             console.error(err);

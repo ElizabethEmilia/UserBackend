@@ -65,9 +65,8 @@
             columns() {
                 return [
                     { title: '序号', type: 'index' },
-                    { title: '公司ID', key: 'name' },
-                    { title: '公司名称', key: 'cid' },
-                    { title: '时间', key: 'tm' }, //string
+                    //{ title: '时间', render: (h,p) => h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tm)) }, //string
+                    { title: '时间', width: 180, render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tm) )}, //string
                     { title: '状态', key: 'status' }, /// string
                     { title: '备注', key: 'note' }, // string
                     {

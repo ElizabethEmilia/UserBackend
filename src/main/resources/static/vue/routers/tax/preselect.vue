@@ -53,7 +53,7 @@
                 }
                 return [ "(一档/3%)小于等于360,000", "(二档/6%)360,000~1,000,000" ];
             })(),
-            selected: 0,
+            selected: -1,
             note: (function() {
                 if (window.config.isAdmin && window.config.P.CanGiveHigherRangeOfExpectedIncome) {
                     return [
@@ -92,6 +92,7 @@
                 this.selected = val.preTaxRatio;
             },
             selected(val) {
+                debugger;
                 this.$emit('on-change', 1 << (1 + val));
             },
         },
