@@ -23,6 +23,7 @@
     import { industry, memberType, paymentMethod, publicOrderStatus } from '../../../constant.js';
     import '../../../css/style.less';
     import { ordertips } from '../../../data/tips.js';
+    import util from '../../../js/util.js';
 
     export default {
         data: () => ({
@@ -34,12 +35,12 @@
                 { title: '序号', type: 'index' },
                 { title: '订单号', key: 'cid'  },
                 { title: '公司ID', key: 'cid'  },
-                { title: '公司名称', key: 'cname'  },
+                { title: '公司名称', key: 'name'  },
                 { title: '订单金额', key: 'amount'  },
-                { title: '支付方式',width: 160, render: (h,p) => h('span', {}, paymentMethod[p.row.paymethod])  }, // key: paymethod
+                { title: '支付方式',width: 160, render: (h,p) => h('span', {}, /*paymentMethod[p.row.paymethod])*/ '余额') }, // key: paymethod
                 { title: '订单名称', key: 'note'  },
-                { title: '下单时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tm)))  },
-                { title: '支付时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmPaid)))  },
+                { title: '创建时间', render:(h,p)=>h('span',{},util.Date.toTimeStringFromTimestamp(p.row.tmCreate))  },
+                { title: '支付时间', render:(h,p)=>h('span',{},util.Date.toTimeStringFromTimestamp(p.row.tmPaid))  },
                 { 
                 title: '操作', 
                 key: 'action', 

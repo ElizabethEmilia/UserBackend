@@ -162,7 +162,19 @@ export default {
                 {
                     title: '操作',
                     width: 200,
-                    render: (h, p) => h('div', util.State.render(self.d[p.index].status, h, p, self, "/api/receipt",receiptstate.receiptStateMap, receiptstate.receiptActionName)),
+                    render: (h, p) => h('div', util.State.render(self.d[p.index].status, h, p, self, "/api/receipt",receiptstate.receiptStateMap, receiptstate.receiptActionName,
+                        function(action) {
+                            if (action === "submit") {
+                                alert('提交成功。已从税金账户中扣除了相应的金额。')
+                            }
+                            else {
+                                alert('操作成功。');
+                            }
+                        },
+                        function(fail_msg) {
+                            alert(fail_msg);
+                        }
+                    )),
                 }
             ];
         },

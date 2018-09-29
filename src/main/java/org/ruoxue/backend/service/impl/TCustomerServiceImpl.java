@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.ruoxue.backend.bean.*;
 import org.ruoxue.backend.common.constant.ConfigNames;
+import org.ruoxue.backend.common.constant.Constant;
 import org.ruoxue.backend.mapper.*;
 import org.ruoxue.backend.service.ITCustomerService;
 import org.ruoxue.backend.util.*;
@@ -315,6 +316,9 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
         order.setAmount(price);
         order.setCid(cid);
         order.setTmCreate(new Date());
+        order.setTmPaid(new Date());
+        order.setStatus(Constant.PaymentStatus.PAIED);
+        order.setNote("一站式服务包");
         order.insert();
 
         companyMapper.updateEndTime(cid, endDate);

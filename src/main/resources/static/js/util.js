@@ -187,7 +187,7 @@ function requestNextStateHandler(thisState, nextState, stateMap, baseURL, postBo
 
 // 根据状态机进行render
 // from , to, render, params
-function __SM_renderVDOM(f, t, h, p, self, url, map, an) {
+function __SM_renderVDOM(f, t, h, p, self, url, map, an, success, failed) {
     let action = map[f][t];
     // 如果转台转换不存在
     if (typeof action == "undefined")
@@ -203,13 +203,15 @@ function __SM_renderVDOM(f, t, h, p, self, url, map, an) {
                 try {
                     let r = await $.ajax(`${url}/${id}/${action}`, {id});
                     if (r.code)
-                        return alert('操作失败' + r.msg);
-                    alert('操作成功');
+                        return failed('操作失败, ' + r.msg);
+                    //alert('操作成功');
+					success(action, r);
                     self.refresh();
                 }
                 catch (err) {
                     console.log(err);
-                    alert('操作失败');
+                    //failed(action, err);
+                    failed('操作失败');
                 }
             }
         }
@@ -218,13 +220,13 @@ function __SM_renderVDOM(f, t, h, p, self, url, map, an) {
 }
 
 // 根据当前状态进行render
-function __SM_render(state, h, p, self, url, map, an) {
+function __SM_render(state, h, p, self, url, map, an, success, fail) {
 	let to = map[state];
 	if (!to) return [];
 	let kt = Object.keys(to);
     let rA = []
     for (let t of kt)
-        rA = [ ...rA, ...__SM_renderVDOM(state, t, h, p, self, url, map, an) ];
+        rA = [ ...rA, ...__SM_renderVDOM(state, t, h, p, self, url, map, an, success, fail) ];
     return rA;
 }
 

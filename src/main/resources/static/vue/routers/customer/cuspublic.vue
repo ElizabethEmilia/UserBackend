@@ -47,8 +47,8 @@ export default {
                 { title: '订单类型', render: (h, params) =>  h('span', {}, paymentMethod[this.tableData[params.index].type]) },
                 { title: '订单金额', key: 'amount' },
                 { title: '订单状态', render: (h, params) => h('span', {}, publicOrderStatus[this.tableData[params.index].status]) },
-                { title: '下单时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmCreate)))  },
-                { title: '确认时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmConfirm)))  },
+                { title: '订单时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmCreate)))  },
+                //{ title: '确认时间', render:(h,p)=>h('span',{},util.Date.toTimeString(util.Date.toDateSafe(p.row.tmConfirm)))  },
                 { 
                     title: '操作', 
                     key: 'action', 

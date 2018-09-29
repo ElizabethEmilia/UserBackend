@@ -178,7 +178,7 @@ public class UIController extends BaseController {
             return "No such order ID="+id;
 
         /// TODO: 取消这里uid判断的注释
-        if (false && !data.get("uid").equals(XunBinKit.getUid())) {
+        if (!data.get("uid").equals(XunBinKit.getUid())) {
             return "This is not your order";
         }
 
@@ -190,7 +190,7 @@ public class UIController extends BaseController {
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
                 "    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n" +
                 "    <title>查看合同</title>\n" +
-                "    <script src=\"http://localhost/libs/vue.js\"></script>\n" +
+                "    <script src=\"/dist/vue.js\"></script>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "    <div id=\"app\">" + template + "</div>\n" +
@@ -225,7 +225,7 @@ public class UIController extends BaseController {
                 "            this.month = date.getMonth() + 1;\n" +
                 "            this.day = date.getDay() + 1;\n" +
                 "            this.date = this.year + '年' + this.month + '月' + this.day + '日';\n" +
-                "            this.name =  this.order.name;\n" +
+                "            this.name =  this.order.note;\n" +
                 "        }\n" +
                 "    });\n" +
                 "    </script>\n" +

@@ -124,6 +124,10 @@ public class MiyukiBinTimer {
                             order.setAmount(12000.0);
                             order.setCid(cid);
                             order.setTmCreate(new Date());
+                            order.setTmPaid(new Date());
+                            order.setStatus(Constant.PaymentStatus.PAIED);
+                            order.setNote("一站式服务包");
+                            order.insert();
 //                            System.out.println("--------------order: " + order);
                             order.insert();
 
