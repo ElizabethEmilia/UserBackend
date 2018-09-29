@@ -190,7 +190,7 @@
                 </div>
 
                 <div style="text-align: right " slot="footer">
-                    <Button @click="manualCharge" type="success">充值余额</Button>
+                    <Button @click="manualCharge" type="success" :loading="loading">充值余额</Button>
                     <Button @click="chargeDialogShouldShow = false">取消</Button>
                 </div>
 
@@ -259,7 +259,7 @@
                 </div>
 
                 <div style="text-align: right " slot="footer">
-                    <Button @click="manualDeduce" type="success">扣除余额</Button>
+                    <Button @click="manualDeduce" type="success" :loading="loading">扣除余额</Button>
                     <Button @click="shouldDeductionDialodOpen = false">取消</Button>
                 </div>
             </Modal>
@@ -340,6 +340,8 @@ export default {
         selectedAid: -1,
         groups: [],
         admins: [],
+
+        loading: false,
     }),
     methods: {
          // 基础信息的编辑
@@ -545,6 +547,7 @@ export default {
                 return util.MessageBox.Show(this,'请输入金额');
             }
             try {
+                this.loading = true;
                 let dst = ['pack-balance','tax-balance','other-balance'][this.chargeInfo.type];
                 await API.Customer.charge(this.cusData.uid, dst, { amount: this.chargeInfo.amount });
                 util.MessageBox.Show(this,'操作成功');
@@ -553,9 +556,11 @@ export default {
                     type: 0,
                     amount: 0,
                 };
+                this.loading = !true;
             }
             catch(e) {
                 console.error(e);
+                this.loading = !true;
                 util.MessageBox.Show(this,'操作失败,' + e.message);
             }
         },
@@ -578,6 +583,7 @@ export default {
 
             //debugger;
             try {
+                this.loading = true;
                 let dst = ['pack-balance','tax-balance','other-balance'][this.deduceInfo.type];
                 await API.Customer.deduction(this.cusData.uid, dst, util.forGetParams(I) );
                 util.MessageBox.Show(this,'操作成功');
@@ -589,9 +595,11 @@ export default {
                     cid: -1,
                     deduced: false,
                 };
+                this.loading = false;
             }
             catch(e) {
                 console.error(e);
+                this.loading = false;
                 util.MessageBox.Show(this,'操作失败,' + e.message);
             }
         },

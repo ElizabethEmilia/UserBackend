@@ -130,6 +130,16 @@ public class TTaxAccountDetailServiceImpl extends ServiceImpl<TTaxAccountDetailM
             }
             Double packBalance = customer.getPackBalance();
 
+            if (packBalance < 0) {
+                return ResultUtil.error(-3, "该用户的年费余额账户有欠费。");
+            }
+
+            if (deduced) {
+                // !!! 在addtime里面已经更新了余额，此处的应该加上再扣
+                packBalance += amount;
+                customerMapper.updatePackBalance(packBalance, uid);
+            }
+
             type = "年费余额";
             if (packBalance < amount) {
                 return ResultUtil.error(-3, "该用户的年费余额账户余额不足。");
