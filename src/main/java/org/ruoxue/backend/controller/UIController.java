@@ -179,7 +179,8 @@ public class UIController extends BaseController {
 
         /// TODO: 取消这里uid判断的注释
         if (!data.get("uid").equals(XunBinKit.getUid())) {
-            return "This is not your order";
+            if (!(data.get("obj") instanceof TAdmin))
+                return "This is not your order";
         }
 
         String json  = JSONObject.toJSON(data).toString();
