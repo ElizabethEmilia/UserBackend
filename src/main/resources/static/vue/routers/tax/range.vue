@@ -80,6 +80,14 @@
 
     const Integer = Integers;
 
+    function hideAdminNames(name) {
+        let x = (name).match(/^(.*)-(.*)$/);
+        let r = x[1];
+        let n = x[2];
+        let l = n[0];
+        return r.indexOf('管理员') >= 0 ? r + '-' + l + '**' : name;
+    }
+
     export default {
         components: {
             PagedTable, PreSelect,
@@ -93,7 +101,7 @@
                     { title: '税金预交档次状态', render: (h,p)=>h('span', {}, expectedSalesStatus[p.row.status]) },
                     { title: '税金预交率生效时间', render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tmActivate)) },
                     { title: '税金预交率失效时间', render: (h,p)=>h('span', {}, util.Date.toTimeStringFromTimestamp(p.row.tmInactivate)) },
-                    { title: '操作人', key: 'oper' },
+                    { title: '操作人', key1: 'oper', render: (h,p)=>h('span', {}, hideAdminNames(p.row.oper)) },
                     { title: '操作时间', render: (h,p)=>h('div', {}, util.Date.toTimeStringFromTimestamp(p.row.tmOp)) },
                 ];
             },
