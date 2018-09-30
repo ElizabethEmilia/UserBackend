@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="logo" onclick="location.href='http://pmo076db8.hz1.17uhui.com.cn/page72'">
+        <div class="logo" onclick="location.href='http://www.zengxin8.com/page72'">
             <img :src="'http://pmo076db8.pic40.websiteonline.cn/upload/nmww.png'" title="增薪宝" alt="增薪宝">
         </div>
         <div class="layout" v-if="isAdmin || isCustomerPaid">

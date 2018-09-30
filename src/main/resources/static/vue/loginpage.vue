@@ -46,6 +46,7 @@ export default {
     },
     created() {
         this.current = location.pathname === "/reset" ? 'ResetPassword' : this.current;
+        this.current = location.href.indexOf("?register") >= 0 ? 'RegisterFrame' : this.current;
     }
 }
 </script>
