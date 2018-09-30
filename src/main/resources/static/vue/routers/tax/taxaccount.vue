@@ -25,12 +25,12 @@
                         :additional-params="paramsGet"
                 />
             </TabPane>
-            <TabPane label="税金账户明细" name="confirmed">
+            <TabPane label="税金账户明细" name="confirmed" style="min-height: 600px;">
                 <Select v-model="params.cid" placeholder="公司名称" style="width: 200px; margin-left: 5px;">
                     <Option v-for="(e, i) in companies" :value="e.id" :key="e.id">{{e.name}}</Option>
                 </Select>
 
-                月份：<DatePicker type="month" v-model="params.yfrom" style="width: 200px"></DatePicker> -
+                月份：<DatePicker type="month" v-model="params.yfrom" style="width: 200px; z-index: 20"></DatePicker> -
                 <DatePicker type="month" v-model="params.yto" style="width: 200px"></DatePicker>
 
                 <Button>查询</Button>

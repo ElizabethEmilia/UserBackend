@@ -2,41 +2,41 @@
     <Menu :active-name="'account'" @on-select="select" theme="dark">
         <MenuGroup title="" v-if="!isAdmin">
             <MenuItem name="home">
-                <Icon type="md-document" />
+                <Icon type="md-leaf" />
                 网站首页
             </MenuItem>
             <MenuItem name="account">
-                <Icon type="md-document" />
+                <Icon type="md-leaf" />
                 账号信息
             </MenuItem>
             <MenuItem name="orders">
-                <Icon type="md-document" />
+                <Icon type="md-leaf" />
                 我的订单
             </MenuItem>
             <MenuItem name="company">
-                <Icon type="md-chatbubbles" />
+                <Icon type="md-leaf" />
                 我的公司
             </MenuItem>
             <MenuItem name="receipt">
-                <Icon type="md-chatbubbles" />
+                <Icon type="md-leaf" />
                 开票服务
             </MenuItem>
             <MenuItem name="tax">
-                <Icon type="md-chatbubbles" />
+                <Icon type="md-leaf" />
                 税金管理
             </MenuItem>
         </MenuGroup>
         <MenuGroup v-else>
             <MenuItem name="admin">
-                <Icon type="md-heart" />
+                <Icon type="md-leaf" />
                 账号信息
             </MenuItem>
             <MenuItem name="customer">
-                <Icon type="md-heart" />
+                <Icon type="md-leaf" />
                 客户管理
             </MenuItem>
             <MenuItem name="srvpack">
-                <Icon type="md-heart" />
+                <Icon type="md-leaf" />
                 年费管理
             </MenuItem>
             <MenuItem name="user" v-if="P.AdminUserListOfCurrentGroup">

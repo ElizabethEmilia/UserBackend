@@ -20,7 +20,7 @@ export default {
         columns: [
             { title: '序号', type: 'index'},
             { title: '公司ID', key: 'cid'},
-            { title: '申请公司', key: 'cid'},
+            { title: '申请公司', key: 'cName'},
             { title: '连续12个月收入(含税)', key: 'income12'},
             { title: '当月自开普票次数', key: 'timeNormal'},
             { title: '当月自开普票张数', key: 'countNormal'},

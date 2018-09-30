@@ -14,9 +14,9 @@
             <Option v-for="(e, i) in receiptStatus" :value="i" :key="i">{{e}}</Option>
         </Select>
 
-         <DatePicker v-model='selected.start' type="date" placeholder="起始日期" style="width: 130px; margin-left: 5px;"></DatePicker>
+         <DatePicker v-model='selected.start' type="date" placeholder="起始日期" style="width: 130px; margin-left: 5px; z-index: 20"></DatePicker>
 
-         <DatePicker v-model='selected.end' type="date" placeholder="截止日期" style="width: 130px; margin-left: 5px;"></DatePicker>
+         <DatePicker  v-model='selected.end' type="date" placeholder="截止日期" style="width: 130px; margin-left: 5px; z-index: 20"></DatePicker>
 
         <Row style="margin-top: 10px;">
             <!--Col span="16">
@@ -61,7 +61,7 @@ export default {
                 {title:"申请编号",key:"id", width: 140},
                 {title:"发票类型",width: 200, render:(h,p)=>h('span',{},receiptType[self.d[p.index].recType])},
                 //{title:"公司ID",key:"cid", width: 70},
-                {title:"申请公司",key:"cid", width: 250},
+                {title:"申请公司",key:"cName", width: 250},
                 {title:"客户名称",key:"cusName", width: 250},
                 {title:"合同名称",key:"agname", width: 250},
                 {title:"纳税人识别号",key:"agtaxno", width: 250},
