@@ -205,7 +205,7 @@ public class TSigninServiceImpl extends ServiceImpl<TSigninMapper, TSignin> impl
         TSignin signin = signinMapper.getSigninByUid(Integer.parseInt(customer.getLid()));
         boolean b = signin.deleteById();
 
-        logsMapper.addLog(uid, "删除用户", 1);
+        logsMapper.addLog(uid, "删除客户：" + customer.getName() + "", 1);
         if(b){
             return ResultUtil.success(0, "删除用户成功");
         } else {

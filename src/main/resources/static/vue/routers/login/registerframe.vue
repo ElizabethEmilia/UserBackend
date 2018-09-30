@@ -109,7 +109,7 @@ export default {
 
             matchesRestriction = util.passwordMatchesRestriction(this.customer.password);
             if (!matchesRestriction) {
-                util.MessageBox.Show(this, '密码不符合复杂度要求');
+                util.MessageBox.Show(this, '密码不符合复杂度要求。密码需要包含大写字母，小写字母，数字或符号的至少两种，且长度在8-16位之间。');
                 return;
             }
 

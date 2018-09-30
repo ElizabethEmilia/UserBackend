@@ -49,6 +49,7 @@ public class TSigninController {
     @ApiOperation("删除一个用户")
     @RequestMapping(value = "/{uid}/delete", method = RequestMethod.POST)
     public @ResponseBody Object deleteCustomer(@PathVariable Integer uid) {
+        if (XunBinKit.shouldReject(PermissionManager.Moudles.AdminCustomerRemoval)) return null;
         return signinService.deleteCustomer(uid);
     }
 

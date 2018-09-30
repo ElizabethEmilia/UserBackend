@@ -47,7 +47,7 @@
                 if (util.String.isNullOrEmpty(this.old))
                     return util.MessageBox.Show(this, '请输入原密码');
                 if (!util.String.isVividPassword(this.New))
-                    return util.MessageBox.Show(this, '新密码格式不符合要求');
+                    return util.MessageBox.Show(this, '新密码格式不符合要求，密码需要包含大写字母，小写字母，数字或符号的至少两种，且长度在8-16位之间。');
                 if (this.New != this.re)
                     return util.MessageBox.Show(this, '两次输入的密码不相同');
                 this.pending = true;

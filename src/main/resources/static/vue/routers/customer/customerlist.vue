@@ -78,7 +78,7 @@ export default {
         columns() {
             let self = this;
             return [
-                { title:'客户名', render: (h,p) => h('span', {}, p.row.name + (['(未审核)','','(审核未通过)'][p.row.checked])) },
+                { title:'客户名', render: (h,p) => h('span', {}, p.row.name + (p.row.checked === undefined ? '(未付费)' : ['(未审核)','','(审核未通过)'][p.row.checked])) },
                 { title:'客户类型',render:(h,p)=>h('span',{},memberType[self.d[p.index].type]) }, // type
                 { title:'行业', render:(h,p)=>h('span',{},industry[self.d[p.index].industry]) }, //industry
                 { title:'手机号码', key: 'phone' },
