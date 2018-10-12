@@ -93,7 +93,7 @@
                 let self = this;
                 return [
                 { title: '序号', type: 'index' },
-                { title: '订单号', key: 'cid'  },
+                { title: '订单号', key: 'id'  },
                 { title: '公司ID', key: 'cid'  },
                 { title: '公司名称', key: 'cname'  },
                 { title: '订单金额', key: 'amount'  },
