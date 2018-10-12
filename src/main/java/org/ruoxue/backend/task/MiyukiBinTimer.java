@@ -132,7 +132,7 @@ public class MiyukiBinTimer {
                             order.setNote("一站式服务包");
                             order.insert();
 //                            System.out.println("--------------order: " + order);
-                            order.insert();
+                            //order.insert();
 
                         }
 
