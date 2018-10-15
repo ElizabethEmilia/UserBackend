@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ITReceiptStatService extends IService<TReceiptStat> {
 
-    Object receiptStat(String uid);
+    Object receiptStat(String uid, Integer page, Integer size, Integer count);
 
     Object receiptStatV(String uid);
 

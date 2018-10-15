@@ -4,10 +4,7 @@ package org.ruoxue.backend.controller;
 import io.swagger.annotations.ApiOperation;
 import org.ruoxue.backend.service.ITReceiptStatService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -28,14 +25,14 @@ public class TReceiptStatController {
 
     @ApiOperation("查看客户各个公司的开票统计")
     @RequestMapping(value = "/{uid}/receipt/stat", method = RequestMethod.GET)
-    public @ResponseBody Object receiptStat(@PathVariable String uid) {
-        return receiptStatService.receiptStat(uid);
+    public @ResponseBody Object receiptStat(@PathVariable String uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return receiptStatService.receiptStat(uid, page, size, count);
     }
 
     @ApiOperation("查看客户各个公司的开票统计")
     @RequestMapping(value = "/{uid}/receipt/statv", method = RequestMethod.GET)
-    public @ResponseBody Object receiptStatV(@PathVariable String uid) {
-        return receiptStatService.receiptStat(uid);
+    public @ResponseBody Object receiptStatV(@PathVariable String uid, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) Integer count) {
+        return receiptStatService.receiptStat(uid, page, size, count);
     }
 	
 }
