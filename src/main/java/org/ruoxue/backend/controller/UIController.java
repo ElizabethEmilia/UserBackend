@@ -224,7 +224,7 @@ public class UIController extends BaseController {
                 "            var date = new Date(this.order.tm_create);\n" +
                 "            this.year = (date.getFullYear());\n" +
                 "            this.month = date.getMonth() + 1;\n" +
-                "            this.day = date.getDay() + 1;\n" +
+                "            this.day = date.getDate() + 1;\n" +
                 "            this.date = this.year + '年' + this.month + '月' + this.day + '日';\n" +
                 "            this.name =  this.order.note;\n" +
                 "        }\n" +
