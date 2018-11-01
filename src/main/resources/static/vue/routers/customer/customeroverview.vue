@@ -115,6 +115,62 @@
 
                         </Card>
                     </Row>
+                    <Row>
+                        <Card  :bordered="false" dis-hover  v-show="!editMode">
+                            <p slot="title">客户余额</p>
+                            <Row>
+                                <Col span="12" style="text-align: center; padding-top: 13px;">
+                                    <Card :bordered="false" dis-hover>
+
+                                        余额：<span style="font-size: 25px; color: green">{{ loadingBanlance || String(Number((info.packBalance) + (info.taxBalance) + (info.otherBalance))) === "NaN" ? "--" : Number((info.packBalance) + (info.taxBalance) + (info.otherBalance)).toFixed(2) }}</span>
+                                    </Card>
+                                </Col>
+                                <Col span="12">
+                                    <!--Card :bordered="false" dis-hover>
+                                        <Row>
+                                            <Col span="12">收入金额总计</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(stats.income).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span="12">最近一笔收入</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(stats.lastIncome).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Divider dashed ></Divider>
+                                        <Row>
+                                            <Col span="12">支出金额总计</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(stats.outcome).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span="12">最近一笔支出</Col>
+                                            <Col span="12" style="text-align: right">{{ Number(stats.lastOutcome).toFixed(2)     }}</Col>
+                                        </Row>
+                                    </Card-->
+
+                                    <Card :bordered="false" dis-hover>
+                                        <Row>
+                                            <Col span="12">余额详情</Col>
+                                            <Col span="12" style="text-align: right"></Col>
+                                        </Row>
+                                        <Divider dashed ></Divider>
+                                        <Row>
+                                            <Col span="12">年费余额</Col>
+                                            <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.packBalance).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span="12">税金余额</Col>
+                                            <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.taxBalance).toFixed(2) }}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span="12">其他余额</Col>
+                                            <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.otherBalance).toFixed(2) }}</Col>
+                                        </Row>
+                                    </Card>
+                                </Col>
+                            </Row>
+
+                        </Card>
+                    </Row>
+
                 </Col>
                 <Col span="12">
                     <Card :bordered="false" dis-hover>
@@ -342,6 +398,8 @@ export default {
         admins: [],
 
         loading: false,
+
+        loadingBanlance: false,
     }),
     methods: {
          // 基础信息的编辑
@@ -411,13 +469,15 @@ export default {
         },
         // 获取用户基本信息
         async getBasicInfo() {
+            this.loadingBanlance = true;
             try {
-                let result = await $.ajax('/api/account/basic');
+                let result = await $.ajax('/api/customer/' + this.info.uid);
                 if (result.code) {
                     return alert('获取基本信息失败：' + result.msg);
                 }
                 this.info = result.data;
                 this.avatar = result.data.avatar;
+                this.loadingBanlance = false;
             }
             catch(err) {
                  util.Debug.ralert('获取基本信息失败');
@@ -557,6 +617,7 @@ export default {
                     amount: 0,
                 };
                 this.loading = !true;
+                this.getBasicInfo();
             }
             catch(e) {
                 console.error(e);
@@ -596,6 +657,7 @@ export default {
                     deduced: false,
                 };
                 this.loading = false;
+                this.getBasicInfo();
             }
             catch(e) {
                 console.error(e);
