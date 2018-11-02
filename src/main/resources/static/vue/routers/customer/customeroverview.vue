@@ -147,11 +147,7 @@
                                     </Card-->
 
                                     <Card :bordered="false" dis-hover>
-                                        <Row>
-                                            <Col span="12">余额详情</Col>
-                                            <Col span="12" style="text-align: right"></Col>
-                                        </Row>
-                                        <Divider dashed ></Divider>
+
                                         <Row>
                                             <Col span="12">年费余额</Col>
                                             <Col span="12" style="text-align: right">{{ loadingBanlance ? "--" : Number(info.packBalance).toFixed(2) }}</Col>

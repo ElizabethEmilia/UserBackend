@@ -58,7 +58,7 @@
                 if (window.config.isAdmin && window.config.P.CanGiveHigherRangeOfExpectedIncome) {
                     return [
                         {
-                            note: "月销售额小于等于3万或季销售额小于等于9万，没有开具增值税专用发票需求的客户。",
+                            note: "月销售额小于等于3万或季销售额小于等于9万的客户。",
                             ratio: 3,
                         },
                         {
@@ -73,7 +73,7 @@
                 }
                 return [
                     {
-                        note: "月销售额小于等于3万或季销售额小于等于9万，没有开具增值税专用发票需求的客户。",
+                        note: "月销售额小于等于3万或季销售额小于等于9万的客户。",
                         ratio: 3,
                     },
                     {
