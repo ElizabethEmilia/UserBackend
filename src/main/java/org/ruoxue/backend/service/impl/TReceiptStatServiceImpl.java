@@ -193,6 +193,7 @@ public class TReceiptStatServiceImpl extends ServiceImpl<TReceiptStatMapper, TRe
         map.put("selfrecv", Constant.RECEIPT_STATUS.ReceivedCompleted);
         map.put("refuse-packing", Constant.RECEIPT_STATUS.RefusedWaitingPacking);
         map.put("recv", Constant.RECEIPT_STATUS.ReceivedCompleted);
+        map.put("reset", Constant.RECEIPT_STATUS.Submitted);
         System.out.println("-------------map: " + map);
 
         return map.get(action);

@@ -28,6 +28,7 @@ const receiptAction = {
     SelfRecv: "selfrecv",
     RefusePacking: "refuse-packing",
     Receive: "recv",
+    Reset: "reset",
 }
 
 const receiptActionName = {
@@ -43,6 +44,7 @@ const receiptActionName = {
     [receiptAction.SelfRecv]: "自取",
     [receiptAction.RefusePacking]: "驳回",
     [receiptAction.Receive]: "已签收",
+    [receiptAction.Reset]: "重置为“已提交”",
 }
 
 let receiptStateMap = {
@@ -77,6 +79,13 @@ let receiptStateMap = {
     },
     [states.RefusedWaitingPacking]: {
         [states.Packed]: receiptAction.Pack,
+        [states.Submitted]: receiptAction.Reset,
+    },
+    [states.Abondoned]: {
+        [states.Submitted]: receiptAction.Reset,
+    },
+    [states.ReceivedCompleted]: {
+        [states.Submitted]: receiptAction.Reset,
     }
 }
 

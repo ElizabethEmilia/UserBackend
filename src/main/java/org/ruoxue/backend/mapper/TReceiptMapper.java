@@ -63,31 +63,31 @@ public interface TReceiptMapper extends BaseMapper<TReceipt> {
 
 
     //    12个月收入之和
-    @Select("select sum(rec_amount) amountSum from t_receipt where cid = #{cid} and tm_vallidate > #{start} and tm_vallidate < #{end} and status=2")
+    @Select("select sum(rec_amount) amountSum from t_receipt where cid = #{cid} and tm_vallidate > #{start} and tm_vallidate < #{end} and status=8")
     Double getYear(@Param("cid") Integer cid, @Param("start") Date start, @Param("end") Date end);
 
 //    当月普票次数
-    @Select("select count(1) from t_receipt where rec_type = 0 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=2 group by date(tm_vallidate)")
+    @Select("select count(1) from t_receipt where rec_type = 0 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=8 group by date(tm_vallidate)")
     List<Integer> countTimePTickets(@Param("cid") Integer cid);
 
 //    当月专票次数
-    @Select("select count(1) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=2 group by date(tm_vallidate)")
+    @Select("select count(1) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=8 group by date(tm_vallidate)")
     List<Integer> countTimeZTickets(@Param("cid") Integer cid);
 
 //    当月普票张数
-    @Select("select count(1) from t_receipt where rec_type = 0 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=2")
+    @Select("select count(1) from t_receipt where rec_type = 0 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=8")
     Integer countPTickets(@Param("cid") Integer cid);
 
 //    当月当月普票金额
-    @Select("select sum(rec_amount) from t_receipt where rec_type = 0 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=2")
+    @Select("select sum(rec_amount) from t_receipt where rec_type = 0 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=8")
     Double countMonthPTicets(@Param("cid") Integer cid);
 
 //    当月专票张数
-    @Select("select count(1) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=2")
+    @Select("select count(1) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=8")
     Integer countZTickets(@Param("cid") Integer cid);
 
 //    当月专票金额
-    @Select("select sum(rec_amount) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=2")
+    @Select("select sum(rec_amount) from t_receipt where rec_type = 1 and cid = #{cid} and DATE_FORMAT( tm_vallidate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) and status=8")
     Double countMonthZTicets(@Param("cid") Integer cid);
 
     // 当月所有票应缴纳税金之和
