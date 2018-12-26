@@ -90,9 +90,9 @@ public class TReceiptStatServiceImpl extends ServiceImpl<TReceiptStatMapper, TRe
 //            将数据塞入map
             map.put("cName", cName);
             map.put("income12", sumAmount);
-            map.put("amountNormal", countTimeMonthPTickets);
+            map.put("amountNormal", countMonthPTicets );
             map.put("timeNormal", countPTickets);
-            map.put("countNormal", countMonthPTicets);
+            map.put("countNormal", countTimeMonthPTickets);
             map.put("amountSpec", countTimeMonthZTickets);
             map.put("timeSpec", countZTickets);
             map.put("countSpec", countMonthZTicets);
