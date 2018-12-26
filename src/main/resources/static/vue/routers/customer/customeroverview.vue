@@ -119,6 +119,9 @@
                         <Card  :bordered="false" dis-hover  v-show="!editMode">
                             <p slot="title">客户余额</p>
                             <Row>
+                                此功能尚未付款。此功能的试用期{{ new Date('2018-11-15') - new Date() > 0 ? '将':'已' }}于2018年11月15日结束，在试用期结束后，需要付款才能继续使用此功能。
+                            </Row>
+                            <Row v-if="new Date('2018-11-15') - new Date() > 0">
                                 <Col span="12" style="text-align: center; padding-top: 13px;">
                                     <Card :bordered="false" dis-hover>
 
