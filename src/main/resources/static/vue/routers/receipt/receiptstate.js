@@ -86,6 +86,9 @@ let receiptStateMap = {
     },
     [states.ReceivedCompleted]: {
         [states.Submitted]: receiptAction.Reset,
+    },
+    [states.RefusedWaitingSubmit]: {
+        [states.Submitted]: receiptAction.Reset,
     }
 }
 
