@@ -2,7 +2,7 @@
     <!-- 对公充值 -->
     <Card class="card-margin">
             <Divider orientation="left"><h3>对公充值</h3></Divider>
-            <Alert type="success">
+            <!--Alert type="success">
                 <span style="font-weight: blod; color: green">温馨提示：</span> 
                 <br/><br/>
                 1. 对公转账需我司财务确认后到账，请在此新增线下充值订单并上传支付凭证；<br />
@@ -23,7 +23,7 @@
                 
                     
                 </p>
-            </Alert>
+            </Alert-->
 
             <Tabs v-model="req_url" @on-click="tabclick">
                 <TabPane label="全部" name="all"></TabPane>
